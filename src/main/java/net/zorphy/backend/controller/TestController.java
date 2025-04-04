@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @RestController
 public class TestController {
-    @RequestMapping("/")
+    @RequestMapping("test/")
     public String getGreeting() {
         return "Hello world! This is a test message!";
     }
