@@ -1,11 +1,11 @@
-package net.zorphy.backend.controller.connect4;
+package net.zorphy.backend.connect4.controller;
 
-import net.zorphy.backend.dto.connect4.request.SolveRequest;
-import net.zorphy.backend.dto.connect4.request.MakeMoveRequest;
-import net.zorphy.backend.dto.connect4.request.UndoMoveRequest;
-import net.zorphy.backend.dto.connect4.response.MoveResponse;
-import net.zorphy.backend.dto.connect4.response.SolveResponse;
-import net.zorphy.backend.service.connect4.Connect4Service;
+import net.zorphy.backend.connect4.dto.request.SolveRequest;
+import net.zorphy.backend.connect4.dto.request.MakeMoveRequest;
+import net.zorphy.backend.connect4.dto.request.UndoMoveRequest;
+import net.zorphy.backend.connect4.dto.response.MoveResponse;
+import net.zorphy.backend.connect4.dto.response.SolveResponse;
+import net.zorphy.backend.connect4.service.Connect4Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;

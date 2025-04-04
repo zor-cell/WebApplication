@@ -1,10 +1,9 @@
-package net.zorphy.backend.dto.connect4.request;
+package net.zorphy.backend.connect4.dto.request;
 
 import javax.swing.text.Position;
 
 public record UndoMoveRequest(
     int[][] board,
-
-    Position position
+    Integer move
 ) {
 }

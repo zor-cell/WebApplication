@@ -1,4 +1,4 @@
-package net.zorphy.backend.dto.connect4.data;
+package net.zorphy.backend.connect4.dto.data;
 
 public record Position(
          int i,

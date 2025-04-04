@@ -1,4 +1,4 @@
-package net.zorphy.backend.enums.connect4;
+package net.zorphy.backend.connect4.enums;
 
 public enum Version {
     V1_0, //2d array board

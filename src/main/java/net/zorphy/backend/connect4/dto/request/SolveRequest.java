@@ -1,6 +1,6 @@
-package net.zorphy.backend.dto.connect4.request;
+package net.zorphy.backend.connect4.dto.request;
 
-import net.zorphy.backend.enums.connect4.Version;
+import net.zorphy.backend.connect4.enums.Version;
 
 public record SolveRequest(
     int[][] board,

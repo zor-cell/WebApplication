@@ -1,4 +1,4 @@
-package net.zorphy.backend.controller;
+package net.zorphy.backend.main.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class GreetingController {
     @RequestMapping("/")
     public String getGreeting() {
-        return "Hello world!";
+        return "This is the backend server of zorphy.net!";
     }
 }

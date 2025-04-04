@@ -1,6 +1,6 @@
-package net.zorphy.backend.dto.connect4.response;
+package net.zorphy.backend.connect4.dto.response;
 
-import net.zorphy.backend.enums.connect4.GameState;
+import net.zorphy.backend.connect4.enums.GameState;
 
 import javax.swing.text.Position;
 
