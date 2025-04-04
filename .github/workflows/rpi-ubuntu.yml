@@ -1,0 +1,20 @@
+name: Deploy to rpi5
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build and run the Docker image
+      run: |
+        docker build . --file Dockerfile --tag backend_server:latest
+        docker stop backend_server_container || true
+        docker rm backend_server_container || true
+        docker run -d --name backend_server_container -p 8080:8080 backend_server:latest
+      
