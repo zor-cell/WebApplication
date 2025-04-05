@@ -9,6 +9,7 @@ import net.zorphy.backend.connect4.service.Connect4Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,25 +26,22 @@ public class Connect4Controller {
     }
 
     @PostMapping("solve")
-    public SolveResponse makeBestMove(SolveRequest solveRequest) {
+    public SolveResponse makeBestMove(@RequestBody SolveRequest solveRequest) {
         LOGGER.info("POST /connect4/solve");
-        LOGGER.debug("Body: {}", solveRequest);
 
         return connect4Service.makeBestMove(solveRequest);
     }
 
     @PostMapping("move")
-    public MoveResponse makeMove(MakeMoveRequest makeMoveRequest) {
+    public MoveResponse makeMove(@RequestBody MakeMoveRequest makeMoveRequest) {
         LOGGER.info("POST /connect4/move");
-        LOGGER.debug("Body: {}", makeMoveRequest);
 
         return connect4Service.makeMove(makeMoveRequest);
     }
 
     @PostMapping("undo")
-    public MoveResponse undoMove(UndoMoveRequest undoMoveRequest) {
+    public MoveResponse undoMove(@RequestBody UndoMoveRequest undoMoveRequest) {
         LOGGER.info("POST /connect4/undo");
-        LOGGER.debug("Body: {}", undoMoveRequest);
 
         return connect4Service.undoMove(undoMoveRequest);
     }
