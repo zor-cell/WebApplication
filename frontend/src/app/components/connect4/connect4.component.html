@@ -1,1 +1,13 @@
-<p>connect4 works!</p>
+<div id="board">
+    <div class="board-row" *ngFor="let row of board; let rowIndex = index">
+        <div *ngFor="let cell of row; let colIndex = index">
+            <connect4-cell
+                    [isLastMove]="false"
+                    [cellPosition]="{i: rowIndex, j: colIndex}"
+                    [cellValue]="cell"
+                    [currentPlayer]="1"
+            />
+        </div>
+    </div>
+</div>
+

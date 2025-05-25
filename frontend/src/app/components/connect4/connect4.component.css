@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#container {
+    margin: 20px 0 20px 0;
+}
+
+#starting-player-container {
+    flex-direction: row;
+    gap: 10px;
+}
+
+#buttons {
+    flex-direction: row;
+    justify-content: space-between;
+
+    gap: 5px;
+}
+
+#board {
+    position: relative;
+    width: fit-content;
+}
+
+#board-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.board-row {
+    display: flex;
+    flex-direction: row;
+}
+
+#settings-container {
+    flex-direction: row;
+    align-items: start;
+}
+
+@media(max-width: 480px) {
+    #settings-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
