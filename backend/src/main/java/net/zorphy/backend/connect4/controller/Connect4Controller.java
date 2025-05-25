@@ -1,8 +1,8 @@
 package net.zorphy.backend.connect4.controller;
 
 import net.zorphy.backend.connect4.dto.request.SolveRequest;
-import net.zorphy.backend.connect4.dto.request.MakeMoveRequest;
-import net.zorphy.backend.connect4.dto.request.UndoMoveRequest;
+import net.zorphy.backend.connect4.dto.request.MoveRequest;
+import net.zorphy.backend.connect4.dto.request.UndoRequest;
 import net.zorphy.backend.connect4.dto.response.MoveResponse;
 import net.zorphy.backend.connect4.dto.response.SolveResponse;
 import net.zorphy.backend.connect4.service.Connect4Service;
@@ -26,23 +26,23 @@ public class Connect4Controller {
     }
 
     @PostMapping("solve")
-    public SolveResponse makeBestMove(@RequestBody SolveRequest solveRequest) {
+    public SolveResponse solve(@RequestBody SolveRequest solveRequest) {
         LOGGER.info("POST /connect4/solve");
 
         return connect4Service.makeBestMove(solveRequest);
     }
 
     @PostMapping("move")
-    public MoveResponse makeMove(@RequestBody MakeMoveRequest makeMoveRequest) {
+    public MoveResponse move(@RequestBody MoveRequest moveRequest) {
         LOGGER.info("POST /connect4/move");
 
-        return connect4Service.makeMove(makeMoveRequest);
+        return connect4Service.makeMove(moveRequest);
     }
 
     @PostMapping("undo")
-    public MoveResponse undoMove(@RequestBody UndoMoveRequest undoMoveRequest) {
+    public MoveResponse undo(@RequestBody UndoRequest undoRequest) {
         LOGGER.info("POST /connect4/undo");
 
-        return connect4Service.undoMove(undoMoveRequest);
+        return connect4Service.undoMove(undoRequest);
     }
 }

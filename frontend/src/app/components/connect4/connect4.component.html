@@ -6,6 +6,7 @@
                     [cellPosition]="{i: rowIndex, j: colIndex}"
                     [cellValue]="cell"
                     [currentPlayer]="1"
+                    (clickEvent)="makeMove($event)"
             />
         </div>
     </div>

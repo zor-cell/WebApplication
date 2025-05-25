@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import {CellComponent} from "./cell/cell.component";
 import {NgForOf} from "@angular/common";
+import {Connect4Service} from "../../services/connect4.service";
+import {MoveRequest, SolveRequest, UndoRequest} from "../../dto/connect4/requests";
+import {GameState} from "../../dto/connect4/data";
+import {Globals} from "../../classes/globals";
 
 @Component({
   selector: 'app-connect4',
@@ -14,11 +18,89 @@ import {NgForOf} from "@angular/common";
 })
 export class Connect4Component {
   board: number[][] = this.createBoard(6, 7);
+  currentPlayer: number = 1;
+  gameOver: boolean = false;
+  gameState: GameState = GameState.RUNNING;
+  moves: number[] = Array(0);
+  isLoading: boolean = false;
 
-  get transposedBoard() {
-      return this.board[0].map((_, colIndex) =>
-          this.board.map(row => row[colIndex])
-      );
+  constructor(private globals: Globals, private connect4Service: Connect4Service) {}
+
+    togglePlayer() {
+      return this.currentPlayer === 1 ? -1 : 1;
+    }
+
+  makeMove(col: number) {
+      if(this.gameOver || this.isLoading) return;
+
+      let moveRequest: MoveRequest = {
+        board: this.board,
+        player: 1,
+        move: col
+      };
+
+      this.isLoading = true;
+      this.connect4Service.move(moveRequest).subscribe({
+          next: res => {
+              this.board = res.board;
+              this.gameState = res.gameState;
+
+              this.moves.push(moveRequest.move);
+              this.togglePlayer();
+
+              this.isLoading = false;
+          },
+          error: err => {
+              this.isLoading = false;
+              this.globals.handleError(err);
+          }
+      })
+  }
+
+  undoMove(col: number) {
+      let undoRequest: UndoRequest = {
+          board: this.board,
+          move: col
+      }
+
+      this.isLoading = true;
+      this.connect4Service.undo(undoRequest).subscribe({
+          next: res => {
+              this.board = res.board;
+              this.gameState = res.gameState;
+
+              this.moves.pop();
+              this.togglePlayer();
+
+              this.isLoading = false;
+          },
+          error: err => {
+              this.isLoading = false;
+              this.globals.handleError(err);
+          }
+      })
+  }
+
+  solve() {
+      let solveRequest: SolveRequest = {
+        board: this.board,
+        player: 1,
+        maxTime: 1,
+        maxDepth: 1,
+        tableSize: 1,
+        version: 1
+      };
+
+      this.isLoading = true;
+      this.connect4Service.solve(solveRequest).subscribe({
+          next: res => {
+              this.isLoading = false;
+          },
+          error: err => {
+              this.isLoading = false;
+              this.globals.handleError(err);
+          }
+      })
   }
 
   createBoard(rows: number, cols: number): number[][] {

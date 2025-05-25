@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass} from "@angular/common";
-import {Position} from "../../../classes/connect4/position";
+import {Position} from "../../../dto/connect4/data";
 
 @Component({
   selector: 'connect4-cell',
@@ -16,7 +16,7 @@ export class CellComponent {
    @Input() cellPosition: Position = {i: -1, j: -1};
    @Input() cellValue: number = 0;
    @Input() currentPlayer: number = 0;
-   @Output() clicked = new EventEmitter<void>();
+   @Output() clickEvent = new EventEmitter<number>();
 
    cellColor() {
         if(this.cellValue === 1) {
@@ -29,6 +29,6 @@ export class CellComponent {
     }
 
     handleClick() {
-       this.clicked.emit();
+       this.clickEvent.emit(this.cellPosition.j);
     }
 }
