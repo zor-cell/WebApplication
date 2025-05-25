@@ -1,12 +1,14 @@
-FROM node:alpine
+FROM node:alpine as build
 
 WORKDIR /frontend
 
-COPY ../frontend .
+COPY . .
 
-RUN npm install -g @angular/cli
 RUN npm install
+RUN npm run build
 
-EXPOSE 4200
+FROM nginx:latest
 
-CMD ["npm", "start"]
+COPY --from=build /frontend/dist/frontend/browser /usr/share/nginx/html
+
+EXPOSE 80

@@ -23,4 +23,4 @@ jobs:
         docker build ./frontend --file ./frontend/Dockerfile --tag frontend_server_image:latest
         docker stop frontend_server_container || true
         docker rm frontend_server_container || true
-        docker run -d -p 8021:4200 --name frontend_server_container --restart unless-stopped frontend_server_image:latest
+        docker run -d -p 8021:80 --name frontend_server_container --restart unless-stopped frontend_server_image:latest
