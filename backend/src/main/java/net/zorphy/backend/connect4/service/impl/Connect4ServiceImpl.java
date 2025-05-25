@@ -10,7 +10,7 @@ import net.zorphy.backend.connect4.dto.request.UndoRequest;
 import net.zorphy.backend.connect4.dto.response.MoveResponse;
 import net.zorphy.backend.connect4.dto.response.SolveResponse;
 import net.zorphy.backend.connect4.enums.GameState;
-import net.zorphy.backend.connect4.exception.InvalidMoveException;
+import net.zorphy.backend.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.connect4.service.Connect4Service;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +44,7 @@ public class Connect4ServiceImpl implements Connect4Service {
 
         //check for invalid move
         if(move == null) {
-            throw new InvalidMoveException();
+            throw new InvalidOperationException("Invalid Move. Column is full");
         }
 
         //make valid move
@@ -63,6 +63,10 @@ public class Connect4ServiceImpl implements Connect4Service {
 
         //undo move
         Position move = board.getLastInCol(request.move());
+        if(move == null) {
+            throw new InvalidOperationException("Invalid Move. Column is empty");
+        }
+
         board.unmakeMove(move);
 
         //compute current game state (is not really necessary but why not)
