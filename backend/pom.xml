@@ -8,10 +8,10 @@
 		<version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.zorphy</groupId>
-	<artifactId>backend</artifactId>
+	<groupId>net.zorphy</groupId>
+	<artifactId>WebApplication</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>backend</name>
+	<name>WebApplication</name>
 	<description>Backend Server</description>
 	<url/>
 	<licenses>
