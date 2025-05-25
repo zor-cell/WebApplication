@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Version} from "../../../dto/connect4/data";
 
 @Component({
     selector: 'connect4-player-settings',
@@ -8,5 +9,8 @@ import {Component} from '@angular/core';
     styleUrl: './player-settings.component.css'
 })
 export class PlayerSettingsComponent {
-
+    @Input() isAi: boolean = false;
+    @Input() maxTime: number = 3000;
+    @Input() maxMemory: number = 64;
+    @Input() version: Version = Version.V2_1;
 }

@@ -1,0 +1,25 @@
+:root {
+    --form-height: 30px;
+    --border-color: rgba(0,0,0,0.25);
+}
+
+#settings {
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.custom-form-input {
+    height: var(--form-height);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+
+    width: 100px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    text-align: center;
+}

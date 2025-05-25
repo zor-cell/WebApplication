@@ -28,8 +28,6 @@ export class Connect4Component {
 
     constructor(private globals: Globals, private connect4Service: Connect4Service) {
         this.refresh();
-
-        this.makeMove(3);
     }
 
     togglePlayer(): void {
