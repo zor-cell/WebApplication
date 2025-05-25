@@ -5,12 +5,14 @@ import {Connect4Service} from "../../services/connect4.service";
 import {MoveRequest, SolveRequest, UndoRequest} from "../../dto/connect4/requests";
 import {GameState} from "../../dto/connect4/data";
 import {Globals} from "../../classes/globals";
+import {PlayerSettingsComponent} from "./player-settings/player-settings.component";
 
 @Component({
     selector: 'app-connect4',
     imports: [
         CellComponent,
-        NgForOf
+        NgForOf,
+        PlayerSettingsComponent
     ],
     templateUrl: './connect4.component.html',
     standalone: true,
@@ -39,7 +41,7 @@ export class Connect4Component {
         this.gameOver = false;
         this.currentPlayer = 1;
         this.gameState = GameState.RUNNING;
-        this.moves = Array(0);
+        this.moves = new Array(0);
         this.isLoading = false;
     }
 
@@ -123,6 +125,4 @@ export class Connect4Component {
                 () => new Array(cols).fill(0)
             )
     }
-
-    protected readonly Array = Array;
 }
