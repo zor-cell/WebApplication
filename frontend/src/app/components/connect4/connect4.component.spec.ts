@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { Connect4Component } from './connect4.component';
+import {Connect4Component} from './connect4.component';
 
 describe('Connect4Component', () => {
-  let component: Connect4Component;
-  let fixture: ComponentFixture<Connect4Component>;
+    let component: Connect4Component;
+    let fixture: ComponentFixture<Connect4Component>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Connect4Component]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [Connect4Component]
+        })
+            .compileComponents();
 
-    fixture = TestBed.createComponent(Connect4Component);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(Connect4Component);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

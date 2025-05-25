@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {Connect4Component} from "./components/connect4/connect4.component";
 import {ProjectsComponent} from "./components/projects/projects.component";
 
