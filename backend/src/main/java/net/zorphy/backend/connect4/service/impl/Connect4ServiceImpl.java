@@ -10,6 +10,7 @@ import net.zorphy.backend.connect4.dto.request.UndoRequest;
 import net.zorphy.backend.connect4.dto.response.MoveResponse;
 import net.zorphy.backend.connect4.dto.response.SolveResponse;
 import net.zorphy.backend.connect4.enums.GameState;
+import net.zorphy.backend.connect4.exception.InvalidMoveException;
 import net.zorphy.backend.connect4.service.Connect4Service;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +44,7 @@ public class Connect4ServiceImpl implements Connect4Service {
 
         //check for invalid move
         if(move == null) {
-            //TODO bad request
-            return new MoveResponse(request.board(), GameState.RUNNING);
+            throw new InvalidMoveException();
         }
 
         //make valid move
@@ -62,8 +62,7 @@ public class Connect4ServiceImpl implements Connect4Service {
         SimpleBoard board = new SimpleBoard(request.board(), 1);
 
         //undo move
-        //TODO does not work
-        Position move = board.getMoveFromCol(request.move());
+        Position move = board.getLastInCol(request.move());
         board.unmakeMove(move);
 
         //compute current game state (is not really necessary but why not)

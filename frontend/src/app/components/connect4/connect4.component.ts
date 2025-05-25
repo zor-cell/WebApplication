@@ -24,21 +24,24 @@ export class Connect4Component {
   moves: number[] = Array(0);
   isLoading: boolean = false;
 
-  constructor(private globals: Globals, private connect4Service: Connect4Service) {}
+  constructor(private globals: Globals, private connect4Service: Connect4Service) {
+      this.makeMove(3);
+  }
 
-    togglePlayer() {
-      return this.currentPlayer === 1 ? -1 : 1;
+    togglePlayer(): void {
+      this.currentPlayer = this.currentPlayer === 1 ? -1 : 1;
     }
 
   makeMove(col: number) {
-      if(this.gameOver || this.isLoading) return;
+      if(this.gameOver) return;
 
       let moveRequest: MoveRequest = {
         board: this.board,
-        player: 1,
+        player: this.currentPlayer,
         move: col
       };
 
+      console.log(moveRequest)
       this.isLoading = true;
       this.connect4Service.move(moveRequest).subscribe({
           next: res => {
@@ -104,17 +107,6 @@ export class Connect4Component {
   }
 
   createBoard(rows: number, cols: number): number[][] {
-      return [
-          //0, 1, 2, 3, 4, 5, 6
-          [0, 0, 0, 0, 0, 0, 0],   //0
-          [0, 0, 0, 0, 0, 0, 0],   //1
-          [0, 0, 0, 0, 0, 0, 0],   //2
-          [0, 0, 0, 0, 0, 0, 0],   //3
-          [0, 0, 1, 0, 0, 0, 0],   //4
-          [0, 0, -1, -1, 0, 0, 0],   //5
-          //0, 1, 2, 3, 4, 5, 6
-      ];
-
     return new Array(rows)
         .fill(0)
         .map(

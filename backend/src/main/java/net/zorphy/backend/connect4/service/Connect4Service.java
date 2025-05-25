@@ -7,9 +7,9 @@ import net.zorphy.backend.connect4.dto.response.MoveResponse;
 import net.zorphy.backend.connect4.dto.response.SolveResponse;
 
 public interface Connect4Service {
-    public SolveResponse makeBestMove(SolveRequest bestMoveDto);
+    SolveResponse makeBestMove(SolveRequest bestMoveDto);
 
-    public MoveResponse makeMove(MoveRequest makeMoveDto);
+    MoveResponse makeMove(MoveRequest makeMoveDto);
 
-    public MoveResponse undoMove(UndoRequest undoMoveDto);
+    MoveResponse undoMove(UndoRequest undoMoveDto);
 }

@@ -239,6 +239,18 @@ public class SimpleBoard implements Board {
         return null;
     }
 
+    public Position getLastInCol(int col) {
+        int i = 0;
+        while(i < board.length && board[i][col] == 0) {
+            i++;
+        }
+        if(i < board.length) {
+            return new Position(i, col);
+        }
+
+        return null;
+    }
+
     public void unmakeMove(Position move) {
         board[move.i][move.j] = 0;
         moves--;

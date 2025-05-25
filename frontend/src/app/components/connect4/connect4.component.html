@@ -1,14 +1,26 @@
-<div id="board">
-    <div class="board-row" *ngFor="let row of board; let rowIndex = index">
-        <div *ngFor="let cell of row; let colIndex = index">
-            <connect4-cell
-                    [isLastMove]="false"
-                    [cellPosition]="{i: rowIndex, j: colIndex}"
-                    [cellValue]="cell"
-                    [currentPlayer]="1"
-                    (clickEvent)="makeMove($event)"
-            />
+<div id="board-container">
+    <div id="buttons" class="flex-container">
+        <div>
+            <button class="btn btn-primary" [disabled]="moves.length === 0" (click)="undoMove(moves[moves.length - 1])">
+                <i class="bi bi-arrow-left-circle"></i> Undo
+            </button>
+            <button class="btn btn-success">
+                <i class="bi bi-arrow-repeat"></i> New
+            </button>
+        </div>
+    </div>
+
+    <div id="board">
+        <div class="board-row" *ngFor="let row of board; let rowIndex = index">
+            <div *ngFor="let cellValue of row; let colIndex = index">
+                <connect4-cell
+                        [isLastMove]="false"
+                        [cellPosition]="{i: rowIndex, j: colIndex}"
+                        [cellValue]="cellValue"
+                        [currentPlayer]="currentPlayer"
+                        (clickEvent)="makeMove($event)"
+                />
+            </div>
         </div>
     </div>
 </div>
-
