@@ -16,5 +16,5 @@ jobs:
         docker build ./backend --file ./backend/Dockerfile --tag backend_server_image:latest
         docker stop backend_server_container || true
         docker rm backend_server_container || true
-        docker run -d --name backend_server_container -p 8080:8080 backend_server_image:latest
+        docker run -d -p 8080:8080 --name backend_server_container --restart unless-stopped backend_server_image:latest
       
