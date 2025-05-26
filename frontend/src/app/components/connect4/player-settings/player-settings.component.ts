@@ -1,13 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlayerConfig, Version} from "../../../dto/connect4/data";
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgIf} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'connect4-player-settings',
     imports: [
         SliderCheckboxComponent,
-        NgIf
+        NgIf,
+        FormsModule
     ],
     templateUrl: './player-settings.component.html',
     standalone: true,
@@ -15,6 +17,7 @@ import {NgIf} from "@angular/common";
 })
 export class PlayerSettingsComponent implements OnInit {
     @Input({required: true}) playerValue!: number;
+    @Input() canStart: boolean = false;
     @Input() isAi: boolean = false;
     @Input() maxTime: number = 3000;
     @Input() maxMemory: number = 64;
@@ -22,23 +25,37 @@ export class PlayerSettingsComponent implements OnInit {
     @Output() settingsEvent = new EventEmitter<PlayerConfig>();
     @Output() makeMoveEvent = new EventEmitter<PlayerConfig>();
 
+    //local variables to not modify inputs
+    localPlayerValue!: number;
+    localIsAi!: boolean;
+    localMaxTime!: number;
+    localMaxMemory!: number;
+    localVersion!: Version;
+
     get config(): PlayerConfig {
         return {
-            value: this.playerValue,
-            isAi: this.isAi,
-            maxTime: this.maxTime,
-            maxMemory: this.maxMemory,
-            version: this.version
+            value: this.localPlayerValue,
+            isAi: this.localIsAi,
+            maxTime: this.localMaxTime,
+            maxMemory: this.localMaxMemory,
+            version: this.localVersion
         };
     }
 
     ngOnInit() {
-        this.sendConfig();
+        this.localPlayerValue = this.playerValue;
+        this.localIsAi = this.isAi;
+        this.localMaxTime = this.maxTime;
+        this.localMaxMemory = this.maxMemory;
+        this.localVersion = this.version;
+
+        //call config update in zero delay timeout so it
+        //is called in the next js macrotask cycle
+        setTimeout(() => this.sendConfig());
     }
 
     updateIsAi(checked: boolean) {
-        this.isAi = checked;
-
+        this.localIsAi = checked;
         this.sendConfig();
     }
 
@@ -49,4 +66,6 @@ export class PlayerSettingsComponent implements OnInit {
     sendMakeMove() {
         this.makeMoveEvent.emit(this.config);
     }
+
+    protected readonly Version = Version;
 }

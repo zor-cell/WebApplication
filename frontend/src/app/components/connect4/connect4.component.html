@@ -2,12 +2,14 @@
     <div id="settings-container" class="flex-container">
         <connect4-player-settings
                 [playerValue]="1"
+                [canStart]="currentPlayer !== undefined && currentPlayer.value === 1 && !isLoading && !gameOver"
                 [isAi]="false"
                 (settingsEvent)="initPlayer1($event)"
                 (makeMoveEvent)="solve($event)"
                 />
         <connect4-player-settings
                 [playerValue]="-1"
+                [canStart]="currentPlayer !== undefined && currentPlayer.value === -1 && !isLoading && !gameOver"
                 [isAi]="true"
                 (settingsEvent)="initPlayer2($event)"
                 (makeMoveEvent)="solve($event)"
