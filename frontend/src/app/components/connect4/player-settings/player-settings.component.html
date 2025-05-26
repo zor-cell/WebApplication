@@ -36,7 +36,7 @@
     </div>
 
 
-    <button *ngIf="localIsAi && canStart" class="btn btn-primary mt-2" (click)="sendMakeMove()">
+    <button *ngIf="localIsAi" [disabled]="!canStart" class="btn btn-primary mt-2" (click)="sendMakeMove()">
         <i class="bi bi-play-circle"></i> Play
     </button>
 </div>

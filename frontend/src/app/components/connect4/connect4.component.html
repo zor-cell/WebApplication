@@ -2,14 +2,14 @@
     <div id="settings-container" class="flex-container">
         <connect4-player-settings
                 [playerValue]="1"
-                [canStart]="currentPlayer !== undefined && currentPlayer.value === 1 && !isLoading && !gameOver"
+                [canStart]="currentPlayer !== undefined && currentPlayer.value === 1 && !delayLoader.isLoading && !gameOver && (moves.length === 0 || isUndoing)"
                 [isAi]="false"
                 (settingsEvent)="initPlayer1($event)"
                 (makeMoveEvent)="solve($event)"
                 />
         <connect4-player-settings
                 [playerValue]="-1"
-                [canStart]="currentPlayer !== undefined && currentPlayer.value === -1 && !isLoading && !gameOver"
+                [canStart]="currentPlayer !== undefined && currentPlayer.value === -1 && !delayLoader.isLoading && !gameOver && (moves.length === 0 || isUndoing)"
                 [isAi]="true"
                 (settingsEvent)="initPlayer2($event)"
                 (makeMoveEvent)="solve($event)"
@@ -19,10 +19,10 @@
     <div id="board-container">
         <div id="buttons" class="flex-container">
             <div>
-                <button class="btn btn-primary" [disabled]="isLoading || moves.length === 0" (click)="undoMove(moves[moves.length - 1])">
+                <button class="btn btn-primary" [disabled]="delayLoader.isLoading || moves.length === 0" (click)="undoMove(moves[moves.length - 1])">
                     <i class="bi bi-arrow-left-circle"></i> Undo
                 </button>
-                <button class="btn btn-success" [disabled]="isLoading" (click)="refresh()">
+                <button class="btn btn-success" [disabled]="delayLoader.isLoading" (click)="refresh()">
                     <i class="bi bi-arrow-repeat"></i> New
                 </button>
             </div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div *ngIf="isLoading" class="board-overlay">
+            <div *ngIf="delayLoader.isLoading " class="board-overlay">
                 <img src="loading.gif" alt="Loading" width="30" height="30"/>
             </div>
             <div *ngIf="gameOver" class="board-overlay">

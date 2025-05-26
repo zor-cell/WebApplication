@@ -6,6 +6,7 @@ import {MoveRequest, SolveRequest, UndoRequest} from "../../dto/connect4/request
 import {GameState, PlayerConfig} from "../../dto/connect4/data";
 import {Globals} from "../../classes/globals";
 import {PlayerSettingsComponent} from "./player-settings/player-settings.component";
+import {DelayLoader} from "../../classes/delay-loader";
 
 @Component({
     selector: 'app-connect4',
@@ -24,8 +25,9 @@ export class Connect4Component  {
     moves!: number[];
     gameOver!: boolean;
     gameOverText!: string;
-    isLoading!: boolean;
     isUndoing!: boolean;
+
+    delayLoader: DelayLoader = new DelayLoader(10);
 
     score: number = 0;
     winDistance: number = -1;
@@ -96,7 +98,7 @@ export class Connect4Component  {
         this.currentPlayer = this.player1;
         this.gameState = GameState.RUNNING;
         this.moves = new Array(0);
-        this.isLoading = false;
+        this.delayLoader.isLoading = false;
         this.isUndoing = false;
     }
 
@@ -110,10 +112,10 @@ export class Connect4Component  {
         };
 
         this.isUndoing = false;
-        this.isLoading = true;
+        this.delayLoader.isLoading = true;
         this.connect4Service.move(moveRequest).subscribe({
             next: res => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
 
                 this.board = res.board;
                 this.gameState = res.gameState;
@@ -122,7 +124,7 @@ export class Connect4Component  {
                 this.togglePlayer();
                 },
             error: err => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
                 this.globals.handleError(err);
             }
         })
@@ -135,10 +137,10 @@ export class Connect4Component  {
         }
 
         this.isUndoing = true;
-        this.isLoading = true;
+        this.delayLoader.isLoadingWithoutDelay = true;
         this.connect4Service.undo(undoRequest).subscribe({
             next: res => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
 
                 this.board = res.board;
                 this.gameState = res.gameState;
@@ -147,7 +149,7 @@ export class Connect4Component  {
                 this.togglePlayer();
                 },
             error: err => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
                 this.globals.handleError(err);
             }
         })
@@ -165,10 +167,10 @@ export class Connect4Component  {
             version: player.version
         };
 
-        this.isLoading = true;
+        this.delayLoader.isLoading = true;
         this.connect4Service.solve(solveRequest).subscribe({
             next: res => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
 
                 this.board = res.board;
                 this.gameState = res.gameState;
@@ -179,7 +181,7 @@ export class Connect4Component  {
                 this.togglePlayer();
                 },
             error: err => {
-                this.isLoading = false;
+                this.delayLoader.isLoading = false;
                 this.globals.handleError(err);
             }
         })
