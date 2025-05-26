@@ -30,7 +30,7 @@
             <div class="board-row" *ngFor="let row of board; let rowIndex = index">
                 <div *ngFor="let cellValue of row; let colIndex = index">
                     <connect4-cell
-                            [isLastMove]="false"
+                            [isLastMove]="isLastMove(rowIndex, colIndex)"
                             [cellPosition]="{i: rowIndex, j: colIndex}"
                             [cellValue]="cellValue"
                             (clickEvent)="makeMove($event)"
@@ -38,9 +38,17 @@
                 </div>
             </div>
 
-            <div *ngIf="isLoading" id="board-loading">
+            <div *ngIf="isLoading" class="board-overlay">
                 <img src="loading.gif" alt="Loading" width="30" height="30"/>
             </div>
+            <div *ngIf="gameOver" class="board-overlay">
+                <span id="game-over-screen">Game Over! {{gameOverText}}</span>
+            </div>
         </div>
+    </div>
+
+    <div class="flex-container mt-3 mb-4">
+        <p *ngIf="winDistance < 0" class="m-0"><b>Score:</b> {{score}}</p>
+        <p *ngIf="winDistance >= 0" class="m-0">Player x wins in {{Math.ceil(winDistance / 2)}} moves!</p>
     </div>
 </div>

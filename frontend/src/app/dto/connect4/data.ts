@@ -12,15 +12,15 @@ export interface PlayerConfig {
 }
 
 export enum GameState {
-    RUNNING,
-    PLAYER1,
-    PLAYER2,
-    DRAW,
+    RUNNING = 'RUNNING',
+    PLAYER1 = 'PLAYER1',
+    PLAYER2 = 'PLAYER2',
+    DRAW = 'DRAW',
 }
 
 export enum Version {
-    V1_0,
-    V2_0,
-    V2_1,
-    PERFECT
+    V1_0 = 'V1_0',
+    V2_0 = 'V2_0',
+    V2_1 = 'V2_1',
+    PERFECT = 'PERFECT'
 }

@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {CellComponent} from "./cell/cell.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {Connect4Service} from "../../services/connect4.service";
@@ -21,14 +21,56 @@ import {PlayerSettingsComponent} from "./player-settings/player-settings.compone
 })
 export class Connect4Component  {
     board!: number[][];
-    gameOver!: boolean;
-    gameState!: GameState;
     moves!: number[];
-    isLoading!: boolean
+    gameOver!: boolean;
+    gameOverText!: string;
+    isLoading!: boolean;
+    isUndoing!: boolean;
+
+    score: number = 0;
+    winDistance: number = -1;
 
     player1!: PlayerConfig;
     player2!: PlayerConfig;
-    currentPlayer: PlayerConfig | undefined = undefined;
+
+    private _gameState: GameState = GameState.RUNNING;
+    private _currentPlayer: PlayerConfig | undefined = undefined;
+
+    get gameState(): GameState {
+        return this._gameState;
+    }
+
+    get currentPlayer(): PlayerConfig | undefined {
+        return this._currentPlayer;
+    }
+
+    set gameState(value: GameState) {
+        this._gameState = value;
+
+        //check game state for end
+        if(this._gameState === GameState.RUNNING) {
+            this.gameOver = false;
+        } else {
+            this.gameOver = true;
+            if(this._gameState === GameState.PLAYER1 || this._gameState === GameState.PLAYER2) {
+                const winner = this._gameState === GameState.PLAYER1 ? "1" : "2";
+                this.gameOverText = `Player ${winner} won!`;
+            } else {
+                this.gameOverText = `It's a draw!`;
+            }
+        }
+    }
+
+    set currentPlayer(value: PlayerConfig | undefined) {
+        this._currentPlayer = value;
+
+        //start next ai move
+        if(this.gameState !== GameState.RUNNING || this._currentPlayer === undefined) return;
+
+        if(this._currentPlayer.isAi && !this.isUndoing) {
+            this.solve(this._currentPlayer);
+        }
+    }
 
     constructor(private globals: Globals, private connect4Service: Connect4Service) {
         this.refresh();
@@ -47,19 +89,15 @@ export class Connect4Component  {
         this.player2 = config;
     }
 
-    togglePlayer(): void {
-        if(!this.currentPlayer) return;
-
-        this.currentPlayer = this.currentPlayer.value === this.player1.value ? this.player2 : this.player1;
-    }
-
     refresh(): void {
         this.board = this.createBoard(6, 7);
         this.gameOver = false;
+        this.gameOverText = '';
         this.currentPlayer = this.player1;
         this.gameState = GameState.RUNNING;
         this.moves = new Array(0);
         this.isLoading = false;
+        this.isUndoing = false;
     }
 
     makeMove(col: number) {
@@ -71,17 +109,18 @@ export class Connect4Component  {
             move: col
         };
 
+        this.isUndoing = false;
         this.isLoading = true;
         this.connect4Service.move(moveRequest).subscribe({
             next: res => {
+                this.isLoading = false;
+
                 this.board = res.board;
                 this.gameState = res.gameState;
 
                 this.moves.push(moveRequest.move);
                 this.togglePlayer();
-
-                this.isLoading = false;
-            },
+                },
             error: err => {
                 this.isLoading = false;
                 this.globals.handleError(err);
@@ -95,17 +134,18 @@ export class Connect4Component  {
             move: col
         }
 
+        this.isUndoing = true;
         this.isLoading = true;
         this.connect4Service.undo(undoRequest).subscribe({
             next: res => {
+                this.isLoading = false;
+
                 this.board = res.board;
                 this.gameState = res.gameState;
 
                 this.moves.pop();
                 this.togglePlayer();
-
-                this.isLoading = false;
-            },
+                },
             error: err => {
                 this.isLoading = false;
                 this.globals.handleError(err);
@@ -113,8 +153,8 @@ export class Connect4Component  {
         })
     }
 
-    solve(player: PlayerConfig) {
-        if(this.gameOver || !this.currentPlayer) return;
+    solve(player: PlayerConfig | undefined) {
+        if(this.gameOver || player === undefined) return;
 
         let solveRequest: SolveRequest = {
             board: this.board,
@@ -128,14 +168,16 @@ export class Connect4Component  {
         this.isLoading = true;
         this.connect4Service.solve(solveRequest).subscribe({
             next: res => {
+                this.isLoading = false;
+
                 this.board = res.board;
                 this.gameState = res.gameState;
+                this.score = res.score;
+                this.winDistance = res.winDistance;
 
                 this.moves.push(res.move);
                 this.togglePlayer();
-
-                this.isLoading = false;
-            },
+                },
             error: err => {
                 this.isLoading = false;
                 this.globals.handleError(err);
@@ -143,11 +185,34 @@ export class Connect4Component  {
         })
     }
 
-    createBoard(rows: number, cols: number): number[][] {
+    isLastMove(i: number, j: number): boolean {
+        if(this.moves.length === 0) return false;
+
+        const col = this.moves[this.moves.length - 1];
+        if(j != col) return false;
+
+        for(let k = 0;k < this.board.length;k++) {
+            if(this.board[k][col] !== 0) {
+                return i == k;
+            }
+        }
+
+        return false;
+    }
+
+    private createBoard(rows: number, cols: number): number[][] {
         return new Array(rows)
             .fill(0)
             .map(
                 () => new Array(cols).fill(0)
             )
     }
+
+    private togglePlayer(): void {
+        if(!this.currentPlayer) return;
+
+        this.currentPlayer = this.currentPlayer.value === this.player1.value ? this.player2 : this.player1;
+    }
+
+    protected readonly Math = Math;
 }

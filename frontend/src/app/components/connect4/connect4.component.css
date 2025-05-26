@@ -30,7 +30,7 @@ body {
     width: fit-content;
 }
 
-#board-loading {
+.board-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -41,6 +41,13 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 10;
+}
+
+#game-over-screen {
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .board-row {
