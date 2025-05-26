@@ -1,1 +1,8 @@
-
+<div id="settings" class="flex-container gap-2 m-2 p-2">
+    <app-slider-checkbox
+            [isChecked]="false"
+            [unCheckedText]="'HU'"
+            [checkedText]="'AI'"
+            (checkedEvent)="test($event)"
+    />
+</div>

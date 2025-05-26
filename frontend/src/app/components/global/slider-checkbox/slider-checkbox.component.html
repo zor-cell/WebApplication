@@ -1,0 +1,8 @@
+<div class="button">
+    <input type="checkbox"
+           class="checkbox"
+           [checked]="isChecked"
+           (change)="updateChecked($event)"
+    >
+    <div [style.--checkbox-label]='label' class="knobs"></div>
+</div>

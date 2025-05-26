@@ -1,0 +1,65 @@
+:host {
+    --checkbox-height: 30px;
+    --checkbox-width: calc(var(--checkbox-height) * 2);
+
+    /*Is set dynamically in component*/
+    --checkbox-label: '';
+}
+
+.button {
+    position: relative;
+    width: var(--checkbox-width);
+    height: var(--checkbox-height);
+    margin: auto;
+
+    background-color: white;
+    border: solid 1px rgba(0,0,0,0.25);
+    border-radius: 10px;
+}
+
+.button:hover {
+    border-color: rgba(0,0,0,0.5);
+}
+
+.checkbox {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.button .knobs:before {
+    content: var(--checkbox-label);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    border-radius: 7px;
+
+    height: calc(var(--checkbox-height) - 6px);
+    line-height: calc(var(--checkbox-height) - 6px);
+    width: calc(var(--checkbox-width) / 2.2);
+
+    background-color: rgba(13, 110, 253, 0.6);
+    color: white;
+
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+
+    transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+.button .checkbox:checked + .knobs:before {
+    content: var(--checkbox-label);
+    left: calc(var(--checkbox-width) / 2.2);
+    background-color: rgba(13, 110, 253, 0.8);
+}
+
+.button .knobs,
+.button .knobs:before {
+    transition: 0.3s ease all;
+}
