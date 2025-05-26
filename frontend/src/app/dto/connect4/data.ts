@@ -3,6 +3,13 @@ export interface Position {
     j: number
 }
 
+export interface PlayerSettings {
+    isAi: boolean,
+    maxTime: number,
+    maxMemory: number,
+    version: Version
+}
+
 export enum GameState {
     RUNNING,
     PLAYER1,

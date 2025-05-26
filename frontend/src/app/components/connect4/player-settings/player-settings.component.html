@@ -1,8 +1,11 @@
 <div id="settings" class="flex-container gap-2 m-2 p-2">
-    <app-slider-checkbox
-            [isChecked]="false"
-            [unCheckedText]="'HU'"
-            [checkedText]="'AI'"
-            (checkedEvent)="test($event)"
-    />
+    <div class="grid-container">
+        <p class="m-0">Player {{"Red"}}</p>
+        <app-slider-checkbox
+                [isChecked]="false"
+                [unCheckedText]="'HU'"
+                [checkedText]="'AI'"
+                (checkedEvent)="updateIsAi($event)"
+        />
+    </div>
 </div>
