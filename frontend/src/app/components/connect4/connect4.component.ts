@@ -1,6 +1,6 @@
 import {AfterViewChecked, AfterViewInit, Component} from '@angular/core';
 import {CellComponent} from "./cell/cell.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Connect4Service} from "../../services/connect4.service";
 import {MoveRequest, SolveRequest, UndoRequest} from "../../dto/connect4/requests";
 import {GameState, PlayerConfig} from "../../dto/connect4/data";
@@ -12,7 +12,8 @@ import {PlayerSettingsComponent} from "./player-settings/player-settings.compone
     imports: [
         CellComponent,
         NgForOf,
-        PlayerSettingsComponent
+        PlayerSettingsComponent,
+        NgIf
     ],
     templateUrl: './connect4.component.html',
     standalone: true,
