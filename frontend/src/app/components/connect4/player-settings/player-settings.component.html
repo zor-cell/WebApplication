@@ -8,4 +8,8 @@
                 (checkedEvent)="updateIsAi($event)"
         />
     </div>
+
+    <button *ngIf="isAi" class="btn btn-primary mt-2" (click)="sendMakeMove()">
+        <i class="bi bi-play-circle"></i> Play
+    </button>
 </div>

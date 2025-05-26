@@ -4,11 +4,13 @@
                 [playerValue]="1"
                 [isAi]="false"
                 (settingsEvent)="initPlayer1($event)"
+                (makeMoveEvent)="solve($event)"
                 />
         <connect4-player-settings
                 [playerValue]="-1"
                 [isAi]="true"
                 (settingsEvent)="initPlayer2($event)"
+                (makeMoveEvent)="solve($event)"
         />
     </div>
 

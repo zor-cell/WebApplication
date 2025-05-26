@@ -7,7 +7,7 @@ import net.zorphy.backend.connect4.dto.data.GameState;
 public record SolveResponse(
          int[][] board,
          GameState gameState,
-         Position position,
+         Integer move,
          int score,
          int winDistance
 

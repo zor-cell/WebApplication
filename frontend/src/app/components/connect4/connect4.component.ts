@@ -112,21 +112,27 @@ export class Connect4Component  {
         })
     }
 
-    solve() {
+    solve(player: PlayerConfig) {
         if(this.gameOver || !this.currentPlayer) return;
 
         let solveRequest: SolveRequest = {
             board: this.board,
-            player: 1,
-            maxTime: 1,
-            maxDepth: 1,
-            tableSize: 1,
-            version: 1
+            player: player.value,
+            maxTime: player.maxTime,
+            maxDepth: -1,
+            tableSize: player.maxMemory,
+            version: player.version
         };
 
         this.isLoading = true;
         this.connect4Service.solve(solveRequest).subscribe({
             next: res => {
+                this.board = res.board;
+                this.gameState = res.gameState;
+
+                this.moves.push(res.move);
+                this.togglePlayer();
+
                 this.isLoading = false;
             },
             error: err => {

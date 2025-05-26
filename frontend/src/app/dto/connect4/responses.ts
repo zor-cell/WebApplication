@@ -7,6 +7,7 @@ export interface MoveResponse {
 
 export interface SolveResponse {
     board: number[][],
+    move: number,
     gameState: GameState,
     score: number,
     winDistance: number

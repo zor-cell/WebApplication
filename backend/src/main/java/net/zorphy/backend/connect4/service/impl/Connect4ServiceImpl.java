@@ -32,7 +32,7 @@ public class Connect4ServiceImpl implements Connect4Service {
         //compute current game state
         GameState gameState = board.getGameState();
 
-        return new SolveResponse(board.getBoard(), gameState, position, bestMove.score, bestMove.move);
+        return new SolveResponse(board.getBoard(), gameState, position.j, bestMove.score, bestMove.move);
     }
 
     @Override

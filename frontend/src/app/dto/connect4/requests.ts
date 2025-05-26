@@ -1,3 +1,5 @@
+import {Version} from "./data";
+
 export interface MoveRequest {
     board: number[][],
     player: number,
@@ -15,5 +17,5 @@ export interface SolveRequest {
     maxTime: number,
     maxDepth: number,
     tableSize: number,
-    version: number
+    version: Version
 }
