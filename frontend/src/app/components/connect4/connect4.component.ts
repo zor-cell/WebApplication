@@ -112,11 +112,8 @@ export class Connect4Component  {
         };
 
         this.isUndoing = false;
-        this.delayLoader.isLoading = true;
         this.connect4Service.move(moveRequest).subscribe({
             next: res => {
-                this.delayLoader.isLoading = false;
-
                 this.board = res.board;
                 this.gameState = res.gameState;
 
@@ -124,7 +121,6 @@ export class Connect4Component  {
                 this.togglePlayer();
                 },
             error: err => {
-                this.delayLoader.isLoading = false;
                 this.globals.handleError(err);
             }
         })
@@ -137,11 +133,8 @@ export class Connect4Component  {
         }
 
         this.isUndoing = true;
-        this.delayLoader.isLoadingWithoutDelay = true;
         this.connect4Service.undo(undoRequest).subscribe({
             next: res => {
-                this.delayLoader.isLoading = false;
-
                 this.board = res.board;
                 this.gameState = res.gameState;
 
@@ -149,7 +142,6 @@ export class Connect4Component  {
                 this.togglePlayer();
                 },
             error: err => {
-                this.delayLoader.isLoading = false;
                 this.globals.handleError(err);
             }
         })
