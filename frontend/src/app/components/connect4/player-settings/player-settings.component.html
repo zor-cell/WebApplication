@@ -2,7 +2,7 @@
     <div class="grid-container">
         <p class="m-0">Player {{"Red"}}</p>
         <app-slider-checkbox
-                [isChecked]="false"
+                [isChecked]="isAi"
                 [unCheckedText]="'HU'"
                 [checkedText]="'AI'"
                 (checkedEvent)="updateIsAi($event)"

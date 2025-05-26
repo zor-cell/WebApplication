@@ -3,7 +3,8 @@ export interface Position {
     j: number
 }
 
-export interface PlayerSettings {
+export interface PlayerConfig {
+    value: number,
     isAi: boolean,
     maxTime: number,
     maxMemory: number,

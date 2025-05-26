@@ -1,8 +1,14 @@
 <div id="container" class="flex-container">
     <div id="settings-container" class="flex-container">
         <connect4-player-settings
-        />
+                [playerValue]="1"
+                [isAi]="false"
+                (settingsEvent)="initPlayer1($event)"
+                />
         <connect4-player-settings
+                [playerValue]="-1"
+                [isAi]="true"
+                (settingsEvent)="initPlayer2($event)"
         />
     </div>
 
@@ -25,7 +31,6 @@
                             [isLastMove]="false"
                             [cellPosition]="{i: rowIndex, j: colIndex}"
                             [cellValue]="cellValue"
-                            [currentPlayer]="currentPlayer"
                             (clickEvent)="makeMove($event)"
                     />
                 </div>

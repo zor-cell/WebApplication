@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component} from '@angular/core';
 import {CellComponent} from "./cell/cell.component";
 import {NgForOf} from "@angular/common";
 import {Connect4Service} from "../../services/connect4.service";
 import {MoveRequest, SolveRequest, UndoRequest} from "../../dto/connect4/requests";
-import {GameState} from "../../dto/connect4/data";
+import {GameState, PlayerConfig} from "../../dto/connect4/data";
 import {Globals} from "../../classes/globals";
 import {PlayerSettingsComponent} from "./player-settings/player-settings.component";
 
@@ -18,37 +18,55 @@ import {PlayerSettingsComponent} from "./player-settings/player-settings.compone
     standalone: true,
     styleUrl: './connect4.component.css'
 })
-export class Connect4Component {
+export class Connect4Component  {
     board!: number[][];
     gameOver!: boolean;
-    currentPlayer!: number;
     gameState!: GameState;
     moves!: number[];
     isLoading!: boolean
+
+    player1!: PlayerConfig;
+    player2!: PlayerConfig;
+    currentPlayer: PlayerConfig | undefined = undefined;
 
     constructor(private globals: Globals, private connect4Service: Connect4Service) {
         this.refresh();
     }
 
+    initPlayer1(config: PlayerConfig) {
+        this.player1 = config;
+
+        //first init
+        if(this.currentPlayer === undefined) {
+            this.currentPlayer = this.player1;
+        }
+    }
+
+    initPlayer2(config: PlayerConfig) {
+        this.player2 = config;
+    }
+
     togglePlayer(): void {
-        this.currentPlayer = this.currentPlayer === 1 ? -1 : 1;
+        if(!this.currentPlayer) return;
+
+        this.currentPlayer = this.currentPlayer.value === this.player1.value ? this.player2 : this.player1;
     }
 
     refresh(): void {
         this.board = this.createBoard(6, 7);
         this.gameOver = false;
-        this.currentPlayer = 1;
+        this.currentPlayer = this.player1;
         this.gameState = GameState.RUNNING;
         this.moves = new Array(0);
         this.isLoading = false;
     }
 
     makeMove(col: number) {
-        if (this.gameOver) return;
+        if (this.gameOver || !this.currentPlayer) return;
 
         let moveRequest: MoveRequest = {
             board: this.board,
-            player: this.currentPlayer,
+            player: this.currentPlayer.value,
             move: col
         };
 
@@ -95,6 +113,8 @@ export class Connect4Component {
     }
 
     solve() {
+        if(this.gameOver || !this.currentPlayer) return;
+
         let solveRequest: SolveRequest = {
             board: this.board,
             player: 1,

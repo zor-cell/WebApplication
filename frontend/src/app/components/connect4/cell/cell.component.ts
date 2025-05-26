@@ -12,10 +12,9 @@ import {Position} from "../../../dto/connect4/data";
     styleUrl: './cell.component.css'
 })
 export class CellComponent {
-    @Input() isLastMove: boolean = false;
-    @Input() cellPosition: Position = {i: -1, j: -1};
+    @Input({required: true}) cellPosition!: Position;
     @Input() cellValue: number = 0;
-    @Input() currentPlayer: number = 0;
+    @Input() isLastMove: boolean = false;
     @Output() clickEvent = new EventEmitter<number>();
 
     cellColor() {
