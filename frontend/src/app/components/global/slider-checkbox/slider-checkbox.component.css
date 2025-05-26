@@ -1,12 +1,14 @@
 :host {
     --checkbox-height: 30px;
     --checkbox-width: calc(var(--checkbox-height) * 2);
+    --knob-bg-color: 13, 110, 253;
+    --knob-text-color: white;
 
     /*Is set dynamically in component*/
     --checkbox-label: '';
 }
 
-.button {
+.slider-checkbox {
     position: relative;
     width: var(--checkbox-width);
     height: var(--checkbox-height);
@@ -17,7 +19,7 @@
     border-radius: 10px;
 }
 
-.button:hover {
+.slider-checkbox:hover {
     border-color: rgba(0,0,0,0.5);
 }
 
@@ -32,8 +34,9 @@
     z-index: 3;
 }
 
-.button .knobs:before {
+.slider-checkbox .knobs:before {
     content: var(--checkbox-label);
+
     position: absolute;
     top: 2px;
     left: 2px;
@@ -43,8 +46,8 @@
     line-height: calc(var(--checkbox-height) - 6px);
     width: calc(var(--checkbox-width) / 2.2);
 
-    background-color: rgba(13, 110, 253, 0.6);
-    color: white;
+    background-color: rgba(var(--knob-bg-color), 0.6);
+    color: var(--knob-text-color);
 
     font-size: 13px;
     font-weight: bold;
@@ -53,13 +56,12 @@
     transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
 }
 
-.button .checkbox:checked + .knobs:before {
-    content: var(--checkbox-label);
+.slider-checkbox .checkbox:checked + .knobs:before {
     left: calc(var(--checkbox-width) / 2.2);
-    background-color: rgba(13, 110, 253, 0.8);
+    background-color: rgba(var(--knob-bg-color), 0.8);
 }
 
-.button .knobs,
-.button .knobs:before {
+.slider-checkbox .knobs,
+.slider-checkbox .knobs:before {
     transition: 0.3s ease all;
 }

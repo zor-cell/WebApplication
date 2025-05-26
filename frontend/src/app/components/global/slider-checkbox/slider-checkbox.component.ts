@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-slider-checkbox',
@@ -13,7 +13,7 @@ export class SliderCheckboxComponent {
   @Input() checkedText: string = 'T';
   @Output() checkedEvent = new EventEmitter<boolean>
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor() {}
 
   get label() {
     const label = this.isChecked ? this.checkedText : this.unCheckedText;
