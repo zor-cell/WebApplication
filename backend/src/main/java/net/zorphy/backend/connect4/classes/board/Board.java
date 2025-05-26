@@ -1,8 +1,8 @@
 package net.zorphy.backend.connect4.classes.board;
 
 import net.zorphy.backend.connect4.dto.request.SolveRequest;
-import net.zorphy.backend.connect4.enums.GameState;
-import net.zorphy.backend.connect4.enums.Version;
+import net.zorphy.backend.connect4.dto.data.GameState;
+import net.zorphy.backend.connect4.dto.data.Version;
 
 public interface Board {
     /**

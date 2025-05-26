@@ -2,7 +2,7 @@ package net.zorphy.backend.connect4.classes.board;
 
 import net.zorphy.backend.connect4.classes.Position;
 import net.zorphy.backend.connect4.classes.Scores;
-import net.zorphy.backend.connect4.enums.GameState;
+import net.zorphy.backend.connect4.dto.data.GameState;
 
 public class SimpleBoard implements Board {
     public final int rows;
