@@ -1,4 +1,4 @@
-package net.zorphy.backend.connect4.service.impl;
+package net.zorphy.backend.connect4.service;
 
 import net.zorphy.backend.connect4.classes.BestMove;
 import net.zorphy.backend.connect4.classes.Position;
