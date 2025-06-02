@@ -11,6 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Create .env file from secret
+      run: |
+        echo "${{secrets.ENV_FILE}}" > .env
+
     - name: Build and run Docker containers with compose
       run: |
         docker compose down

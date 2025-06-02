@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  datasource:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:8022/${POSTGRES_DB}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
