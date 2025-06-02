@@ -2,6 +2,7 @@ package net.zorphy.backend.main.controller;
 
 import net.zorphy.backend.main.dto.response.ProjectDetails;
 import net.zorphy.backend.main.dto.response.ProjectMetadata;
+import net.zorphy.backend.main.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +21,20 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final ProjectService projectService;
     private final Parser parser;
     private final HtmlRenderer renderer;
 
-    public ProjectController() {
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
         parser = Parser.builder().build();
         renderer = HtmlRenderer.builder().build();
     }
 
     @GetMapping()
     public List<ProjectMetadata> getProjects() {
+        LOGGER.info("GET /projects");
+
         return null;
     }
 
