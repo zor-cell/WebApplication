@@ -5,6 +5,12 @@ The exposed entry points for my application are the following:
 * frontend - [zorphy.net](https://zorphy.net)
 * backend - [server.zorphy.net](https://zorphy.net)
 
+## Dependencies
+To run the application locally, the following dependencies need to be installed:
+* Java + Maven
+* Node + npm
+
+
 ## Backend
 The backend server is a Java **Spring Boot** server. 
 
@@ -16,7 +22,7 @@ mvn spring:boot run
 ## Frontend
 The frontend server is an **Angular** application.
 
-To run the server locally execute the following commands in the directory `fronted/`:
+To run the server locally execute the following commands in the directory `frontend/`:
 ```
 npm install
 ng serve
