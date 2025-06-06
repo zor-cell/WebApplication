@@ -39,9 +39,4 @@ public class ProjectController {
 
         return projectService.getProject(name);
     }
-
-    @GetMapping("/{name}/md")
-    public ProjectDetails getProjectMarkdown(@PathVariable String name) {
-        return new ProjectDetails(null, null);
-    }
 }

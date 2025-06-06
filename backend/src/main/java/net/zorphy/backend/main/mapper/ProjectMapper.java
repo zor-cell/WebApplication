@@ -21,10 +21,9 @@ public abstract class ProjectMapper {
         return fileContentReader.readHtmlFromMarkdown(filePath);
     }
 
-    @Named("metadata")
     public abstract ProjectMetadata projectToProjectMetadata(Project project);
 
-    @Named("details")
+    @Mapping(source = "project", target = "metadata")
     @Mapping(source = "filePath", target = "content", qualifiedByName = "contentFromPath")
     public abstract ProjectDetails projectToProjectDetails(Project project, @Context FileContentReader fileContentReader);
 }

@@ -14,8 +14,20 @@ export class ProjectsComponent {
     constructor(private globals: Globals, private projectService: ProjectService) {}
 
     htmlString: string = "";
-    html() {
-        this.projectService.html("connect4").subscribe({
+
+    getProjects() {
+        this.projectService.getProjects().subscribe({
+            next: res => {
+
+            },
+            error: err => {
+                this.globals.handleError(err);
+            }
+        })
+    }
+
+    getProject() {
+        this.projectService.getProject("connect4").subscribe({
             next: res => {
                 this.htmlString = res.content;
             },

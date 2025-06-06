@@ -16,7 +16,11 @@ export class ProjectService {
     this.baseUri = this.globals.backendUri + '/projects';
   }
 
-  html(name: string): Observable<ProjectDetails> {
+  getProjects(): Observable<ProjectMetadata[]> {
+    return this.httpClient.get<ProjectMetadata[]>(this.baseUri);
+  }
+
+  getProject(name: string): Observable<ProjectDetails> {
     return this.httpClient.get<ProjectDetails>(`${this.baseUri}/${name}`);
   }
 
