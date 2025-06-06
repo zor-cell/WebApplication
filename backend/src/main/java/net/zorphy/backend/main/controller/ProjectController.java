@@ -22,13 +22,8 @@ import java.util.List;
 public class ProjectController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ProjectService projectService;
-    private final Parser parser;
-    private final HtmlRenderer renderer;
-
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
-        parser = Parser.builder().build();
-        renderer = HtmlRenderer.builder().build();
     }
 
     @GetMapping()
@@ -42,12 +37,7 @@ public class ProjectController {
     public ProjectDetails getProject(@PathVariable String name) {
         LOGGER.info("GET /projects/" + name);
 
-        Node document = parser.parse("This is **Markdown**");
-        String htmlContent = renderer.render(document);
-
-        ProjectMetadata metadata = new ProjectMetadata("test", LocalDate.now(), null, false, false);
-
-        return new ProjectDetails(metadata, htmlContent);
+        return projectService.getProject(name);
     }
 
     @GetMapping("/{name}/md")

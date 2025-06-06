@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ProjectRepository extends Repository<Project, UUID> {
     List<Project> findAll();
+
+    Project findByName(String name);
 }
