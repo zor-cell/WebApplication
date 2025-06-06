@@ -5,7 +5,8 @@ import java.time.LocalDate;
 public record ProjectMetadata(
         String name,
         LocalDate createdAt,
-        String websiteUrl,
-        String githubUrl
+        String githubUrl,
+        Boolean hasWebsite,
+        Boolean isFavorite
 ) {
 }

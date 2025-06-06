@@ -35,7 +35,7 @@ public class ProjectController {
     public List<ProjectMetadata> getProjects() {
         LOGGER.info("GET /projects");
 
-        return null;
+        return projectService.getProjects();
     }
 
     @GetMapping( "/{name}")
@@ -45,7 +45,7 @@ public class ProjectController {
         Node document = parser.parse("This is **Markdown**");
         String htmlContent = renderer.render(document);
 
-        ProjectMetadata metadata = new ProjectMetadata("test", LocalDate.now(), null, null);
+        ProjectMetadata metadata = new ProjectMetadata("test", LocalDate.now(), null, false, false);
 
         return new ProjectDetails(metadata, htmlContent);
     }
