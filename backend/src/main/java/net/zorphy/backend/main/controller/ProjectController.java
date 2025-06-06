@@ -1,5 +1,6 @@
 package net.zorphy.backend.main.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.zorphy.backend.main.dto.response.ProjectDetails;
 import net.zorphy.backend.main.dto.response.ProjectMetadata;
 import net.zorphy.backend.main.service.ProjectService;
@@ -26,17 +27,21 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    private String getBaseUrlFromRequest(HttpServletRequest request) {
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+    }
+
     @GetMapping()
-    public List<ProjectMetadata> getProjects() {
+    public List<ProjectMetadata> getProjects(HttpServletRequest request) {
         LOGGER.info("GET /projects");
 
-        return projectService.getProjects();
+        return projectService.getProjects(getBaseUrlFromRequest(request));
     }
 
     @GetMapping( "/{name}")
-    public ProjectDetails getProject(@PathVariable String name) {
+    public ProjectDetails getProject(@PathVariable String name, HttpServletRequest request) {
         LOGGER.info("GET /projects/" + name);
 
-        return projectService.getProject(name);
+        return projectService.getProject(name, getBaseUrlFromRequest(request));
     }
 }

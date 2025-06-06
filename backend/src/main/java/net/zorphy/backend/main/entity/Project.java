@@ -17,9 +17,18 @@ public class Project {
     private String name;
     private LocalDate createdAt;
     private String filePath;
+    private String imagePath;
     private String githubUrl;
     private Boolean hasWebsite;
     private Boolean isFavorite;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public UUID getId() {
         return id;

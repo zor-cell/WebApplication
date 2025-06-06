@@ -1,5 +1,6 @@
 package net.zorphy.backend.main.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.zorphy.backend.main.component.FileContentReader;
 import net.zorphy.backend.main.dto.response.ProjectDetails;
 import net.zorphy.backend.main.dto.response.ProjectMetadata;
@@ -26,20 +27,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectMetadata> getProjects() {
+    public List<ProjectMetadata> getProjects(String baseUrl) {
         return projectRepository.findAll()
                 .stream()
-                .map(projectMapper::projectToProjectMetadata)
+                .map(project -> projectMapper.projectToProjectMetadata(project, baseUrl))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProjectDetails getProject(String name) {
+    public ProjectDetails getProject(String name, String baseUrl) {
         Project project = projectRepository.findByName(name);
         if(project == null) {
             throw new NotFoundException(String.format("Project with name %s not found", name));
         }
 
-        return projectMapper.projectToProjectDetails(project, fileContentReader);
+        return projectMapper.projectToProjectDetails(project, baseUrl, fileContentReader);
     }
 }
