@@ -15,7 +15,6 @@ import java.io.File;
 
 @Mapper(componentModel = "spring", uses = FileContentReader.class)
 public abstract class ProjectMapper {
-
     @Named("imageFromPath")
     public String imageFromPath(String imagePath, @Context String baseUrl) {
         if (imagePath == null) return null;
@@ -29,13 +28,20 @@ public abstract class ProjectMapper {
         }
     }
 
+    @Named("descriptionFromPath")
+    public String descriptionFromPath(String filePath, @Context FileContentReader fileContentReader) {
+        final int LIMIT = 25;
+        return fileContentReader.readTextFromMarkdown(filePath, LIMIT);
+    }
+
     @Named("contentFromPath")
     public String contentFromPath(String filePath, @Context FileContentReader fileContentReader) {
         return fileContentReader.readHtmlFromMarkdown(filePath);
     }
 
     @Mapping(source = "imagePath", target = "imagePath", qualifiedByName = "imageFromPath")
-    public abstract ProjectMetadata projectToProjectMetadata(Project project, @Context String baseUrl);
+    @Mapping(source = "filePath", target = "description", qualifiedByName = "descriptionFromPath")
+    public abstract ProjectMetadata projectToProjectMetadata(Project project, @Context String baseUrl, @Context FileContentReader fileContentReader);
 
     @Mapping(source = "project", target = "metadata")
     @Mapping(source = "filePath", target = "content", qualifiedByName = "contentFromPath")

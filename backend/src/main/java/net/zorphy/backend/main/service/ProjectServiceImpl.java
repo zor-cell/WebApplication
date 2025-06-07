@@ -30,7 +30,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectMetadata> getProjects(String baseUrl) {
         return projectRepository.findAll()
                 .stream()
-                .map(project -> projectMapper.projectToProjectMetadata(project, baseUrl))
+                .map(project -> projectMapper.projectToProjectMetadata(project, baseUrl, fileContentReader))
                 .collect(Collectors.toList());
     }
 

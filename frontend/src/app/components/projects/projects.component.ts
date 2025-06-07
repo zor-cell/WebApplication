@@ -3,10 +3,12 @@ import {RouterLink} from "@angular/router";
 import {ProjectService} from "../../services/project.service";
 import {Globals} from "../../classes/globals";
 import {ProjectMetadata} from "../../dto/projects/responses";
+import {NgForOf} from "@angular/common";
+import {ProjectCardComponent} from "./project-card/project-card.component";
 
 @Component({
     selector: 'app-projects',
-    imports: [RouterLink],
+    imports: [RouterLink, NgForOf, ProjectCardComponent],
     templateUrl: './projects.component.html',
     standalone: true,
     styleUrl: './projects.component.css'
@@ -31,17 +33,4 @@ export class ProjectsComponent implements OnInit {
             }
         });
     }
-
-    getProject() {
-        this.projectService.getProject("catan-dice").subscribe({
-            next: res => {
-
-            },
-            error: err => {
-                this.globals.handleError(err);
-            }
-        });
-    }
-
-
 }
