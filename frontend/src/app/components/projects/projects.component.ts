@@ -8,7 +8,7 @@ import {ProjectCardComponent} from "./project-card/project-card.component";
 
 @Component({
     selector: 'app-projects',
-    imports: [RouterLink, NgForOf, ProjectCardComponent],
+    imports: [NgForOf, ProjectCardComponent],
     templateUrl: './projects.component.html',
     standalone: true,
     styleUrl: './projects.component.css'

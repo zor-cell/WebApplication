@@ -1,14 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProjectDetails} from "../../../dto/projects/responses";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
-import {NgIf} from "@angular/common";
+import {NgIf, Location} from "@angular/common";
+import {ProjectHeaderComponent} from "../project-header/project-header.component";
 
 @Component({
   selector: 'app-project-info',
   imports: [
-    NgIf
+    NgIf,
+    RouterLink,
+    ProjectHeaderComponent
   ],
   templateUrl: './project-info.component.html',
   standalone: true,
@@ -16,9 +19,9 @@ import {NgIf} from "@angular/common";
 })
 export class ProjectInfoComponent implements OnInit {
   projectName: string | null = null;
-  projectDetails: ProjectDetails | null = null;
+  project: ProjectDetails | null = null;
 
-  constructor(private globals: Globals, private projectService: ProjectService, private route: ActivatedRoute) {}
+  constructor(private globals: Globals, private projectService: ProjectService, private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -33,7 +36,7 @@ export class ProjectInfoComponent implements OnInit {
 
     this.projectService.getProject(this.projectName).subscribe({
       next: res => {
-        this.projectDetails = res;
+        this.project = res;
       },
       error: err => {
         this.globals.handleError(err);
