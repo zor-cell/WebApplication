@@ -4,7 +4,9 @@ import java.util.List;
 
 public record GameState(
         GameConfig gameConfig,
-        List<DicePair> diceRolls
+        List<DicePair> classicCards,
+        List<Character> eventCards,
+        List<DiceRoll> diceRolls
 ) {
 
 }

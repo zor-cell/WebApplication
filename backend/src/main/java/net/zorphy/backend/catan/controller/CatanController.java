@@ -3,32 +3,70 @@ package net.zorphy.backend.catan.controller;
 import jakarta.servlet.http.HttpSession;
 import net.zorphy.backend.catan.dto.data.GameConfig;
 import net.zorphy.backend.catan.dto.data.GameState;
-import net.zorphy.backend.connect4.dto.request.SolveRequest;
-import net.zorphy.backend.connect4.dto.response.SolveResponse;
+import net.zorphy.backend.catan.service.CatanService;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/catan")
 public class CatanController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @PostMapping("solve")
-    public SolveResponse solve(@RequestBody SolveRequest solveRequest) {
-        LOGGER.info("POST /connect4/solve");
+    private final CatanService catanService;
+
+    public CatanController(CatanService catanService) {
+        this.catanService = catanService;
+    }
+
+    @PostMapping("start")
+    public GameState start(@RequestBody GameConfig gameConfig, HttpSession session) {
+        LOGGER.info("POST /catan/start");
+
+        if(sessionExists(session)) {
+            throw new InvalidSessionException("A game state for this session already exists");
+        }
+
+        GameState gameState = catanService.getGameStateFromConfig(gameConfig);
+        session.setAttribute("gameState", gameState);
+
+        return gameState;
+    }
+
+    @PostMapping("dice-roll")
+    public GameState makeDiceRoll(HttpSession session) {
+        LOGGER.info("POST /catan/dice-roll");
+
+        GameState gameState = catanService.rollDice(getGameState(session));
+        session.setAttribute("gameState", gameState);
+
+        return gameState;
+    }
+
+    @GetMapping("dice-rolls")
+    public GameState getDiceRolls(HttpSession session) {
+        LOGGER.info("POST /catan/dice-rolls");
+
+        return getGameState(session);
+    }
+
+    @PostMapping("alchemist")
+    public GameState alchemist(HttpSession session) {
+        LOGGER.info("POST /catan/alchemist");
 
         return null;
     }
 
-    private GameState getSessionState(HttpSession session) {
+
+    private boolean sessionExists(HttpSession session) {
+        GameState gameState = (GameState) session.getAttribute("gameState");
+        return gameState != null;
+    }
+
+    private GameState getGameState(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute("gameState");
         if(gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
@@ -36,14 +74,4 @@ public class CatanController {
 
         return gameState;
     }
-
-    private GameState createSessionState(HttpSession session, GameConfig gameConfig) {
-        GameState gameState = (GameState) session.getAttribute("gameState");
-        if(gameState == null) {
-            gameState = new GameState(gameConfig, new ArrayList<>());
-        }
-
-        return gameState;
-    }
-
 }

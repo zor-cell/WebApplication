@@ -4,8 +4,6 @@ import java.util.List;
 
 public record DiceConfig(
         boolean isBalanced,
-        int shuffleThreshold,
-        List<DicePair> cards,
-        List<DicePair> cardsLeft
+        int shuffleThreshold
 ) {
 }
