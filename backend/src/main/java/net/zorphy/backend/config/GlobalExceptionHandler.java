@@ -1,6 +1,7 @@
 package net.zorphy.backend.config;
 
 import net.zorphy.backend.connect4.exception.InvalidOperationException;
+import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.main.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<Object> handleNotFoundException(RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {InvalidSessionException.class})
+    protected ResponseEntity<Object> handleInvalidSessionException(RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 }
