@@ -6,13 +6,13 @@ import net.zorphy.backend.catan.dto.data.GameConfig;
 import net.zorphy.backend.catan.dto.data.GameState;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CatanServiceImpl implements CatanService {
+    private final List<Character> possibleEvents = new ArrayList<>(Arrays.asList('e', 'e', 'e', 'y', 'b', 'g'));
+    private final Random rand = new Random();
+
     private List<DicePair> initClassicCards() {
         List<DicePair> classicCards = new ArrayList<>();
 
@@ -28,10 +28,9 @@ public class CatanServiceImpl implements CatanService {
     }
 
     private List<Character> initEventCards() {
-        List<Character> eventCards = new ArrayList<>(Arrays.asList('e', 'e', 'e', 'y', 'b', 'g'));
-        Collections.shuffle(eventCards);
+        Collections.shuffle(possibleEvents);
 
-        return eventCards;
+        return possibleEvents;
     }
 
     @Override
@@ -53,19 +52,34 @@ public class CatanServiceImpl implements CatanService {
 
     @Override
     public GameState rollDice(GameState oldState) {
-        List<DicePair> classicCards = new ArrayList<>(oldState.classicCards());
-        List<Character> eventCards = new ArrayList<>(oldState.eventCards());
+        List<DicePair> classicCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.classicCards());
+        List<Character> eventCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.eventCards());
         List<DiceRoll> diceRolls = new ArrayList<>(oldState.diceRolls());
 
-        if(classicCards.isEmpty()) {
-            classicCards = initClassicCards();
+        //classic
+        DicePair dicePair;
+        if(classicCards == null) {
+            int dice1 = rand.nextInt(6) + 1;
+            int dice2 = rand.nextInt(6) + 1;
+            dicePair = new DicePair(dice1, dice2);
+        } else {
+            if (classicCards.isEmpty()) {
+                classicCards = initClassicCards();
+            }
+            dicePair = classicCards.removeLast();
         }
-        DicePair dicePair = classicCards.removeLast();
 
-        if(eventCards.isEmpty()) {
-            eventCards = initEventCards();
+        //event
+        Character eventDice;
+        if(eventCards == null) {
+            int eventIndex = rand.nextInt(possibleEvents.size());
+            eventDice = possibleEvents.get(eventIndex);
+        } else {
+            if(eventCards.isEmpty()) {
+                eventCards = initEventCards();
+            }
+            eventDice = eventCards.removeLast();
         }
-        Character eventDice = eventCards.removeLast();
 
         DiceRoll diceRoll = new DiceRoll(dicePair, eventDice);
         diceRolls.add(diceRoll);

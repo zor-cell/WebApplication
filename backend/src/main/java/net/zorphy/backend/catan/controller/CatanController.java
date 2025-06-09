@@ -1,6 +1,7 @@
 package net.zorphy.backend.catan.controller;
 
 import jakarta.servlet.http.HttpSession;
+import net.zorphy.backend.catan.dto.data.DiceRoll;
 import net.zorphy.backend.catan.dto.data.GameConfig;
 import net.zorphy.backend.catan.dto.data.GameState;
 import net.zorphy.backend.catan.service.CatanService;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @RestController
 @RequestMapping("/catan")
@@ -47,10 +49,10 @@ public class CatanController {
     }
 
     @GetMapping("dice-rolls")
-    public GameState getDiceRolls(HttpSession session) {
+    public List<DiceRoll> getDiceRolls(HttpSession session) {
         LOGGER.info("POST /catan/dice-rolls");
 
-        return getGameState(session);
+        return getGameState(session).diceRolls();
     }
 
     @PostMapping("alchemist")
