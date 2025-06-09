@@ -17,11 +17,19 @@ import java.util.List;
 @RequestMapping("/catan")
 public class CatanController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
     private final CatanService catanService;
+    private static final String sessionKey = "catan_gameState";
 
     public CatanController(CatanService catanService) {
         this.catanService = catanService;
+    }
+
+    @PostMapping("clear")
+    public void clear(HttpSession session) {
+        //check for valid session
+        getGameState(session);
+
+        session.removeAttribute(sessionKey);
     }
 
     @PostMapping("start")
@@ -33,7 +41,7 @@ public class CatanController {
         }
 
         GameState gameState = catanService.getGameStateFromConfig(gameConfig);
-        session.setAttribute("gameState", gameState);
+        session.setAttribute(sessionKey, gameState);
 
         return gameState;
     }
@@ -44,7 +52,7 @@ public class CatanController {
         LOGGER.info("POST /catan/dice-roll");
 
         GameState gameState = catanService.rollDice(getGameState(session), alchemist);
-        session.setAttribute("gameState", gameState);
+        session.setAttribute(sessionKey, gameState);
 
         return gameState;
     }
@@ -58,12 +66,12 @@ public class CatanController {
 
 
     private boolean sessionExists(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute("gameState");
+        GameState gameState = (GameState) session.getAttribute(sessionKey);
         return gameState != null;
     }
 
     private GameState getGameState(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute("gameState");
+        GameState gameState = (GameState) session.getAttribute(sessionKey);
         if(gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
         }

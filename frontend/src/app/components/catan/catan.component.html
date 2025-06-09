@@ -1,1 +1,3 @@
-<catan-game-settings/>
+<catan-game-settings *ngIf="!gameStarted" (gameStateEvent)="gameState = $event;gameStarted = true"/>
+
+
