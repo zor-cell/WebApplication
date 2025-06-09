@@ -22,11 +22,15 @@ public class GameController {
 
     @GetMapping()
     public List<GameDetails> getGames() {
+        LOGGER.info("GET /games");
+
         return gameService.getGames();
     }
 
     @PostMapping("/save")
     public GameDetails saveGame(@RequestBody GameDetails gameDetails) {
+        LOGGER.info("GET /games/save");
+
         return gameService.saveGame(gameDetails);
     }
 }
