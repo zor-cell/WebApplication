@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import net.zorphy.backend.main.enums.GameType;
 import org.hibernate.annotations.Type;
 
+import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +15,8 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    private LocalDate playedAt;
 
     @Enumerated(EnumType.STRING)
     private GameType gameType;
@@ -25,5 +29,70 @@ public class Game {
     private Player winner;
 
     @ManyToMany
+    @JoinTable(
+            name = "game_player",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
     private Set<Player> players;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public LocalDate getPlayedAt() {
+        return playedAt;
+    }
+
+    public void setPlayedAt(LocalDate playedAt) {
+        this.playedAt = playedAt;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public Object getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(Object gameState) {
+        this.gameState = gameState;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game game)) return false;
+        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(winner, game.winner) && Objects.equals(players, game.players);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, playedAt, gameType, gameState, winner, players);
+    }
 }
