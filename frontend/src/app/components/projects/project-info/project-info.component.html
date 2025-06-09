@@ -1,5 +1,5 @@
-<div *ngIf="project" class="info-container">
-    <app-project-header [project]="project.metadata"></app-project-header>
+<app-project-header *ngIf="project" [project]="project.metadata" [showWebsite]="true"></app-project-header>
 
-    <div class="project-content" [innerHTML]="project.content"></div>
+<div *ngIf="project" class="main-container">
+    <div [innerHTML]="project.content"></div>
 </div>

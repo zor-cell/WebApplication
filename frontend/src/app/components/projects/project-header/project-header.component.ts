@@ -17,6 +17,7 @@ import {ProjectMetadata} from "../../../dto/projects/responses";
 })
 export class ProjectHeaderComponent {
   @Input({required: true}) project!: ProjectMetadata;
+  @Input() showWebsite: boolean = false;
 
   constructor(private location: Location) {}
 

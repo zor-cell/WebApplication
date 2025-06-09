@@ -55,7 +55,7 @@ public class CatanServiceImpl implements CatanService {
         int currentPlayerTurn = oldState.currentPlayerTurn();
         int currentShipTurn = oldState.currentShipTurn();
         List<DicePair> classicCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.classicCards());
-        List<Character> eventCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.eventCards());
+        List<Character> eventCards = oldState.eventCards() == null ? null : new ArrayList<>(oldState.eventCards());
         List<DiceRoll> diceRolls = new ArrayList<>(oldState.diceRolls());
 
         //classic dice roll
@@ -70,7 +70,7 @@ public class CatanServiceImpl implements CatanService {
                 int dice2 = rand.nextInt(6) + 1;
                 dicePair = new DicePair(dice1, dice2);
             } else {
-                if (classicCards.isEmpty()) {
+                if (classicCards.size() <= oldState.gameConfig().classicDice().shuffleThreshold()) {
                     classicCards = initClassicCards();
                 }
                 dicePair = classicCards.removeLast();
@@ -79,14 +79,22 @@ public class CatanServiceImpl implements CatanService {
 
         //event dice roll
         Character eventDice;
-        if (eventCards == null || isAlchemist) {
+        if (eventCards == null) {
             int eventIndex = rand.nextInt(possibleEvents.size());
             eventDice = possibleEvents.get(eventIndex);
         } else {
-            if (eventCards.isEmpty()) {
+            if (eventCards.size() <= oldState.gameConfig().eventDice().shuffleThreshold()) {
                 eventCards = initEventCards();
             }
             eventDice = eventCards.removeLast();
+        }
+
+        //update player
+        currentPlayerTurn = (currentPlayerTurn + 1) % oldState.gameConfig().players().size();
+
+        //reset ship to start if charge happened last round
+        if(currentShipTurn == oldState.gameConfig().maxShipTurns() - 1) {
+            currentShipTurn = 0;
         }
 
         //update ship

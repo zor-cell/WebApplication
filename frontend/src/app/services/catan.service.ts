@@ -32,7 +32,7 @@ export class CatanService {
         });
   }
 
-  makeDiceRoll(isAlchemist: boolean): Observable<GameState> {
+  rollDice(isAlchemist: boolean): Observable<GameState> {
     return this.httpClient.post<GameState>(this.baseUri + '/dice-roll',{},
         {
           withCredentials: true,
