@@ -6,8 +6,7 @@ public record GameConfig(
         List<String> players,
         DiceConfig classicDice,
         DiceConfig eventDice,
-        int maxShipTurns,
-        int currentShipTurn
+        int maxShipTurns
 ) {
 
 }

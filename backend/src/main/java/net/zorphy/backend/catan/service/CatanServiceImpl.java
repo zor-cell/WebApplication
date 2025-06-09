@@ -47,38 +47,51 @@ public class CatanServiceImpl implements CatanService {
             eventCards = initEventCards();
         }
 
-        return new GameState(gameConfig, classicCards, eventCards, new ArrayList<>());
+        return new GameState(gameConfig, 0, 0, classicCards, eventCards, new ArrayList<>());
     }
 
     @Override
-    public GameState rollDice(GameState oldState) {
+    public GameState rollDice(GameState oldState, boolean isAlchemist) {
+        int currentPlayerTurn = oldState.currentPlayerTurn();
+        int currentShipTurn = oldState.currentShipTurn();
         List<DicePair> classicCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.classicCards());
         List<Character> eventCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.eventCards());
         List<DiceRoll> diceRolls = new ArrayList<>(oldState.diceRolls());
 
-        //classic
+        //classic dice roll
         DicePair dicePair;
-        if(classicCards == null) {
-            int dice1 = rand.nextInt(6) + 1;
-            int dice2 = rand.nextInt(6) + 1;
-            dicePair = new DicePair(dice1, dice2);
+        if(isAlchemist) {
+            //alchemist roll
+            dicePair = new DicePair(0, 0);
         } else {
-            if (classicCards.isEmpty()) {
-                classicCards = initClassicCards();
+            //normal roll
+            if (classicCards == null) {
+                int dice1 = rand.nextInt(6) + 1;
+                int dice2 = rand.nextInt(6) + 1;
+                dicePair = new DicePair(dice1, dice2);
+            } else {
+                if (classicCards.isEmpty()) {
+                    classicCards = initClassicCards();
+                }
+                dicePair = classicCards.removeLast();
             }
-            dicePair = classicCards.removeLast();
         }
 
-        //event
+        //event dice roll
         Character eventDice;
-        if(eventCards == null) {
+        if (eventCards == null || isAlchemist) {
             int eventIndex = rand.nextInt(possibleEvents.size());
             eventDice = possibleEvents.get(eventIndex);
         } else {
-            if(eventCards.isEmpty()) {
+            if (eventCards.isEmpty()) {
                 eventCards = initEventCards();
             }
             eventDice = eventCards.removeLast();
+        }
+
+        //update ship
+        if(eventDice.equals('e')) {
+            currentShipTurn = (currentShipTurn + 1) % oldState.gameConfig().maxShipTurns();
         }
 
         DiceRoll diceRoll = new DiceRoll(dicePair, eventDice);
@@ -86,6 +99,8 @@ public class CatanServiceImpl implements CatanService {
 
         return new GameState(
                 oldState.gameConfig(),
+                currentPlayerTurn,
+                currentShipTurn,
                 classicCards,
                 eventCards,
                 diceRolls

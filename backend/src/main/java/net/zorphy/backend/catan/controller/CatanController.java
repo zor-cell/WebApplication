@@ -25,7 +25,7 @@ public class CatanController {
     }
 
     @PostMapping("start")
-    public GameState start(@RequestBody GameConfig gameConfig, HttpSession session) {
+    public GameState start(HttpSession session, @RequestBody GameConfig gameConfig) {
         LOGGER.info("POST /catan/start");
 
         if(sessionExists(session)) {
@@ -39,10 +39,11 @@ public class CatanController {
     }
 
     @PostMapping("dice-roll")
-    public GameState makeDiceRoll(HttpSession session) {
+    public GameState makeDiceRoll(HttpSession session,
+                                  @RequestParam(name = "alchemist", required = false, defaultValue = "false") boolean alchemist) {
         LOGGER.info("POST /catan/dice-roll");
 
-        GameState gameState = catanService.rollDice(getGameState(session));
+        GameState gameState = catanService.rollDice(getGameState(session), alchemist);
         session.setAttribute("gameState", gameState);
 
         return gameState;
@@ -53,13 +54,6 @@ public class CatanController {
         LOGGER.info("POST /catan/dice-rolls");
 
         return getGameState(session).diceRolls();
-    }
-
-    @PostMapping("alchemist")
-    public GameState alchemist(HttpSession session) {
-        LOGGER.info("POST /catan/alchemist");
-
-        return null;
     }
 
 
