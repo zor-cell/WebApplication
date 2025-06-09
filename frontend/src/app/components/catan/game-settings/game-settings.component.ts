@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {DiceConfig} from "../../../dto/catan/data";
 import {FormsModule} from "@angular/forms";
+import {GameConfig} from "../../../dto/catan/GameConfig";
+import {CatanService} from "../../../services/catan.service";
+import {Globals} from "../../../classes/globals";
+import {GameState} from "../../../dto/catan/GameState";
 
 @Component({
   selector: 'catan-game-settings',
@@ -18,36 +21,49 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './game-settings.component.css'
 })
 export class GameSettingsComponent {
-  classicDice: DiceConfig = {
-    isBalanced: true,
-    cards: [],
-    shuffleThreshold: 5,
-    cardsLeft: []
-  };
-  eventDice: DiceConfig = {
-    isBalanced: false,
-    cards: [],
-    shuffleThreshold: 5,
-    cardsLeft: []
+  gameConfig: GameConfig = {
+    players: [],
+    classicDice: {
+      isBalanced: true,
+      shuffleThreshold: 5
+    },
+    eventDice: {
+      isBalanced: false,
+      shuffleThreshold: 5
+    },
+    maxShipTurns: 7
   };
   playerName: string = "";
-  players: string[] = [];
+  gameState: GameState | null = null;
+
+  constructor(private globals: Globals, private catanService: CatanService) {}
 
   isValidPlayerName(name: string) {
-    return name != "" && this.players.length < 4 && !this.players.includes(name);
+    return name != "" && this.gameConfig.players.length < 4 && !this.gameConfig.players.includes(name);
   }
 
   addPlayer(player: string) {
     if(!this.isValidPlayerName(player)) return;
 
-    this.players.push(player);
+    this.gameConfig.players.push(player);
     this.playerName = "";
   }
 
   removePlayer(player: string) {
-    const index = this.players.indexOf(player);
+    const index = this.gameConfig.players.indexOf(player);
     if(index < 0) return;
 
-    this.players.splice(index, 1);
+    this.gameConfig.players.splice(index, 1);
+  }
+
+  startGame() {
+    this.catanService.start(this.gameConfig).subscribe({
+      next: res => {
+        this.gameState = res;
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    })
   }
 }

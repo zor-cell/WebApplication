@@ -1,7 +1,7 @@
 import {DiceConfig} from "./DiceConfig";
 
 export interface GameConfig {
-    player: string[],
+    players: string[],
     classicDice: DiceConfig,
     eventDice: DiceConfig,
     maxShipTurns: number
