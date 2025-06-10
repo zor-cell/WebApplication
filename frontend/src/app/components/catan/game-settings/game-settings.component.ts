@@ -7,6 +7,7 @@ import {CatanService} from "../../../services/catan.service";
 import {Globals} from "../../../classes/globals";
 import {GameState} from "../../../dto/catan/GameState";
 import {PlayerConfig} from "../../../dto/connect4/data";
+import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
 
 @Component({
   selector: 'catan-game-settings',
@@ -15,7 +16,8 @@ import {PlayerConfig} from "../../../dto/connect4/data";
     NgOptimizedImage,
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    PlayerSelectComponent
   ],
   templateUrl: './game-settings.component.html',
   standalone: true,

@@ -2,7 +2,7 @@
     <button class="btn-back" (click)="routeBack()">
         <i class="bi bi-arrow-left-circle"></i>
     </button>
-    <div class="project-header-icons">
+    <div *ngIf="project" class="project-header-icons">
         <a *ngIf="project.githubUrl" class="btn btn-secondary" [href]="project.githubUrl" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-github"></i>
         </a>

@@ -1,0 +1,60 @@
+<div class="flex-container gap-1">
+    <select (change)="changePlayer($event)">
+        <option *ngFor="let player of players" [value]="player.name">
+            {{player.name}}
+        </option>
+    </select>
+    <button class="btn btn-outline-secondary" (click)="addPlayer()">Add</button>
+</div>
+
+<div class="list-container">
+    <div cdkDropList
+         [cdkDropListData]="selectedPlayers"
+         [cdkDropListSortPredicate]="sortPredicate"
+         [cdkDropListSortingDisabled]="true"
+         (cdkDropListDropped)="drop($event)"
+         (cdkDropListSorted)="sorted($event)"
+         class="drag-container"
+    >
+        <div *ngFor="let player of selectedPlayers;let i = index" class="drag-element">
+            <div cdkDrag
+                 (cdkDragStarted)="dragEnter(i)"
+                 (cdkDragDropped)="dragExit()"
+                 class="drag-player">
+                <span class="player-number">{{i + 1}}.</span> {{player.name}}
+                <div *cdkDragPreview class="drag-player">{{ player.name }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="drag-container">
+        <ng-container *ngFor="let _ of Array(selectedPlayers.length);let i = index">
+            <i *ngIf="playerIndex >= 0 && playerIndex !== i" class="bi bi-people-fill drag-element merge-icon"
+               (mouseenter)="iconEnter(i)"
+               (mouseleave)="iconLeave()"
+            ></i>
+            <i *ngIf="playerIndex >= 0 && playerIndex === i" class="bi drag-element"></i>
+        </ng-container>
+    </div>
+
+    <!--<div cdkDropList
+         #iconList="cdkDropList"
+         [cdkDropListData]="[]"
+         [cdkDropListEnterPredicate]="noReturnPredicate"
+         (cdkDropListDropped)="dropIcon($event)"
+    >
+        <div cdkDrag
+             [cdkDragDisabled]="true"
+
+             *ngFor="let _ of Array(selectedPlayers.length);let i = index"
+             class="drag-container"
+        >
+            <i class="bi bi-people-fill merge-icon "></i>
+        </div>
+    </div>-->
+
+    <!--<ol>
+        <li *ngFor="let player of selectedPlayers">
+            {{player.name}}
+        </li>
+    </ol>-->
+</div>
