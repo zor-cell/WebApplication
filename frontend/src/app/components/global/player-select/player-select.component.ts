@@ -22,6 +22,7 @@ import {
   transferArrayItem
 } from "@angular/cdk/drag-drop";
 import {Subscription, timer} from "rxjs";
+import {Team} from "../../../dto/global/Team";
 
 @Component({
   selector: 'app-player-select',
@@ -44,14 +45,15 @@ export class PlayerSelectComponent implements OnInit {
   @Input() maxPlayers: number = 4;
   @Input() allowTeams: boolean = true;
 
-  @Output() selectedPlayersEvent = new EventEmitter<PlayerDetails[]>();
+  @Output() selectedTeamEvent = new EventEmitter<Team[]>();
 
   allPlayers: PlayerDetails[] = []
   availablePlayers: PlayerDetails[] = [];
-  selectedPlayers: PlayerDetails[] = [];
+  selectedTeams: Team[] = [];
 
   currentPlayer: PlayerDetails | null = null;
   team: PlayerDetails[] = [];
+
 
   teamHostIndex: number = -1;
 
@@ -66,10 +68,6 @@ export class PlayerSelectComponent implements OnInit {
         if(this.availablePlayers.length > 0) {
           this.currentPlayer = this.copy(this.availablePlayers[0]);
         }
-
-        console.log(this.currentPlayer)
-        console.log(this.allPlayers)
-        console.log(this.availablePlayers)
       },
       error: err => {
         this.globals.handleError(err);
@@ -77,23 +75,40 @@ export class PlayerSelectComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<PlayerDetails[]>) {
-    moveItemInArray(this.selectedPlayers, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<Team[]>) {
+    moveItemInArray(this.selectedTeams, event.previousIndex, event.currentIndex);
 
-    this.selectedPlayersEvent.emit(this.selectedPlayers);
+    this.selectedTeamEvent.emit(this.selectedTeams);
   }
 
-  playerClicked(playerIndex: number) {
+  mergeTeam(teamIndex: number) {
     if(this.teamHostIndex >= 0) {
+      const hostTeam= this.selectedTeams[this.teamHostIndex]
+      const memberTeam = this.copy(this.selectedTeams[teamIndex]);
 
+      //merge team
+      hostTeam.name = this.generateTeamName([...hostTeam.players, ...memberTeam.players]);
+      hostTeam.players.push(...memberTeam.players);
+
+      this.selectedTeams.splice(teamIndex, 1);
+
+      this.teamHostIndex = -1;
     }
   }
 
-  teamClicked(playerIndex: number) {
-    if(this.teamHostIndex === playerIndex) {
+  private generateTeamName(players: PlayerDetails[]): string {
+    if (players.length === 0) return '';
+    if (players.length === 1) return players[0].name;
+
+    return players.map(player => player.name.slice(0, 2))
+        .join('');
+  }
+
+  makeHost(teamIndex: number) {
+    if(this.teamHostIndex === teamIndex) {
       this.teamHostIndex = -1;
     } else {
-      this.teamHostIndex = playerIndex;
+      this.teamHostIndex = teamIndex;
     }
   }
 
@@ -105,20 +120,21 @@ export class PlayerSelectComponent implements OnInit {
     if(found) {
       this.currentPlayer = this.copy(found);
     }
-
-    console.log(this.currentPlayer)
   }
 
   addPlayer() {
-    if(this.selectedPlayers.length >= this.maxPlayers && this.currentPlayer != null) {
+    if(this.selectedTeams.length >= this.maxPlayers || this.currentPlayer === null) {
       return;
     }
 
     const playerToAdd = this.copy(this.currentPlayer);
 
-    //add to selected players
-    this.selectedPlayers.push(playerToAdd);
-    this.selectedPlayersEvent.emit(this.selectedPlayers);
+    //add to selected teams
+    this.selectedTeams.push({
+      name: playerToAdd.name,
+      players: [playerToAdd]
+    });
+    this.selectedTeamEvent.emit(this.selectedTeams);
 
     //remove from available list
     const index = this.availablePlayers.findIndex(p => p.name === playerToAdd.name);
@@ -134,17 +150,19 @@ export class PlayerSelectComponent implements OnInit {
     }
   }
 
-  removePlayer(playerIndex: number) {
+  removePlayer(teamIndex: number) {
     //add back to available
-    const player = this.selectedPlayers[playerIndex];
-    this.availablePlayers.push(player);
+    const team = this.selectedTeams[teamIndex];
+    this.availablePlayers.push(...team.players);
 
     //remove from selected
-    this.selectedPlayers.splice(playerIndex, 1);
-    this.selectedPlayersEvent.emit(this.selectedPlayers);
+    this.selectedTeams.splice(teamIndex, 1);
+    this.selectedTeamEvent.emit(this.selectedTeams);
+
+    this.currentPlayer = this.availablePlayers[0];
   }
 
-  private copy(obj: any) {
+  private copy<T>(obj: T): T {
     return {...obj};
   }
 }

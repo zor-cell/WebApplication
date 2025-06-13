@@ -1,3 +1,8 @@
+:host {
+    --player-line-height: 1.75rem;
+    --player-element-width: 110px;
+}
+
 .list-container {
     display: flex;
     flex-direction: row;
@@ -22,7 +27,7 @@
     align-items: center;
     gap: 0.5rem;
 
-    height: 1.75rem;
+    height: var(--player-line-height);
 }
 
 .drag-player {
@@ -39,8 +44,8 @@
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
     cursor: move;
 
-    width: 110px;
-    height: 1.75rem;
+    width: var(--player-element-width);
+    height: var(--player-line-height);
 }
 
 .drag-player.highlighted {
@@ -58,7 +63,6 @@
     white-space: nowrap;
 
     text-align: left;
-
 }
 
 /* the cdk class is added to the currently dragged element*/
