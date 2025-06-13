@@ -1,21 +1,7 @@
 <section class="main-container">
     <div class="flex-container">
         <h3>Players</h3>
-        <div>
-            <p id="input-container">
-                <input [(ngModel)]="playerName" type="text" placeholder="Name" class="input">
-                <button (click)="addPlayer(playerName)" [disabled]="!isValidPlayerName(playerName)" class="btn">Add</button>
-            </p>
-        </div>
-        <ol>
-            <div *ngFor="let player of gameConfig.players">
-                <p id="list-container">
-                    <li>{{ player }}</li>
-                    <img (click)="removePlayer(player)" id="remove-button" src="assets/catan/remove.svg">
-                </p>
-            </div>
-        </ol>
-        <app-player-select></app-player-select>
+        <app-player-select (selectedPlayersEvent)="gameConfig.players"></app-player-select>
     </div>
 
     <div class="flex-container">
@@ -26,8 +12,9 @@
                 <img ngSrc="assets/catan/3_red.svg" height="20" width="20" alt="">
             </div>
             <app-slider-checkbox [isChecked]="gameConfig.classicDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.classicDice.isBalanced = $event"></app-slider-checkbox>
+
             <img id="event-dice" ngSrc="assets/catan/b.svg" height="25" width="25" alt="">
-            <app-slider-checkbox [isChecked]="gameConfig.eventDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.classicDice.isBalanced = $event"></app-slider-checkbox>
+            <app-slider-checkbox [isChecked]="gameConfig.eventDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.eventDice.isBalanced = $event"></app-slider-checkbox>
         </div>
     </div>
 
@@ -40,9 +27,7 @@
                <button class="btn2">Reshuffle</button>
             </div>
         </div>
-        <div *ngIf="!gameConfig.classicDice.isBalanced">
-            <p class="bold">True Random</p>
-        </div>
+        <p *ngIf="!gameConfig.classicDice.isBalanced" class="bold">True Random</p>
 
         <div *ngIf="gameConfig.eventDice.isBalanced" class="mode-description">
             <div class="settings-balance">
@@ -51,9 +36,7 @@
                 <button class="btn2">Reshuffle</button>
             </div>
         </div>
-        <div *ngIf="!gameConfig.eventDice.isBalanced">
-            <p class="bold">True Random</p>
-        </div>
+        <p *ngIf="!gameConfig.eventDice.isBalanced" class="bold">True Random</p>
     </div>
 </section>
 <button class="btn start-button" (click)="startGame()" [disabled]="gameConfig.players.length < 2">Start</button>

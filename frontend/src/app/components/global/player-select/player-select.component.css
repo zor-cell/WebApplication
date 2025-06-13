@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .drag-container {
@@ -10,7 +11,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+
+    gap: 0.1rem;
 }
 
 .drag-element {
@@ -20,19 +22,43 @@
     align-items: center;
     gap: 0.5rem;
 
-    height: 40px;
+    height: 1.75rem;
 }
 
 .drag-player {
-    display: block;
-    padding: 0.25rem;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 0.2rem;
+    align-items: center;
+
+    overflow: clip;
+
+    border-radius: 10px;
     background: white;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
     cursor: move;
-    width: 120px;
 
-    margin: 0 4px;
+    width: 110px;
+    height: 1.75rem;
+}
+
+.drag-player.highlighted {
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 8px rgba(10,110,250, 0.5); /* Elevation */
+}
+
+.player-number {
+}
+
+.player-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    text-align: left;
+
 }
 
 /* the cdk class is added to the currently dragged element*/
@@ -44,10 +70,37 @@
     color: #0d6efd;
 }
 
-.merge-icon:hover {
-    color: black;
+.remove-icon {
+    color: #dc3545;
 }
 
-ol[cdkDropList] {
-    padding: 0;
+.merge-icon:hover, .remove-icon:hover {
+    opacity: 0.8;
+}
+
+select {
+    border: solid 2px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding-left: 10px;
+    font-size: 13px;
+    height: 30px;
+    width: 100%;
+    margin-right: 7px;
+}
+
+.small-btn {
+    border: solid 2px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: white;
+    color: rgba(0,0,0,0.3);
+    font-weight: bold;
+    font-size: 13px;
+    margin-left: auto;
+    height: 30px;
+}
+.small-btn:hover {
+    border-color: rgba(0,0,0,0.5);
+    color: rgba(0,0,0,0.5);
+    cursor: pointer;
 }

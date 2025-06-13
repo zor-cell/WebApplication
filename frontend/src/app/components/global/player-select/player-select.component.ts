@@ -1,8 +1,17 @@
-import {ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/global/PlayerDetails";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {
   CdkDrag,
@@ -23,7 +32,8 @@ import {Subscription, timer} from "rxjs";
     CdkDrag,
     CdkDropList,
     CdkDragPreview,
-    CdkDropListGroup
+    CdkDropListGroup,
+    NgClass
   ],
   templateUrl: './player-select.component.html',
   standalone: true,
@@ -34,23 +44,32 @@ export class PlayerSelectComponent implements OnInit {
   @Input() maxPlayers: number = 4;
   @Input() allowTeams: boolean = true;
 
-  players: PlayerDetails[] = [];
-  selectedPlayers: PlayerDetails[] = [{name: "avory"}, {name: "günther"}, {name: "test"}];
-  selectedPlayer: PlayerDetails = {
-    name: ''
-  };
+  @Output() selectedPlayersEvent = new EventEmitter<PlayerDetails[]>();
+
+  allPlayers: PlayerDetails[] = []
+  availablePlayers: PlayerDetails[] = [];
+  selectedPlayers: PlayerDetails[] = [];
+
+  currentPlayer: PlayerDetails | null = null;
   team: PlayerDetails[] = [];
 
-  playerIndex: number = -1;
-  iconIndex: number = -1;
+  teamHostIndex: number = -1;
 
-  constructor(private globals: Globals, private playerService: PlayerService, private cdr: ChangeDetectorRef) {}
+  constructor(private globals: Globals, private playerService: PlayerService) {}
 
   ngOnInit() {
     this.playerService.getPlayers().subscribe({
       next: res => {
-        this.players = res;
-        if(this.players.length > 0) this.selectedPlayer.name = this.players[0].name;
+        this.allPlayers = res;
+        this.availablePlayers = this.allPlayers.map(player => this.copy(player));
+
+        if(this.availablePlayers.length > 0) {
+          this.currentPlayer = this.copy(this.availablePlayers[0]);
+        }
+
+        console.log(this.currentPlayer)
+        console.log(this.allPlayers)
+        console.log(this.availablePlayers)
       },
       error: err => {
         this.globals.handleError(err);
@@ -59,58 +78,73 @@ export class PlayerSelectComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<PlayerDetails[]>) {
-    if(this.iconIndex >= 0) {
-      console.log("dropped on icon" + this.iconIndex)
-    }
-
     moveItemInArray(this.selectedPlayers, event.previousIndex, event.currentIndex);
+
+    this.selectedPlayersEvent.emit(this.selectedPlayers);
   }
 
-  sortPredicate(index: number, drag: CdkDrag, drop: CdkDropList) {
-    console.log(index, drag, drop)
+  playerClicked(playerIndex: number) {
+    if(this.teamHostIndex >= 0) {
 
-    return true;
+    }
   }
 
-  sorted(event: CdkDragSortEvent<PlayerDetails[]>) {
-    this.playerIndex = event.currentIndex;
-    console.log(this.playerIndex)
-
-    this.cdr.detectChanges();
-  }
-
-  iconEnter(iconIndex: number) {
-    this.iconIndex = iconIndex;
-  }
-
-  iconLeave() {
-    this.iconIndex = -1;
-  }
-
-  dragEnter(playerIndex: number) {
-    this.playerIndex = playerIndex;
-    console.log(this.playerIndex)
-  }
-
-  dragExit() {
-    this.playerIndex = -1;
+  teamClicked(playerIndex: number) {
+    if(this.teamHostIndex === playerIndex) {
+      this.teamHostIndex = -1;
+    } else {
+      this.teamHostIndex = playerIndex;
+    }
   }
 
   changePlayer(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    this.selectedPlayer.name = selectElement.options[selectElement.selectedIndex].text;
+    const selectedName = selectElement.options[selectElement.selectedIndex].text;
+
+    const found = this.availablePlayers.find(p => p.name === selectedName);
+    if(found) {
+      this.currentPlayer = this.copy(found);
+    }
+
+    console.log(this.currentPlayer)
   }
 
   addPlayer() {
-    const player: PlayerDetails = {
-      name: this.selectedPlayer.name
+    if(this.selectedPlayers.length >= this.maxPlayers && this.currentPlayer != null) {
+      return;
     }
-    this.selectedPlayers.push(player);
 
-    //const index = this.players.findIndex(p => p.name === this.selectedPlayer.name);
-    //this.players.splice(index, 1);
+    const playerToAdd = this.copy(this.currentPlayer);
+
+    //add to selected players
+    this.selectedPlayers.push(playerToAdd);
+    this.selectedPlayersEvent.emit(this.selectedPlayers);
+
+    //remove from available list
+    const index = this.availablePlayers.findIndex(p => p.name === playerToAdd.name);
+    if(index >= 0) {
+      this.availablePlayers.splice(index, 1);
+    }
+
+    //update current player to next in list
+    if(this.availablePlayers.length > 0) {
+      this.currentPlayer = this.copy(this.availablePlayers[0]);
+    } else {
+      this.currentPlayer = null;
+    }
   }
 
-  protected readonly CdkDrag = CdkDrag;
-  protected readonly Array = Array;
+  removePlayer(playerIndex: number) {
+    //add back to available
+    const player = this.selectedPlayers[playerIndex];
+    this.availablePlayers.push(player);
+
+    //remove from selected
+    this.selectedPlayers.splice(playerIndex, 1);
+    this.selectedPlayersEvent.emit(this.selectedPlayers);
+  }
+
+  private copy(obj: any) {
+    return {...obj};
+  }
 }

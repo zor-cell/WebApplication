@@ -1,60 +1,56 @@
-<div class="flex-container gap-1">
+<div *ngIf="currentPlayer" class="flex-container flex-row gap-1 m-2">
     <select (change)="changePlayer($event)">
-        <option *ngFor="let player of players" [value]="player.name">
+        <option *ngFor="let player of availablePlayers" [value]="player.name">
             {{player.name}}
         </option>
     </select>
-    <button class="btn btn-outline-secondary" (click)="addPlayer()">Add</button>
+    <button class="small-btn" (click)="addPlayer()">Add</button>
+</div>
+<div *ngIf="currentPlayer === null" class="flex-container flex-row gap-1 m-2">
+    <select disabled>
+        <option>EMPTY</option>
+    </select>
+    <button disabled class="small-btn" (click)="addPlayer()">Add</button>
 </div>
 
+
+<div *ngIf="selectedPlayers.length === 0">
+    <p>EMPTY</p>
+</div>
 <div class="list-container">
     <div cdkDropList
          [cdkDropListData]="selectedPlayers"
-         [cdkDropListSortPredicate]="sortPredicate"
-         [cdkDropListSortingDisabled]="true"
          (cdkDropListDropped)="drop($event)"
-         (cdkDropListSorted)="sorted($event)"
+         [cdkDropListDisabled]="teamHostIndex >= 0"
          class="drag-container"
     >
         <div *ngFor="let player of selectedPlayers;let i = index" class="drag-element">
-            <div cdkDrag
-                 (cdkDragStarted)="dragEnter(i)"
-                 (cdkDragDropped)="dragExit()"
-                 class="drag-player">
-                <span class="player-number">{{i + 1}}.</span> {{player.name}}
-                <div *cdkDragPreview class="drag-player">{{ player.name }}</div>
-            </div>
+            <button cdkDrag
+                    (click)="playerClicked(i)"
+                    [disabled]="teamHostIndex === i"
+                    [ngClass]="{'highlighted' : teamHostIndex >= 0 && i !== teamHostIndex}"
+                    class="drag-player">
+                <span class="player-number">{{i + 1}}. </span>
+                <span class="player-name">{{player.name}}</span>
+
+                <!-- dragging preview -->
+                <div *cdkDragPreview class="drag-player">
+                    <span class="player-number">{{i + 1}}. </span>
+                    <span class="player-name">{{ player.name }}</span>
+                </div>
+            </button>
         </div>
     </div>
     <div class="drag-container">
-        <ng-container *ngFor="let _ of Array(selectedPlayers.length);let i = index">
-            <i *ngIf="playerIndex >= 0 && playerIndex !== i" class="bi bi-people-fill drag-element merge-icon"
-               (mouseenter)="iconEnter(i)"
-               (mouseleave)="iconLeave()"
-            ></i>
-            <i *ngIf="playerIndex >= 0 && playerIndex === i" class="bi drag-element"></i>
+        <ng-container *ngFor="let _ of [].constructor(selectedPlayers.length);let i = index">
+            <div class="flex-container flex-row gap-2">
+                <div class="drag-element" (click)="teamClicked(i)">
+                    <i class="bi merge-icon" [ngClass]="teamHostIndex === i ? 'bi-people-fill' : 'bi-people'" ></i>
+                </div>
+                <div class="drag-element" (click)="removePlayer(i)">
+                    <i class="bi bi-person-x-fill remove-icon"></i>
+                </div>
+            </div>
         </ng-container>
     </div>
-
-    <!--<div cdkDropList
-         #iconList="cdkDropList"
-         [cdkDropListData]="[]"
-         [cdkDropListEnterPredicate]="noReturnPredicate"
-         (cdkDropListDropped)="dropIcon($event)"
-    >
-        <div cdkDrag
-             [cdkDragDisabled]="true"
-
-             *ngFor="let _ of Array(selectedPlayers.length);let i = index"
-             class="drag-container"
-        >
-            <i class="bi bi-people-fill merge-icon "></i>
-        </div>
-    </div>-->
-
-    <!--<ol>
-        <li *ngFor="let player of selectedPlayers">
-            {{player.name}}
-        </li>
-    </ol>-->
 </div>

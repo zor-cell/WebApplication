@@ -42,24 +42,6 @@ export class GameSettingsComponent {
 
   constructor(private globals: Globals, private catanService: CatanService) {}
 
-  isValidPlayerName(name: string) {
-    return name != "" && this.gameConfig.players.length < 4 && !this.gameConfig.players.includes(name);
-  }
-
-  addPlayer(player: string) {
-    if(!this.isValidPlayerName(player)) return;
-
-    this.gameConfig.players.push(player);
-    this.playerName = "";
-  }
-
-  removePlayer(player: string) {
-    const index = this.gameConfig.players.indexOf(player);
-    if(index < 0) return;
-
-    this.gameConfig.players.splice(index, 1);
-  }
-
   clear() {
     this.catanService.clear().subscribe({
       next: res => {

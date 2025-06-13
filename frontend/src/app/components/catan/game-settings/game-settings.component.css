@@ -29,6 +29,7 @@ h3 {
     color: rgba(0,0,0,0.5);
     margin: 25px auto;
     text-align: center;
+    font-size: 1.25rem;
 }
 
 .main-container {
@@ -45,6 +46,7 @@ h3 {
     box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
     min-height: 275px;
     text-align: center;
+    justify-content: start;
 }
 .flex-container:nth-child(2) {
     margin: 25px 10px;
@@ -126,6 +128,7 @@ h3 {
     grid-template-columns: auto auto;
     width: 75%;
     margin: 0 auto;
+    gap: 1rem;
 }
 #classic-dice {
     margin: 0 auto;
