@@ -1,68 +1,74 @@
-h1 {
-    color: white;
-    width: 98%;
+.grid-container {
+    display: grid;
+    grid-template-rows: 30% auto;
+    justify-content: center;
+    align-items: start;
+
+    min-height: 275px;
     text-align: center;
-    border: 1px solid #83502e;
-    background-color: #83502e;
-    margin: 1% auto 0 auto;
-}
-.header {
-    font-size: 30px;
-    margin-bottom: 0;
-    padding-top: 25px;
-}
-.header2 {
-    font-size: 25px;
-    padding: 10px 0 25px 0;
-    margin-top: 0;
+
+    border-radius: 25px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
 }
 
-h2 {
-    color: #83502e;
-    width: 97%;
-    margin: 20px auto;
-    text-align: left;
-    border-bottom: 2px solid #83502e;
-}
-
-h3 {
-    color: rgba(0,0,0,0.5);
-    margin: 25px auto;
-    text-align: center;
-    font-size: 1.25rem;
-}
-
-.main-container {
+.config-container {
     width: 99%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 30% 23% 47%;
+    /*grid-template-rows: 30% 23% 47%;*/
+    gap: 1.5rem;
+
+    max-width: 1100px;
 }
 
-.flex-container {
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 25px;
-    margin: 25px 20px 25px 20px;
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
-    min-height: 275px;
+.config-header {
+    align-self: center;
+    margin: 0;
+    color: rgba(0,0,0,0.5);
     text-align: center;
-    justify-content: start;
-}
-.flex-container:nth-child(2) {
-    margin: 25px 10px;
-    display: flex;
-    flex-direction: column;
-}
-.flex-container:nth-child(3) {
-    display: flex;
-    flex-direction: column;
+
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-#input-container {
-    width: 75%;
-    margin: 0 auto;
-    display: flex;
+.dice-mode-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+
+    gap: 1rem;
 }
+
+.dice-mode-classic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 0.5rem;
+}
+
+.dice-settings {
+    display: grid;
+    grid-template-rows: auto auto;
+    width: 75%;
+}
+
+.dice-settings-random {
+    font-weight: bold;
+    color: rgba(0,0,0,0.5);
+}
+
+.dice-settings-layout {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+
+
 .input {
     border: solid 2px rgba(0,0,0,0.25);
     border-radius: 10px;
@@ -98,51 +104,6 @@ h3 {
 #list-container {
     display: flex;
 }
-#list{
-    width: 60%;
-    margin: 25px auto;
-}
-#list li {
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    word-break: break-word;
-    margin-right: 10px;
-    color: rgba(0,0,0,0.8);
-}
-#remove-button {
-    width: 14px;
-    cursor: pointer;
-    position: relative;
-    margin: 0 22px 0 auto;
-}
-#back-button {
-    width: 25px;
-    cursor: pointer;
-    position: relative;
-    margin: 18px 18px 0 18px;
-}
-
-#dice-grid {
-    display: grid;
-    grid-template-columns: auto auto;
-    width: 75%;
-    margin: 0 auto;
-    gap: 1rem;
-}
-#classic-dice {
-    margin: 0 auto;
-}
-#classic-dice img {
-    width: 20px;
-    margin: 4px;
-}
-#event-dice {
-    width: 22px;
-    grid-row: 2;
-    margin: 0 auto;
-    padding-top: 4px;
-}
 
 .button {
     position: relative;
@@ -156,42 +117,37 @@ h3 {
 .button:hover {
     border-color: rgba(0,0,0,0.5);
 }
-.checkbox {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 3;
+
+.dice-mode {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
 }
-.button .knobs:before {
-    content: "B";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    height: 4px;
-    width: 15px;
-    color: white;
+
+.dice-settings-description {
+    margin: 0;
+    font-weight: lighter;
+}
+
+.mode-description {
+    width: 75%;
+    margin: 0 auto;
+    text-align: left;
+    gap: 1rem;
+
+}
+
+
+
+
+#history-balance0 {
+    width: 75%;
+    margin: auto auto 20px auto;
+    padding: 5px 0px;
+    color: rgba(0,0,0,0.3);
     font-size: 13px;
     font-weight: bold;
     text-align: center;
-    line-height: 0.5;
-    padding: 9px 4px 9px 3px;
-    background-color: rgba(0,0,0,0.25);
-    border-radius: 7px;
-    transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
-}
-.button .checkbox:checked + .knobs:before {
-    content: "R";
-    left: 17px;
-    background-color: rgba(0,0,0,0.4);
-}
-.button .knobs,
-.button .knobs:before,
-.button .layer {
-    transition: 0.3s ease all;
 }
 
 #roll-history {
@@ -205,39 +161,13 @@ h3 {
     display: block;
     margin: auto;
 }
+
 #roll-history:hover {
     border-color: rgba(0,0,0,0.5);
     color: rgba(0,0,0,0.5);
     cursor: pointer;
 }
 
-.settings-balance {
-    display: grid;
-    grid-template-columns: auto auto auto;
-}
-
-.mode-description {
-    width: 75%;
-    margin: 0 auto;
-    text-align: left;
-}
-.mode-description p {
-    margin: 0;
-    padding-top: 5px;
-    margin-bottom: 20px;
-    font-weight: lighter;
-    color: rgba(0,0,0,0.5);
-}
-
-#history-balance0 {
-    width: 75%;
-    margin: auto auto 20px auto;
-    padding: 5px 0px;
-    color: rgba(0,0,0,0.3);
-    font-size: 13px;
-    font-weight: bold;
-    text-align: center;
-}
 #history-balance1 {
     width: 75%;
     margin: auto auto 20px auto;
@@ -278,15 +208,6 @@ h3 {
 }
 input[type=number]::-webkit-inner-spin-button {
     display:none;
-}
-
-.bold {
-    font-weight: bold;
-    margin: 0 auto 20px auto;
-    padding-top: 5px;
-    text-align: left;
-    width: 75%;
-    color: rgba(0,0,0,0.5);
 }
 
 
@@ -574,7 +495,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 768px) {
-    .main-container, .main-container2 {
+    .config-container, .main-container2 {
         grid-template-columns: 1fr;
         grid-auto-flow: row;
     }
