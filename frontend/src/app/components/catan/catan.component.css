@@ -38,7 +38,7 @@ h3 {
     grid-template-columns: 30% 23% 47%;
 }
 
-.grid-container {
+.config-grid-container {
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 25px;
     margin: 25px 20px 25px 20px;
@@ -46,12 +46,12 @@ h3 {
     min-height: 275px;
     text-align: center;
 }
-.grid-container:nth-child(2) {
+.config-grid-container:nth-child(2) {
     margin: 25px 10px;
     display: flex;
     flex-direction: column;
 }
-.grid-container:nth-child(3) {
+.config-grid-container:nth-child(3) {
     display: flex;
     flex-direction: column;
 }

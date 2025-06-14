@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GameSettingsComponent} from "./game-settings/game-settings.component";
+import {CatanGameSettingsComponent} from "./game-settings/game-settings.component";
 import {GameState} from "../../dto/catan/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CatanService} from "../../services/catan.service";
@@ -13,7 +13,7 @@ import {ProjectMetadata} from "../../dto/projects/responses";
 @Component({
   selector: 'app-catan',
   imports: [
-    GameSettingsComponent,
+    CatanGameSettingsComponent,
     NgIf,
     NgForOf,
     NgClass,
@@ -26,7 +26,7 @@ import {ProjectMetadata} from "../../dto/projects/responses";
 })
 export class CatanComponent implements OnInit {
   project!: ProjectMetadata;
-  gameState: GameState | null = null;
+  gameState!: GameState;
 
   constructor(private globals: Globals, private projectService: ProjectService, private catanService: CatanService) {}
 

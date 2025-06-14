@@ -8,6 +8,8 @@ import {Globals} from "../../../classes/globals";
 import {GameState} from "../../../dto/catan/GameState";
 import {PlayerConfig} from "../../../dto/connect4/data";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
 
 @Component({
   selector: 'catan-game-settings',
@@ -17,14 +19,14 @@ import {PlayerSelectComponent} from "../../global/player-select/player-select.co
     FormsModule,
     NgForOf,
     NgIf,
-    PlayerSelectComponent
+    PlayerSelectComponent,
+    ProjectHeaderComponent
   ],
   templateUrl: './game-settings.component.html',
   standalone: true,
   styleUrl: './game-settings.component.css'
 })
-export class GameSettingsComponent {
-  @Output() gameStateEvent = new EventEmitter<GameState>();
+export class CatanGameSettingsComponent {
   gameConfig: GameConfig = {
     teams: [],
     classicDice: {
@@ -37,9 +39,8 @@ export class GameSettingsComponent {
     },
     maxShipTurns: 7
   };
-  gameState: GameState | null = null;
 
-  constructor(private globals: Globals, private catanService: CatanService) {}
+  constructor(private globals: Globals, private catanService: CatanService, private router: Router, private route: ActivatedRoute) {}
 
   clear() {
     this.catanService.clear().subscribe({
@@ -55,9 +56,7 @@ export class GameSettingsComponent {
   startGame() {
     this.catanService.start(this.gameConfig).subscribe({
       next: res => {
-        this.gameState = res;
-
-        this.gameStateEvent.emit(this.gameState);
+        this.router.navigate(['game'], {relativeTo: this.route});
       },
       error: err => {
         this.globals.handleError(err);
