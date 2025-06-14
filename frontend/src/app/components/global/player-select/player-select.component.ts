@@ -23,6 +23,9 @@ import {
 } from "@angular/cdk/drag-drop";
 import {Subscription, timer} from "rxjs";
 import {Team} from "../../../dto/global/Team";
+import {MatDialog} from "@angular/material/dialog";
+import {PopupDialogData} from "../../../dto/global/PopupDialogData";
+import {PopupDialogComponent} from "../popup-dialog/popup-dialog.component";
 
 @Component({
   selector: 'app-player-select',
@@ -57,7 +60,7 @@ export class PlayerSelectComponent implements OnInit {
 
   teamHostIndex: number = -1;
 
-  constructor(private globals: Globals, private playerService: PlayerService) {}
+  constructor(private globals: Globals, private playerService: PlayerService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.playerService.getPlayers().subscribe({
@@ -73,6 +76,35 @@ export class PlayerSelectComponent implements OnInit {
         this.globals.handleError(err);
       }
     });
+  }
+
+  openPlayerDialog() {
+    const data: PopupDialogData = {
+      title: 'Add Player',
+      message: 'Are you sure you want to do this'
+    };
+
+    const dialogRef = this.dialog.open(PopupDialogComponent, {
+      data: data
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('New player created:', result);
+        // Add result to your player list
+      }
+    });
+  }
+
+  addAvailablePlayer(player: PlayerDetails) {
+    this.playerService.savePlayer(player).subscribe({
+      next: res => {
+        this.availablePlayers.push(res);
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    })
   }
 
   mergeTeam(teamIndex: number) {

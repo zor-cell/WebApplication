@@ -1,6 +1,7 @@
 <div class="settings-container">
     @if(currentPlayer) {
         <div class="select-container">
+            <i class="bi bi-person-plus-fill success-color" (click)="openPlayerDialog()"></i>
             <select (change)="updateCurrentPlayer($event)">
                 <option *ngFor="let player of availablePlayers" [value]="player.name">
                     {{player.name}}
@@ -50,10 +51,10 @@
                 <ng-container *ngFor="let _ of [].constructor(selectedTeams.length);let i = index">
                     <div class="flex-container flex-row gap-2">
                         <div *ngIf="allowTeams" class="drag-element" (click)="makeHost(i)">
-                            <i class="bi merge-icon" [ngClass]="teamHostIndex === i ? 'bi-people-fill' : 'bi-people'" ></i>
+                            <i class="bi default-color" [ngClass]="teamHostIndex === i ? 'bi-people-fill' : 'bi-people'" ></i>
                         </div>
                         <div class="drag-element" (click)="removePlayer(i)">
-                            <i class="bi bi-person-x-fill remove-icon"></i>
+                            <i class="bi bi-person-x-fill danger-color"></i>
                         </div>
                     </div>
                 </ng-container>

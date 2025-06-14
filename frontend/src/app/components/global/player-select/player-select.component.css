@@ -86,14 +86,6 @@
     visibility: hidden;
 }
 
-.merge-icon {
-    color: #0d6efd;
-}
-
-.remove-icon {
-    color: #dc3545;
-}
-
 .merge-icon:hover, .remove-icon:hover {
     opacity: 0.8;
 }
