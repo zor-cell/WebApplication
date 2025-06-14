@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.response.GameDetails;
+import net.zorphy.backend.main.dto.GameDetails;
 
 import java.util.List;
 

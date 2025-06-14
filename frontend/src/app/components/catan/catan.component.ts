@@ -27,7 +27,6 @@ import {ProjectMetadata} from "../../dto/projects/responses";
 export class CatanComponent implements OnInit {
   project!: ProjectMetadata;
   gameState: GameState | null = null;
-  gameStarted: boolean = false;
 
   constructor(private globals: Globals, private projectService: ProjectService, private catanService: CatanService) {}
 
@@ -40,6 +39,15 @@ export class CatanComponent implements OnInit {
           this.globals.handleError(err);
         }
       });
+
+      this.catanService.getState().subscribe({
+        next: res => {
+          this.gameState = res;
+        },
+        error: err => {
+          this.globals.handleError(err);
+        }
+      })
   }
 
   get currentRoll(): DiceRoll | null {

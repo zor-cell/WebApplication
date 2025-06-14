@@ -75,13 +75,9 @@ export class PlayerSelectComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<Team[]>) {
-    moveItemInArray(this.selectedTeams, event.previousIndex, event.currentIndex);
-
-    this.selectedTeamEvent.emit(this.selectedTeams);
-  }
-
   mergeTeam(teamIndex: number) {
+    if(!this.allowTeams) return;
+
     if(this.teamHostIndex >= 0) {
       const hostTeam= this.selectedTeams[this.teamHostIndex]
       const memberTeam = this.copy(this.selectedTeams[teamIndex]);
@@ -96,32 +92,11 @@ export class PlayerSelectComponent implements OnInit {
     }
   }
 
-  private generateTeamName(players: PlayerDetails[]): string {
-    if (players.length === 0) return '';
-    if (players.length === 1) return players[0].name;
+  //drag and drop reordering logic
+  drop(event: CdkDragDrop<Team[]>) {
+    moveItemInArray(this.selectedTeams, event.previousIndex, event.currentIndex);
 
-    return players.map(player => {
-      const name = player.name.slice(0, 3);
-      return  name;
-    }).join('');
-  }
-
-  makeHost(teamIndex: number) {
-    if(this.teamHostIndex === teamIndex) {
-      this.teamHostIndex = -1;
-    } else {
-      this.teamHostIndex = teamIndex;
-    }
-  }
-
-  changePlayer(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const selectedName = selectElement.options[selectElement.selectedIndex].text;
-
-    const found = this.availablePlayers.find(p => p.name === selectedName);
-    if(found) {
-      this.currentPlayer = this.copy(found);
-    }
+    this.selectedTeamEvent.emit(this.selectedTeams);
   }
 
   addPlayer() {
@@ -162,6 +137,36 @@ export class PlayerSelectComponent implements OnInit {
     this.selectedTeamEvent.emit(this.selectedTeams);
 
     this.currentPlayer = this.availablePlayers[0];
+  }
+
+  updateCurrentPlayer(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedName = selectElement.options[selectElement.selectedIndex].text;
+
+    const found = this.availablePlayers.find(p => p.name === selectedName);
+    if(found) {
+      this.currentPlayer = this.copy(found);
+    }
+  }
+
+  makeHost(teamIndex: number) {
+    if(!this.allowTeams) return;
+
+    if(this.teamHostIndex === teamIndex) {
+      this.teamHostIndex = -1;
+    } else {
+      this.teamHostIndex = teamIndex;
+    }
+  }
+
+  private generateTeamName(players: PlayerDetails[]): string {
+    if (players.length === 0) return '';
+    if (players.length === 1) return players[0].name;
+
+    return players.map(player => {
+      const name = player.name.slice(0, 3);
+      return  name;
+    }).join('');
   }
 
   private copy<T>(obj: T): T {

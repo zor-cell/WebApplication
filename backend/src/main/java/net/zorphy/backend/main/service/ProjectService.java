@@ -1,8 +1,7 @@
 package net.zorphy.backend.main.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import net.zorphy.backend.main.dto.response.ProjectDetails;
-import net.zorphy.backend.main.dto.response.ProjectMetadata;
+import net.zorphy.backend.main.dto.ProjectDetails;
+import net.zorphy.backend.main.dto.ProjectMetadata;
 
 import java.util.List;
 

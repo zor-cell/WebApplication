@@ -1,17 +1,13 @@
 package net.zorphy.backend.main.mapper;
 
 import net.zorphy.backend.main.component.FileContentReader;
-import net.zorphy.backend.main.dto.response.ProjectDetails;
-import net.zorphy.backend.main.dto.response.ProjectMetadata;
+import net.zorphy.backend.main.dto.ProjectDetails;
+import net.zorphy.backend.main.dto.ProjectMetadata;
 import net.zorphy.backend.main.entity.Project;
-import org.commonmark.node.Node;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.File;
 
 @Mapper(componentModel = "spring", uses = FileContentReader.class)
 public abstract class ProjectMapper {

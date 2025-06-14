@@ -53,6 +53,7 @@
 .dice-settings {
     display: grid;
     grid-template-rows: 1fr 1fr;
+    gap: 1rem;
 }
 
 .dice-settings-balance {

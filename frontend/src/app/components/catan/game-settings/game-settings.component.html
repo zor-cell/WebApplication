@@ -1,7 +1,7 @@
 <section class="config-container">
     <div class="grid-container">
         <h3 class="config-header">Players</h3>
-        <app-player-select (selectedTeamEvent)="gameConfig.players"></app-player-select>
+        <app-player-select (selectedTeamEvent)="gameConfig.teams = $event"></app-player-select>
     </div>
 
     <div class="grid-container">
@@ -36,7 +36,7 @@
                 }
 
              @if(gameConfig.eventDice.isBalanced) {
-                 <div>
+                 <div class="dice-settings-balance">
                     <div class="dice-settings-description">Degree of Random:</div>
                     <div class="dice-mode">
                         <input type="number" min="0" max="5" class="input2" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
@@ -49,5 +49,5 @@
         </div>
     </div>
 </section>
-<button class="btn start-button" (click)="startGame()" [disabled]="gameConfig.players.length < 2">Start</button>
+<button class="btn start-button" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
 <button class="btn start-button" (click)="clear()">Clear</button>

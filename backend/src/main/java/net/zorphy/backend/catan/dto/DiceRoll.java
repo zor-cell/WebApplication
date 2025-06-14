@@ -1,4 +1,4 @@
-package net.zorphy.backend.catan.dto.data;
+package net.zorphy.backend.catan.dto;
 
 public record DiceRoll(
         DicePair dicePair,

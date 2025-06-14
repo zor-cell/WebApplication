@@ -1,10 +1,9 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.response.GameDetails;
+import net.zorphy.backend.main.dto.GameDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +29,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDetails saveGame(GameDetails gameDetails) {
-        Game toSave = gameMapper.gameDetailsToGame(gameDetails);
+        return null;
+        /*Game toSave = gameMapper.gameDetailsToGame(gameDetails);
         Game saved = gameRepository.save(toSave);
-        return gameMapper.gameToGameDetails(saved);
+        return gameMapper.gameToGameDetails(saved);*/
     }
 }

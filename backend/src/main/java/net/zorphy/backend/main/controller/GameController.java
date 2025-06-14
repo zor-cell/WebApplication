@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.controller;
 
-import net.zorphy.backend.main.dto.response.GameDetails;
+import net.zorphy.backend.main.dto.GameDetails;
 import net.zorphy.backend.main.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

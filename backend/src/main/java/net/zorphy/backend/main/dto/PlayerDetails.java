@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.dto.response;
+package net.zorphy.backend.main.dto;
 
 public record PlayerDetails(
         String name

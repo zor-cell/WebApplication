@@ -1,9 +1,15 @@
 package net.zorphy.backend.catan.service;
 
-import net.zorphy.backend.catan.dto.data.DicePair;
-import net.zorphy.backend.catan.dto.data.DiceRoll;
-import net.zorphy.backend.catan.dto.data.GameConfig;
-import net.zorphy.backend.catan.dto.data.GameState;
+import net.zorphy.backend.catan.dto.DicePair;
+import net.zorphy.backend.catan.dto.DiceRoll;
+import net.zorphy.backend.catan.dto.GameConfig;
+import net.zorphy.backend.catan.dto.GameState;
+import net.zorphy.backend.main.dto.GameDetails;
+import net.zorphy.backend.main.entity.Game;
+import net.zorphy.backend.main.entity.Player;
+import net.zorphy.backend.main.mapper.GameMapper;
+import net.zorphy.backend.main.mapper.PlayerMapper;
+import net.zorphy.backend.main.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,6 +18,13 @@ import java.util.*;
 public class CatanServiceImpl implements CatanService {
     private final List<Character> possibleEvents = new ArrayList<>(Arrays.asList('e', 'e', 'e', 'y', 'b', 'g'));
     private final Random rand = new Random();
+    private final GameMapper gameMapper;
+    private final GameRepository gameRepository;
+
+    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository) {
+        this.gameMapper = gameMapper;
+        this.gameRepository = gameRepository;
+    }
 
     private List<DicePair> initClassicCards() {
         List<DicePair> classicCards = new ArrayList<>();
@@ -90,7 +103,7 @@ public class CatanServiceImpl implements CatanService {
         }
 
         //update player
-        currentPlayerTurn = (currentPlayerTurn + 1) % oldState.gameConfig().players().size();
+        currentPlayerTurn = (currentPlayerTurn + 1) % oldState.gameConfig().teams().size();
 
         //reset ship to start if charge happened last round
         if(currentShipTurn == oldState.gameConfig().maxShipTurns() - 1) {
@@ -113,5 +126,15 @@ public class CatanServiceImpl implements CatanService {
                 eventCards,
                 diceRolls
         );
+    }
+
+    @Override
+    public GameDetails saveGame(GameDetails gameDetails, GameState gameState) {
+        Game t = new Game();
+
+
+        Game toSave = gameMapper.gameDetailsToGame(gameDetails, gameState);
+        Game saved = gameRepository.save(toSave);
+        return gameMapper.gameToGameDetails(saved);
     }
 }

@@ -26,7 +26,7 @@ import {PlayerSelectComponent} from "../../global/player-select/player-select.co
 export class GameSettingsComponent {
   @Output() gameStateEvent = new EventEmitter<GameState>();
   gameConfig: GameConfig = {
-    players: [],
+    teams: [],
     classicDice: {
       isBalanced: true,
       shuffleThreshold: 5
@@ -37,7 +37,6 @@ export class GameSettingsComponent {
     },
     maxShipTurns: 7
   };
-  playerName: string = "";
   gameState: GameState | null = null;
 
   constructor(private globals: Globals, private catanService: CatanService) {}

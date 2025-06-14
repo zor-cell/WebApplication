@@ -1,14 +1,12 @@
 package net.zorphy.backend.main.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.zorphy.backend.main.component.FileContentReader;
-import net.zorphy.backend.main.dto.response.ProjectDetails;
-import net.zorphy.backend.main.dto.response.ProjectMetadata;
+import net.zorphy.backend.main.dto.ProjectDetails;
+import net.zorphy.backend.main.dto.ProjectMetadata;
 import net.zorphy.backend.main.entity.Project;
 import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.ProjectMapper;
 import net.zorphy.backend.main.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
