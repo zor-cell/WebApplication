@@ -1,7 +1,9 @@
 package net.zorphy.backend.main.dto;
 
+import java.util.List;
+
 public record TeamDetails(
         String name,
-        PlayerDetails[] players
+        List<PlayerDetails> players
 ) {
 }

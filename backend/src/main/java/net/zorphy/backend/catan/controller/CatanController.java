@@ -6,6 +6,7 @@ import net.zorphy.backend.catan.dto.GameConfig;
 import net.zorphy.backend.catan.dto.GameState;
 import net.zorphy.backend.catan.service.CatanService;
 import net.zorphy.backend.main.dto.GameDetails;
+import net.zorphy.backend.main.dto.TeamDetails;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +76,8 @@ public class CatanController {
     }
 
     @PostMapping("save")
-    public GameDetails saveGame(HttpSession session, @RequestBody GameDetails gameDetails) {
-        return catanService.saveGame(gameDetails, getGameState(session));
+    public GameDetails saveGame(HttpSession session, @RequestParam String winnerTeam) {
+        return catanService.saveGame(getGameState(session), winnerTeam);
     }
 
 

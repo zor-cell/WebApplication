@@ -25,8 +25,13 @@ public class Game {
     @Column(columnDefinition = "jsonb")
     private Object gameState;
 
-    @ManyToOne
-    private Player winner;
+    @ManyToMany
+    @JoinTable(
+            name = "game_winner",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
+    private Set<Player> winners;
 
     @ManyToMany
     @JoinTable(
@@ -35,6 +40,16 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "player_id")
     )
     private Set<Player> players;
+
+    public Game() {}
+
+    public Game(LocalDate playedAt, GameType gameType, Object gameState, Set<Player> winners, Set<Player> players) {
+        this.playedAt = playedAt;
+        this.gameType = gameType;
+        this.gameState = gameState;
+        this.winners = winners;
+        this.players = players;
+    }
 
     public UUID getId() {
         return id;
@@ -68,12 +83,12 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public Player getWinner() {
-        return winner;
+    public Set<Player> getWinners() {
+        return winners;
     }
 
-    public void setWinner(Player winner) {
-        this.winner = winner;
+    public void setWinners(Set<Player> winner) {
+        this.winners = winner;
     }
 
     public Set<Player> getPlayers() {
@@ -88,11 +103,11 @@ public class Game {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Game game)) return false;
-        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(winner, game.winner) && Objects.equals(players, game.players);
+        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(winners, game.winners) && Objects.equals(players, game.players);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, playedAt, gameType, gameState, winner, players);
+        return Objects.hash(id, playedAt, gameType, gameState, winners, players);
     }
 }

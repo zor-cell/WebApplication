@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 public abstract class GameMapper {
     public abstract GameDetails gameToGameDetails(Game game);
 
-    @Mapping(target = "gameState", source = "gameState")
-    public abstract Game gameDetailsToGame(GameDetails gameDetails, Object gameState);
+    public abstract Game gameDetailsToGame(GameDetails gameDetails);
 
 }

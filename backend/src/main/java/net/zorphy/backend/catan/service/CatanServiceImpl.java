@@ -5,14 +5,20 @@ import net.zorphy.backend.catan.dto.DiceRoll;
 import net.zorphy.backend.catan.dto.GameConfig;
 import net.zorphy.backend.catan.dto.GameState;
 import net.zorphy.backend.main.dto.GameDetails;
+import net.zorphy.backend.main.dto.PlayerDetails;
+import net.zorphy.backend.main.dto.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.entity.Player;
+import net.zorphy.backend.main.enums.GameType;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.mapper.PlayerMapper;
 import net.zorphy.backend.main.repository.GameRepository;
+import net.zorphy.backend.main.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CatanServiceImpl implements CatanService {
@@ -20,10 +26,12 @@ public class CatanServiceImpl implements CatanService {
     private final Random rand = new Random();
     private final GameMapper gameMapper;
     private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
 
-    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository) {
+    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository) {
         this.gameMapper = gameMapper;
         this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
     }
 
     private List<DicePair> initClassicCards() {
@@ -129,11 +137,33 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameDetails saveGame(GameDetails gameDetails, GameState gameState) {
-        Game t = new Game();
+    public GameDetails saveGame(GameState gameState, String winnerTeamName) {
+        //get all winner players
+        Optional<TeamDetails> winnerTeam = gameState.gameConfig().teams().stream()
+                .filter(team -> team.name().equals(winnerTeamName))
+                .findFirst();
+        if(winnerTeam.isEmpty()) {
+            throw new IllegalArgumentException("Winner team name does not exist in teams");
+        }
+        Set<Player> winners = winnerTeam.get().players().stream()
+                .map(PlayerDetails::name)
+                .map(playerRepository::findByName)
+                .collect(Collectors.toSet());
 
+        //get all players in team from db
+        Set<Player> players = gameState.gameConfig().teams().stream()
+                .flatMap(team -> team.players().stream())
+                .map(PlayerDetails::name)
+                .map(playerRepository::findByName)
+                .collect(Collectors.toSet());
 
-        Game toSave = gameMapper.gameDetailsToGame(gameDetails, gameState);
+        Game toSave = new Game(
+            LocalDate.now(),
+            GameType.CATAN,
+            gameState,
+            winners,
+            players
+        );
         Game saved = gameRepository.save(toSave);
         return gameMapper.gameToGameDetails(saved);
     }

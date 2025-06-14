@@ -8,7 +8,8 @@ import java.util.List;
 public record GameDetails(
         LocalDate playedAt,
         GameType gameType,
-        PlayerDetails winner,
+        Object gameState,
+        List<PlayerDetails> winners,
         List<PlayerDetails> players
 ) {
 }
