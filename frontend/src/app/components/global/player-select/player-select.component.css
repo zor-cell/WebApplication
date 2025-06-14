@@ -97,20 +97,3 @@ select {
     height: 30px;
     width: 125px;
 }
-
-.small-btn {
-    border: solid 2px rgba(0,0,0,0.25);
-    border-radius: 10px;
-    padding: 5px 10px;
-    background-color: white;
-    color: rgba(0,0,0,0.3);
-    font-weight: bold;
-    font-size: 13px;
-    margin-left: auto;
-    height: 30px;
-}
-.small-btn:hover {
-    border-color: rgba(0,0,0,0.5);
-    color: rgba(0,0,0,0.5);
-    cursor: pointer;
-}

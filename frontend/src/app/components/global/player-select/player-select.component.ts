@@ -47,12 +47,12 @@ export class PlayerSelectComponent implements OnInit {
   @Input() minPlayers: number = 2;
   @Input() maxPlayers: number = 4;
   @Input() allowTeams: boolean = true;
+  @Input() selectedTeams: Team[] = [];
 
   @Output() selectedTeamEvent = new EventEmitter<Team[]>();
 
   allPlayers: PlayerDetails[] = []
   availablePlayers: PlayerDetails[] = [];
-  selectedTeams: Team[] = [];
 
   currentPlayer: PlayerDetails | null = null;
   team: PlayerDetails[] = [];

@@ -18,7 +18,7 @@ export class CatanService {
     this.baseUri = this.globals.backendUri + '/catan';
   }
 
-  getState(): Observable<GameState> {
+  state(): Observable<GameState> {
       return this.httpClient.get<GameState>(this.baseUri + '/state', {
           withCredentials: true
       });

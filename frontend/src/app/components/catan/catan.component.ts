@@ -25,22 +25,12 @@ import {ProjectMetadata} from "../../dto/projects/responses";
   styleUrl: './catan.component.css'
 })
 export class CatanComponent implements OnInit {
-  project!: ProjectMetadata;
   gameState!: GameState;
 
-  constructor(private globals: Globals, private projectService: ProjectService, private catanService: CatanService) {}
+  constructor(private globals: Globals, private catanService: CatanService) {}
 
   ngOnInit() {
-      this.projectService.getProject("catan").subscribe({
-        next: res => {
-          this.project = res.metadata;
-        },
-        error: err => {
-          this.globals.handleError(err);
-        }
-      });
-
-      this.catanService.getState().subscribe({
+      this.catanService.state().subscribe({
         next: res => {
           this.gameState = res;
         },

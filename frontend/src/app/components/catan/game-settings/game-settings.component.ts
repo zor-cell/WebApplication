@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -10,6 +10,8 @@ import {PlayerConfig} from "../../../dto/connect4/data";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
+import {ProjectService} from "../../../services/project.service";
+import {ProjectMetadata} from "../../../dto/projects/responses";
 
 @Component({
   selector: 'catan-game-settings',
@@ -26,7 +28,8 @@ import {ProjectHeaderComponent} from "../../projects/project-header/project-head
   standalone: true,
   styleUrl: './game-settings.component.css'
 })
-export class CatanGameSettingsComponent {
+export class CatanGameSettingsComponent implements OnInit {
+  project!: ProjectMetadata;
   gameConfig: GameConfig = {
     teams: [],
     classicDice: {
@@ -39,8 +42,36 @@ export class CatanGameSettingsComponent {
     },
     maxShipTurns: 7
   };
+  hasSession: boolean = false;
 
-  constructor(private globals: Globals, private catanService: CatanService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private globals: Globals,
+              private projectService: ProjectService,
+              private catanService: CatanService,
+              private router: Router,
+              private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    //get project metadata for header
+    this.projectService.getProject("catan").subscribe({
+      next: res => {
+        this.project = res.metadata;
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    });
+
+    //check if session state exists
+    this.catanService.state().subscribe({
+      next: res => {
+        this.hasSession = true;
+        this.gameConfig = res.gameConfig;
+      },
+      error: err => {
+        this.globals.handleError(err, true);
+      }
+    });
+  }
 
   clear() {
     this.catanService.clear().subscribe({
@@ -54,13 +85,25 @@ export class CatanGameSettingsComponent {
   }
 
   startGame() {
+    if(this.hasSession) return;
+
     this.catanService.start(this.gameConfig).subscribe({
       next: res => {
-        this.router.navigate(['game'], {relativeTo: this.route});
+        this.goToGame();
       },
       error: err => {
         this.globals.handleError(err);
       }
-    })
+    });
+  }
+
+  continueGame() {
+    if(!this.hasSession) return;
+
+    this.goToGame();
+  }
+
+  private goToGame() {
+    this.router.navigate(['game'], {relativeTo: this.route});
   }
 }

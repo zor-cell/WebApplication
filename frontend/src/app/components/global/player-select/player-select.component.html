@@ -1,22 +1,18 @@
 <div class="settings-container">
-    @if(currentPlayer) {
-        <div class="select-container">
-            <i class="bi bi-person-plus-fill success-color" (click)="openPlayerDialog()"></i>
-            <select (change)="updateCurrentPlayer($event)">
+    <div class="select-container">
+        <i class="bi bi-person-plus-fill success-color" (click)="openPlayerDialog()"></i>
+        <select [disabled]="!currentPlayer" (change)="updateCurrentPlayer($event)">
+            @if(currentPlayer) {
                 <option *ngFor="let player of availablePlayers" [value]="player.name">
                     {{player.name}}
                 </option>
-            </select>
-            <button class="small-btn" (click)="addPlayer()">Add</button>
-        </div>
-    } @else {
-        <div class="select-container">
-            <select disabled>
+            } @else {
                 <option>EMPTY</option>
-            </select>
-            <button disabled class="small-btn" (click)="addPlayer()">Add</button>
-        </div>
-    }
+            }
+        </select>
+        <button [disabled]="!currentPlayer" class="small-btn" (click)="addPlayer()">Add</button>
+    </div>
+
 
     @if(selectedTeams.length === 0) {
         <div>

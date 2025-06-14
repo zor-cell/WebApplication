@@ -1,10 +1,10 @@
-<app-project-header></app-project-header>
+<app-project-header [project]="project"/>
 
 <div class="main-container">
     <section class="config-container">
         <div class="config-grid-container">
             <h3 class="config-header">Players</h3>
-            <app-player-select (selectedTeamEvent)="gameConfig.teams = $event"></app-player-select>
+            <app-player-select [selectedTeams]="gameConfig.teams" (selectedTeamEvent)="gameConfig.teams = $event"></app-player-select>
         </div>
 
         <div class="config-grid-container">
@@ -31,7 +31,7 @@
                             <div class="dice-settings-description">Degree of Random:</div>
                             <div class="dice-mode">
                                 <input type="number" min="0" max="35" class="input2" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
-                                <button class="btn2">Reshuffle</button>
+                                <button class="small-btn">Reshuffle</button>
                             </div>
                         </div>
                     } @else {
@@ -43,7 +43,7 @@
                         <div class="dice-settings-description">Degree of Random:</div>
                         <div class="dice-mode">
                             <input type="number" min="0" max="5" class="input2" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
-                            <button class="btn2">Reshuffle</button>
+                            <button class="small-btn">Reshuffle</button>
                         </div>
                      </div>
                     } @else {
@@ -52,6 +52,12 @@
             </div>
         </div>
     </section>
-    <button class="btn start-button" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
-    <button class="btn start-button" (click)="clear()">Clear</button>
+
+    <div class="flex-container m-3">
+        @if(hasSession) {
+            <button class="small-btn" (click)="continueGame()">Continue</button>
+        } @else {
+            <button class="small-btn" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
+        }
+    </div>
 </div>
