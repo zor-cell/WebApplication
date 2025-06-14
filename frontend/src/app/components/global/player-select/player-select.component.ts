@@ -100,8 +100,10 @@ export class PlayerSelectComponent implements OnInit {
     if (players.length === 0) return '';
     if (players.length === 1) return players[0].name;
 
-    return players.map(player => player.name.slice(0, 3))
-        .join('');
+    return players.map(player => {
+      const name = player.name.slice(0, 3);
+      return  name;
+    }).join('');
   }
 
   makeHost(teamIndex: number) {

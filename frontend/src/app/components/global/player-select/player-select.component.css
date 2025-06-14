@@ -3,6 +3,22 @@
     --player-element-width: 110px;
 }
 
+.settings-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.select-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.4rem;
+}
+
 .list-container {
     display: flex;
     flex-direction: row;
@@ -85,11 +101,9 @@
 select {
     border: solid 2px rgba(0,0,0,0.25);
     border-radius: 10px;
-    padding-left: 10px;
-    font-size: 13px;
+    padding-left: 0.7rem;
     height: 30px;
     width: 125px;
-    margin-right: 7px;
 }
 
 .small-btn {

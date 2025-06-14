@@ -8,8 +8,8 @@
         <h3 class="config-header">Mode</h3>
         <div class="dice-mode-grid">
             <div class="dice-mode-classic">
-                <img class="dice-img" ngSrc="assets/catan/4.svg" height="20" width="20" alt="">
-                <img class="dice-img"  ngSrc="assets/catan/3_red.svg" height="20" width="20" alt="">
+                <img class="dice-img" ngSrc="assets/catan/4.svg" height="22" width="22" alt="">
+                <img class="dice-img"  ngSrc="assets/catan/3_red.svg" height="22" width="22" alt="">
             </div>
             <app-slider-checkbox [isChecked]="gameConfig.classicDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.classicDice.isBalanced = $event"></app-slider-checkbox>
 
@@ -22,27 +22,29 @@
 
     <div class="grid-container">
         <h3 class="config-header">Settings</h3>
-        <div class="dice-mode-grid">
+        <div class="dice-settings">
                 @if(gameConfig.classicDice.isBalanced) {
-                    <div class="dice-settings-description">Degree of Random:</div>
-                    <div class="dice-mode">
-                        <input type="number" min="0" max="35" class="input2" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
-                        <button class="btn2">Reshuffle</button>
+                    <div class="dice-settings-balance">
+                        <div class="dice-settings-description">Degree of Random:</div>
+                        <div class="dice-mode">
+                            <input type="number" min="0" max="35" class="input2" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
+                            <button class="btn2">Reshuffle</button>
+                        </div>
                     </div>
                 } @else {
                     <div class="dice-settings-random">True Random</div>
-                    <div></div>
                 }
 
              @if(gameConfig.eventDice.isBalanced) {
+                 <div>
                     <div class="dice-settings-description">Degree of Random:</div>
                     <div class="dice-mode">
                         <input type="number" min="0" max="5" class="input2" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
                         <button class="btn2">Reshuffle</button>
                     </div>
+                 </div>
                 } @else {
                     <div class="dice-settings-random">True Random</div>
-                    <div></div>
                 }
         </div>
     </div>

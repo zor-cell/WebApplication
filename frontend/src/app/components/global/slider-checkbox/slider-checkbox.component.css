@@ -59,7 +59,7 @@
 }
 
 .slider-checkbox .checkbox:checked + .knobs:before {
-    left: calc(var(--checkbox-width) / 2.2);
+    left: calc(var(--checkbox-width) / 2.0 - 4px);
     background-color: var(--knob-bg-color);
     opacity: 0.8;
 }

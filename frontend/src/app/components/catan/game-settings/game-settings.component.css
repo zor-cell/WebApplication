@@ -38,7 +38,8 @@
     grid-template-columns: auto auto;
     width: 100%;
 
-    gap: 1rem;
+    row-gap: 1rem;
+    column-gap: 3rem;
 }
 
 .dice-mode-classic {
@@ -51,8 +52,14 @@
 
 .dice-settings {
     display: grid;
-    grid-template-rows: auto auto;
-    width: 75%;
+    grid-template-rows: 1fr 1fr;
+}
+
+.dice-settings-balance {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 4rem;
 }
 
 .dice-settings-random {
