@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 import {NgIf} from "@angular/common";
@@ -14,7 +14,7 @@ import {DiceRoll} from "../../../dto/catan/DiceRoll";
   standalone: true,
   styleUrl: './histogram.component.css'
 })
-export class HistogramComponent implements OnChanges {
+export class HistogramComponent implements OnChanges, OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @Input({required: true}) diceRolls!: DiceRoll[];
   @Input() isVisible: boolean = false;
@@ -68,6 +68,10 @@ export class HistogramComponent implements OnChanges {
       }
     }
   };
+
+  ngOnInit() {
+    this.refillChartData();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['diceRolls']) {

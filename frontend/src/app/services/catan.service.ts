@@ -7,6 +7,7 @@ import {MoveResponse} from "../dto/connect4/responses";
 import {GameState} from "../dto/catan/GameState";
 import {GameConfig} from "../dto/catan/GameConfig";
 import {DiceRoll} from "../dto/catan/DiceRoll";
+import {GameDetails} from "../dto/global/GameDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +47,11 @@ export class CatanService {
             alchemist: isAlchemist
           }
         });
+  }
+
+  save(winnerTeam: string) {
+      return this.httpClient.post<GameDetails>(this.baseUri + '/save', {}, {
+          withCredentials: true
+      });
   }
 }

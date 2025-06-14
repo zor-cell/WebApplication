@@ -67,4 +67,15 @@ export class CatanComponent implements OnInit {
   toggleChart() {
     this.showChart = !this.showChart;
   }
+  
+  save(winnerTeam: string) {
+    this.catanService.save(winnerTeam).subscribe({
+      next: res => {
+
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    })
+  }
 }

@@ -1,4 +1,4 @@
-<section [hidden]="isVisible" class="histogram-container">
+<section [hidden]="!isVisible" class="histogram-container">
     <canvas baseChart
             [type]="'bar'"
             [data]="chartData"
