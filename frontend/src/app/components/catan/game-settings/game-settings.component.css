@@ -1,3 +1,4 @@
+/*container styles*/
 .config-container {
     margin: 0 auto;
     display: grid;
@@ -33,6 +34,9 @@
     box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
 }
 
+
+
+/* dice mode styles */
 .dice-mode-grid {
     display: grid;
     grid-template-columns: auto auto;
@@ -49,6 +53,9 @@
     gap: 0.5rem;
 }
 
+
+
+/* dice settings styles */
 .dice-settings {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -74,64 +81,35 @@
     gap: 1rem;
 }
 
-#list-container {
-    display: flex;
-}
-
-.dice-mode {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    align-items: center;
-}
-
 .dice-settings-description {
     margin: 0;
     font-weight: lighter;
 }
 
-
-.button {
-    position: relative;
-    width: 42px;
-    height: 26px;
-    margin: 0px auto 15px auto;
-    background-color: white;
-    border: solid 2px rgba(0,0,0,0.25);
-    border-radius: 10px;
-}
-.button:hover {
-    border-color: rgba(0,0,0,0.5);
-}
-
-.input {
-    border: solid 2px rgba(0,0,0,0.25);
-    border-radius: 10px;
-    padding-left: 10px;
-    font-size: 13px;
-    height: 23.5px;
-    width: 100%;
-    margin-right: 7px;
-}
-.input:hover {
-    border-color: rgba(0,0,0,0.5);
-}
-::-webkit-input-placeholder {
-    color: rgba(0,0,0,0.4);
+.dice-settings-options {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
 }
 
 
-.input2 {
-    height: 25px;
+.number-input {
+    height: 30px;
+    width: 30px;
+
     border: 2px solid rgba(0,0,0,0.25);
     border-radius: 10px;
     color: rgba(0,0,0,0.3);
-    margin: 0 7px 0 auto;
-    width: 25px;
+
     text-align: center;
 }
-.input2:hover {
+
+.number-input:hover {
     border-color: rgba(0,0,0,0.5);
 }
+
 input[type=number]::-webkit-inner-spin-button {
     display:none;
 }

@@ -245,7 +245,7 @@ h3 {
     text-align: center;
 }
 
-.input2 {
+.number-input {
     height: 25px;
     border: 2px solid rgba(0,0,0,0.25);
     border-radius: 10px;
@@ -254,7 +254,7 @@ h3 {
     width: 25px;
     text-align: center;
 }
-.input2:hover {
+.number-input:hover {
     border-color: rgba(0,0,0,0.5);
 }
 input[type=number]::-webkit-inner-spin-button {

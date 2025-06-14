@@ -29,8 +29,8 @@
                     @if(gameConfig.classicDice.isBalanced) {
                         <div class="dice-settings-balance">
                             <div class="dice-settings-description">Degree of Random:</div>
-                            <div class="dice-mode">
-                                <input type="number" min="0" max="35" class="input2" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
+                            <div class="dice-settings-options">
+                                <input type="number" min="0" max="35" class="number-input" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
                                 <button class="small-btn">Reshuffle</button>
                             </div>
                         </div>
@@ -41,8 +41,8 @@
                  @if(gameConfig.eventDice.isBalanced) {
                      <div class="dice-settings-balance">
                         <div class="dice-settings-description">Degree of Random:</div>
-                        <div class="dice-mode">
-                            <input type="number" min="0" max="5" class="input2" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
+                        <div class="dice-settings-options">
+                            <input type="number" min="0" max="5" class="number-input" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
                             <button class="small-btn">Reshuffle</button>
                         </div>
                      </div>
