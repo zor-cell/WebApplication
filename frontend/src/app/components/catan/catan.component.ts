@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CatanGameSettingsComponent} from "./game-settings/game-settings.component";
 import {GameState} from "../../dto/catan/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -9,6 +9,9 @@ import {DiceRoll} from "../../dto/catan/DiceRoll";
 import {ProjectHeaderComponent} from "../projects/project-header/project-header.component";
 import {ProjectService} from "../../services/project.service";
 import {ProjectMetadata} from "../../dto/projects/responses";
+import {BaseChartDirective} from "ng2-charts";
+import {ChartData, ChartDataset, ChartOptions} from "chart.js";
+import {HistogramComponent} from "./histogram/histogram.component";
 
 @Component({
   selector: 'app-catan',
@@ -18,7 +21,9 @@ import {ProjectMetadata} from "../../dto/projects/responses";
     NgForOf,
     NgClass,
     DiceRollComponent,
-    ProjectHeaderComponent
+    ProjectHeaderComponent,
+    BaseChartDirective,
+    HistogramComponent
   ],
   templateUrl: './catan.component.html',
   standalone: true,
@@ -26,6 +31,13 @@ import {ProjectMetadata} from "../../dto/projects/responses";
 })
 export class CatanComponent implements OnInit {
   gameState!: GameState;
+  showChart: boolean = false;
+
+  get currentRoll(): DiceRoll | null {
+    if(!this.gameState || this.gameState.diceRolls.length === 0) return null;
+
+    return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
+  }
 
   constructor(private globals: Globals, private catanService: CatanService) {}
 
@@ -40,11 +52,6 @@ export class CatanComponent implements OnInit {
       })
   }
 
-  get currentRoll(): DiceRoll | null {
-    if(this.gameState === null || this.gameState.diceRolls.length === 0) return null;
-
-    return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
-  }
 
   rollDice(isAlchemist = false) {
     this.catanService.rollDice(isAlchemist).subscribe({
@@ -54,8 +61,10 @@ export class CatanComponent implements OnInit {
       error: err => {
         this.globals.handleError(err);
       }
-    })
+    });
   }
 
-  protected readonly Array = Array;
+  toggleChart() {
+    this.showChart = !this.showChart;
+  }
 }

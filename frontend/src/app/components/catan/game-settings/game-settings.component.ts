@@ -76,7 +76,7 @@ export class CatanGameSettingsComponent implements OnInit {
   clear() {
     this.catanService.clear().subscribe({
       next: res => {
-
+        this.hasSession = false;
       },
       error: err => {
         this.globals.handleError(err);

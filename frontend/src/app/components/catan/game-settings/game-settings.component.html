@@ -53,7 +53,8 @@
         </div>
     </section>
 
-    <div class="flex-container m-3">
+    <div class="config-actions">
+        <button class="small-btn" [disabled]="!hasSession" (click)="clear()">Clear</button>
         @if(hasSession) {
             <button class="small-btn" (click)="continueGame()">Continue</button>
         } @else {

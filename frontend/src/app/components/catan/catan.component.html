@@ -1,47 +1,56 @@
 <app-project-header/>
 
-<div>
-    <section class="main-container2">
-        <div class="flex-container2" id="player-turn">
-            <div id="list2">
-                <ol>
-                    <ng-container *ngFor="let team of gameState.gameConfig.teams; let i = index">
-                        <li [id]="(i === gameState.currentPlayerTurn) ? 'turn' : ''">{{team.name}}</li>
+<div *ngIf="gameState" class="main-container">
+    <div>
+        <section class="game-container">
+            <div class="flex-container2" id="player-turn">
+                <div id="list2">
+                    <ol>
+                        <ng-container *ngFor="let team of gameState.gameConfig.teams; let i = index">
+                            <li [id]="(i === gameState.currentPlayerTurn) ? 'turn' : ''">{{team.name}}</li>
+                        </ng-container>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="buttons-flex">
+                <div class="card-info">
+                    <h4 *ngIf="gameState.gameConfig.classicDice.isBalanced" class="card-info-text">{{gameState.classicCards.length}} / 36</h4>
+                    <h4 *ngIf="gameState.gameConfig.eventDice.isBalanced" class="card-info-text">{{ gameState.eventCards.length }} / 6</h4>
+                </div>
+
+                <button (click)="rollDice()" id="roll-button">Dice</button>
+                <button (click)="rollDice(true)" id="alchemist-button">Alchemist</button>
+            </div>
+
+            <div class="flex-container2">
+                <div class="current-turn">
+                    <div id="current-turn-player">
+                        <p class="mt-3">{{gameState.gameConfig.teams[gameState.currentPlayerTurn].name}}</p>
+                    </div>
+                    <b class="spacer">
+                        |
+                    </b>
+                    <div id="current-turn-roll">
+                        <catan-dice-roll [diceRoll]="currentRoll"/>
+                    </div>
+                </div>
+                <div class="ship-flex">
+                    <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
+                        <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg">
+                        <div *ngIf="i !== gameState.currentShipTurn"
+                             [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last' : 'ship-tile'"></div>
                     </ng-container>
-                </ol>
-            </div>
-        </div>
-
-        <div id="buttons-flex">
-            <div class="card-info">
-                <h4 *ngIf="gameState.gameConfig.classicDice.isBalanced" class="card-info-text">{{gameState.classicCards.length}} / 36</h4>
-                <h4 *ngIf="gameState.gameConfig.eventDice.isBalanced" class="card-info-text">{{ gameState.eventCards.length }} / 6</h4>
-            </div>
-
-            <button (click)="rollDice()" id="roll-button">Dice</button>
-            <button (click)="rollDice(true)" id="alchemist-button">Alchemist</button>
-        </div>
-
-        <div class="flex-container2">
-            <div class="current-turn">
-                <div id="current-turn-player">
-                    <p class="mt-3">{{gameState.gameConfig.teams[gameState.currentPlayerTurn].name}}</p>
-                </div>
-                <b class="spacer">
-                    |
-                </b>
-                <div id="current-turn-roll">
-                    <catan-dice-roll [diceRoll]="currentRoll"/>
+                    <p *ngIf="gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1" id="attack">CHARGE</p>
                 </div>
             </div>
-            <div class="ship-flex">
-                <ng-container *ngFor="let _ of Array(gameState.gameConfig.maxShipTurns).fill(0); let i = index">
-                    <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg">
-                    <div *ngIf="i !== gameState.currentShipTurn"
-                         [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last' : 'ship-tile'"></div>
-                </ng-container>
-                <p *ngIf="gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1" id="attack">CHARGE</p>
-            </div>
+        </section>
+
+        <div class="game-actions">
+            <button class="small-btn" (click)="toggleChart()">Toggle History</button>
+            <button class="small-btn" (click)="null">End</button>
         </div>
-    </section>
+    </div>
+
+    <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls"/>
 </div>
