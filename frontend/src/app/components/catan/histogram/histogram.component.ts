@@ -14,7 +14,7 @@ import {DiceRoll} from "../../../dto/catan/DiceRoll";
   standalone: true,
   styleUrl: './histogram.component.css'
 })
-export class HistogramComponent implements OnChanges, OnInit {
+export class CatanHistogramComponent implements OnChanges, OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @Input({required: true}) diceRolls!: DiceRoll[];
   @Input() isVisible: boolean = false;

@@ -37,7 +37,7 @@
                 </div>
                 <div class="ship-flex">
                     <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
-                        <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg">
+                        <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="../../../../assets/catan/e_2b.svg">
                         <div *ngIf="i !== gameState.currentShipTurn"
                              [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last' : 'ship-tile'"></div>
                     </ng-container>

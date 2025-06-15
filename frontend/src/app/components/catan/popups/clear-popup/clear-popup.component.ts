@@ -13,7 +13,7 @@ import {firstValueFrom} from "rxjs";
   standalone: true,
   styleUrl: './clear-popup.component.css'
 })
-export class ClearPopupComponent {
+export class CatanClearPopupComponent {
   @ViewChild('clearPopup') clearTemplate!: TemplateRef<any>;
 
   @Output() hasSessionEvent = new EventEmitter<boolean>();

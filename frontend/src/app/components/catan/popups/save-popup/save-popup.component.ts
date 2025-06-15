@@ -16,7 +16,7 @@ import {Globals} from "../../../../classes/globals";
   standalone: true,
   styleUrl: './save-popup.component.css'
 })
-export class SavePopupComponent implements OnInit {
+export class CatanSavePopupComponent implements OnInit {
   @ViewChild('savePopup') saveTemplate!: TemplateRef<any>;
   saveForm!: FormGroup;
 

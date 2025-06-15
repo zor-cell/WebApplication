@@ -1,19 +1,16 @@
-import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {GameConfig} from "../../../dto/catan/GameConfig";
 import {CatanService} from "../../../services/catan.service";
 import {Globals} from "../../../classes/globals";
-import {GameState} from "../../../dto/catan/GameState";
-import {PlayerConfig} from "../../../dto/connect4/data";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
-import {PopupService} from "../../../services/popup.service";
-import {ClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
+import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 
 @Component({
   selector: 'catan-game-settings',
@@ -25,14 +22,14 @@ import {ClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
     NgIf,
     PlayerSelectComponent,
     ProjectHeaderComponent,
-    ClearPopupComponent
+    CatanClearPopupComponent
   ],
-  templateUrl: './game-settings.component.html',
+  templateUrl: './config.component.html',
   standalone: true,
-  styleUrl: './game-settings.component.css'
+  styleUrl: './config.component.css'
 })
-export class CatanGameSettingsComponent implements OnInit {
-  @ViewChild('clearPopup') clearPopup!: ClearPopupComponent;
+export class CatanConfigComponent implements OnInit {
+  @ViewChild('clearPopup') clearPopup!: CatanClearPopupComponent;
 
   project!: ProjectMetadata;
   gameConfig: GameConfig = {

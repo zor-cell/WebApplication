@@ -11,6 +11,6 @@ import {NgIf} from "@angular/common";
   standalone: true,
   styleUrl: './dice-roll.component.css'
 })
-export class DiceRollComponent {
+export class CatanDiceRollComponent {
     @Input({required: true}) diceRoll!: DiceRoll | null;
 }
