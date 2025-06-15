@@ -1,4 +1,14 @@
 /* Simulation */
+.dice-header {
+    align-self: center;
+    margin: 0;
+    color: rgba(0,0,0,0.5);
+    text-align: center;
+
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 
 .game-container {
     margin: 0 auto;
@@ -111,7 +121,11 @@
 }
 
 .card-info {
-    margin: auto auto 10px auto;
+    margin: auto 8px 10px 8px;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 }
 
 .start-button {
