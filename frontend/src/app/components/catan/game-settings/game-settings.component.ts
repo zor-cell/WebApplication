@@ -13,6 +13,7 @@ import {ProjectHeaderComponent} from "../../projects/project-header/project-head
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 import {PopupService} from "../../../services/popup.service";
+import {ClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 
 @Component({
   selector: 'catan-game-settings',
@@ -23,14 +24,15 @@ import {PopupService} from "../../../services/popup.service";
     NgForOf,
     NgIf,
     PlayerSelectComponent,
-    ProjectHeaderComponent
+    ProjectHeaderComponent,
+    ClearPopupComponent
   ],
   templateUrl: './game-settings.component.html',
   standalone: true,
   styleUrl: './game-settings.component.css'
 })
 export class CatanGameSettingsComponent implements OnInit {
-  @ViewChild('clearPopup') clearTemplate!: TemplateRef<any>;
+  @ViewChild('clearPopup') clearPopup!: ClearPopupComponent;
 
   project!: ProjectMetadata;
   gameConfig: GameConfig = {
@@ -41,7 +43,7 @@ export class CatanGameSettingsComponent implements OnInit {
     },
     eventDice: {
       isBalanced: false,
-      shuffleThreshold: 5
+      shuffleThreshold: 2
     },
     maxShipTurns: 7
   };
@@ -50,7 +52,6 @@ export class CatanGameSettingsComponent implements OnInit {
   constructor(private globals: Globals,
               private projectService: ProjectService,
               private catanService: CatanService,
-              private popupService: PopupService,
               private router: Router,
               private route: ActivatedRoute) {}
 
@@ -77,26 +78,6 @@ export class CatanGameSettingsComponent implements OnInit {
     });
   }
 
-  openClearDialog() {
-    this.popupService.createPopup(
-        'Clear Session Data',
-        this.clearTemplate,
-        this.clear.bind(this),
-        undefined,
-        'Clear');
-  }
-
-  clear() {
-    this.catanService.clear().subscribe({
-      next: res => {
-        this.hasSession = false;
-      },
-      error: err => {
-        this.globals.handleError(err);
-      }
-    });
-  }
-
   startGame() {
     if(this.hasSession) return;
 
@@ -114,6 +95,10 @@ export class CatanGameSettingsComponent implements OnInit {
     if(!this.hasSession) return;
 
     this.goToGame();
+  }
+
+  openClearPopup() {
+    this.clearPopup.openClearPopup();
   }
 
   private goToGame() {

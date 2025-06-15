@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CatanGameSettingsComponent} from "./game-settings/game-settings.component";
 import {GameState} from "../../dto/catan/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -12,6 +12,9 @@ import {ProjectMetadata} from "../../dto/projects/responses";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartData, ChartDataset, ChartOptions} from "chart.js";
 import {HistogramComponent} from "./histogram/histogram.component";
+import {PopupService} from "../../services/popup.service";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {SavePopupComponent} from "./popups/save-popup/save-popup.component";
 
 @Component({
   selector: 'app-catan',
@@ -23,13 +26,17 @@ import {HistogramComponent} from "./histogram/histogram.component";
     DiceRollComponent,
     ProjectHeaderComponent,
     BaseChartDirective,
-    HistogramComponent
+    HistogramComponent,
+    ReactiveFormsModule,
+    SavePopupComponent
   ],
   templateUrl: './catan.component.html',
   standalone: true,
   styleUrl: './catan.component.css'
 })
 export class CatanComponent implements OnInit {
+  @ViewChild('savePopup') savePopup!: SavePopupComponent;
+
   gameState!: GameState;
   showChart: boolean = false;
 
@@ -39,19 +46,12 @@ export class CatanComponent implements OnInit {
     return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
   }
 
-  constructor(private globals: Globals, private catanService: CatanService) {}
+  constructor(private globals: Globals,
+              private catanService: CatanService) {}
 
   ngOnInit() {
-      this.catanService.state().subscribe({
-        next: res => {
-          this.gameState = res;
-        },
-        error: err => {
-          this.globals.handleError(err);
-        }
-      })
+    this.getSession();
   }
-
 
   rollDice(isAlchemist = false) {
     this.catanService.rollDice(isAlchemist).subscribe({
@@ -67,15 +67,19 @@ export class CatanComponent implements OnInit {
   toggleChart() {
     this.showChart = !this.showChart;
   }
-  
-  save(winnerTeam: string) {
-    this.catanService.save(winnerTeam).subscribe({
-      next: res => {
 
+  openSavePopup() {
+    this.savePopup.openSaveDialog();
+  }
+
+  private getSession() {
+    this.catanService.state().subscribe({
+      next: res => {
+        this.gameState = res;
       },
       error: err => {
         this.globals.handleError(err);
       }
-    })
+    });
   }
 }

@@ -85,22 +85,16 @@ export class PlayerSelectComponent implements OnInit {
     });
   }
 
-  openPlayerDialog() {
+  openPlayerPopup() {
     this.popupService.createPopup(
         'Create New Player',
         this.formTemplate,
-        this.submitHandler.bind(this),
-        this.submitValidation.bind(this),
+        this.popupSubmitCallback.bind(this),
+        () => this.playerForm.valid,
         'Create');
   }
 
-  submitValidation(): boolean {
-    this.playerForm.markAllAsTouched();
-
-    return this.playerForm.valid;
-  }
-
-  submitHandler(): void {
+  popupSubmitCallback(): void {
     const player: PlayerDetails = {
       name: this.playerForm.value.name
     }

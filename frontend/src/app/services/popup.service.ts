@@ -11,7 +11,7 @@ export class PopupService {
 
   createPopup(title: string,
               bodyTemplate: TemplateRef<any>,
-              submitHandler: () => void,
+              callback: (success: boolean) => void,
               submitValidator?: () => boolean,
               submitText?: string,
               cancelText?: string) {
@@ -27,10 +27,10 @@ export class PopupService {
 
     modalRef.result.then(
         () => {
-          submitHandler();
+          callback(true);
         },
         () => {
-
+            callback(false);
         }
     );
   }

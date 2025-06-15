@@ -48,9 +48,15 @@
 
         <div class="game-actions">
             <button class="small-btn" (click)="toggleChart()">Toggle History</button>
-            <button class="small-btn" (click)="null">End</button>
+            <button class="small-btn" (click)="openSavePopup()">End</button>
         </div>
     </div>
 
     <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls"/>
 </div>
+
+<!--
+<app-test []> </app-test>
+--->
+
+<catan-save-popup #savePopup *ngIf="gameState" [teams]="gameState.gameConfig.teams"></catan-save-popup>
