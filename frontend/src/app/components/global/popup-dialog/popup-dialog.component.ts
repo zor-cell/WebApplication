@@ -1,42 +1,39 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {MatButton} from "@angular/material/button";
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {PopupDialogData} from "../../../dto/global/PopupDialogData";
+import {Component, ContentChild, Inject, Input, OnInit, TemplateRef} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgIf, NgTemplateOutlet} from "@angular/common";
 
 
 @Component({
   selector: 'app-popup-dialog',
   imports: [
-    MatDialogContent,
-    MatDialogTitle,
-    MatDialogActions,
-    MatButton,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgTemplateOutlet,
+    NgIf
   ],
   templateUrl: './popup-dialog.component.html',
   standalone: true,
   styleUrl: './popup-dialog.component.css'
 })
-export class PopupDialogComponent implements OnInit {
-  playerForm!: FormGroup;
+export class PopupDialogComponent {
+  @Input() title: string = 'Modal';
+  @Input() cancelText: string = 'Cancel';
+  @Input() submitText: string = 'Submit';
 
-  constructor(
-      public dialogRef: MatDialogRef<PopupDialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: PopupDialogData,
-      private fb: FormBuilder
-  ) {}
+  @Input({required: true}) bodyTemplate!: TemplateRef<any>;
+  @Input() submitValidator: (() => boolean) | null = null;
 
-  ngOnInit(): void {
-    this.playerForm = this.fb.group({
-      name: ['', Validators.required]
-    });
+  constructor(public activeModal: NgbActiveModal) {}
+
+  get valid() {
+    if(this.submitValidator === null) return true;
+
+    return this.submitValidator();
   }
 
   submit() {
-
+    if(this.valid) {
+      this.activeModal.close('submit');
+    }
   }
-
-
 }

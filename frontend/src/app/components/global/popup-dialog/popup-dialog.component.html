@@ -1,13 +1,10 @@
-<form [formGroup]="playerForm" (ngSubmit)="submit()">
-    <h1 mat-dialog-title>Create New Player</h1>
-    <div mat-dialog-content>
-            <label>
-                Name:
-                <input type="text" formControlName="name">
-            </label>
-    </div>
-    <div mat-dialog-actions class="dialog-actions">
-        <button class="btn btn-outline-danger" (click)="dialogRef.close(false)">Cancel</button>
-        <button type=submit class="btn btn-primary">OK</button>
-    </div>
-</form>
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+</div>
+<div class="modal-body">
+    <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+</div>
+<div class="modal-footer dialog-actions">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel')">{{ cancelText }}</button>
+    <button [disabled]="!valid" type="button" class="btn btn-primary" (click)="submit()">{{ submitText }}</button>
+</div>

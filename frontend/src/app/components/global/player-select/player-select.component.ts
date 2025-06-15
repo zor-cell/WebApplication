@@ -5,14 +5,14 @@ import {
   Input,
   OnInit,
   Output,
-  QueryList,
+  QueryList, TemplateRef, ViewChild,
   ViewChildren
 } from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/global/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {
   CdkDrag,
   CdkDragDrop,
@@ -23,9 +23,10 @@ import {
 } from "@angular/cdk/drag-drop";
 import {Subscription, timer} from "rxjs";
 import {Team} from "../../../dto/global/Team";
-import {MatDialog} from "@angular/material/dialog";
 import {PopupDialogData} from "../../../dto/global/PopupDialogData";
 import {PopupDialogComponent} from "../popup-dialog/popup-dialog.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {PopupService} from "../../../services/popup.service";
 
 @Component({
   selector: 'app-player-select',
@@ -37,13 +38,18 @@ import {PopupDialogComponent} from "../popup-dialog/popup-dialog.component";
     CdkDropList,
     CdkDragPreview,
     CdkDropListGroup,
-    NgClass
+    NgClass,
+    ReactiveFormsModule,
+    PopupDialogComponent
   ],
   templateUrl: './player-select.component.html',
   standalone: true,
   styleUrl: './player-select.component.css'
 })
 export class PlayerSelectComponent implements OnInit {
+  @ViewChild('playerPopup') formTemplate!: TemplateRef<any>;
+  playerForm!: FormGroup;
+
   @Input() minPlayers: number = 2;
   @Input() maxPlayers: number = 4;
   @Input() allowTeams: boolean = true;
@@ -53,16 +59,17 @@ export class PlayerSelectComponent implements OnInit {
 
   allPlayers: PlayerDetails[] = []
   availablePlayers: PlayerDetails[] = [];
-
   currentPlayer: PlayerDetails | null = null;
-  team: PlayerDetails[] = [];
-
 
   teamHostIndex: number = -1;
 
-  constructor(private globals: Globals, private playerService: PlayerService, private dialog: MatDialog) {}
+  constructor(private globals: Globals, private playerService: PlayerService, private fb: FormBuilder, private popupService: PopupService) {}
 
   ngOnInit() {
+    this.playerForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(1)]]
+    });
+
     this.playerService.getPlayers().subscribe({
       next: res => {
         this.allPlayers = res;
@@ -79,21 +86,24 @@ export class PlayerSelectComponent implements OnInit {
   }
 
   openPlayerDialog() {
-    const data: PopupDialogData = {
-      title: 'Add Player',
-      message: 'Are you sure you want to do this'
-    };
+    this.popupService.createPopup('Create New Player',
+        this.formTemplate,
+        this.submitValidation.bind(this),
+        this.submitHandler.bind(this),
+        'Create');
+  }
 
-    const dialogRef = this.dialog.open(PopupDialogComponent, {
-      data: data
-    })
+  submitValidation(): boolean {
+    this.playerForm.markAllAsTouched();
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('New player created:', result);
-        // Add result to your player list
-      }
-    });
+    return this.playerForm.valid;
+  }
+
+  submitHandler(): void {
+    const player: PlayerDetails = {
+      name: this.playerForm.value.name
+    }
+    this.addAvailablePlayer(player);
   }
 
   addAvailablePlayer(player: PlayerDetails) {
