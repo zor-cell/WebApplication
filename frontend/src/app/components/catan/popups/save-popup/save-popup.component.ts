@@ -33,7 +33,7 @@ export class SavePopupComponent implements OnInit {
     });
   }
 
-  openSaveDialog() {
+  openPopup() {
     this.popupService.createPopup(
         'Save Game Data',
         this.saveTemplate,
@@ -45,16 +45,20 @@ export class SavePopupComponent implements OnInit {
 
   private callback(success: boolean) {
     if(success) {
-      this.catanService.save(this.saveForm.value.winnerTeam).subscribe({
-        next: res => {
-          this.saveForm.reset();
-        },
-        error: err => {
-          this.globals.handleError(err);
-        }
-      });
+      this.saveGame();
     } else {
       this.saveForm.reset();
     }
+  }
+
+  private saveGame() {
+    this.catanService.save(this.saveForm.value.winnerTeam).subscribe({
+      next: res => {
+        this.saveForm.reset();
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    });
   }
 }

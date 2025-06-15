@@ -24,9 +24,10 @@ import {
 import {Subscription, timer} from "rxjs";
 import {Team} from "../../../dto/global/Team";
 import {PopupDialogData} from "../../../dto/global/PopupDialogData";
-import {PopupDialogComponent} from "../popup/popup-dialog.component";
+import {PopupDialogComponent} from "../popups/popup-dialog.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PopupService} from "../../../services/popup.service";
+import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 
 @Component({
   selector: 'app-player-select',
@@ -40,15 +41,15 @@ import {PopupService} from "../../../services/popup.service";
     CdkDropListGroup,
     NgClass,
     ReactiveFormsModule,
-    PopupDialogComponent
+    PopupDialogComponent,
+    NewPlayerPopupComponent
   ],
   templateUrl: './player-select.component.html',
   standalone: true,
   styleUrl: './player-select.component.css'
 })
 export class PlayerSelectComponent implements OnInit {
-  @ViewChild('playerPopup') formTemplate!: TemplateRef<any>;
-  playerForm!: FormGroup;
+  @ViewChild('playerPopup') playerPopup!: NewPlayerPopupComponent;
 
   @Input() minPlayers: number = 2;
   @Input() maxPlayers: number = 4;
@@ -66,50 +67,7 @@ export class PlayerSelectComponent implements OnInit {
   constructor(private globals: Globals, private playerService: PlayerService, private fb: FormBuilder, private popupService: PopupService) {}
 
   ngOnInit() {
-    this.playerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(1)]]
-    });
-
-    this.playerService.getPlayers().subscribe({
-      next: res => {
-        this.allPlayers = res;
-        this.availablePlayers = this.allPlayers.map(player => this.copy(player));
-
-        if(this.availablePlayers.length > 0) {
-          this.currentPlayer = this.copy(this.availablePlayers[0]);
-        }
-      },
-      error: err => {
-        this.globals.handleError(err);
-      }
-    });
-  }
-
-  openPlayerPopup() {
-    this.popupService.createPopup(
-        'Create New Player',
-        this.formTemplate,
-        this.popupSubmitCallback.bind(this),
-        () => this.playerForm.valid,
-        'Create');
-  }
-
-  popupSubmitCallback(): void {
-    const player: PlayerDetails = {
-      name: this.playerForm.value.name
-    }
-    this.addAvailablePlayer(player);
-  }
-
-  addAvailablePlayer(player: PlayerDetails) {
-    this.playerService.savePlayer(player).subscribe({
-      next: res => {
-        this.availablePlayers.push(res);
-      },
-      error: err => {
-        this.globals.handleError(err);
-      }
-    })
+    this.getPlayers();
   }
 
   mergeTeam(teamIndex: number) {
@@ -194,6 +152,26 @@ export class PlayerSelectComponent implements OnInit {
     } else {
       this.teamHostIndex = teamIndex;
     }
+  }
+
+  getPlayers() {
+    this.playerService.getPlayers().subscribe({
+      next: res => {
+        this.allPlayers = res;
+        this.availablePlayers = this.allPlayers.map(player => this.copy(player));
+
+        if(this.availablePlayers.length > 0) {
+          this.currentPlayer = this.copy(this.availablePlayers[0]);
+        }
+      },
+      error: err => {
+        this.globals.handleError(err);
+      }
+    });
+  }
+
+  openPlayerPopup() {
+    this.playerPopup.openPopup();
   }
 
   private generateTeamName(players: PlayerDetails[]): string {

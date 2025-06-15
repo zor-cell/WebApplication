@@ -69,7 +69,7 @@ export class CatanComponent implements OnInit {
   }
 
   openSavePopup() {
-    this.savePopup.openSaveDialog();
+    this.savePopup.openPopup();
   }
 
   private getSession() {

@@ -98,7 +98,7 @@ export class CatanGameSettingsComponent implements OnInit {
   }
 
   openClearPopup() {
-    this.clearPopup.openClearPopup();
+    this.clearPopup.openPopup();
   }
 
   private goToGame() {

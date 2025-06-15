@@ -23,7 +23,7 @@ export class ClearPopupComponent {
               private catanService: CatanService,
               private fb: FormBuilder) {}
 
-  openClearPopup() {
+  openPopup() {
     this.popupService.createPopup(
         'Clear Game Data',
         this.clearTemplate,
