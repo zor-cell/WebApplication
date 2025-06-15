@@ -49,8 +49,7 @@ export class CatanConfigComponent implements OnInit {
   constructor(private globals: Globals,
               private projectService: ProjectService,
               private catanService: CatanService,
-              private router: Router,
-              private route: ActivatedRoute) {}
+              private router: Router) {}
 
   ngOnInit(): void {
     //get project metadata for header
@@ -99,6 +98,6 @@ export class CatanConfigComponent implements OnInit {
   }
 
   private goToGame() {
-    this.router.navigate(['game'], {relativeTo: this.route});
+    this.router.navigate(['projects/catan/game']);
   }
 }

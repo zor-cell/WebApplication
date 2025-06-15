@@ -103,20 +103,11 @@
     color: rgba(0,0,0,0.7);
     cursor: pointer;
 }
+
 #alchemist-button {
-    border: dashed 2px rgba(0,0,0,0.15);
-    color: rgba(0,0,0,0.2);
-    font-weight: bold;
-    background: white;
-    border-radius: 7px;
-    padding: 5px 10px;
-    width: 95px;
+    border-style: dashed;
+
     margin: 10px auto auto auto;
-}
-#alchemist-button:hover {
-    border-color: rgba(0,0,0,0.3);
-    color: rgba(0,0,0,0.3);
-    cursor: pointer;
 }
 
 .card-info {
@@ -174,8 +165,8 @@
     margin: 20px 0 0 0;
 }
 .ship-tile-current {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border: 1.5px solid rgba(0, 0, 0, 0.2);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
     padding: 4px;
@@ -209,12 +200,13 @@
     font-weight: bold;
     font-size: 13px;
     color: black;
-    padding: 8px 4px 0 3px;
     width: 223px;
     letter-spacing: 26.5px;
     margin: 0 auto;
     text-align: left;
     position: absolute;
+    line-height: 30px;
+    padding-left: 5px;
 }
 #safe1 {
     font-weight: bold;

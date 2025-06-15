@@ -1,9 +1,9 @@
-<div *ngIf="diceRoll">
+<div *ngIf="diceRoll" class="roll">
     <img class="dice" [src]="'assets/catan/' + diceRoll.dicePair.dice1 + '.svg'" width="20"/>
     <img class="dice" [src]="'assets/catan/' + diceRoll.dicePair.dice2 + '_red.svg'" width="20"/>
     <img class="dice" [src]="'assets/catan/' + diceRoll.diceEvent + '.svg'" width="20"/>
 </div>
 
 <div *ngIf="!diceRoll">
-    <p class="roll"></p>
+    <p></p>
 </div>

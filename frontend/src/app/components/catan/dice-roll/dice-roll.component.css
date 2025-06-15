@@ -1,0 +1,10 @@
+.roll {
+    align-self: center;
+    justify-self: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    margin: auto 30px;
+}

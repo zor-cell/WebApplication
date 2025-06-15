@@ -12,6 +12,7 @@ import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component";
 import {Router} from "@angular/router";
+import {Team} from "../../../dto/global/Team";
 
 @Component({
   selector: 'app-catan',
@@ -41,6 +42,14 @@ export class CatanGameComponent implements OnInit {
     if(!this.gameState || this.gameState.diceRolls.length === 0) return null;
 
     return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
+  }
+
+  get lastPlayer(): Team | null {
+    if(!this.gameState || this.gameState.gameConfig.teams.length === 0) return null;
+
+
+    const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
+    return this.gameState.gameConfig.teams[index];
   }
 
   constructor(private globals: Globals,

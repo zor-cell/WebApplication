@@ -6,11 +6,15 @@ import {CatanGameComponent} from "./components/catan/game/game.component";
 import {CatanConfigComponent} from "./components/catan/config/config.component";
 
 export const routes: Routes = [
+    //project routing
     {path: '', redirectTo: 'projects', pathMatch: 'full'},
     {path: 'projects', component: ProjectsComponent},
     {path: 'projects/:name/info', component: ProjectInfoComponent},
+
+    //connect4 routing
     {path: 'projects/connect4', component: Connect4Component},
 
+    //catan routing
     {path: 'projects/catan', redirectTo: 'projects/catan/config', pathMatch: 'full'},
     {path: 'projects/catan/config', component: CatanConfigComponent},
     {path: 'projects/catan/game', component: CatanGameComponent}
