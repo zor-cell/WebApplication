@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProjectDetails} from "../../../dto/projects/responses";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
-import {NgIf, Location} from "@angular/common";
+import {Location, NgIf} from "@angular/common";
 import {ProjectHeaderComponent} from "../project-header/project-header.component";
 
 @Component({

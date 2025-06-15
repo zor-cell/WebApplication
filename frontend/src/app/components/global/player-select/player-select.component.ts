@@ -1,31 +1,19 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  QueryList, TemplateRef, ViewChild,
-  ViewChildren
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/global/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   CdkDrag,
   CdkDragDrop,
-  CdkDragPreview, CdkDragSortEvent,
-  CdkDropList, CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem
+  CdkDragPreview,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray
 } from "@angular/cdk/drag-drop";
-import {Subscription, timer} from "rxjs";
 import {Team} from "../../../dto/global/Team";
-import {PopupDialogData} from "../../../dto/global/PopupDialogData";
 import {PopupDialogComponent} from "../popups/popup-dialog.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PopupService} from "../../../services/popup.service";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 

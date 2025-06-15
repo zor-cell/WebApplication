@@ -1,8 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Location, NgIf} from "@angular/common";
-import {ActivatedRoute, RouterLink} from "@angular/router";
-import {Globals} from "../../../classes/globals";
-import {ProjectService} from "../../../services/project.service";
+import {RouterLink} from "@angular/router";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 
 @Component({

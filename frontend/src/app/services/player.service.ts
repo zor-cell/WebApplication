@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable} from "rxjs";
-import {ProjectDetails, ProjectMetadata} from "../dto/projects/responses";
 import {PlayerDetails} from "../dto/global/PlayerDetails";
 
 @Injectable({

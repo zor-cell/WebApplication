@@ -1,5 +1,5 @@
-import {Component, ContentChild, Inject, Input, OnInit, TemplateRef} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
+import {ReactiveFormsModule} from "@angular/forms";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, NgTemplateOutlet} from "@angular/common";
 

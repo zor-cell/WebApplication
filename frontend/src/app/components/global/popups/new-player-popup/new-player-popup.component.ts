@@ -1,9 +1,7 @@
-import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Team} from "../../../../dto/global/Team";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {CatanService} from "../../../../services/catan.service";
 import {PlayerDetails} from "../../../../dto/global/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
 

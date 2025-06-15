@@ -6,7 +6,7 @@ import {GameConfig} from "../../../dto/catan/GameConfig";
 import {CatanService} from "../../../services/catan.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";

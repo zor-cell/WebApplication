@@ -1,10 +1,8 @@
-import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Team} from "../../../../dto/global/Team";
+import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
+import {FormBuilder} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
-import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'catan-clear-popup',

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
 import {ProjectService} from "../../services/project.service";
 import {Globals} from "../../classes/globals";
 import {ProjectMetadata} from "../../dto/projects/responses";
