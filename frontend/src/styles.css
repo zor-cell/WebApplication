@@ -1,7 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Calibri, "Helvetica Neue", sans-serif; }
+
+.main-container {
+    margin: 0 3.5rem 0 3.5rem;
+    padding-bottom: 3rem;
+}
+
 .flex-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.light-bold {
+    font-weight: bold;
+    color: rgba(0,0,0,0.5);
+}
+
+.success-color {
+    color: #198754;
+}
+
+.default-color {
+    color: #0d6efd;
+}
+
+.danger-color {
+    color: #dc3545;
+}
+
+.small-btn {
+    background-color: white;
+    color: rgba(0,0,0,0.3);
+
+    border: solid 2px rgba(0,0,0,0.25);
+    border-radius: 10px;
+
+    height: 30px;
+
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.small-btn:disabled {
+    background-color: #f0f0f0;
+    color: rgba(0,0,0,0.2);
+    border-color: rgba(0,0,0,0.1);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.small-btn:not(:disabled):hover {
+    border-color: rgba(0,0,0,0.5);
+    color: rgba(0,0,0,0.5);
+    cursor: pointer;
 }

@@ -7,6 +7,7 @@ import {GameState, PlayerConfig} from "../../dto/connect4/data";
 import {Globals} from "../../classes/globals";
 import {PlayerSettingsComponent} from "./player-settings/player-settings.component";
 import {DelayLoader} from "../../classes/delay-loader";
+import {ProjectHeaderComponent} from "../projects/project-header/project-header.component";
 
 @Component({
     selector: 'app-connect4',
@@ -14,7 +15,8 @@ import {DelayLoader} from "../../classes/delay-loader";
         CellComponent,
         NgForOf,
         PlayerSettingsComponent,
-        NgIf
+        NgIf,
+        ProjectHeaderComponent
     ],
     templateUrl: './connect4.component.html',
     standalone: true,

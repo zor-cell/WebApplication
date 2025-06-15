@@ -1,8 +1,11 @@
 export interface ProjectMetadata {
     name: string,
     createdAt: Date,
-    websiteUrl: string | null,
-    githubUrl: string | null
+    description: string,
+    imagePath: string | null,
+    githubUrl: string | null,
+    hasWebsite: boolean,
+    isFavorite: boolean
 }
 
 export interface ProjectDetails {

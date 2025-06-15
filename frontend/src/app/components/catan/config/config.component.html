@@ -1,0 +1,66 @@
+<app-project-header [project]="project"/>
+
+<div class="main-container">
+    <section class="config-container">
+        <div class="config-grid-container">
+            <h3 class="config-header">Players</h3>
+            <app-player-select [selectedTeams]="gameConfig.teams" (selectedTeamEvent)="gameConfig.teams = $event"></app-player-select>
+        </div>
+
+        <div class="config-grid-container">
+            <h3 class="config-header">Mode</h3>
+            <div class="dice-mode-grid">
+                <div class="dice-mode-classic">
+                    <img class="dice-img" ngSrc="assets/catan/4.svg" height="22" width="22" alt="">
+                    <img class="dice-img"  ngSrc="assets/catan/3_red.svg" height="22" width="22" alt="">
+                </div>
+                <app-slider-checkbox [isChecked]="gameConfig.classicDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.classicDice.isBalanced = $event"></app-slider-checkbox>
+
+                <div class="dice-mode-classic">
+                    <img class="dice-img" ngSrc="assets/catan/b.svg" height="25" width="25" alt="">
+                </div>
+                <app-slider-checkbox [isChecked]="gameConfig.eventDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.eventDice.isBalanced = $event"></app-slider-checkbox>
+            </div>
+        </div>
+
+        <div class="config-grid-container">
+            <h3 class="config-header">Settings</h3>
+            <div class="dice-settings">
+                    @if(gameConfig.classicDice.isBalanced) {
+                        <div class="dice-settings-balance">
+                            <div class="dice-settings-description">Degree of Random:</div>
+                            <div class="dice-settings-options">
+                                <input type="number" min="0" max="35" class="number-input" [(ngModel)]="gameConfig.classicDice.shuffleThreshold">
+                                <button class="small-btn">Reshuffle</button>
+                            </div>
+                        </div>
+                    } @else {
+                        <div class="dice-settings-random">True Random</div>
+                    }
+
+                 @if(gameConfig.eventDice.isBalanced) {
+                     <div class="dice-settings-balance">
+                        <div class="dice-settings-description">Degree of Random:</div>
+                        <div class="dice-settings-options">
+                            <input type="number" min="0" max="5" class="number-input" [(ngModel)]="gameConfig.eventDice.shuffleThreshold">
+                            <button class="small-btn">Reshuffle</button>
+                        </div>
+                     </div>
+                    } @else {
+                        <div class="dice-settings-random">True Random</div>
+                    }
+            </div>
+        </div>
+    </section>
+
+    <div class="config-actions">
+        @if(hasSession) {
+            <button class="small-btn" (click)="openClearPopup()">Clear</button>
+            <button class="small-btn" (click)="continueGame()">Continue</button>
+        } @else {
+            <button class="small-btn" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
+        }
+    </div>
+</div>
+
+<catan-clear-popup #clearPopup (hasSessionEvent)="hasSession = $event"></catan-clear-popup>

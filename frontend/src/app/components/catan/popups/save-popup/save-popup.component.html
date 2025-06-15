@@ -1,0 +1,10 @@
+<ng-template #savePopup>
+    <form [formGroup]="saveForm" novalidate>
+        <div class="mb-3">
+            <label for="winnerTeam" class="form-label">Winner</label>
+            <select id="winnerTeam" formControlName="winnerTeam" class="form-select">
+                <option *ngFor="let team of teams" [value]="team.name">{{team.name}}</option>
+            </select>
+        </div>
+    </form>
+</ng-template>

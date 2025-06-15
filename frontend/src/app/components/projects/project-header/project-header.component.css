@@ -1,0 +1,26 @@
+.project-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin: 1rem 2rem;
+}
+
+.project-header-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    color: #6c757d; /* Bootstrap's secondary text color */
+    font-size: 1.25rem;
+    transition: color 0.2s ease;
+}
+
+.btn-back:hover {
+    color: #000; /* Darker on hover */
+    cursor: pointer;
+}

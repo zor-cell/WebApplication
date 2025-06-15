@@ -14,7 +14,9 @@ export class Globals {
         }
     }
 
-    handleError(error: any): void {
-        console.error(error);
+    handleError(error: any, silent: boolean = false): void {
+        if(!silent) {
+            console.error(error);
+        }
     }
 }

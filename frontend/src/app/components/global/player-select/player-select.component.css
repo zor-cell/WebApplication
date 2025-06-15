@@ -1,0 +1,99 @@
+:host {
+    --player-line-height: 1.75rem;
+    --player-element-width: 110px;
+}
+
+.settings-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.select-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.4rem;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.drag-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 0.1rem;
+}
+
+.drag-element {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    height: var(--player-line-height);
+}
+
+.drag-player {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 0.2rem;
+    align-items: center;
+
+    overflow: clip;
+
+    border-radius: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    cursor: move;
+
+    width: var(--player-element-width);
+    height: var(--player-line-height);
+}
+
+.drag-player.highlighted {
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 8px rgba(10,110,250, 0.5); /* Elevation */
+}
+
+.player-number {
+}
+
+.player-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    text-align: left;
+}
+
+/* the cdk class is added to the currently dragged element*/
+.drag-player.cdk-drag-placeholder .player-number {
+    visibility: hidden;
+}
+
+.merge-icon:hover, .remove-icon:hover {
+    opacity: 0.8;
+}
+
+select {
+    border: solid 2px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding-left: 0.7rem;
+    height: 30px;
+    width: 125px;
+}

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlayerConfig, Version} from "../../../dto/connect4/data";
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgIf} from "@angular/common";

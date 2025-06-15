@@ -1,0 +1,9 @@
+<div *ngIf="diceRoll" class="roll">
+    <img class="dice" [src]="'assets/catan/' + diceRoll.dicePair.dice1 + '.svg'" width="20" alt=""/>
+    <img class="dice" [src]="'assets/catan/' + diceRoll.dicePair.dice2 + '_red.svg'" width="20" alt=""/>
+    <img class="dice" [src]="'assets/catan/' + diceRoll.diceEvent + '.svg'" width="20" alt=""/>
+</div>
+
+<div *ngIf="!diceRoll">
+    <p></p>
+</div>

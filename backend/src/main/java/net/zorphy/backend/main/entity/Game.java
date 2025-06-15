@@ -1,0 +1,113 @@
+package net.zorphy.backend.main.entity;
+
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import jakarta.persistence.*;
+import net.zorphy.backend.main.enums.GameType;
+import org.hibernate.annotations.Type;
+
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
+@Entity
+public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    private LocalDate playedAt;
+
+    @Enumerated(EnumType.STRING)
+    private GameType gameType;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private Object gameState;
+
+    @ManyToMany
+    @JoinTable(
+            name = "game_winner",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
+    private Set<Player> winners;
+
+    @ManyToMany
+    @JoinTable(
+            name = "game_player",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
+    private Set<Player> players;
+
+    public Game() {}
+
+    public Game(LocalDate playedAt, GameType gameType, Object gameState, Set<Player> winners, Set<Player> players) {
+        this.playedAt = playedAt;
+        this.gameType = gameType;
+        this.gameState = gameState;
+        this.winners = winners;
+        this.players = players;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public LocalDate getPlayedAt() {
+        return playedAt;
+    }
+
+    public void setPlayedAt(LocalDate playedAt) {
+        this.playedAt = playedAt;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public Object getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(Object gameState) {
+        this.gameState = gameState;
+    }
+
+    public Set<Player> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(Set<Player> winner) {
+        this.winners = winner;
+    }
+
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game game)) return false;
+        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(winners, game.winners) && Objects.equals(players, game.players);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, playedAt, gameType, gameState, winners, players);
+    }
+}

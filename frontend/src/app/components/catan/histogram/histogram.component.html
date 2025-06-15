@@ -1,0 +1,7 @@
+<section [hidden]="!isVisible" class="histogram-container">
+    <canvas baseChart
+            [type]="'bar'"
+            [data]="chartData"
+            [options]="chartOptions">
+    </canvas>
+</section>
