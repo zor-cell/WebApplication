@@ -3,7 +3,7 @@ import {ProjectDetails} from "../../../dto/projects/responses";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
-import {Location, NgIf} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {ProjectHeaderComponent} from "../project-header/project-header.component";
 
 @Component({

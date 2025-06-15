@@ -3,7 +3,7 @@ import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/global/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   CdkDrag,
   CdkDragDrop,
@@ -14,7 +14,6 @@ import {
 } from "@angular/cdk/drag-drop";
 import {Team} from "../../../dto/global/Team";
 import {PopupDialogComponent} from "../popups/popup-dialog.component";
-import {PopupService} from "../../../services/popup.service";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 
 @Component({

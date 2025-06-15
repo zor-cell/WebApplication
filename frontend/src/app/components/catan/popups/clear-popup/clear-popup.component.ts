@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
