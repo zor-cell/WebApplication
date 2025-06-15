@@ -11,8 +11,8 @@ export class PopupService {
 
   createPopup(title: string,
               bodyTemplate: TemplateRef<any>,
-              submitValidator: () => boolean,
               submitHandler: () => void,
+              submitValidator?: () => boolean,
               submitText?: string,
               cancelText?: string) {
     const modalRef = this.modalService.open(PopupDialogComponent);
@@ -22,13 +22,16 @@ export class PopupService {
     if(cancelText) modalRef.componentInstance.cancelText = cancelText;
     if(submitText) modalRef.componentInstance.submitText = submitText;
 
-    modalRef.componentInstance.submitValidator = submitValidator;
+    if(submitValidator) modalRef.componentInstance.submitValidator = submitValidator;
     modalRef.componentInstance.bodyTemplate = bodyTemplate;
 
     modalRef.result.then(
         () => {
           submitHandler();
         },
+        () => {
+
+        }
     );
   }
 }

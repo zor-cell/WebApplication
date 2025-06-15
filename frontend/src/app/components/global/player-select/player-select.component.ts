@@ -86,10 +86,11 @@ export class PlayerSelectComponent implements OnInit {
   }
 
   openPlayerDialog() {
-    this.popupService.createPopup('Create New Player',
+    this.popupService.createPopup(
+        'Create New Player',
         this.formTemplate,
-        this.submitValidation.bind(this),
         this.submitHandler.bind(this),
+        this.submitValidation.bind(this),
         'Create');
   }
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
+import {PopupService} from "../../../services/popup.service";
 
 @Component({
   selector: 'catan-game-settings',
@@ -29,6 +30,8 @@ import {ProjectMetadata} from "../../../dto/projects/responses";
   styleUrl: './game-settings.component.css'
 })
 export class CatanGameSettingsComponent implements OnInit {
+  @ViewChild('clearPopup') clearTemplate!: TemplateRef<any>;
+
   project!: ProjectMetadata;
   gameConfig: GameConfig = {
     teams: [],
@@ -47,6 +50,7 @@ export class CatanGameSettingsComponent implements OnInit {
   constructor(private globals: Globals,
               private projectService: ProjectService,
               private catanService: CatanService,
+              private popupService: PopupService,
               private router: Router,
               private route: ActivatedRoute) {}
 
@@ -71,6 +75,15 @@ export class CatanGameSettingsComponent implements OnInit {
         this.globals.handleError(err, true);
       }
     });
+  }
+
+  openClearDialog() {
+    this.popupService.createPopup(
+        'Clear Session Data',
+        this.clearTemplate,
+        this.clear.bind(this),
+        undefined,
+        'Clear');
   }
 
   clear() {

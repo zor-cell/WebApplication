@@ -54,11 +54,17 @@
     </section>
 
     <div class="config-actions">
-        <button class="small-btn" [disabled]="!hasSession" (click)="clear()">Clear</button>
         @if(hasSession) {
+            <button class="small-btn" [disabled]="!hasSession" (click)="openClearDialog()">Clear</button>
             <button class="small-btn" (click)="continueGame()">Continue</button>
         } @else {
             <button class="small-btn" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
         }
     </div>
 </div>
+
+<ng-template #clearPopup>
+    <div>
+        This will remove all data saved during this session. This action cannot be undone.
+    </div>
+</ng-template>
