@@ -49,9 +49,9 @@ public class CatanServiceImpl implements CatanService {
     }
 
     private List<Character> initEventCards() {
-        Collections.shuffle(possibleEvents);
-
-        return possibleEvents;
+        List<Character> shuffled = new ArrayList<>(possibleEvents);
+        Collections.shuffle(shuffled);
+        return shuffled;
     }
 
     @Override
