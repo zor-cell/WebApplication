@@ -1,5 +1,5 @@
 import {Injectable, TemplateRef} from '@angular/core';
-import {PopupDialogComponent} from "../components/global/popup-dialog/popup-dialog.component";
+import {PopupDialogComponent} from "../components/global/popup/popup-dialog.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({

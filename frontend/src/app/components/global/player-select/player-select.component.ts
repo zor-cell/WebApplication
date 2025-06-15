@@ -24,7 +24,7 @@ import {
 import {Subscription, timer} from "rxjs";
 import {Team} from "../../../dto/global/Team";
 import {PopupDialogData} from "../../../dto/global/PopupDialogData";
-import {PopupDialogComponent} from "../popup-dialog/popup-dialog.component";
+import {PopupDialogComponent} from "../popup/popup-dialog.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PopupService} from "../../../services/popup.service";
 

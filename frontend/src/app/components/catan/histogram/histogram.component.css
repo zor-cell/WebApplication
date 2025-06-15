@@ -1,4 +1,5 @@
 .histogram-container {
+    margin: 0 auto;
     border-radius: 7px;
     border: 2px solid rgba(0,0,0,0.1);
 

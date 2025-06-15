@@ -1,5 +1,4 @@
 import {Injectable, TemplateRef} from '@angular/core';
-import {PopupDialogComponent} from "../components/global/popup-dialog/popup-dialog.component";
 
 @Injectable({
     providedIn: 'root'

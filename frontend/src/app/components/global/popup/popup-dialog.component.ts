@@ -1,6 +1,6 @@
 import {Component, ContentChild, Inject, Input, OnInit, TemplateRef} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, NgTemplateOutlet} from "@angular/common";
 
 
@@ -15,7 +15,7 @@ import {NgIf, NgTemplateOutlet} from "@angular/common";
   standalone: true,
   styleUrl: './popup-dialog.component.css'
 })
-export class PopupDialogComponent {
+export class PopupDialogComponent implements OnInit {
   @Input() title: string = 'Modal';
   @Input() cancelText: string = 'Cancel';
   @Input() submitText: string = 'Submit';
@@ -23,7 +23,11 @@ export class PopupDialogComponent {
   @Input({required: true}) bodyTemplate!: TemplateRef<any>;
   @Input() submitValidator: (() => boolean) | null = null;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal) {}
+
+  ngOnInit() {
+
+  }
 
   get valid() {
     if(this.submitValidator === null) return true;
