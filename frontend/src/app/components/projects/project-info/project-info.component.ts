@@ -21,7 +21,7 @@ export class ProjectInfoComponent implements OnInit {
   projectName: string | null = null;
   project: ProjectDetails | null = null;
 
-  constructor(private globals: Globals, private projectService: ProjectService, private route: ActivatedRoute, private location: Location) {}
+  constructor(private globals: Globals, private projectService: ProjectService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

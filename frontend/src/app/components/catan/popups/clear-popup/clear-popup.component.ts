@@ -18,8 +18,7 @@ export class CatanClearPopupComponent {
 
   constructor(private globals: Globals,
               private popupService: PopupService,
-              private catanService: CatanService,
-              private fb: FormBuilder) {}
+              private catanService: CatanService) {}
 
   openPopup() {
     this.popupService.createPopup(

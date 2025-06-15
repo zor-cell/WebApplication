@@ -52,7 +52,7 @@ export class PlayerSelectComponent implements OnInit {
 
   teamHostIndex: number = -1;
 
-  constructor(private globals: Globals, private playerService: PlayerService, private fb: FormBuilder, private popupService: PopupService) {}
+  constructor(private globals: Globals, private playerService: PlayerService) {}
 
   ngOnInit() {
     this.getPlayers();
@@ -167,8 +167,7 @@ export class PlayerSelectComponent implements OnInit {
     if (players.length === 1) return players[0].name;
 
     return players.map(player => {
-      const name = player.name.slice(0, 3);
-      return  name;
+      return player.name.slice(0, 3);
     }).join('');
   }
 

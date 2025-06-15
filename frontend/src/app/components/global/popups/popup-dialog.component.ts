@@ -23,7 +23,7 @@ export class PopupDialogComponent implements OnInit {
   @Input({required: true}) bodyTemplate!: TemplateRef<any>;
   @Input() submitValidator: (() => boolean) | null = null;
 
-  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal) {}
+  constructor(public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
 
