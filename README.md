@@ -7,7 +7,7 @@ The project includes descriptions and websites for my coding projects. The expos
 entry points for my application are the following:
 * Frontend - [zorphy.net](https://zorphy.net)
 * Backend - [server.zorphy.net](https://zorphy.net)
-* 
+
 Made by [Philippe Zorman](https://github.com/zor-cell/WebApplication/tree/master)
 
 ## Services

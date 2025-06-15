@@ -6,20 +6,31 @@
     display: grid;
     grid-template-columns: 1fr 2fr; /* image 1/3, content 2/3 */
     gap: 1rem;
+
+    background-color: #fff;
+
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
+
     max-width: 700px;
     max-height: 231px;
-    background-color: #fff;
+
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.project-card-image {
+  display: block;
+  margin: auto;
+  aspect-ratio: 4 / 3; /* or 16/9, adjust as needed */
 }
 
 .project-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .project-card-content {
@@ -58,6 +69,12 @@
     margin: 0;
     font-size: 1rem;
     color: #333;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .project-card-buttons {
@@ -79,3 +96,16 @@
     text-decoration: none;
 }
 
+@media(max-width: 600px) {
+  .project-card {
+    grid-template-columns: 1fr; /* Single column */
+    grid-template-rows: auto auto; /* Optional: allow height to adjust */
+
+    max-width: 300px;
+    max-height: none; /* Allow height to grow if needed */
+  }
+
+  .project-card-image {
+    max-height: 150px; /* Optional: cap image height */
+  }
+}
