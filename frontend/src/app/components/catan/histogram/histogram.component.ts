@@ -43,6 +43,17 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
     ]
   };
   chartOptions: ChartOptions = {
+    animations: {
+      // Define animations for dataset elements during updates
+      x: {
+        duration: 500,
+        easing: 'easeOutQuart'
+      },
+      y: {
+        duration: 500,
+        easing: 'easeOutQuart'
+      },
+    },
     plugins: {
       title: {
         display: true,
@@ -66,7 +77,7 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
           stepSize: 1
         },
       }
-    }
+    },
   };
 
   ngOnInit() {

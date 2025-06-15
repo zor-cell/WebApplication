@@ -15,7 +15,7 @@ import {Router} from "@angular/router";
 import {Team} from "../../../dto/global/Team";
 
 @Component({
-  selector: 'app-catan',
+  selector: 'catan-game',
   imports: [
     CatanConfigComponent,
     NgIf,

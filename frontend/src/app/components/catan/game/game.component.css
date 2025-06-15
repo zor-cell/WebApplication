@@ -116,6 +116,7 @@
 
 #alchemist-button {
     border-style: dashed;
+    border-radius: 7px;
 
     margin: 10px auto auto auto;
 }
