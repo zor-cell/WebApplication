@@ -55,7 +55,7 @@
 
     <div class="config-actions">
         @if(hasSession) {
-            <button class="small-btn" [disabled]="!hasSession" (click)="openClearPopup()">Clear</button>
+            <button class="small-btn" (click)="openClearPopup()">Clear</button>
             <button class="small-btn" (click)="continueGame()">Continue</button>
         } @else {
             <button class="small-btn" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>

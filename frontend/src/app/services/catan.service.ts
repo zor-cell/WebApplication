@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {MoveRequest} from "../dto/connect4/requests";
 import {Observable} from "rxjs";
@@ -50,8 +50,11 @@ export class CatanService {
   }
 
   save(winnerTeam: string) {
+      const params = new HttpParams().set('winnerTeam', winnerTeam);
+
       return this.httpClient.post<GameDetails>(this.baseUri + '/save', {}, {
-          withCredentials: true
+          withCredentials: true,
+          params: params
       });
   }
 }

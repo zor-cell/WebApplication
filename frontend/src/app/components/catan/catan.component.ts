@@ -15,6 +15,7 @@ import {HistogramComponent} from "./histogram/histogram.component";
 import {PopupService} from "../../services/popup.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SavePopupComponent} from "./popups/save-popup/save-popup.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-catan',
@@ -47,7 +48,8 @@ export class CatanComponent implements OnInit {
   }
 
   constructor(private globals: Globals,
-              private catanService: CatanService) {}
+              private catanService: CatanService,
+              private router: Router) {}
 
   ngOnInit() {
     this.getSession();
@@ -78,6 +80,8 @@ export class CatanComponent implements OnInit {
         this.gameState = res;
       },
       error: err => {
+        this.router.navigate(['projects/catan']);
+
         this.globals.handleError(err);
       }
     });
