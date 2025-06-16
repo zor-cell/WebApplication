@@ -20,17 +20,13 @@
 }
 
 .project-card-image {
-  display: block;
-  margin: auto;
-  aspect-ratio: 4 / 3; /* or 16/9, adjust as needed */
+    background-color: #e0e0e0;
 }
 
 .project-card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-
-    background-color: rgba(0, 0, 0, 0.2);
+    object-fit: contain;
 }
 
 .project-card-content {
@@ -103,9 +99,13 @@
 
     max-width: 300px;
     max-height: none; /* Allow height to grow if needed */
+      gap: 0;
   }
 
   .project-card-image {
     max-height: 150px; /* Optional: cap image height */
+  }
+
+  .project-card-content {
   }
 }
