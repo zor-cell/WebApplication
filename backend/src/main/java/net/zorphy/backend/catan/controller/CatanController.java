@@ -76,6 +76,7 @@ public class CatanController {
         return gameState;
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("save")
     public GameDetails saveGame(HttpSession session, @RequestParam String winnerTeam) {
         return catanService.saveGame(getGameState(session), winnerTeam);

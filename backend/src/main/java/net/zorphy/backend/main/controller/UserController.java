@@ -18,9 +18,9 @@ public class UserController {
 
     @Secured({ "ROLE_USER", "ROLE_ADMIN" })
     @GetMapping("/me")
-    public UserDetails current(Authentication authentication) {
+    public UserDetails getCurrentUser(Authentication authentication) {
         if(authentication == null || !authentication.isAuthenticated()) {
-            throw new InvalidSessionException("No authentication info");
+            throw new InvalidSessionException("No authentication info exists in current session");
         }
 
         return userService.getCurrentUser(authentication);
@@ -28,7 +28,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/register")
-    public UserDetails register(@RequestBody UserDetails userDetails) {
+    public UserDetails registerUser(@RequestBody UserDetails userDetails) {
         return userService.registerUser(userDetails);
     }
 }

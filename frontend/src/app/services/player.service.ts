@@ -23,7 +23,6 @@ export class PlayerService {
   }
 
   savePlayer(player: PlayerDetails): Observable<PlayerDetails> {
-    console.log("save", player)
     return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player);
   }
 }

@@ -1,0 +1,38 @@
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Globals} from "../classes/globals";
+import {Observable, tap} from "rxjs";
+import {UserLoginDetails} from "../dto/global/UserLoginDetails";
+import {UserDetails} from "../dto/global/UserDetails";
+import {Role} from "../dto/global/Role";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private readonly baseUri: string;
+  user: UserDetails | null = null;
+
+  constructor(private httpClient: HttpClient, private globals: Globals) {
+    this.baseUri = this.globals.backendUri + '/auth';
+  }
+
+  login(credentials: UserLoginDetails): Observable<void> {
+    return this.httpClient.post<void>(this.baseUri, {},
+        { withCredentials: true });
+  }
+
+  loadUser(): Observable<UserDetails> {
+    return this.httpClient.get<UserDetails>(this.globals.backendUri + '/users/me',
+        { withCredentials: true })
+        .pipe(tap(user => this.user = user));
+  }
+
+  isAdmin(): boolean {
+    return this.user?.roles.includes(Role.ADMIN) ?? false;
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.user;
+  }
+}
