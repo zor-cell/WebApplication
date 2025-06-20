@@ -10,7 +10,7 @@
                 <option>EMPTY</option>
             }
         </select>
-        <button [disabled]="!currentPlayer" class="small-btn" (click)="addPlayer()">Add</button>
+        <button [disabled]="!currentPlayer || selectedTeams.length >= maxTeams" class="small-btn" (click)="addPlayer()">Add</button>
     </div>
 
 

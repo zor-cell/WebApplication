@@ -38,8 +38,8 @@ import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-pop
 export class PlayerSelectComponent implements OnInit {
   @ViewChild('playerPopup') playerPopup!: NewPlayerPopupComponent;
 
-  @Input() minPlayers: number = 2;
-  @Input() maxPlayers: number = 4;
+  @Input() minTeams: number = 2;
+  @Input() maxTeams: number = 4;
   @Input() allowTeams: boolean = true;
   @Input() selectedTeams: Team[] = [];
 
@@ -82,7 +82,7 @@ export class PlayerSelectComponent implements OnInit {
   }
 
   addPlayer() {
-    if(this.selectedTeams.length >= this.maxPlayers || this.currentPlayer === null) {
+    if(this.selectedTeams.length >= this.maxTeams || this.currentPlayer === null) {
       return;
     }
 
