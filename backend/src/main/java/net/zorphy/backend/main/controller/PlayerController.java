@@ -4,6 +4,7 @@ import net.zorphy.backend.main.dto.PlayerDetails;
 import net.zorphy.backend.main.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
@@ -34,6 +35,7 @@ public class PlayerController {
         return playerService.getPlayer(name);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/save")
     public PlayerDetails savePlayer(@RequestBody PlayerDetails playerDetails) {
         LOGGER.info("POST /players/save");

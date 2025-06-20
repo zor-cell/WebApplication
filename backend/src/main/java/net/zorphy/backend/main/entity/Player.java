@@ -1,14 +1,12 @@
 package net.zorphy.backend.main.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@Table(name = "players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
