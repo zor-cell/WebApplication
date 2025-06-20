@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import net.zorphy.backend.main.enums.Role;
 
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity

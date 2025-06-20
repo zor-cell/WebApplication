@@ -3,7 +3,6 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 import {AuthService} from "./services/auth.service";
 import {Globals} from "./classes/globals";
 import {LoginPopupComponent} from "./components/global/popups/login-popup/login-popup.component";
-import {NewPlayerPopupComponent} from "./components/global/popups/new-player-popup/new-player-popup.component";
 
 @Component({
     selector: 'app-root',

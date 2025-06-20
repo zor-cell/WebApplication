@@ -1,11 +1,11 @@
 package net.zorphy.backend.main.service;
 
+import net.zorphy.backend.main.dto.UserDetails;
 import net.zorphy.backend.main.entity.User;
 import net.zorphy.backend.main.mapper.UserMapper;
 import net.zorphy.backend.main.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import net.zorphy.backend.main.dto.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

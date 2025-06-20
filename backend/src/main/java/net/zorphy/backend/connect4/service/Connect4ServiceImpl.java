@@ -4,14 +4,13 @@ import net.zorphy.backend.connect4.classes.BestMove;
 import net.zorphy.backend.connect4.classes.Position;
 import net.zorphy.backend.connect4.classes.Solver;
 import net.zorphy.backend.connect4.classes.board.SimpleBoard;
+import net.zorphy.backend.connect4.dto.data.GameState;
 import net.zorphy.backend.connect4.dto.request.MoveRequest;
 import net.zorphy.backend.connect4.dto.request.SolveRequest;
 import net.zorphy.backend.connect4.dto.request.UndoRequest;
 import net.zorphy.backend.connect4.dto.response.MoveResponse;
 import net.zorphy.backend.connect4.dto.response.SolveResponse;
-import net.zorphy.backend.connect4.dto.data.GameState;
 import net.zorphy.backend.connect4.exception.InvalidOperationException;
-import net.zorphy.backend.connect4.service.Connect4Service;
 import org.springframework.stereotype.Service;
 
 @Service

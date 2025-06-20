@@ -2,7 +2,6 @@ package net.zorphy.backend.main.repository;
 
 import net.zorphy.backend.main.entity.Project;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.Repository;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

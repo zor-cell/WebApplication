@@ -1,10 +1,7 @@
 import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {PlayerDetails} from "../../../../dto/global/PlayerDetails";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {PlayerService} from "../../../../services/player.service";
-import {UserDetails} from "../../../../dto/global/UserDetails";
 import {UserLoginDetails} from "../../../../dto/global/UserLoginDetails";
 import {AuthService} from "../../../../services/auth.service";
 
