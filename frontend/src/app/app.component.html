@@ -10,7 +10,7 @@
         @if(!authService.isAuthenticated()) {
             <button class="btn btn-primary text-white" (click)="openLoginPopup()">Login</button>
         } @else {
-            <a class="bg-primary p-2 text-white rounded-1">Hello, <b>{{authService.user!.username}}</b>!</a>
+            <a>Hello, <b>{{authService.user!.username}}</b>!</a>
         }
     </nav>
 </header>
