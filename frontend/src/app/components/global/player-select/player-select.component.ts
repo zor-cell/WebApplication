@@ -15,6 +15,7 @@ import {
 import {Team} from "../../../dto/global/Team";
 import {PopupDialogComponent} from "../popups/popup-dialog.component";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-player-select',
@@ -52,7 +53,9 @@ export class PlayerSelectComponent implements OnInit {
 
   teamHostIndex: number = -1;
 
-  constructor(private globals: Globals, private playerService: PlayerService) {}
+  constructor(private globals: Globals,
+              private playerService: PlayerService,
+              public authService: AuthService) {}
 
   ngOnInit() {
     this.getPlayers();

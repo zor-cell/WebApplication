@@ -1,6 +1,6 @@
 <div class="settings-container">
     <div class="select-container">
-        <i class="bi bi-person-plus-fill default-color" (click)="openPlayerPopup()"></i>
+        <i *ngIf="authService.isAdmin()" class="bi bi-person-plus-fill default-color" (click)="openPlayerPopup()"></i>
         <select [disabled]="!currentPlayer" (change)="updateCurrentPlayer($event)">
             @if(currentPlayer) {
                 <option *ngFor="let player of availablePlayers" [value]="player.name">

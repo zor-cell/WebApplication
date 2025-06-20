@@ -20,9 +20,7 @@ export class ProjectHeaderComponent {
   @Input() showEdit: boolean = false;
 
   constructor(private location: Location,
-              public authService: AuthService) {
-    console.log(authService.user, authService.isAdmin())
-  }
+              public authService: AuthService) {}
 
   routeBack() {
     this.location.back();

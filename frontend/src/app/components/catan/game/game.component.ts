@@ -13,6 +13,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component";
 import {Router} from "@angular/router";
 import {Team} from "../../../dto/global/Team";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'catan-game',
@@ -54,7 +55,8 @@ export class CatanGameComponent implements OnInit {
 
   constructor(private globals: Globals,
               private catanService: CatanService,
-              private router: Router) {}
+              private router: Router,
+              public authService: AuthService) {}
 
   ngOnInit() {
     this.getSession();

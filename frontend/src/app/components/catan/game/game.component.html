@@ -46,7 +46,7 @@
 
         <div class="game-actions">
             <button class="small-btn" (click)="toggleChart()">History</button>
-            <button class="small-btn" (click)="openSavePopup()">Save</button>
+            <button *ngIf="authService.isAdmin()" class="small-btn" (click)="openSavePopup()">Save</button>
         </div>
     </div>
 
