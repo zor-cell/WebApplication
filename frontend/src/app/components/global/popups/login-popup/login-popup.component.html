@@ -1,0 +1,12 @@
+<ng-template #loginPopup>
+    <form [formGroup]="loginForm" novalidate>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" formControlName="username" class="form-control" type="text">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" formControlName="password" class="form-control" type="password">
+        </div>
+    </form>
+</ng-template>

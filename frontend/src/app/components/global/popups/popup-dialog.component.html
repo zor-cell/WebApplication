@@ -6,5 +6,5 @@
 </div>
 <div class="modal-footer dialog-actions">
     <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel')">{{ cancelText }}</button>
-    <button [disabled]="!valid" type="button" class="btn btn-primary" (click)="submit()">{{ submitText }}</button>
+    <button [disabled]="!valid" type="submit" class="btn btn-primary" (click)="submit()">{{ submitText }}</button>
 </div>

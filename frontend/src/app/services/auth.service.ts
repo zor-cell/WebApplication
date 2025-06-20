@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   login(credentials: UserLoginDetails): Observable<void> {
-    return this.httpClient.post<void>(this.baseUri, {},
+    return this.httpClient.post<void>(this.baseUri + '/login', credentials,
         { withCredentials: true });
   }
 

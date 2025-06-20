@@ -29,6 +29,7 @@ import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-pop
     NgClass,
     ReactiveFormsModule,
     PopupDialogComponent,
+    NewPlayerPopupComponent,
     NewPlayerPopupComponent
   ],
   templateUrl: './player-select.component.html',
