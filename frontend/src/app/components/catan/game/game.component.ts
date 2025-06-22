@@ -14,6 +14,7 @@ import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component
 import {Router} from "@angular/router";
 import {Team} from "../../../dto/global/Team";
 import {AuthService} from "../../../services/auth.service";
+import {GameMode} from "../../../dto/catan/GameMode";
 
 @Component({
   selector: 'catan-game',
@@ -40,13 +41,23 @@ export class CatanGameComponent implements OnInit {
   showChart: boolean = false;
 
   get currentRoll(): DiceRoll | null {
-    if(!this.gameState || this.gameState.diceRolls.length === 0) return null;
+    if(!this.gameState) return null;
+
+    if(this.gameState.diceRolls.length === 0) return {
+      dicePair: {
+        dice1: 4,
+        dice2: 3,
+        event: '-'
+      },
+      diceEvent: 'b'
+    };
+
 
     return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
   }
 
   get lastPlayer(): Team | null {
-    if(!this.gameState || this.gameState.gameConfig.teams.length === 0) return null;
+    if(!this.gameState || this.gameState.gameConfig.teams.length === 0 || this.gameState.diceRolls.length === 0) return null;
 
 
     const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
@@ -93,4 +104,6 @@ export class CatanGameComponent implements OnInit {
       }
     });
   }
+
+  protected readonly GameMode = GameMode;
 }

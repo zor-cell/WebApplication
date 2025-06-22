@@ -18,20 +18,23 @@
                 </div>
 
                 <button (click)="rollDice()" id="roll-button">Dice</button>
-                <button (click)="rollDice(true)" id="alchemist-button" class="small-btn">Alchemist</button>
+                <button *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" (click)="rollDice(true)" id="alchemist-button" class="small-btn">Alchemist</button>
             </div>
 
             <div class="ship-container">
+                <div *ngIf="gameState.gameConfig.classicDice.useEvents" class="current-roll-event">
+                    {{ currentRoll?.dicePair?.event }}
+                </div>
                 <div class="current-roll">
                     <div id="current-roll-player">
-                        {{lastPlayer?.name}}
+                        {{!lastPlayer ? '-' : lastPlayer?.name}}
                     </div>
                     <b class="spacer">
                         |
                     </b>
-                    <catan-dice-roll class="flex-container" [diceRoll]="currentRoll"/>
+                    <catan-dice-roll class="flex-container" [gameMode]="gameState.gameConfig.gameMode" [diceRoll]="currentRoll"/>
                 </div>
-                <div class="ship-display">
+                <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="ship-display">
                     <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
                         <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg" alt="">
                         <div *ngIf="i !== gameState.currentShipTurn"
