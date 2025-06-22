@@ -2,5 +2,6 @@ import {DicePair} from "./DicePair";
 
 export interface DiceRoll {
     dicePair: DicePair,
-    diceEvent: string
+    diceEvent: string,
+    teamName: string
 }

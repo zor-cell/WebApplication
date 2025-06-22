@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     } @else {
-                        <div class="dice-settings-random">True Random</div>
+                        <div class="dice-settings-description">True Random</div>
                     }
 
                 @if(gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS) {
@@ -65,7 +65,7 @@
                         </div>
                      </div>
                     } @else {
-                        <div class="dice-settings-random">True Random</div>
+                        <div class="dice-settings-description">True Random</div>
                     }
                 }
 
@@ -79,10 +79,10 @@
             <button class="small-btn" (click)="openClearPopup()">Clear</button>
             <button class="small-btn" (click)="continueGame()">Continue</button>
         } @else {
-            <button class="small-btn" (click)="startGame()" [disabled]="!validConfig()">Start</button>
+            <button class="small-btn" (click)="startGame()" [disabled]="!isValidConfig()">Start</button>
         }
     </div>
 </div>
 
 <catan-clear-popup #clearPopup (hasSessionEvent)="hasSession = $event"></catan-clear-popup>
-<catan-update-popup #updatePopup [gameConfig]="gameConfig" [canUpdate]="validConfig()" (updatedSessionEvent)="goToGame()"></catan-update-popup>
+<catan-update-popup #updatePopup [gameConfig]="gameConfig" [canUpdate]="isValidConfig()" (updatedSessionEvent)="goToGame()"></catan-update-popup>

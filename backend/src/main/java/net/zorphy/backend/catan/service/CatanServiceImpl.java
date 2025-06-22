@@ -100,8 +100,10 @@ public class CatanServiceImpl implements CatanService {
 
         //shuffle balance event cards
         List<Character> eventCards = null;
-        if(gameConfig.eventDice().isBalanced()) {
-            eventCards = initEventCards();
+        if(gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+            if (gameConfig.eventDice().isBalanced()) {
+                eventCards = initEventCards();
+            }
         }
 
         return new GameState(
@@ -134,11 +136,13 @@ public class CatanServiceImpl implements CatanService {
 
         //update event cards
         List<Character> eventCards = null;
-        if(gameConfig.eventDice().isBalanced()) {
-            if(oldState.gameConfig().eventDice().isBalanced()) {
-                eventCards = oldState.eventCards();
-            } else {
-                eventCards = initEventCards();
+        if(gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+            if (gameConfig.eventDice().isBalanced()) {
+                if (oldState.gameConfig().eventDice().isBalanced()) {
+                    eventCards = oldState.eventCards();
+                } else {
+                    eventCards = initEventCards();
+                }
             }
         }
 
@@ -154,11 +158,13 @@ public class CatanServiceImpl implements CatanService {
 
     @Override
     public GameState rollDice(GameState oldState, boolean isAlchemist) {
-        int currentPlayerTurn = oldState.currentPlayerTurn();
+        int currentTeamTurn = oldState.currentPlayerTurn();
         int currentShipTurn = oldState.currentShipTurn();
         List<DicePair> classicCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.classicCards());
         List<Character> eventCards = oldState.eventCards() == null ? null : new ArrayList<>(oldState.eventCards());
         List<DiceRoll> diceRolls = new ArrayList<>(oldState.diceRolls());
+
+        TeamDetails currentTeam = oldState.gameConfig().teams().get(currentTeamTurn);
 
         //classic dice roll
         DicePair dicePair;
@@ -167,7 +173,7 @@ public class CatanServiceImpl implements CatanService {
             dicePair = new DicePair(0, 0, null);
         } else {
             //normal roll
-            if (classicCards == null) {
+            if (classicCards == null || !oldState.gameConfig().classicDice().isBalanced()) {
                 int dice1 = rand.nextInt(6) + 1;
                 int dice2 = rand.nextInt(6) + 1;
                 dicePair = new DicePair(dice1, dice2, null);
@@ -180,36 +186,77 @@ public class CatanServiceImpl implements CatanService {
         }
 
         //event dice roll
-        Character eventDice;
-        if (eventCards == null) {
-            int eventIndex = rand.nextInt(possibleEvents.size());
-            eventDice = possibleEvents.get(eventIndex);
-        } else {
-            if (eventCards.size() <= oldState.gameConfig().eventDice().shuffleThreshold()) {
-                eventCards = initEventCards();
+        Character eventDice = null;
+        if(oldState.gameConfig().gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+            if (eventCards == null || !oldState.gameConfig().eventDice().isBalanced()) {
+                int eventIndex = rand.nextInt(possibleEvents.size());
+                eventDice = possibleEvents.get(eventIndex);
+            } else {
+                if (eventCards.size() <= oldState.gameConfig().eventDice().shuffleThreshold()) {
+                    eventCards = initEventCards();
+                }
+                eventDice = eventCards.removeLast();
             }
-            eventDice = eventCards.removeLast();
+
+            //reset ship to start if charge happened last round
+            if(currentShipTurn >= oldState.gameConfig().maxShipTurns() - 1) {
+                currentShipTurn = 0;
+            }
+
+            //update ship
+            if(eventDice.equals('e')) {
+                currentShipTurn = (currentShipTurn + 1) % oldState.gameConfig().maxShipTurns();
+            }
         }
 
-        //update player
-        currentPlayerTurn = (currentPlayerTurn + 1) % oldState.gameConfig().teams().size();
+        DiceRoll diceRoll = new DiceRoll(dicePair, eventDice, currentTeam.name());
 
-        //reset ship to start if charge happened last round
-        if(currentShipTurn >= oldState.gameConfig().maxShipTurns() - 1) {
-            currentShipTurn = 0;
+        //don't allow 2 same dice rolls after another
+        if(oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
+            if(!diceRolls.isEmpty()) {
+                DiceRoll lastRoll = diceRolls.getLast();
+                if (lastRoll.teamName().equals(currentTeam.name()) && lastRoll.dicePair().sum() == diceRoll.dicePair().sum()) {
+                    //if all cards are the same, no choice but to have two in row
+                    boolean allSame = classicCards != null && classicCards.stream().allMatch(pair -> pair.sum() == diceRoll.dicePair().sum());
+
+                    //add card back on the bottom of the card deck
+                    if (classicCards != null) {
+                        classicCards.addFirst(dicePair);
+                    }
+
+                    //try to roll again with reshuffled deck
+                    if (!allSame) {
+                        return rollDice(new GameState(
+                                oldState.gameConfig(),
+                                oldState.currentPlayerTurn(),
+                                oldState.currentShipTurn(),
+                                classicCards,
+                                oldState.eventCards(),
+                                oldState.diceRolls()
+                        ), isAlchemist);
+                    }
+                }
+            }
         }
 
-        //update ship
-        if(eventDice.equals('e')) {
-            currentShipTurn = (currentShipTurn + 1) % oldState.gameConfig().maxShipTurns();
+        //update team
+        if(oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
+            //only update to next team if team also rolled last roll
+            if(!diceRolls.isEmpty()) {
+                DiceRoll lastRoll = diceRolls.getLast();
+                if(lastRoll.teamName().equals(currentTeam.name())) {
+                    currentTeamTurn = (currentTeamTurn + 1) % oldState.gameConfig().teams().size();
+                }
+            }
+        } else {
+            currentTeamTurn = (currentTeamTurn + 1) % oldState.gameConfig().teams().size();
         }
 
-        DiceRoll diceRoll = new DiceRoll(dicePair, eventDice);
         diceRolls.add(diceRoll);
 
         return new GameState(
                 oldState.gameConfig(),
-                currentPlayerTurn,
+                currentTeamTurn,
                 currentShipTurn,
                 classicCards,
                 eventCards,

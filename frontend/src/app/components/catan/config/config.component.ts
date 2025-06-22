@@ -45,7 +45,7 @@ export class CatanConfigComponent implements OnInit {
       useEvents: false
     },
     eventDice: {
-      isBalanced: true,
+      isBalanced: false,
       shuffleThreshold: 2,
       useEvents: false
     },
@@ -122,7 +122,11 @@ export class CatanConfigComponent implements OnInit {
     this.router.navigate(['projects/catan/game']);
   }
 
-  validConfig() {
+  isValidConfig() {
+    if(this.gameConfig.gameMode === GameMode.ONE_VS_ONE) {
+      return this.gameConfig.teams.length == 2;
+    }
+
     return this.gameConfig.teams.length >= 2;
   }
 

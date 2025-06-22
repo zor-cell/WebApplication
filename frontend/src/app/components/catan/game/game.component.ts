@@ -49,7 +49,8 @@ export class CatanGameComponent implements OnInit {
         dice2: 3,
         event: '-'
       },
-      diceEvent: 'b'
+      diceEvent: 'b',
+      teamName: ''
     };
 
 
@@ -59,9 +60,16 @@ export class CatanGameComponent implements OnInit {
   get lastPlayer(): Team | null {
     if(!this.gameState || this.gameState.gameConfig.teams.length === 0 || this.gameState.diceRolls.length === 0) return null;
 
+    const lastRollTeam = this.gameState.diceRolls[this.gameState.diceRolls.length - 1].teamName;
+    const found = this.gameState.gameConfig.teams.find(team => team.name === lastRollTeam);
+    if(found === undefined) {
+      return null;
+    }
 
-    const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
-    return this.gameState.gameConfig.teams[index];
+    return found;
+
+    /*const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
+    return this.gameState.gameConfig.teams[index];*/
   }
 
   constructor(private globals: Globals,
