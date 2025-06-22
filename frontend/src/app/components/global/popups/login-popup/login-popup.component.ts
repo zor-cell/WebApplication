@@ -4,6 +4,7 @@ import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {UserLoginDetails} from "../../../../dto/global/UserLoginDetails";
 import {AuthService} from "../../../../services/auth.service";
+import {PopupResultType} from "../../../../dto/global/PopupResultType";
 
 @Component({
   selector: 'app-login-popup',
@@ -42,10 +43,10 @@ export class LoginPopupComponent {
         'Login');
   }
 
-  private callback(success: boolean) {
-    if(success) {
+  private callback(result: PopupResultType) {
+    if(result === PopupResultType.SUBMIT) {
       this.loginUser();
-    } else {
+    } else if(result === PopupResultType.CANCEL) {
       this.loginForm.reset();
     }
   }

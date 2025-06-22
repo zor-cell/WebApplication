@@ -1,6 +1,7 @@
 import {Injectable, TemplateRef} from '@angular/core';
 import {PopupDialogComponent} from "../components/global/popups/popup-dialog.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {PopupResultType} from "../dto/global/PopupResultType";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class PopupService {
 
   createPopup(title: string,
               bodyTemplate: TemplateRef<any>,
-              callback: (success: boolean) => void,
+              callback: (success: PopupResultType) => void,
               submitValidator?: () => boolean,
               submitText?: string,
               discardText?: string,
@@ -30,11 +31,10 @@ export class PopupService {
 
     modalRef.result.then(
         (res) => {
-            console.log(res);
-          callback(true);
+            callback(res as PopupResultType);
         },
-        () => {
-            callback(false);
+        (res) => {
+            callback(res as PopupResultType);
         }
     );
   }

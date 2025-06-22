@@ -3,6 +3,7 @@ import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
 import {GameConfig} from "../../../../dto/catan/GameConfig";
+import {PopupResultType} from "../../../../dto/global/PopupResultType";
 
 @Component({
   selector: 'catan-update-popup',
@@ -32,9 +33,11 @@ export class CatanUpdatePopupComponent {
     );
   }
 
-  private callback(success: boolean) {
-    if(success) {
+  private callback(result: PopupResultType) {
+    if(result === PopupResultType.SUBMIT) {
       this.updateSession();
+    } else if(result === PopupResultType.DISCARD) {
+      this.updatedSessionEvent.emit(false);
     }
   }
 

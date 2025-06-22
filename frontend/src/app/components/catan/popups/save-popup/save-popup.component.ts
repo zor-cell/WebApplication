@@ -5,6 +5,7 @@ import {Team} from "../../../../dto/global/Team";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
 import {Globals} from "../../../../classes/globals";
+import {PopupResultType} from "../../../../dto/global/PopupResultType";
 
 @Component({
   selector: 'catan-save-popup',
@@ -43,10 +44,10 @@ export class CatanSavePopupComponent implements OnInit {
     );
   }
 
-  private callback(success: boolean) {
-    if(success) {
+  private callback(result: PopupResultType) {
+    if(result === PopupResultType.SUBMIT) {
       this.saveGame();
-    } else {
+    } else if(result === PopupResultType.CANCEL) {
       this.saveForm.reset();
     }
   }

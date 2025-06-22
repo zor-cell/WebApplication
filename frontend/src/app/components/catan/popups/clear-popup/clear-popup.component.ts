@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
+import {PopupResultType} from "../../../../dto/global/PopupResultType";
 
 @Component({
   selector: 'catan-clear-popup',
@@ -29,8 +30,8 @@ export class CatanClearPopupComponent {
     );
   }
 
-  private callback(success: boolean) {
-    if(success) {
+  private callback(result: PopupResultType) {
+    if(result === PopupResultType.SUBMIT) {
       this.clearSession();
     }
   }

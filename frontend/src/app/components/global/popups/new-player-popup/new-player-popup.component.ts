@@ -4,6 +4,7 @@ import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {PlayerDetails} from "../../../../dto/global/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
+import {PopupResultType} from "../../../../dto/global/PopupResultType";
 
 @Component({
   selector: 'app-new-player-popup',
@@ -40,10 +41,10 @@ export class NewPlayerPopupComponent {
         'Create');
   }
 
-  private callback(success: boolean) {
-    if(success) {
+  private callback(result: PopupResultType) {
+    if(result === PopupResultType.SUBMIT) {
      this.savePlayer();
-    } else {
+    } else if(result === PopupResultType.CANCEL) {
       this.playerForm.reset();
     }
   }
