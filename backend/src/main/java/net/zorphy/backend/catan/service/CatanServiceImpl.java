@@ -30,8 +30,6 @@ public class CatanServiceImpl implements CatanService {
         this.playerRepository = playerRepository;
     }
 
-    //TODO: catan game type
-
     private List<DicePair> initClassicCards() {
         List<DicePair> classicCards = new ArrayList<>(Arrays.asList(
             new DicePair(1, 1, "Each player receives 1 resource of their choice"),
