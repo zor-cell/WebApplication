@@ -1,4 +1,5 @@
 export interface DiceConfig {
     isBalanced: boolean,
-    shuffleThreshold: number
+    shuffleThreshold: number,
+    useEvents: boolean
 }

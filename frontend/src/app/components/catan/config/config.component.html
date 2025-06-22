@@ -9,22 +9,39 @@
 
         <div class="config-grid-container">
             <h3 class="config-header">Mode</h3>
+            <div class="select-container">
+                <select [(ngModel)]="gameConfig.gameMode">
+                    <option *ngFor="let mode of gameModes" [ngValue]="mode">{{mapGameMode(mode)}}</option>
+                </select>
+            </div>
             <div class="dice-mode-grid">
                 <div class="dice-mode-classic">
                     <img class="dice-img" ngSrc="assets/catan/4.svg" height="22" width="22" alt="">
-                    <img class="dice-img"  ngSrc="assets/catan/3_red.svg" height="22" width="22" alt="">
+                    @if(gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS) {
+                        <img class="dice-img" ngSrc="assets/catan/3_red.svg" height="22" width="22" alt="">
+                    } @else {
+                        <img class="dice-img" ngSrc="assets/catan/3.svg" height="22" width="22" alt="">
+                    }
                 </div>
                 <app-slider-checkbox [isChecked]="gameConfig.classicDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.classicDice.isBalanced = $event"></app-slider-checkbox>
 
+                @if(gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS) {
+                    <div class="dice-mode-classic">
+                        <img class="dice-img" ngSrc="assets/catan/b.svg" height="25" width="25" alt="">
+                    </div>
+                    <app-slider-checkbox [isChecked]="gameConfig.eventDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.eventDice.isBalanced = $event"></app-slider-checkbox>
+                }
+
                 <div class="dice-mode-classic">
-                    <img class="dice-img" ngSrc="assets/catan/b.svg" height="25" width="25" alt="">
+                    <img class="dice-img" ngSrc="assets/catan/4_e.svg" height="22" width="22" alt="">
                 </div>
-                <app-slider-checkbox [isChecked]="gameConfig.eventDice.isBalanced" unCheckedText="R" checkedText="B" (checkedEvent)="gameConfig.eventDice.isBalanced = $event"></app-slider-checkbox>
-            </div>
+                <app-slider-checkbox [isChecked]="gameConfig.classicDice.useEvents" unCheckedText="F" checkedText="T" (checkedEvent)="gameConfig.classicDice.useEvents = $event"></app-slider-checkbox>
+           </div>
         </div>
 
         <div class="config-grid-container">
             <h3 class="config-header">Settings</h3>
+            <div></div> <!-- empty div for grid layout -->
             <div class="dice-settings">
                     @if(gameConfig.classicDice.isBalanced) {
                         <div class="dice-settings-balance">
@@ -38,7 +55,8 @@
                         <div class="dice-settings-random">True Random</div>
                     }
 
-                 @if(gameConfig.eventDice.isBalanced) {
+                @if(gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS) {
+                    @if(gameConfig.eventDice.isBalanced) {
                      <div class="dice-settings-balance">
                         <div class="dice-settings-description">Degree of Random:</div>
                         <div class="dice-settings-options">
@@ -49,6 +67,9 @@
                     } @else {
                         <div class="dice-settings-random">True Random</div>
                     }
+                }
+
+                <div class="dice-settings-description">{{!gameConfig.classicDice.useEvents ? 'No ' : ''}}Card Events</div>
             </div>
         </div>
     </section>

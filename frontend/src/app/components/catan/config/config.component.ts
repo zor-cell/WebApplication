@@ -12,6 +12,7 @@ import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 import {CatanUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
+import {GameMode} from "../../../dto/catan/GameMode";
 
 @Component({
   selector: 'catan-game-settings',
@@ -37,18 +38,23 @@ export class CatanConfigComponent implements OnInit {
   project!: ProjectMetadata;
   gameConfig: GameConfig = {
     teams: [],
+    gameMode: GameMode.CITIES_AND_KNIGHTS,
     classicDice: {
       isBalanced: true,
-      shuffleThreshold: 5
+      shuffleThreshold: 5,
+      useEvents: false
     },
     eventDice: {
-      isBalanced: false,
-      shuffleThreshold: 2
+      isBalanced: true,
+      shuffleThreshold: 2,
+      useEvents: false
     },
     maxShipTurns: 7
   };
   hasSession: boolean = false;
   originalConfig: GameConfig | null = null;
+
+  gameModes = Object.values(GameMode);
 
   constructor(private globals: Globals,
               private projectService: ProjectService,
@@ -120,7 +126,19 @@ export class CatanConfigComponent implements OnInit {
     return this.gameConfig.teams.length >= 2;
   }
 
+  mapGameMode(mode: string): string {
+    if(mode === GameMode.ONE_VS_ONE) {
+      return '1 vs 1';
+    } else if(mode === GameMode.CLASSIC) {
+      return 'Classic';
+    }
+
+    return 'Cities and Knights';
+  }
+
   private configsAreEqual(config1: GameConfig, config2: GameConfig): boolean {
     return JSON.stringify(config1) === JSON.stringify(config2);
   }
+
+  protected readonly GameMode = GameMode;
 }

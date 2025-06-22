@@ -6,7 +6,7 @@ import java.util.List;
 
 public record GameConfig(
         List<TeamDetails> teams,
-        GameType gameType,
+        GameMode gameMode,
         DiceConfig classicDice,
         DiceConfig eventDice,
         int maxShipTurns
