@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import net.zorphy.backend.catan.dto.DiceRoll;
 import net.zorphy.backend.catan.dto.GameConfig;
 import net.zorphy.backend.catan.dto.GameState;
+import net.zorphy.backend.catan.dto.SaveGameState;
 import net.zorphy.backend.catan.service.CatanService;
 import net.zorphy.backend.main.dto.GameDetails;
 import net.zorphy.backend.main.exception.InvalidSessionException;
@@ -87,8 +88,8 @@ public class CatanController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("save")
-    public GameDetails saveGame(HttpSession session, @RequestParam String winnerTeam) {
-        return catanService.saveGame(getGameState(session), winnerTeam);
+    public GameDetails saveGame(HttpSession session, @RequestBody SaveGameState saveGameState) {
+        return catanService.saveGame(getGameState(session), saveGameState);
     }
 
 

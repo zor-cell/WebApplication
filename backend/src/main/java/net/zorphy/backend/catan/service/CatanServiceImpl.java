@@ -1,9 +1,6 @@
 package net.zorphy.backend.catan.service;
 
-import net.zorphy.backend.catan.dto.DicePair;
-import net.zorphy.backend.catan.dto.DiceRoll;
-import net.zorphy.backend.catan.dto.GameConfig;
-import net.zorphy.backend.catan.dto.GameState;
+import net.zorphy.backend.catan.dto.*;
 import net.zorphy.backend.main.dto.GameDetails;
 import net.zorphy.backend.main.dto.PlayerDetails;
 import net.zorphy.backend.main.dto.TeamDetails;
@@ -33,15 +30,58 @@ public class CatanServiceImpl implements CatanService {
         this.playerRepository = playerRepository;
     }
 
-    private List<DicePair> initClassicCards() {
-        List<DicePair> classicCards = new ArrayList<>();
+    //TODO: catan game type
+    //TODO: siegespunkte bei spiel speichern
 
-        for(int dice1 = 1;dice1 <= 6;dice1++) {
-            for(int dice2 = 1;dice2 <= 6;dice2++) {
-                DicePair dicePair = new DicePair(dice1, dice2);
-                classicCards.add(dicePair);
-            }
-        }
+    private List<DicePair> initClassicCards() {
+        List<DicePair> classicCards = new ArrayList<>(Arrays.asList(
+            new DicePair(1, 1, "Each player receives 1 resource of their choice"),
+
+            new DicePair(1, 2, "The player with the most knight cards or the “Largest Army” may steal a card from another player"),
+            new DicePair(2, 1, "No Event"),
+
+            new DicePair(1, 3, "The robber is moved back to the desert"),
+            new DicePair(2, 2, "The robber is moved back to the desert"),
+            new DicePair(3, 1, "No Event"),
+
+            new DicePair(1, 4, "The player with the “Longest Road” may steal a resource from another player"),
+            new DicePair(2, 3, "The player with the most knight cards receives 1 resource of their choice"),
+            new DicePair(3, 2, "No Event"),
+            new DicePair(4, 1, "No Event"),
+
+            new DicePair(1, 5, "Each player gives one resource to their left-hand neighbor"),
+            new DicePair(2, 4, "An earthquake destroys one road of each player, which must be repaired at normal road-building cost before new roads can be built"),
+            new DicePair(3, 3, "Players receive only 1 resource per city"),
+            new DicePair(4, 2, "No Event"),
+            new DicePair(5, 1, "No Event"),
+
+            new DicePair(1, 6, "Robber"),
+            new DicePair(2, 5, "Robber"),
+            new DicePair(3, 4, "Robber"),
+            new DicePair(4, 3, "Robber"),
+            new DicePair(5, 2, "Robber"),
+            new DicePair(6, 1, "Robber"),
+
+            new DicePair(2, 6, "Players receive only 1 resource per city"),
+            new DicePair(3, 5, "No Event"),
+            new DicePair(4, 4, "No Event"),
+            new DicePair(5, 3, "No Event"),
+            new DicePair(6, 2, "No Event"),
+
+            new DicePair(3, 6, "Players with the most harbors receive 1 resource of their choice"),
+            new DicePair(4, 5, "No Event"),
+            new DicePair(5, 4, "No Event"),
+            new DicePair(6, 3, "No Event"),
+
+            new DicePair(4, 6, "The player(s) with the most victory points must give one resource to another player"),
+            new DicePair(5, 5, "No Event"),
+            new DicePair(6, 4, "No Event"),
+
+            new DicePair(5, 6, "The player(s) with the most victory points must give one resource to another player"),
+            new DicePair(6, 5, "No Event"),
+
+            new DicePair(6, 6, "Players with the most harbors receive 1 resource of their choice")
+        ));
 
         Collections.shuffle(classicCards);
         return classicCards;
@@ -127,13 +167,13 @@ public class CatanServiceImpl implements CatanService {
         DicePair dicePair;
         if(isAlchemist) {
             //alchemist roll
-            dicePair = new DicePair(0, 0);
+            dicePair = new DicePair(0, 0, null);
         } else {
             //normal roll
             if (classicCards == null) {
                 int dice1 = rand.nextInt(6) + 1;
                 int dice2 = rand.nextInt(6) + 1;
-                dicePair = new DicePair(dice1, dice2);
+                dicePair = new DicePair(dice1, dice2, null);
             } else {
                 if (classicCards.size() <= oldState.gameConfig().classicDice().shuffleThreshold()) {
                     classicCards = initClassicCards();
@@ -181,19 +221,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameDetails saveGame(GameState gameState, String winnerTeamName) {
-        //get all winner players
-        Optional<TeamDetails> winnerTeam = gameState.gameConfig().teams().stream()
-                .filter(team -> team.name().equals(winnerTeamName))
-                .findFirst();
-        if(winnerTeam.isEmpty()) {
-            throw new IllegalArgumentException("Winner team name does not exist in teams");
-        }
-        Set<Player> winners = winnerTeam.get().players().stream()
-                .map(PlayerDetails::name)
-                .map(playerRepository::findByName)
-                .collect(Collectors.toSet());
-
+    public GameDetails saveGame(GameState gameState, SaveGameState saveGameState) {
         //get all players in team from db
         Set<Player> players = gameState.gameConfig().teams().stream()
                 .flatMap(team -> team.players().stream())
@@ -205,7 +233,7 @@ public class CatanServiceImpl implements CatanService {
             LocalDate.now(),
             GameType.CATAN,
             gameState,
-            winners,
+            saveGameState,
             players
         );
         Game saved = gameRepository.save(toSave);

@@ -26,13 +26,9 @@ public class Game {
     @Column(columnDefinition = "jsonb")
     private Object gameState;
 
-    @ManyToMany
-    @JoinTable(
-            name = "game_winner",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private Set<Player> winners;
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private Object result;
 
     @ManyToMany
     @JoinTable(
@@ -44,11 +40,11 @@ public class Game {
 
     public Game() {}
 
-    public Game(LocalDate playedAt, GameType gameType, Object gameState, Set<Player> winners, Set<Player> players) {
+    public Game(LocalDate playedAt, GameType gameType, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;
         this.gameType = gameType;
         this.gameState = gameState;
-        this.winners = winners;
+        this.result = result;
         this.players = players;
     }
 
@@ -84,12 +80,12 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public Set<Player> getWinners() {
-        return winners;
+    public Object getResult() {
+        return result;
     }
 
-    public void setWinners(Set<Player> winner) {
-        this.winners = winner;
+    public void setResult(Object result) {
+        this.result = result;
     }
 
     public Set<Player> getPlayers() {
@@ -104,11 +100,11 @@ public class Game {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Game game)) return false;
-        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(winners, game.winners) && Objects.equals(players, game.players);
+        return Objects.equals(id, game.id) && Objects.equals(playedAt, game.playedAt) && gameType == game.gameType && Objects.equals(gameState, game.gameState) && Objects.equals(result, game.result) && Objects.equals(players, game.players);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, playedAt, gameType, gameState, winners, players);
+        return Objects.hash(id, playedAt, gameType, gameState, result, players);
     }
 }
