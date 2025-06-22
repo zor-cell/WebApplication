@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/global/PlayerDetails";
@@ -37,7 +37,7 @@ import {AuthService} from "../../../services/auth.service";
   standalone: true,
   styleUrl: './player-select.component.css'
 })
-export class PlayerSelectComponent implements OnInit {
+export class PlayerSelectComponent implements OnInit, OnChanges {
   @ViewChild('playerPopup') playerPopup!: NewPlayerPopupComponent;
 
   @Input() minTeams: number = 2;
@@ -59,6 +59,15 @@ export class PlayerSelectComponent implements OnInit {
 
   ngOnInit() {
     this.getPlayers();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    //remove duplicate players from available
+    if (changes['selectedTeams'] && this.allPlayers.length > 0) {
+      this.availablePlayers = this.availablePlayers
+          .filter(player => !this.selectedTeams.some(team => team.players.some(p => p.name === player.name)))
+          .map(player => this.copy(player));
+    }
   }
 
   mergeTeam(teamIndex: number) {
