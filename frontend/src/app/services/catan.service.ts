@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {GameState} from "../dto/catan/GameState";
 import {GameConfig} from "../dto/catan/GameConfig";
 import {GameDetails} from "../dto/global/GameDetails";
+import {SaveGameState} from "../dto/catan/SaveGameState";
 
 @Injectable({
   providedIn: 'root'
@@ -53,12 +54,10 @@ export class CatanService {
         });
   }
 
-  save(winnerTeam: string) {
-      const params = new HttpParams().set('winnerTeam', winnerTeam);
-
-      return this.httpClient.post<GameDetails>(this.baseUri + '/save', {}, {
+  save(saveGameState: SaveGameState) {
+      return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState,
+          {
           withCredentials: true,
-          params: params
       });
   }
 }

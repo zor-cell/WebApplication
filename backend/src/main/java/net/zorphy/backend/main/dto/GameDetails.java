@@ -9,7 +9,7 @@ public record GameDetails(
         LocalDate playedAt,
         GameType gameType,
         Object gameState,
-        List<PlayerDetails> winners,
+        Object result,
         List<PlayerDetails> players
 ) {
 }

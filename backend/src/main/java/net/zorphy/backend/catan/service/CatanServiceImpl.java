@@ -31,7 +31,6 @@ public class CatanServiceImpl implements CatanService {
     }
 
     //TODO: catan game type
-    //TODO: siegespunkte bei spiel speichern
 
     private List<DicePair> initClassicCards() {
         List<DicePair> classicCards = new ArrayList<>(Arrays.asList(

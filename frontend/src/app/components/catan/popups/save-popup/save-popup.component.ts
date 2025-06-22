@@ -6,6 +6,8 @@ import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
 import {Globals} from "../../../../classes/globals";
 import {PopupResultType} from "../../../../dto/global/PopupResultType";
+import {SaveGameState} from "../../../../dto/catan/SaveGameState";
+import {SaveTeamState} from "../../../../dto/catan/SaveTeamState";
 
 @Component({
   selector: 'catan-save-popup',
@@ -29,9 +31,13 @@ export class CatanSavePopupComponent implements OnInit {
               private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.saveForm = this.fb.group({
-      winnerTeam: ['', [Validators.required]]
-    });
+    const controls: any = {};
+
+    for(let team of this.teams) {
+      controls[team.name] = [null, Validators.required];
+    }
+
+    this.saveForm = this.fb.group(controls);
   }
 
   openPopup() {
@@ -53,7 +59,16 @@ export class CatanSavePopupComponent implements OnInit {
   }
 
   private saveGame() {
-    this.catanService.save(this.saveForm.value.winnerTeam).subscribe({
+    const teamState: SaveTeamState[] = this.teams.map(team => ({
+      team: team,
+      score: this.saveForm.value[team.name]
+    }));
+
+    const gameState: SaveGameState = {
+      teams: teamState
+    }
+
+    this.catanService.save(gameState).subscribe({
       next: res => {
         this.saveForm.reset();
       },
