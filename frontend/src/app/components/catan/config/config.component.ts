@@ -96,6 +96,7 @@ export class CatanConfigComponent implements OnInit {
   continueGame() {
     if(!this.hasSession || this.originalConfig === null) return;
 
+    //only show popup if changes to the config have been made
     if(this.configsAreEqual(this.gameConfig, this.originalConfig)) {
       this.goToGame();
     } else {
@@ -111,15 +112,15 @@ export class CatanConfigComponent implements OnInit {
     this.updatePopup.openPopup();
   }
 
-  updatedSession(updated: boolean) {
-    this.goToGame();
+  goToGame() {
+    this.router.navigate(['projects/catan/game']);
+  }
+
+  validConfig() {
+    return this.gameConfig.teams.length >= 2;
   }
 
   private configsAreEqual(config1: GameConfig, config2: GameConfig): boolean {
     return JSON.stringify(config1) === JSON.stringify(config2);
-  }
-
-  private goToGame() {
-    this.router.navigate(['projects/catan/game']);
   }
 }

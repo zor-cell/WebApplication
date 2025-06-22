@@ -15,6 +15,7 @@ import {PopupResultType} from "../../../../dto/global/PopupResultType";
 export class CatanUpdatePopupComponent {
   @ViewChild('updatePopup') updateTemplate!: TemplateRef<any>;
   @Input({required: true}) gameConfig!: GameConfig;
+  @Input() canUpdate: boolean = true;
 
   @Output() updatedSessionEvent = new EventEmitter<boolean>();
 
@@ -27,7 +28,7 @@ export class CatanUpdatePopupComponent {
         'Update Game Data',
         this.updateTemplate,
         this.callback.bind(this),
-        undefined,
+        () => this.canUpdate,
         'Update',
         'Discard'
     );

@@ -58,10 +58,10 @@
             <button class="small-btn" (click)="openClearPopup()">Clear</button>
             <button class="small-btn" (click)="continueGame()">Continue</button>
         } @else {
-            <button class="small-btn" (click)="startGame()" [disabled]="gameConfig.teams.length < 2">Start</button>
+            <button class="small-btn" (click)="startGame()" [disabled]="!validConfig()">Start</button>
         }
     </div>
 </div>
 
 <catan-clear-popup #clearPopup (hasSessionEvent)="hasSession = $event"></catan-clear-popup>
-<catan-update-popup #updatePopup [gameConfig]="gameConfig" (updatedSessionEvent)="updatedSession($event)"></catan-update-popup>
+<catan-update-popup #updatePopup [gameConfig]="gameConfig" [canUpdate]="validConfig()" (updatedSessionEvent)="goToGame()"></catan-update-popup>

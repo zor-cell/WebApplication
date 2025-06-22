@@ -67,7 +67,8 @@ public class CatanServiceImpl implements CatanService {
             eventCards = initEventCards();
         }
 
-        return new GameState(gameConfig,
+        return new GameState(
+                gameConfig,
                 0,
                 0,
                 classicCards,
@@ -78,12 +79,38 @@ public class CatanServiceImpl implements CatanService {
 
     @Override
     public GameState updateGameState(GameState oldState, GameConfig gameConfig) {
+        //update turns if players changed
+        int currentPlayerTurn = oldState.currentPlayerTurn() % gameConfig.teams().size();
+        int currentShipTurn = oldState.currentShipTurn() % gameConfig.maxShipTurns();
 
-        return new GameState(gameConfig,
-                oldState.currentPlayerTurn(),
-                oldState.currentShipTurn(),
-                oldState.classicCards(),
-                oldState.eventCards(),
+        //update classic cards
+        List<DicePair> classicCards = null;
+        if(gameConfig.classicDice().isBalanced()) {
+            if(oldState.gameConfig().classicDice().isBalanced()) {
+                //reuse cards from old config if still balanced
+                classicCards = oldState.classicCards();
+            } else {
+                //shuffle cards if changing to balanced
+                classicCards = initClassicCards();
+            }
+        }
+
+        //update event cards
+        List<Character> eventCards = null;
+        if(gameConfig.eventDice().isBalanced()) {
+            if(oldState.gameConfig().eventDice().isBalanced()) {
+                eventCards = oldState.eventCards();
+            } else {
+                eventCards = initEventCards();
+            }
+        }
+
+        return new GameState(
+                gameConfig,
+                currentPlayerTurn,
+                currentShipTurn,
+                classicCards,
+                eventCards,
                 oldState.diceRolls()
         );
     }
@@ -131,7 +158,7 @@ public class CatanServiceImpl implements CatanService {
         currentPlayerTurn = (currentPlayerTurn + 1) % oldState.gameConfig().teams().size();
 
         //reset ship to start if charge happened last round
-        if(currentShipTurn == oldState.gameConfig().maxShipTurns() - 1) {
+        if(currentShipTurn >= oldState.gameConfig().maxShipTurns() - 1) {
             currentShipTurn = 0;
         }
 
