@@ -236,6 +236,7 @@
         grid-auto-flow: row;
         justify-items: center;
 
+        padding: 1rem;
         gap: 5rem;
         max-width: 400px;
     }

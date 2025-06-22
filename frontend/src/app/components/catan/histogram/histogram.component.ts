@@ -27,7 +27,7 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
         label: 'Roll Frequency',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgb(31, 119, 180)',
-        order: 2
+        order: 3
       },
       {
         type: 'line',
@@ -39,7 +39,15 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
         borderColor: 'rgba(255, 0, 0, 0.6)',
         borderWidth: 2,
         order: 1
-      }
+      },
+      /*{
+        type: 'bar',
+        label: 'Exact',
+        data: [],
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        borderColor: 'rgba(0, 0, 0, 0.8)',
+        order: 2
+      }*/
     ]
   };
   chartOptions: ChartOptions = {
@@ -109,6 +117,9 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
     //bell curve
     this.chartData.datasets[1].data = this.generateBellCurveData(this.diceRolls.length);
 
+    //exact probabilities
+    //this.chartData.datasets[2].data = this.generateExactProbabilities(this.diceRolls.length);
+
     //histogram
     const data = this.chartData.datasets[0].data;
     data.fill(0);
@@ -137,5 +148,25 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
       const pdf = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z);
       return pdf * totalRolls;  // scale to total rolls so curve height matches histogram scale
     });
+  }
+
+  private generateExactProbabilities(totalRolls: number): number[] {
+    const labels = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    const probabilities: {[key: number]: number} = {
+      2: 1/36,
+      3: 2/36,
+      4: 3/36,
+      5: 4/36,
+      6: 5/36,
+      7: 6/36,
+      8: 5/36,
+      9: 4/36,
+      10: 3/36,
+      11: 2/36,
+      12: 1/36
+    };
+
+    return labels.map(sum => probabilities[sum] * totalRolls);
   }
 }
