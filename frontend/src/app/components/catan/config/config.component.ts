@@ -11,6 +11,7 @@ import {ProjectHeaderComponent} from "../../projects/project-header/project-head
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
+import {CatanUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 
 @Component({
   selector: 'catan-game-settings',
@@ -22,7 +23,8 @@ import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.compon
     NgIf,
     PlayerSelectComponent,
     ProjectHeaderComponent,
-    CatanClearPopupComponent
+    CatanClearPopupComponent,
+    CatanUpdatePopupComponent
   ],
   templateUrl: './config.component.html',
   standalone: true,
@@ -30,6 +32,7 @@ import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.compon
 })
 export class CatanConfigComponent implements OnInit {
   @ViewChild('clearPopup') clearPopup!: CatanClearPopupComponent;
+  @ViewChild('updatePopup') updatePopup!: CatanUpdatePopupComponent;
 
   project!: ProjectMetadata;
   gameConfig: GameConfig = {
@@ -45,6 +48,7 @@ export class CatanConfigComponent implements OnInit {
     maxShipTurns: 7
   };
   hasSession: boolean = false;
+  originalConfig: GameConfig | null = null;
 
   constructor(private globals: Globals,
               private projectService: ProjectService,
@@ -67,6 +71,8 @@ export class CatanConfigComponent implements OnInit {
       next: res => {
         this.hasSession = true;
         this.gameConfig = res.gameConfig;
+
+        this.originalConfig = structuredClone(this.gameConfig);
       },
       error: err => {
         this.globals.handleError(err, true);
@@ -88,13 +94,29 @@ export class CatanConfigComponent implements OnInit {
   }
 
   continueGame() {
-    if(!this.hasSession) return;
+    if(!this.hasSession || this.originalConfig === null) return;
 
-    this.goToGame();
+    if(this.configsAreEqual(this.gameConfig, this.originalConfig)) {
+      this.goToGame();
+    } else {
+      this.openUpdatePopup();
+    }
   }
 
   openClearPopup() {
     this.clearPopup.openPopup();
+  }
+
+  openUpdatePopup() {
+    this.updatePopup.openPopup();
+  }
+
+  updatedSession(updated: boolean) {
+    this.goToGame();
+  }
+
+  private configsAreEqual(config1: GameConfig, config2: GameConfig): boolean {
+    return JSON.stringify(config1) === JSON.stringify(config2);
   }
 
   private goToGame() {

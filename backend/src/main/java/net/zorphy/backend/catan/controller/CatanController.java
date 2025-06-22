@@ -58,7 +58,17 @@ public class CatanController {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
-        GameState gameState = catanService.getGameStateFromConfig(gameConfig);
+        GameState gameState = catanService.initGameState(gameConfig);
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
+    }
+
+    @PutMapping("update")
+    public GameState updateGame(HttpSession session, @RequestBody GameConfig gameConfig) {
+        LOGGER.info("POST /catan/update");
+
+        GameState gameState = catanService.updateGameState(getGameState(session), gameConfig);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;

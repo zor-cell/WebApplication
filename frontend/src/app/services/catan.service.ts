@@ -36,6 +36,14 @@ export class CatanService {
         });
   }
 
+    update(gameConfig: GameConfig): Observable<GameState> {
+      console.log(gameConfig);
+        return this.httpClient.put<GameState>(this.baseUri + '/update', gameConfig,
+            {
+                withCredentials: true
+            });
+    }
+
   rollDice(isAlchemist: boolean): Observable<GameState> {
     return this.httpClient.post<GameState>(this.baseUri + '/dice-roll',{},
         {

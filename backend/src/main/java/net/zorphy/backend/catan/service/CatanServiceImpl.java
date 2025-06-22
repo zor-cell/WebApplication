@@ -54,7 +54,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameState getGameStateFromConfig(GameConfig gameConfig) {
+    public GameState initGameState(GameConfig gameConfig) {
         //shuffle balanced classic dice deck
         List<DicePair> classicCards = null;
         if(gameConfig.classicDice().isBalanced()) {
@@ -67,7 +67,25 @@ public class CatanServiceImpl implements CatanService {
             eventCards = initEventCards();
         }
 
-        return new GameState(gameConfig, 0, 0, classicCards, eventCards, new ArrayList<>());
+        return new GameState(gameConfig,
+                0,
+                0,
+                classicCards,
+                eventCards,
+                new ArrayList<>()
+        );
+    }
+
+    @Override
+    public GameState updateGameState(GameState oldState, GameConfig gameConfig) {
+
+        return new GameState(gameConfig,
+                oldState.currentPlayerTurn(),
+                oldState.currentShipTurn(),
+                oldState.classicCards(),
+                oldState.eventCards(),
+                oldState.diceRolls()
+        );
     }
 
     @Override
