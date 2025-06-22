@@ -7,7 +7,7 @@
             <app-player-select [selectedTeams]="gameConfig.teams" (selectedTeamEvent)="gameConfig.teams = $event"></app-player-select>
         </div>
 
-        <div class="config-grid-container">
+        <div class="config-grid-container config-grid-container-2">
             <h3 class="config-header">Mode</h3>
             <div class="select-container">
                 <select [(ngModel)]="gameConfig.gameMode">
@@ -39,7 +39,7 @@
            </div>
         </div>
 
-        <div class="config-grid-container">
+        <div class="config-grid-container config-grid-container-2">
             <h3 class="config-header">Settings</h3>
             <div></div> <!-- empty div for grid layout -->
             <div class="dice-settings">
