@@ -40,6 +40,9 @@ export class CatanGameComponent implements OnInit {
   gameState!: GameState;
   showChart: boolean = false;
 
+  //TODO: undo roll button
+  //TODO: update ship frontend
+
   get currentRoll(): DiceRoll | null {
     if(!this.gameState) return null;
 

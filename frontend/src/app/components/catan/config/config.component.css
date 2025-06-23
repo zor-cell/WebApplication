@@ -17,7 +17,7 @@ select {
 /*container styles*/
 .config-container {
     display: grid;
-    grid-template-columns: 30fr 23fr 47fr;
+    grid-template-columns: 30fr 30fr 40fr;
     /*grid-template-rows: 30% 23% 47%;*/
     gap: 1.5rem;
     justify-content: center;
@@ -43,7 +43,6 @@ select {
     align-items: start;
     grid-template-rows: 30% auto;
 
-    max-width: 400px;
     min-height: 290px;
     text-align: center;
 
