@@ -1,0 +1,27 @@
+<ng-template #updatePopup>
+    <form [formGroup]="updateForm" novalidate>
+        <label>Name</label>
+        <input class="form-control" formControlName="name" type="text">
+
+        <label>Created At</label>
+        <input class="form-control" formControlName="createdAt" type="date">
+
+        <label>Description</label>
+        <textarea class="form-control form-text" formControlName="description"></textarea>
+
+        <label>Image Path</label>
+        <input class="form-control" formControlName="imagePath" type="text">
+
+        <label>Github URL</label>
+        <input class="form-control" formControlName="githubUrl" type="text">
+
+        <label>hasWebsite</label>
+        <input class="form-check-input" formControlName="hasWebsite" type="checkbox">
+
+        <label>isFavorite</label>
+        <input class="form-check-input" formControlName="isFavorite" type="checkbox">
+
+        <label>File Path</label>
+        <input class="form-control" formControlName="filePath" type="text">
+    </form>
+</ng-template>

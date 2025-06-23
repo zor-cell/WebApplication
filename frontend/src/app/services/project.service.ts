@@ -22,4 +22,11 @@ export class ProjectService {
     return this.httpClient.get<ProjectDetails>(`${this.baseUri}/${name}`);
   }
 
+  updateProject(project: ProjectDetails) {
+    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project,
+        {
+          withCredentials: true
+        });
+  }
+
 }

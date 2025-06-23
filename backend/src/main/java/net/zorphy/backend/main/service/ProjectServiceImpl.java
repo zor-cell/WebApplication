@@ -9,6 +9,7 @@ import net.zorphy.backend.main.mapper.ProjectMapper;
 import net.zorphy.backend.main.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +55,15 @@ public class ProjectServiceImpl implements ProjectService {
         project.setName(metadata.name());
         project.setCreatedAt(metadata.createdAt());
         project.setDescription(metadata.description());
-        project.setImagePath(metadata.imagePath());
         project.setGithubUrl(metadata.githubUrl());
         project.setHasWebsite(metadata.hasWebsite());
         project.setFavorite(metadata.isFavorite());
         project.setFilePath(projectDetails.filePath());
+
+        //remove host from image path before update
+        URI uri = URI.create(metadata.imagePath());
+        String path = uri.getPath();
+        project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
 
         Project updated = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(updated, baseUrl, fileContentReader);

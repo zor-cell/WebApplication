@@ -10,5 +10,6 @@ export interface ProjectMetadata {
 
 export interface ProjectDetails {
     metadata: ProjectMetadata,
-    content: string
+    content: string,
+    filePath: string
 }

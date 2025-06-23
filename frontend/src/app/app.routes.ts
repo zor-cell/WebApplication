@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {Connect4Component} from "./components/connect4/connect4.component";
-import {ProjectsComponent} from "./components/projects/projects.component";
+import {ProjectsComponent} from "./components/projects/project-list/projects.component";
 import {ProjectInfoComponent} from "./components/projects/project-info/project-info.component";
 import {CatanGameComponent} from "./components/catan/game/game.component";
 import {CatanConfigComponent} from "./components/catan/config/config.component";

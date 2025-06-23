@@ -1,5 +1,9 @@
-<app-project-header *ngIf="project" [project]="project.metadata" [showWebsite]="true" [showEdit]="true"></app-project-header>
+@if(project) {
+    <app-project-header [project]="project.metadata" [showWebsite]="true" [showEdit]="true" (editEvent)="openUpdatePopup()"></app-project-header>
 
-<div *ngIf="project" class="main-container">
-    <div [innerHTML]="project.content"></div>
-</div>
+    <div class="main-container">
+        <div [innerHTML]="project.content"></div>
+    </div>
+
+    <app-update-popup #updatePopup [project]="project"></app-update-popup>
+}
