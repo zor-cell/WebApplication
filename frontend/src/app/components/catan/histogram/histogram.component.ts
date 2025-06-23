@@ -23,34 +23,20 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
     labels: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     datasets: [
       {
-        type: 'bar',
-        label: 'Roll Frequency',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        backgroundColor: 'rgb(31, 119, 180)',
-        order: 3
-      },
-      {
         type: 'line',
         label: 'Bell Curve',
-        data: [], // We'll compute this below
+        data: [], // compute below
         tension: 0.4,
         pointRadius: 0,
         backgroundColor: 'rgba(255, 0, 0, 0.6)',
         borderColor: 'rgba(255, 0, 0, 0.6)',
         borderWidth: 2,
         order: 1
-      },
-      /*{
-        type: 'bar',
-        label: 'Exact',
-        data: [],
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        borderColor: 'rgba(0, 0, 0, 0.8)',
-        order: 2
-      }*/
+      }
     ]
   };
   chartOptions: ChartOptions = {
+    maintainAspectRatio: false,
     animations: {
       // Define animations for dataset elements during updates
       x: {
@@ -70,10 +56,19 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
           size: 18,
           weight: 'bold',
         },
+      },
+      legend: {
+        labels: {
+          filter: item => item.text !== 'Bell Curve'
+        }
       }
     },
     scales: {
+      x: {
+        stacked: true
+      },
       y: {
+        stacked: true,
         beginAtZero: true,
         ticks: {
           callback: function(value) {
@@ -106,7 +101,7 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
   }
 
   private refillChartData() {
-    if(!this.chart) return;
+    if(!this.chart || !this.isVisible) return;
 
     //update text
     if (this.chart.chart && this.chart.chart.options && this.chart.chart.options.plugins && this.chart.chart.options.plugins.title) {
@@ -115,20 +110,30 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
 
 
     //bell curve
-    this.chartData.datasets[1].data = this.generateBellCurveData(this.diceRolls.length);
+    this.chartData.datasets[0].data = this.generateBellCurveData(this.diceRolls.length);
 
-    //exact probabilities
-    //this.chartData.datasets[2].data = this.generateExactProbabilities(this.diceRolls.length);
+    //team datasets
+    const teams = [...new Set(this.diceRolls.map(d => d.teamName))];
+    const teamData: any = {};
 
-    //histogram
-    const data = this.chartData.datasets[0].data;
-    data.fill(0);
-
-    for(const diceRoll of this.diceRolls) {
+    teams.forEach(team => {
+      teamData[team] = Array(11).fill(0);
+    });
+    this.diceRolls.forEach(diceRoll => {
       const sum = diceRoll.dicePair.dice1 + diceRoll.dicePair.dice2;
+      teamData[diceRoll.teamName][sum - 2]++;
+    });
 
-      data[sum - 2]++;
-    }
+    const colors = ['rgba(31, 119, 180, 0.8)', 'rgba(255, 127, 14, 0.8)',  'rgba(148, 103, 189, 0.8)', 'rgb(255, 187, 120, 0.8)'];
+    const datasets = teams.map((team, index) => ({
+      type: 'bar',
+      label: team,
+      data: teamData[team],
+      backgroundColor: colors[index % teams.length],
+      order: 2
+    }));
+
+    this.chartData.datasets = [this.chartData.datasets[0], ...datasets];
 
     this.chart.update();
   }
