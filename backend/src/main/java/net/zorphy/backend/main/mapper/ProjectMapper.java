@@ -24,19 +24,12 @@ public abstract class ProjectMapper {
         }
     }
 
-    @Named("descriptionFromPath")
-    public String descriptionFromPath(String filePath, @Context FileContentReader fileContentReader) {
-        final int LIMIT = 25;
-        return fileContentReader.readTextFromMarkdown(filePath, LIMIT);
-    }
-
     @Named("contentFromPath")
     public String contentFromPath(String filePath, @Context FileContentReader fileContentReader) {
         return fileContentReader.readHtmlFromMarkdown(filePath);
     }
 
     @Mapping(source = "imagePath", target = "imagePath", qualifiedByName = "imageFromPath")
-    @Mapping(source = "filePath", target = "description", qualifiedByName = "descriptionFromPath")
     public abstract ProjectMetadata projectToProjectMetadata(Project project, @Context String baseUrl, @Context FileContentReader fileContentReader);
 
     @Mapping(source = "project", target = "metadata")

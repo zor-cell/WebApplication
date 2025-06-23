@@ -8,7 +8,7 @@ public record ProjectMetadata(
         String description,
         String imagePath,
         String githubUrl,
-        Boolean hasWebsite,
-        Boolean isFavorite
+        boolean hasWebsite,
+        boolean isFavorite
 ) {
 }

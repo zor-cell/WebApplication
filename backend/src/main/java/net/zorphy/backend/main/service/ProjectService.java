@@ -9,4 +9,6 @@ public interface ProjectService {
     List<ProjectMetadata> getProjects(String baseUrl);
 
     ProjectDetails getProject(String name, String baseUrl);
+
+    ProjectDetails updateProject(ProjectDetails projectUpdate, String baseUrl);
 }

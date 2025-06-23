@@ -41,4 +41,26 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectMapper.projectToProjectDetails(project, baseUrl, fileContentReader);
     }
+
+    @Override
+    public ProjectDetails updateProject(ProjectDetails projectDetails, String baseUrl) {
+        ProjectMetadata metadata = projectDetails.metadata();
+
+        Project project = projectRepository.findByName(metadata.name());
+        if(project == null) {
+            throw new NotFoundException("Project with name %s not found".formatted(metadata.name()));
+        }
+
+        project.setName(metadata.name());
+        project.setCreatedAt(metadata.createdAt());
+        project.setDescription(metadata.description());
+        project.setImagePath(metadata.imagePath());
+        project.setGithubUrl(metadata.githubUrl());
+        project.setHasWebsite(metadata.hasWebsite());
+        project.setFavorite(metadata.isFavorite());
+        project.setFilePath(projectDetails.filePath());
+
+        Project updated = projectRepository.save(project);
+        return projectMapper.projectToProjectDetails(updated, baseUrl, fileContentReader);
+    }
 }

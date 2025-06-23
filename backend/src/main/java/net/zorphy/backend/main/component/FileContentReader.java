@@ -75,25 +75,6 @@ public class FileContentReader {
 
     @Named("readTextFromMarkdown")
     public String readTextFromMarkdown(String filePath, int limit) {
-        String content = readContent(filePath);
-
-        Node document = parser.parse(content);
-        return getFirstParagraph(document.getFirstChild());
-    }
-
-    private String getFirstParagraph(Node node) {
-        if(node == null) {
-            return "";
-        }
-
-        if(node instanceof Heading) {
-            return getFirstParagraph(node.getNext());
-        } else if (node instanceof Paragraph) {
-            return getFirstParagraph(node.getFirstChild());
-        } else if(node instanceof Text text) {
-            return text.getLiteral();
-        }
-
-        return "";
+        return readContent(filePath);
     }
 }
