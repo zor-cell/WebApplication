@@ -57,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDescription(metadata.description());
         project.setGithubUrl(metadata.githubUrl());
         project.setHasWebsite(metadata.hasWebsite());
-        project.setFavorite(metadata.isFavorite());
+        project.setIsFavorite(metadata.isFavorite());
         project.setFilePath(projectDetails.filePath());
 
         //remove host from image path before update

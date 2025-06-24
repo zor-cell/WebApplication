@@ -1,27 +1,48 @@
 <ng-template #updatePopup>
-    <form [formGroup]="updateForm" novalidate>
-        <label>Name</label>
-        <input class="form-control" formControlName="name" type="text">
+    <form [formGroup]="updateForm" novalidate class="form-container">
+        <div class="grid-container">
+            <div>
+                <label>Name</label>
+                <input class="form-control" formControlName="name" type="text">
+            </div>
 
-        <label>Created At</label>
-        <input class="form-control" formControlName="createdAt" type="date">
+            <div>
+                <label>Created At</label>
+                <input class="form-control" formControlName="createdAt" type="date">
+            </div>
+        </div>
 
-        <label>Description</label>
-        <textarea class="form-control form-text" formControlName="description"></textarea>
+        <div class="stretch">
+            <label>Description</label>
+            <textarea class="form-control form-text area" formControlName="description"></textarea>
+        </div>
 
-        <label>Image Path</label>
-        <input class="form-control" formControlName="imagePath" type="text">
+        <div>
+            <label>Image Path</label>
+            <input class="form-control" formControlName="imagePath" type="text">
+        </div>
 
-        <label>Github URL</label>
-        <input class="form-control" formControlName="githubUrl" type="text">
+        <div>
+            <label>Github URL</label>
+            <input class="form-control" formControlName="githubUrl" type="text">
+        </div>
 
-        <label>hasWebsite</label>
-        <input class="form-check-input" formControlName="hasWebsite" type="checkbox">
+        <div>
+            <label>File Path</label>
+            <input class="form-control" formControlName="filePath" type="text">
+        </div>
 
-        <label>isFavorite</label>
-        <input class="form-check-input" formControlName="isFavorite" type="checkbox">
+        <div class="grid-container">
+            <div class="d-flex gap-1">
+                <label>Enable Website</label>
+                <input class="form-check-input" formControlName="hasWebsite" type="checkbox">
+            </div>
 
-        <label>File Path</label>
-        <input class="form-control" formControlName="filePath" type="text">
+            <div class="d-flex gap-1">
+                <label>Enable Favorite</label>
+                <input class="form-check-input" formControlName="isFavorite" type="checkbox">
+            </div>
+        </div>
+
     </form>
 </ng-template>

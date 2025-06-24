@@ -41,7 +41,7 @@ export class UpdatePopupComponent implements OnInit {
       hasWebsite: [this.project.metadata.hasWebsite],
       isFavorite: [this.project.metadata.isFavorite],
       filePath: [this.project.filePath, Validators.required]
-    })
+    });
   }
 
   openPopup() {
@@ -75,6 +75,8 @@ export class UpdatePopupComponent implements OnInit {
       content: '',
       filePath: formValue.filePath
     };
+
+    console.log(JSON.stringify(project));
 
     this.projectService.updateProject(project).subscribe({
       next: res => {
