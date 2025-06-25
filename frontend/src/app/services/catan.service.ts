@@ -8,56 +8,41 @@ import {GameDetails} from "../dto/global/GameDetails";
 import {SaveGameState} from "../dto/catan/SaveGameState";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CatanService {
-  private readonly baseUri: string;
+    private readonly baseUri: string;
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
-    this.baseUri = this.globals.backendUri + '/catan';
-  }
+    constructor(private httpClient: HttpClient, private globals: Globals) {
+        this.baseUri = this.globals.backendUri + '/catan';
+    }
 
-  state(): Observable<GameState> {
-      return this.httpClient.get<GameState>(this.baseUri + '/state', {
-          withCredentials: true
-      });
-  }
+    state(): Observable<GameState> {
+        return this.httpClient.get<GameState>(this.baseUri + '/state');
+    }
 
-  clear(): Observable<void> {
-      return this.httpClient.post<void>(this.baseUri + '/clear', {},
-          {
-              withCredentials: true
-          });
-  }
+    clear(): Observable<void> {
+        return this.httpClient.post<void>(this.baseUri + '/clear', {});
+    }
 
-  start(gameConfig: GameConfig): Observable<GameState> {
-    return this.httpClient.post<GameState>(this.baseUri + '/start', gameConfig,
-        {
-          withCredentials: true
-        });
-  }
+    start(gameConfig: GameConfig): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/start', gameConfig);
+    }
 
     update(gameConfig: GameConfig): Observable<GameState> {
-        return this.httpClient.put<GameState>(this.baseUri + '/update', gameConfig,
+        return this.httpClient.put<GameState>(this.baseUri + '/update', gameConfig);
+    }
+
+    rollDice(isAlchemist: boolean): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/dice-roll', {},
             {
-                withCredentials: true
+                params: {
+                    alchemist: isAlchemist
+                }
             });
     }
 
-  rollDice(isAlchemist: boolean): Observable<GameState> {
-    return this.httpClient.post<GameState>(this.baseUri + '/dice-roll',{},
-        {
-          withCredentials: true,
-          params: {
-            alchemist: isAlchemist
-          }
-        });
-  }
-
-  save(saveGameState: SaveGameState) {
-      return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState,
-          {
-          withCredentials: true,
-      });
-  }
+    save(saveGameState: SaveGameState) {
+        return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState);
+    }
 }

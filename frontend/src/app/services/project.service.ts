@@ -23,10 +23,6 @@ export class ProjectService {
   }
 
   updateProject(project: ProjectDetails) {
-    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project,
-        {
-          withCredentials: true
-        });
+    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project);
   }
-
 }

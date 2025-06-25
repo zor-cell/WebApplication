@@ -23,8 +23,6 @@ export class PlayerService {
   }
 
   savePlayer(player: PlayerDetails): Observable<PlayerDetails> {
-    return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player, {
-      withCredentials: true
-    });
+    return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player);
   }
 }

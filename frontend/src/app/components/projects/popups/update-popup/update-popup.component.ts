@@ -81,9 +81,6 @@ export class UpdatePopupComponent implements OnInit {
     this.projectService.updateProject(project).subscribe({
       next: res => {
         this.updatedProjectEvent.emit(true);
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }
