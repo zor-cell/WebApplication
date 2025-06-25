@@ -6,7 +6,7 @@ import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
 import {ProjectHeaderComponent} from "../project-header/project-header.component";
 import {CatanUpdatePopupComponent} from "../../catan/popups/update-popup/update-popup.component";
-import {UpdatePopupComponent} from "../popups/update-popup/update-popup.component";
+import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 
 @Component({
   selector: 'app-project-info',
@@ -15,14 +15,14 @@ import {UpdatePopupComponent} from "../popups/update-popup/update-popup.componen
     RouterLink,
     ProjectHeaderComponent,
     CatanUpdatePopupComponent,
-    UpdatePopupComponent
+    ProjectUpdatePopupComponent
   ],
   templateUrl: './project-info.component.html',
   standalone: true,
   styleUrl: './project-info.component.css'
 })
 export class ProjectInfoComponent implements OnInit {
-  @ViewChild('updatePopup') updatePopup!: UpdatePopupComponent;
+  @ViewChild('updatePopup') updatePopup!: ProjectUpdatePopupComponent;
 
   projectName: string | null = null;
   project: ProjectDetails | null = null;

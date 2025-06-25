@@ -9,7 +9,7 @@ import {ProjectDetails} from "../../../../dto/projects/responses";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-update-popup',
+  selector: 'project-update-popup',
   imports: [
     ReactiveFormsModule
   ],
@@ -17,7 +17,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
   standalone: true,
   styleUrl: './update-popup.component.css'
 })
-export class UpdatePopupComponent implements OnInit {
+export class ProjectUpdatePopupComponent implements OnInit {
   @ViewChild('updatePopup') updateTemplate!: TemplateRef<any>;
   updateForm!: FormGroup;
 

@@ -23,13 +23,11 @@ export class Globals {
         return new HttpContext().set(SILENT_ERROR_HANDLER, true);
     }
 
-    handleError(error: any, silent: boolean = false): void {
-        if(!silent) {
-            const message: string = error instanceof Object ? error.error : error;
-            const status = error.status;
+    handleError(error: any): void {
+        const message: string = error instanceof Object ? error.error : error;
+        const status: number = error.status;
 
-            this.toastr.error(message, status + ' ERROR');
-        }
+        this.toastr.error(message, 'ERROR ' + status);
     }
 
     handleSuccess(message: string) {
