@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {GameConfig} from "../../../../dto/catan/GameConfig";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {CatanService} from "../../../../services/catan.service";
 import {PopupResultType} from "../../../../dto/global/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";
 import {ProjectDetails} from "../../../../dto/projects/responses";

@@ -4,7 +4,6 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {GameConfig} from "../../../dto/catan/GameConfig";
 import {CatanService} from "../../../services/catan.service";
-import {Globals} from "../../../classes/globals";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
 import {Router} from "@angular/router";
 import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";

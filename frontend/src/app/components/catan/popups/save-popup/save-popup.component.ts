@@ -4,7 +4,6 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Team} from "../../../../dto/global/Team";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
-import {Globals} from "../../../../classes/globals";
 import {PopupResultType} from "../../../../dto/global/PopupResultType";
 import {SaveGameState} from "../../../../dto/catan/SaveGameState";
 import {SaveTeamState} from "../../../../dto/catan/SaveTeamState";

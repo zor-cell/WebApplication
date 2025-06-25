@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpContext, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
 import {GameState} from "../dto/catan/GameState";
 import {GameConfig} from "../dto/catan/GameConfig";
 import {GameDetails} from "../dto/global/GameDetails";
 import {SaveGameState} from "../dto/catan/SaveGameState";
-import {SILENT_ERROR_HANDLER} from "../classes/interceptors";
 
 @Injectable({
     providedIn: 'root'

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
-import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {CatanService} from "../../../../services/catan.service";
 import {PopupResultType} from "../../../../dto/global/PopupResultType";
