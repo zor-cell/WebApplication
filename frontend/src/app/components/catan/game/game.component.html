@@ -13,8 +13,8 @@
 
             <div class="dice-container">
                 <div class="card-info">
-                    <h3 *ngIf="gameState.gameConfig.classicDice.isBalanced" class="dice-header card-info-text">{{gameState.classicCards.length}} / 36</h3>
-                    <h3 *ngIf="gameState.gameConfig.eventDice.isBalanced" class="dice-header card-info-text">{{ gameState.eventCards.length }} / 6</h3>
+                    <h3 *ngIf="gameState.gameConfig.classicDice.isBalanced && gameState.classicCards" class="dice-header card-info-text">{{gameState.classicCards.length}} / 36</h3>
+                    <h3 *ngIf="gameState.gameConfig.eventDice.isBalanced && gameState.eventCards" class="dice-header card-info-text">{{ gameState.eventCards.length }} / 6</h3>
                 </div>
 
                 <button (click)="rollDice()" id="roll-button">Dice</button>
@@ -35,11 +35,6 @@
                     <catan-dice-roll class="flex-container" [gameMode]="gameState.gameConfig.gameMode" [diceRoll]="currentRoll"/>
                 </div>
                 <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="ship-display">
-                    <!--<ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
-                        <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg" alt="">
-                        <div *ngIf="i !== gameState.currentShipTurn"
-                             [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last' : 'ship-tile'"></div>
-                    </ng-container>-->
                     <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
                         @if(i === gameState.currentShipTurn) {
                             <img class="ship-tile-current" src="assets/catan/e_2b.svg" alt="">
