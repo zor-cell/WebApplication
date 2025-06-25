@@ -24,7 +24,7 @@ export class AuthService {
 
     loadUser(): Observable<UserDetails> {
         return this.httpClient.get<UserDetails>(this.globals.backendUri + '/users/me', {
-            context: new HttpContext().set(SILENT_ERROR_HANDLER, true)
+            context: this.globals.silentErrorContext
         }).pipe(
             tap(user => this.user = user)
         );

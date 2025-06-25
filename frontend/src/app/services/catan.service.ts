@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpParams} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable} from "rxjs";
 import {GameState} from "../dto/catan/GameState";
 import {GameConfig} from "../dto/catan/GameConfig";
 import {GameDetails} from "../dto/global/GameDetails";
 import {SaveGameState} from "../dto/catan/SaveGameState";
+import {SILENT_ERROR_HANDLER} from "../classes/interceptors";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,9 @@ export class CatanService {
     }
 
     state(): Observable<GameState> {
-        return this.httpClient.get<GameState>(this.baseUri + '/state');
+        return this.httpClient.get<GameState>(this.baseUri + '/state', {
+            context: this.globals.silentErrorContext
+        });
     }
 
     clear(): Observable<void> {

@@ -33,8 +33,6 @@ export class ProjectInfoComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.projectName = params.get('name');
 
-      this.globals.handleError("test");
-
       this.getProject();
     });
   }
