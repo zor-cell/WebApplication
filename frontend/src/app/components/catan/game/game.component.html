@@ -35,12 +35,20 @@
                     <catan-dice-roll class="flex-container" [gameMode]="gameState.gameConfig.gameMode" [diceRoll]="currentRoll"/>
                 </div>
                 <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="ship-display">
-                    <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
+                    <!--<ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
                         <img *ngIf="i === gameState.currentShipTurn" class="ship-tile-current" src="assets/catan/e_2b.svg" alt="">
                         <div *ngIf="i !== gameState.currentShipTurn"
                              [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last' : 'ship-tile'"></div>
+                    </ng-container>-->
+                    <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
+                        @if(i === gameState.currentShipTurn) {
+                            <img class="ship-tile-current" src="assets/catan/e_2b.svg" alt="">
+                        } @else {
+                            <div [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last attack' : 'ship-tile attack'">
+                                {{ gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1 ? attackText[i] : '' }}
+                            </div>
+                        }
                     </ng-container>
-                    <p *ngIf="gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1" id="attack">CHARGE</p>
                 </div>
             </div>
         </section>

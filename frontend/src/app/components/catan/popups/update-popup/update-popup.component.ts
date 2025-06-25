@@ -19,8 +19,7 @@ export class CatanUpdatePopupComponent {
 
   @Output() updatedSessionEvent = new EventEmitter<boolean>();
 
-  constructor(private globals: Globals,
-              private popupService: PopupService,
+  constructor(private popupService: PopupService,
               private catanService: CatanService) {}
 
   openPopup() {

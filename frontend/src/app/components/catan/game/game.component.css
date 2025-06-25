@@ -189,7 +189,7 @@
     z-index: 999;
 }
 .ship-tile {
-    border: 1.5px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.2);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
     width: 28px;
     height: 28px;
@@ -197,19 +197,13 @@
     border-radius: 15px;
 }
 
-#attack {
-    font-weight: bold;
-    font-size: 13px;
-    color: black;
-    width: 223px;
-    letter-spacing: 26.5px;
-    margin: 0 auto;
-    text-align: left;
-    position: absolute;
-    line-height: 30px;
-    padding-left: 5px;
+.attack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: bold !important;
 }
-
 
 #leftover-list{
     width: 90%;

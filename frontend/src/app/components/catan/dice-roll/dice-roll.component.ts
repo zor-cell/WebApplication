@@ -15,5 +15,6 @@ import {GameMode} from "../../../dto/catan/GameMode";
 export class CatanDiceRollComponent {
     @Input({required: true}) diceRoll!: DiceRoll | null;
     @Input({required: true}) gameMode!: GameMode;
+
   protected readonly GameMode = GameMode;
 }

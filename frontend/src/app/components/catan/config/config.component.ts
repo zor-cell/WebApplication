@@ -56,8 +56,7 @@ export class CatanConfigComponent implements OnInit {
 
   gameModes = Object.values(GameMode);
 
-  constructor(private globals: Globals,
-              private projectService: ProjectService,
+  constructor(private projectService: ProjectService,
               private catanService: CatanService,
               private router: Router) {}
 

@@ -25,8 +25,7 @@ export class CatanSavePopupComponent implements OnInit {
 
   @Input({required: true}) teams!: Team[];
 
-  constructor(private globals: Globals,
-              private popupService: PopupService,
+  constructor(private popupService: PopupService,
               private catanService: CatanService,
               private fb: FormBuilder) {}
 

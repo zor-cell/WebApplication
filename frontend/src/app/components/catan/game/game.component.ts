@@ -41,7 +41,6 @@ export class CatanGameComponent implements OnInit {
   showChart: boolean = false;
 
   //TODO: undo roll button
-  //TODO: update ship frontend
 
   get currentRoll(): DiceRoll | null {
     if(!this.gameState) return null;
@@ -73,6 +72,10 @@ export class CatanGameComponent implements OnInit {
 
     /*const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
     return this.gameState.gameConfig.teams[index];*/
+  }
+
+  get attackText(): string {
+    return 'CHARGE ';
   }
 
   constructor(private globals: Globals,
