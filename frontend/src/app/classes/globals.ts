@@ -31,4 +31,8 @@ export class Globals {
             this.toastr.error(message, status + ' ERROR');
         }
     }
+
+    handleSuccess(message: string) {
+        this.toastr.success(message);
+    }
 }

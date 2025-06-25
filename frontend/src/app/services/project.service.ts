@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {ProjectDetails, ProjectMetadata} from "../dto/projects/responses";
 
 @Injectable({
@@ -23,6 +23,9 @@ export class ProjectService {
   }
 
   updateProject(project: ProjectDetails) {
-    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project);
+    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project).pipe(
+        tap(() => {
+          this.globals.handleSuccess('Updated project data');
+        }));
   }
 }

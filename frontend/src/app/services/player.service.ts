@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {PlayerDetails} from "../dto/global/PlayerDetails";
 
 @Injectable({
@@ -23,6 +23,9 @@ export class PlayerService {
   }
 
   savePlayer(player: PlayerDetails): Observable<PlayerDetails> {
-    return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player);
+    return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player).pipe(
+        tap(() => {
+          this.globals.handleSuccess('Saved player data');
+        }));
   }
 }

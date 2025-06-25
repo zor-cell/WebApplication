@@ -76,8 +76,6 @@ export class UpdatePopupComponent implements OnInit {
       filePath: formValue.filePath
     };
 
-    console.log(JSON.stringify(project));
-
     this.projectService.updateProject(project).subscribe({
       next: res => {
         this.updatedProjectEvent.emit(true);

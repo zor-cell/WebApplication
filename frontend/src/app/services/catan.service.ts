@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpContext, HttpParams} from "@angular/common/http";
 import {Globals} from "../classes/globals";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {GameState} from "../dto/catan/GameState";
 import {GameConfig} from "../dto/catan/GameConfig";
 import {GameDetails} from "../dto/global/GameDetails";
@@ -24,18 +24,6 @@ export class CatanService {
         });
     }
 
-    clear(): Observable<void> {
-        return this.httpClient.post<void>(this.baseUri + '/clear', {});
-    }
-
-    start(gameConfig: GameConfig): Observable<GameState> {
-        return this.httpClient.post<GameState>(this.baseUri + '/start', gameConfig);
-    }
-
-    update(gameConfig: GameConfig): Observable<GameState> {
-        return this.httpClient.put<GameState>(this.baseUri + '/update', gameConfig);
-    }
-
     rollDice(isAlchemist: boolean): Observable<GameState> {
         return this.httpClient.post<GameState>(this.baseUri + '/dice-roll', {},
             {
@@ -45,7 +33,28 @@ export class CatanService {
             });
     }
 
+    start(gameConfig: GameConfig): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/start', gameConfig);
+    }
+
+    clear(): Observable<void> {
+        return this.httpClient.post<void>(this.baseUri + '/clear', {}).pipe(
+            tap(() => {
+                this.globals.handleSuccess('Cleared session data');
+            }));
+    }
+
+    update(gameConfig: GameConfig): Observable<GameState> {
+        return this.httpClient.put<GameState>(this.baseUri + '/update', gameConfig).pipe(
+            tap(() => {
+                this.globals.handleSuccess('Updated session data');
+            }));
+    }
+
     save(saveGameState: SaveGameState) {
-        return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState);
+        return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState).pipe(
+            tap(() => {
+                this.globals.handleSuccess('Saved session data');
+            }));
     }
 }
