@@ -7,6 +7,7 @@ import net.zorphy.backend.main.mapper.PlayerMapper;
 import net.zorphy.backend.main.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAll()
                 .stream()
                 .map(playerMapper::playerToPlayerDetails)
+                .sorted(Comparator.comparing(PlayerDetails::name))
                 .collect(Collectors.toList());
     }
 

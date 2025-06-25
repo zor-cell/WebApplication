@@ -6,7 +6,7 @@ import {GameConfig} from "../../../dto/catan/GameConfig";
 import {CatanService} from "../../../services/catan.service";
 import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
 import {Router} from "@angular/router";
-import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
+import {MainHeaderComponent} from "../../global/main-header/main-header.component";
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
@@ -22,7 +22,7 @@ import {GameMode} from "../../../dto/catan/GameMode";
     NgForOf,
     NgIf,
     PlayerSelectComponent,
-    ProjectHeaderComponent,
+    MainHeaderComponent,
     CatanClearPopupComponent,
     CatanUpdatePopupComponent
   ],

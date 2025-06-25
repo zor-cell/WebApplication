@@ -4,16 +4,17 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
-import {ProjectHeaderComponent} from "../project-header/project-header.component";
+import {MainHeaderComponent} from "../../global/main-header/main-header.component";
 import {CatanUpdatePopupComponent} from "../../catan/popups/update-popup/update-popup.component";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-project-info',
   imports: [
     NgIf,
     RouterLink,
-    ProjectHeaderComponent,
+    MainHeaderComponent,
     CatanUpdatePopupComponent,
     ProjectUpdatePopupComponent
   ],
@@ -27,7 +28,10 @@ export class ProjectInfoComponent implements OnInit {
   projectName: string | null = null;
   project: ProjectDetails | null = null;
 
-  constructor(private globals: Globals, private projectService: ProjectService, private route: ActivatedRoute) {}
+  constructor(private globals: Globals,
+              public authService: AuthService,
+              private projectService: ProjectService,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

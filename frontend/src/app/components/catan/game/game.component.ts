@@ -6,7 +6,7 @@ import {CatanService} from "../../../services/catan.service";
 import {Globals} from "../../../classes/globals";
 import {CatanDiceRollComponent} from "../dice-roll/dice-roll.component";
 import {DiceRoll} from "../../../dto/catan/DiceRoll";
-import {ProjectHeaderComponent} from "../../projects/project-header/project-header.component";
+import {MainHeaderComponent} from "../../global/main-header/main-header.component";
 import {BaseChartDirective} from "ng2-charts";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -24,7 +24,7 @@ import {GameMode} from "../../../dto/catan/GameMode";
     NgForOf,
     NgClass,
     CatanDiceRollComponent,
-    ProjectHeaderComponent,
+    MainHeaderComponent,
     BaseChartDirective,
     CatanHistogramComponent,
     ReactiveFormsModule,

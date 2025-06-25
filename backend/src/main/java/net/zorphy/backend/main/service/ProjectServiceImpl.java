@@ -10,6 +10,7 @@ import net.zorphy.backend.main.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,10 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.findAll()
                 .stream()
                 .map(project -> projectMapper.projectToProjectMetadata(project, baseUrl, fileContentReader))
+                .sorted(Comparator
+                        .comparing(ProjectMetadata::isFavorite).reversed()
+                        .thenComparing(ProjectMetadata::name)
+                )
                 .collect(Collectors.toList());
     }
 

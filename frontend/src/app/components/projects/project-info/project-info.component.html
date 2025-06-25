@@ -1,9 +1,15 @@
 @if(project) {
-    <app-project-header [project]="project.metadata" [showWebsite]="true" [showEdit]="true" (editEvent)="openUpdatePopup()"></app-project-header>
+    <app-project-header [project]="project.metadata" [showWebsite]="true" [customTemplate]="editButton"></app-project-header>
 
     <div class="main-container">
         <div [innerHTML]="project.content"></div>
     </div>
 
     <project-update-popup #updatePopup [project]="project"></project-update-popup>
+
+    <ng-template #editButton>
+        <button *ngIf="authService.isAdmin()" class="btn btn-outline-warning" (click)="openUpdatePopup()">
+            <i class="bi bi-pencil-square"></i>
+        </button>
+    </ng-template>
 }
