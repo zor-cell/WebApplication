@@ -163,9 +163,6 @@ export class PlayerSelectComponent implements OnInit, OnChanges {
         if(this.availablePlayers.length > 0) {
           this.currentPlayer = this.copy(this.availablePlayers[0]);
         }
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

@@ -26,9 +26,6 @@ export class ProjectsComponent implements OnInit {
         this.projectService.getProjects().subscribe({
             next: res => {
                 this.projects = res;
-            },
-            error: err => {
-                this.globals.handleError(err);
             }
         });
     }

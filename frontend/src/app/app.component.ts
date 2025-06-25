@@ -22,9 +22,6 @@ export class AppComponent implements OnInit {
         this.authService.loadUser().subscribe({
             next: res => {
 
-            },
-            error: err => {
-                this.globals.handleError(err, true);
             }
         })
     }

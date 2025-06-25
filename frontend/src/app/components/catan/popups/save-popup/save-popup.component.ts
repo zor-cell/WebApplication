@@ -71,9 +71,6 @@ export class CatanSavePopupComponent implements OnInit {
     this.catanService.save(gameState).subscribe({
       next: res => {
         this.saveForm.reset();
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

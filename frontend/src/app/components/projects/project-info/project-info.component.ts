@@ -45,9 +45,6 @@ export class ProjectInfoComponent implements OnInit {
     this.projectService.getProject(this.projectName).subscribe({
       next: res => {
         this.project = res;
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

@@ -58,9 +58,6 @@ export class NewPlayerPopupComponent {
       next: res => {
         this.newPlayerEvent.emit(res);
         this.playerForm.reset();
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     })
   }

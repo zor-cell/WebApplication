@@ -46,9 +46,6 @@ export class CatanUpdatePopupComponent {
     this.catanService.update(this.gameConfig).subscribe({
       next: res => {
         this.updatedSessionEvent.emit(true);
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

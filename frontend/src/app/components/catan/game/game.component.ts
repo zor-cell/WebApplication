@@ -88,9 +88,6 @@ export class CatanGameComponent implements OnInit {
     this.catanService.rollDice(isAlchemist).subscribe({
       next: res => {
         this.gameState = res;
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }
@@ -110,8 +107,6 @@ export class CatanGameComponent implements OnInit {
       },
       error: err => {
         this.router.navigate(['projects/catan']);
-
-        this.globals.handleError(err);
       }
     });
   }

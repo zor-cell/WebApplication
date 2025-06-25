@@ -40,9 +40,6 @@ export class CatanClearPopupComponent {
     this.catanService.clear().subscribe({
       next: res => {
         this.hasSessionEvent.emit(false);
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

@@ -61,9 +61,6 @@ export class LoginPopupComponent {
       next: res => {
         this.loginEvent.emit();
         this.loginForm.reset();
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     })
   }

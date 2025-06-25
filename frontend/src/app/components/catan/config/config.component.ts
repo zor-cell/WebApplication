@@ -66,9 +66,6 @@ export class CatanConfigComponent implements OnInit {
     this.projectService.getProject("catan").subscribe({
       next: res => {
         this.project = res.metadata;
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
 
@@ -79,9 +76,6 @@ export class CatanConfigComponent implements OnInit {
         this.gameConfig = res.gameConfig;
 
         this.originalConfig = structuredClone(this.gameConfig);
-      },
-      error: err => {
-        this.globals.handleError(err, true);
       }
     });
   }
@@ -92,9 +86,6 @@ export class CatanConfigComponent implements OnInit {
     this.catanService.start(this.gameConfig).subscribe({
       next: res => {
         this.goToGame();
-      },
-      error: err => {
-        this.globals.handleError(err);
       }
     });
   }

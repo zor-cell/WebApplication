@@ -121,10 +121,7 @@ export class Connect4Component  {
 
                 this.moves.push(moveRequest.move);
                 this.togglePlayer();
-                },
-            error: err => {
-                this.globals.handleError(err);
-            }
+                }
         })
     }
 
@@ -142,10 +139,7 @@ export class Connect4Component  {
 
                 this.moves.pop();
                 this.togglePlayer();
-                },
-            error: err => {
-                this.globals.handleError(err);
-            }
+                }
         })
     }
 
@@ -176,7 +170,6 @@ export class Connect4Component  {
                 },
             error: err => {
                 this.delayLoader.isLoading = false;
-                this.globals.handleError(err);
             }
         })
     }
