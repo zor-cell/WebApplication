@@ -59,6 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         project.setName(metadata.name());
         project.setCreatedAt(metadata.createdAt());
+        project.setTitle(metadata.title());
         project.setDescription(metadata.description());
         project.setGithubUrl(metadata.githubUrl());
         project.setHasWebsite(metadata.hasWebsite());
@@ -66,9 +67,13 @@ public class ProjectServiceImpl implements ProjectService {
         project.setFilePath(projectDetails.filePath());
 
         //remove host from image path before update
-        URI uri = URI.create(metadata.imagePath());
-        String path = uri.getPath();
-        project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
+        if(metadata.imagePath() != null) {
+            URI uri = URI.create(metadata.imagePath());
+            String path = uri.getPath();
+            project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
+        } else {
+            project.setImagePath(null);
+        }
 
         Project updated = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(updated, baseUrl, fileContentReader);

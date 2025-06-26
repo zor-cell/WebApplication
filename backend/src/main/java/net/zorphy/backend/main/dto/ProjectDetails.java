@@ -10,7 +10,6 @@ public record ProjectDetails(
         @Valid
         ProjectMetadata metadata,
 
-        @Null
         String content,
 
         @NotBlank

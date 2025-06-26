@@ -33,6 +33,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
     this.updateForm = this.fb.group({
       name: [this.project.metadata.name, Validators.required],
       createdAt: [this.project.metadata.createdAt, Validators.required],
+      title: [this.project.metadata.title, Validators.required],
       description: [this.project.metadata.description, Validators.required],
       imagePath: [this.project.metadata.imagePath, Validators.required],
       githubUrl: [this.project.metadata.githubUrl],
@@ -64,6 +65,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
       metadata: {
         name: formValue.name,
         createdAt: formValue.createdAt,
+        title: formValue.title,
         description: formValue.description,
         imagePath: formValue.imagePath,
         githubUrl: formValue.githubUrl,

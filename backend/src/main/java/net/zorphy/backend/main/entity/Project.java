@@ -14,6 +14,8 @@ public class Project {
     private UUID id;
     private String name;
     private LocalDate createdAt;
+
+    private String title;
     private String description;
     private String filePath;
     private String imagePath;
@@ -51,6 +53,14 @@ public class Project {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

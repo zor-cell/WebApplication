@@ -1,5 +1,6 @@
 package net.zorphy.backend.main.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
@@ -14,11 +15,15 @@ public record ProjectMetadata(
         LocalDate createdAt,
 
         @NotBlank
-        String description,
+        String title,
 
         @NotBlank
+        String description,
+
+        @Nullable
         String imagePath,
 
+        @Nullable
         @URL
         String githubUrl,
 
