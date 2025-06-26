@@ -30,23 +30,17 @@ public class ProjectController {
 
     @GetMapping()
     public List<ProjectMetadata> getProjects(HttpServletRequest request) {
-        LOGGER.info("GET /projects");
-
         return projectService.getProjects(getBaseUrlFromRequest(request));
     }
 
     @GetMapping( "/{name}")
     public ProjectDetails getProject(@NotBlank @PathVariable String name, HttpServletRequest request) {
-        LOGGER.info("GET /projects/" + name);
-
         return projectService.getProject(name, getBaseUrlFromRequest(request));
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/update")
     public ProjectDetails updateProject(@Valid @RequestBody ProjectDetails projectUpdate, HttpServletRequest request) {
-        LOGGER.info("PUT /projects/update");
-
         return projectService.updateProject(projectUpdate, getBaseUrlFromRequest(request));
     }
 }

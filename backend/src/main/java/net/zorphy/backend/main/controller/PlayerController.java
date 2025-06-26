@@ -26,23 +26,17 @@ public class PlayerController {
 
     @GetMapping()
     public List<PlayerDetails> getPlayers() {
-        LOGGER.info("GET /players");
-
         return playerService.getPlayers();
     }
 
     @GetMapping("/{name}")
     public PlayerDetails getPlayer(@NotBlank @PathVariable String name) {
-        LOGGER.info("GET /players/" + name);
-
         return playerService.getPlayer(name);
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/save")
     public PlayerDetails savePlayer(@Valid @RequestBody PlayerDetails playerDetails) {
-        LOGGER.info("POST /players/save");
-
         return playerService.savePlayer(playerDetails);
     }
 }

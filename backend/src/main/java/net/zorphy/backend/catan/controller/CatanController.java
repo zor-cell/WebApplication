@@ -30,22 +30,16 @@ public class CatanController {
 
     @GetMapping("state")
     public GameState getState(HttpSession session) {
-        LOGGER.info("POST /catan/state");
-
         return getGameState(session);
     }
 
     @GetMapping("dice-rolls")
     public List<DiceRoll> getDiceRolls(HttpSession session) {
-        LOGGER.info("POST /catan/dice-rolls");
-
         return getGameState(session).diceRolls();
     }
 
     @PostMapping("clear")
     public void clear(HttpSession session) {
-        LOGGER.info("POST /catan/clear");
-
         //check for valid session
         getGameState(session);
 
@@ -54,8 +48,6 @@ public class CatanController {
 
     @PostMapping("start")
     public GameState start(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        LOGGER.info("POST /catan/start");
-
         if(sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
@@ -68,8 +60,6 @@ public class CatanController {
 
     @PutMapping("update")
     public GameState updateGame(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        LOGGER.info("POST /catan/update");
-
         GameState gameState = catanService.updateGameState(getGameState(session), gameConfig);
         session.setAttribute(sessionKey, gameState);
 
@@ -79,8 +69,6 @@ public class CatanController {
     @PostMapping("dice-roll")
     public GameState makeDiceRoll(HttpSession session,
                                   @RequestParam(name = "alchemist", required = false, defaultValue = "false") boolean alchemist) {
-        LOGGER.info("POST /catan/dice-roll");
-
         GameState gameState = catanService.rollDice(getGameState(session), alchemist);
         session.setAttribute(sessionKey, gameState);
 
@@ -90,8 +78,6 @@ public class CatanController {
     @Secured("ROLE_ADMIN")
     @PostMapping("save")
     public GameDetails saveGame(HttpSession session, @Valid @RequestBody SaveGameState saveGameState) {
-        LOGGER.info("POST /catan/save");
-
         return catanService.saveGame(getGameState(session), saveGameState);
     }
 
