@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.UserLoginDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody UserLoginDetails userLoginDetails, HttpSession session) {
+    public void login(@Valid @RequestBody UserLoginDetails userLoginDetails, HttpSession session) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginDetails.username(), userLoginDetails.password())
         );

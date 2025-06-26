@@ -6,13 +6,14 @@ import jakarta.validation.constraints.NotNull;
 
 public record DiceConfig(
         @NotNull
-        boolean isBalanced,
-
-        @Min(0)
-        @Max(36)
-        int shuffleThreshold,
+        Boolean isBalanced,
 
         @NotNull
-        boolean useEvents
+        @Min(0)
+        @Max(36)
+        Integer shuffleThreshold,
+
+        @NotNull
+        Boolean useEvents
 ) {
 }

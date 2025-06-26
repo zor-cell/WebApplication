@@ -1,5 +1,6 @@
 package net.zorphy.backend.main.controller;
 
+import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.UserDetails;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.main.service.UserService;
@@ -28,7 +29,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/register")
-    public UserDetails registerUser(@RequestBody UserDetails userDetails) {
+    public UserDetails registerUser(@Valid @RequestBody UserDetails userDetails) {
         return userService.registerUser(userDetails);
     }
 }

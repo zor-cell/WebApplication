@@ -1,14 +1,31 @@
 package net.zorphy.backend.main.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.URL;
+
 import java.time.LocalDate;
 
 public record ProjectMetadata(
+        @NotBlank
         String name,
+
+        @NotNull
         LocalDate createdAt,
+
+        @NotBlank
         String description,
+
+        @NotBlank
         String imagePath,
+
+        @URL
         String githubUrl,
-        boolean hasWebsite,
-        boolean isFavorite
+
+        @NotNull
+        Boolean hasWebsite,
+
+        @NotNull
+        Boolean isFavorite
 ) {
 }

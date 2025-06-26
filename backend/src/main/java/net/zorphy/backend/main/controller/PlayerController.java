@@ -1,5 +1,8 @@
 package net.zorphy.backend.main.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import net.zorphy.backend.main.dto.PlayerDetails;
 import net.zorphy.backend.main.service.PlayerService;
 import org.slf4j.Logger;
@@ -29,7 +32,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{name}")
-    public PlayerDetails getPlayer(@PathVariable String name) {
+    public PlayerDetails getPlayer(@NotBlank @PathVariable String name) {
         LOGGER.info("GET /players/" + name);
 
         return playerService.getPlayer(name);
@@ -37,7 +40,7 @@ public class PlayerController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/save")
-    public PlayerDetails savePlayer(@RequestBody PlayerDetails playerDetails) {
+    public PlayerDetails savePlayer(@Valid @RequestBody PlayerDetails playerDetails) {
         LOGGER.info("POST /players/save");
 
         return playerService.savePlayer(playerDetails);

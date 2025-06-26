@@ -27,10 +27,11 @@ public class GameController {
         return gameService.getGames();
     }
 
+    /*
     @PostMapping("/save")
     public GameDetails saveGame(@RequestBody GameDetails gameDetails) {
         LOGGER.info("GET /games/save");
 
         return gameService.saveGame(gameDetails);
-    }
+    }*/
 }

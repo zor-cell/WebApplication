@@ -24,8 +24,9 @@ public record GameConfig(
         @Valid
         DiceConfig eventDice,
 
+        @NotNull
         @Min(value = 1)
-        int maxShipTurns
+        Integer maxShipTurns
 ) {
 
 }
