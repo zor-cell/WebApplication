@@ -1,6 +1,7 @@
 package net.zorphy.backend.catan.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import net.zorphy.backend.catan.dto.DiceRoll;
 import net.zorphy.backend.catan.dto.GameConfig;
 import net.zorphy.backend.catan.dto.GameState;
@@ -52,7 +53,7 @@ public class CatanController {
     }
 
     @PostMapping("start")
-    public GameState start(HttpSession session, @RequestBody GameConfig gameConfig) {
+    public GameState start(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
         LOGGER.info("POST /catan/start");
 
         if(sessionExists(session)) {
@@ -66,7 +67,7 @@ public class CatanController {
     }
 
     @PutMapping("update")
-    public GameState updateGame(HttpSession session, @RequestBody GameConfig gameConfig) {
+    public GameState updateGame(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
         LOGGER.info("POST /catan/update");
 
         GameState gameState = catanService.updateGameState(getGameState(session), gameConfig);
@@ -88,7 +89,9 @@ public class CatanController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("save")
-    public GameDetails saveGame(HttpSession session, @RequestBody SaveGameState saveGameState) {
+    public GameDetails saveGame(HttpSession session, @Valid @RequestBody SaveGameState saveGameState) {
+        LOGGER.info("POST /catan/save");
+
         return catanService.saveGame(getGameState(session), saveGameState);
     }
 
