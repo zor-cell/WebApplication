@@ -1,7 +1,6 @@
 package net.zorphy.backend.config;
 
-import jakarta.validation.constraints.NotNull;
-import net.zorphy.backend.connect4.exception.InvalidOperationException;
+import net.zorphy.backend.project.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.main.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +15,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
