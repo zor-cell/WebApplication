@@ -25,7 +25,7 @@ public class ProjectController {
     }
 
     private String getBaseUrlFromRequest(HttpServletRequest request) {
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/api";
     }
 
     @GetMapping()

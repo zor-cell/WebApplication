@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/catan")
 public class CatanController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final CatanService catanService;
     private static final String sessionKey = "catan_gameState";
 

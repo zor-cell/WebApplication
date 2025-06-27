@@ -13,9 +13,9 @@ export class Globals {
 
     private getBackendUrl(): string {
         if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080
-            return 'http://localhost:8080';
+            return 'http://localhost:8080/api';
         } else {
-            return 'https://server.zorphy.net';
+            return 'https://server.zorphy.net/api';
         }
     }
 

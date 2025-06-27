@@ -1,6 +1,5 @@
 package net.zorphy.backend.project.catan.service;
 
-import net.zorphy.backend.catan.dto.*;
 import net.zorphy.backend.main.dto.GameDetails;
 import net.zorphy.backend.main.dto.PlayerDetails;
 import net.zorphy.backend.main.dto.TeamDetails;
