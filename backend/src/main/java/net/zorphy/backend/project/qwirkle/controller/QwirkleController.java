@@ -1,17 +1,18 @@
 package net.zorphy.backend.project.qwirkle.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.exception.InvalidSessionException;
-import net.zorphy.backend.project.catan.dto.GameState;
+import net.zorphy.backend.project.qwirkle.dto.GameState;
+import net.zorphy.backend.project.qwirkle.dto.Hand;
+import net.zorphy.backend.project.qwirkle.dto.Tile;
 import net.zorphy.backend.project.qwirkle.service.QwirkleService;
 import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -38,8 +39,23 @@ public class QwirkleController {
     }
 
     @PostMapping("start")
-    public void createState(HttpSession session) {
+    public GameState createState(HttpSession session, @Valid @RequestBody Hand hand) {
+        if(sessionExists(session)) {
+            throw new InvalidSessionException("A game state for this session already exists");
+        }
 
+        GameState gameState = qwirkleService.initGameState(hand);
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
+    }
+
+    @PostMapping("stack/draw")
+    public GameState drawTile(HttpSession session, @Valid @RequestBody Tile tile) {
+        GameState gameState = qwirkleService.drawTile(getGameState(session), tile);
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
     }
 
     @PostMapping("image")
