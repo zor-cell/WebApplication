@@ -9,7 +9,7 @@ public enum Shape {
     STAR4(1 << 4),
     STAR8(1 << 5);
 
-    private final int value;
+    private int value;
 
     Shape(int value) {
         this.value = value;
@@ -17,5 +17,17 @@ public enum Shape {
 
     public int getValue() {
         return value;
+    }
+
+    public void addFlag(Shape shape) {
+        this.value |= shape.value;
+    }
+
+    public boolean hasShape(Shape shape) {
+        return (this.value & shape.value) != 0;
+    }
+
+    public boolean isSingle() {
+         return Integer.bitCount(this.value) == 1;
     }
 }

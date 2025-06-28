@@ -4,9 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.exception.InvalidSessionException;
-import net.zorphy.backend.project.qwirkle.dto.GameState;
-import net.zorphy.backend.project.qwirkle.dto.Hand;
-import net.zorphy.backend.project.qwirkle.dto.Tile;
+import net.zorphy.backend.project.qwirkle.dto.*;
 import net.zorphy.backend.project.qwirkle.service.QwirkleService;
 import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
@@ -53,6 +51,19 @@ public class QwirkleController {
     @PostMapping("stack/draw")
     public GameState drawTile(HttpSession session, @Valid @RequestBody Tile tile) {
         GameState gameState = qwirkleService.drawTile(getGameState(session), tile);
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
+    }
+
+    @GetMapping("solve")
+    public Move bestMove(HttpSession session) {
+        return qwirkleService.makeBestMove(getGameState(session));
+    }
+
+    @PostMapping("move")
+    public GameState makeMove(HttpSession session, @RequestBody BoardTile boardTile) {
+        GameState gameState = qwirkleService.makeMove(getGameState(session), boardTile);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
