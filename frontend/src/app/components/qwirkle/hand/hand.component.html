@@ -1,6 +1,7 @@
 <div class="hand-container">
     <qwirkle-tile *ngFor="let tile of hand;let i = index"
                   [tile]="tile"
+                  [tileText]="selected.includes(tile) ? selected.indexOf(tile) + 1 : null"
                   (click)="tileSelected(i)"
                   [class.selected]="selected.includes(tile)"
     />

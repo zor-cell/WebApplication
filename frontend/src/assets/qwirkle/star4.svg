@@ -11,7 +11,7 @@
   </rdf:RDF>
  </metadata>
  <g transform="translate(0 -922.52)">
-  <rect y="922.52" width="200" height="200" rx="10" ry="10"/>
+  <rect y="922.52" width="200" height="200" rx="20" ry="20"/>
   <path d="m20 942.52 48 80-48 80 80-48 80 48-48-80 48-80-80 48z" fill="#f00"/>
  </g>
 </svg>

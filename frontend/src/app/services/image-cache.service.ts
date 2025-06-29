@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class SvgCacheService {
+export class ImageCacheService {
   private cache: Map<string, Observable<SafeHtml>> = new Map();
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}

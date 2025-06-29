@@ -1,7 +1,7 @@
 <div class="stack-container">
     <qwirkle-tile *ngFor="let stackTile of stack;let i = index"
                   [tile]="stackTile.tile"
-                  [tileCount]="stackTile.count"
+                  [tileText]="stackTile.count"
                   (click)="selectedTile(i)"
     ></qwirkle-tile>
 </div>

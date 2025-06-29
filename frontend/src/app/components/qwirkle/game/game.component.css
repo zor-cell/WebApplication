@@ -27,3 +27,17 @@
 .board-tile {
     position: absolute;
 }
+
+.open-position {
+    border: 1px solid lightgray;
+    border-radius: 12%;
+}
+
+.valid-move {
+    border: 2px solid red;
+    border-radius: 12%;
+}
+
+.valid-move:hover {
+    cursor: pointer;
+}

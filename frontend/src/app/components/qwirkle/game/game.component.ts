@@ -11,6 +11,7 @@ import {Tile} from "../../../dto/qwirkle/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../dto/qwirkle/Position";
 import {Move} from "../../../dto/qwirkle/Move";
+import {PositionInfo} from "../../../dto/qwirkle/PositionInfo";
 
 @Component({
     selector: 'qwirkle-game',
@@ -40,6 +41,7 @@ export class QwirkleGameComponent implements OnInit {
     hand: Tile[] = [
         {color: Color.BLUE, shape: Shape.CLOVER}
     ];
+    openPositions: PositionInfo[] = [];
     validMoves: Move[] = [];
 
     constructor(private qwirkleService: QwirkleService) {
@@ -57,10 +59,16 @@ export class QwirkleGameComponent implements OnInit {
         this.drawTile(tile);
     }
 
+    chooseValidMove(moveIndex: number) {
+
+    }
+
     getTileStyle(position: Position) {
         return {
             left: `${this.center.j + position.j * this.tileSize - this.tileSize / 2}px`,
             bottom: `${this.center.i + position.i * this.tileSize - this.tileSize / 2}px`,
+            width: `${this.tileSize}px`,
+            height: `${this.tileSize}px`
         }
     }
 
@@ -84,6 +92,10 @@ export class QwirkleGameComponent implements OnInit {
         this.qwirkleService.getState().subscribe({
             next: res => {
                 this.gameState = res;
+
+                this.getOpenPositions();
+
+                //calculate center in next tick
                 setTimeout(() => this.calculateCenter(), 1);
             }
         });
@@ -93,6 +105,14 @@ export class QwirkleGameComponent implements OnInit {
         this.qwirkleService.getValidMoves(tiles).subscribe({
             next: res => {
                 this.validMoves = res;
+            }
+        })
+    }
+
+    private getOpenPositions() {
+        this.qwirkleService.getOpenPositions().subscribe({
+            next: res => {
+                this.openPositions = res;
             }
         })
     }

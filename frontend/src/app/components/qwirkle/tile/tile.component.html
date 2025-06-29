@@ -1,7 +1,11 @@
-<div [innerHTML]="svgContent | async"
-     [class.interactive]="isInteractive">
-</div>
+<div class="tile-wrapper">
+    <div [innerHTML]="svgContent | async"
+         [ngClass]="tileText !== null ? 'tile-soft-image' : 'tile-image'"
+         [class.interactive]="isInteractive"
+    >
+    </div>
 
-<div *ngIf="tileCount !== null && false">
-    {{ tileCount }}
+    <div *ngIf="tileText !== null" class="tile-count">
+        {{ tileText }}
+    </div>
 </div>

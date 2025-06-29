@@ -17,14 +17,20 @@
             >
             </qwirkle-tile>
 
+            <!--open positions-->
+            <ng-container *ngFor="let posInfo of openPositions">
+                <div *ngIf="!posInfo.isDead"
+                     [ngStyle]="getTileStyle(posInfo.position)"
+                     class="board-tile open-position">
+                </div>
+            </ng-container>
+
             <!--valid move tiles-->
-            <qwirkle-tile *ngFor="let move of validMoves"
-                          [tile]="move.tiles[0]"
-                          [ngStyle]="getTileStyle(move.position)"
-                          [isInteractive]="false"
-                          class="board-tile"
-            >
-            </qwirkle-tile>
+            <div *ngFor="let move of validMoves;let i = index"
+                 [ngStyle]="getTileStyle(move.position)"
+                 (click)="chooseValidMove(i)"
+                 class="board-tile valid-move">
+            </div>
         </div>
     </div>
 } @else {

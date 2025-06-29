@@ -5,6 +5,7 @@ import {Observable, tap} from "rxjs";
 import {GameState} from "../dto/qwirkle/GameState";
 import {Move} from "../dto/qwirkle/Move";
 import {Tile} from "../dto/qwirkle/Tile";
+import {PositionInfo} from "../dto/qwirkle/PositionInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,8 @@ export class QwirkleService {
     return this.httpClient.post<Move[]>(this.baseUri + '/moves', tiles);
   }
 
-  getOpenPositions(): Observable<Move[]> {
-    return this.httpClient.get<Move[]>(this.baseUri + '/positions');
+  getOpenPositions(): Observable<PositionInfo[]> {
+    return this.httpClient.get<PositionInfo[]>(this.baseUri + '/positions');
   }
 
   getBestMoves(): Observable<Move[]> {
