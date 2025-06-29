@@ -22,7 +22,7 @@ public class QwirkleUtil {
         if(tiles.size() == 1) {
             return legalPositions.stream()
                     .map(pos -> {
-                        int score = scoreInDirections(board, pos, Direction.values());;
+                        int score = scoreInDirections(board, pos, Direction.getPairs());;
                         return new Move(pos, Direction.UP, tiles, score);
                     })
                     .toList();
@@ -46,17 +46,18 @@ public class QwirkleUtil {
 
                     //check directions in right angle to placement direction for scoring
                     Direction[] scoreDirections = new Direction[]{dir.rotate90Deg(), dir.rotate90Deg().inverse()};
-                    score += scoreInDirections(board, tilePos, scoreDirections);
+                    score += scoreInDirections(board, tilePos, new Direction[][] {scoreDirections});
 
                     //add tiles to grid temporarily to get valid positions
                     board.put(tilePos, boardTile);
                     tempPositions.add(tilePos);
                 }
 
-                //compute score in all directions for last tile
+                //compute score in placement direction for last tile
                 if(valid) {
                     Position lastPos = pos.stepsInDirection(dir, tiles.size() - 1);
-                    score += scoreInDirections(board, lastPos, Direction.values());
+                    Direction[] scoreDirections = new Direction[]{dir, dir.inverse()};
+                    score += scoreInDirections(board, lastPos,  new Direction[][] {scoreDirections});
                 }
 
 
@@ -128,31 +129,37 @@ public class QwirkleUtil {
 
         return validPositions;
     }
-    private static int scoreInDirections(Map<Position, BoardTile> board, Position position, Direction[] directions) {
+    private static int scoreInDirections(Map<Position, BoardTile> board, Position position, Direction[][] directions) {
         int count = 0;
-        for(Direction scoreDir : directions) {
+        for(Direction[] pair : directions) {
+            int curCount = 0;
             int steps = 1;
-            Position next = position.stepsInDirection(scoreDir, steps);
-            while (board.containsKey(next)) {
-                count++;
+            for(Direction scoreDir : pair) {
+                Position next = position.stepsInDirection(scoreDir, steps);
+                while (board.containsKey(next)) {
+                    curCount++;
 
-                steps++;
-                next = position.stepsInDirection(scoreDir, steps);
+                    steps++;
+                    next = position.stepsInDirection(scoreDir, steps);
+                }
             }
-        }
 
-        //include placed piece if something was found
-        if(count > 0) {
-            count++;
-        }
+            //include placed piece if something was found
+            if(curCount > 0) {
+                curCount++;
+            }
 
-        //qwirkle reached
-        if(count == 6) {
-            count = 12;
+            //qwirkle reached
+            if(curCount == 6) {
+                curCount = 12;
+            }
+
+            count += curCount;
         }
 
         return count;
     }
+
     private static boolean isValidInDirections(Map<Position, BoardTile> board, BoardTile boardTile) {
         //check compatibility
         Direction[][] directionPairs = Direction.getPairs();

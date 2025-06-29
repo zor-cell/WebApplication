@@ -32,7 +32,6 @@ public class QwirkleServiceImpl implements QwirkleService{
             }
         }
 
-        //TODO: map board on correct coordinates
         Map<Position, BoardTile> board = new HashMap<>();
         BoardTile[] temp = new BoardTile[] {
           new BoardTile(new Position(0, 0), new Tile(Color.PURPLE, Shape.SQUARE)),
