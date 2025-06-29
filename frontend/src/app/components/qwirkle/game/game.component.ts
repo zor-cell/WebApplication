@@ -84,7 +84,7 @@ export class QwirkleGameComponent implements OnInit {
         this.qwirkleService.getState().subscribe({
             next: res => {
                 this.gameState = res;
-                setTimeout(() => this.calculateCenter());
+                setTimeout(() => this.calculateCenter(), 1);
             }
         });
     }

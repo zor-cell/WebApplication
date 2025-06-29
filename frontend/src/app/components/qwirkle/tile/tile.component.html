@@ -1,6 +1,7 @@
-<div [innerHTML]="svgContent" [class.interactive]="isInteractive">
-
+<div [innerHTML]="svgContent | async"
+     [class.interactive]="isInteractive">
 </div>
+
 <div *ngIf="tileCount !== null && false">
     {{ tileCount }}
 </div>

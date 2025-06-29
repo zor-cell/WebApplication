@@ -16,15 +16,10 @@ import {Tile} from "../../../dto/qwirkle/Tile";
     styleUrl: './hand.component.css'
 })
 export class QwirkleHandComponent {
-    private gameState: GameState | null = null;
-
     @Input({required: true}) hand!: Tile[];
     @Output() selectTilesEvent = new EventEmitter<Tile[]>();
 
     selected: Tile[] = [];
-
-    constructor(private qwirkleService: QwirkleService,) {
-    }
 
     tileSelected(tileIndex: number) {
         if (tileIndex < 0 || tileIndex > this.hand.length - 1) return;

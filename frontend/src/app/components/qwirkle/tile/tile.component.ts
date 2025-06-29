@@ -4,12 +4,15 @@ import {Color} from "../../../dto/qwirkle/Color";
 import {HttpClient} from "@angular/common/http";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {Shape} from "../../../dto/qwirkle/Shape";
-import {NgIf} from "@angular/common";
+import {AsyncPipe, NgIf} from "@angular/common";
+import {SvgCacheService} from "../../../services/svg-cache.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'qwirkle-tile',
     imports: [
-        NgIf
+        NgIf,
+        AsyncPipe
     ],
     templateUrl: './tile.component.html',
     standalone: true,
@@ -20,7 +23,7 @@ export class QwirkleTileComponent implements OnInit {
     @Input() tileCount: number | null = null;
     @Input() isInteractive: boolean = true;
 
-    svgContent: SafeHtml | null = null;
+    svgContent!: Observable<SafeHtml>;
 
     private readonly ColorRGBMap: Record<Color, string> = {
         [Color.ORANGE]: "rgb(255, 165, 0)",
@@ -32,15 +35,29 @@ export class QwirkleTileComponent implements OnInit {
     };
     private readonly tileSize: number = 40;
 
-    constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer) {
+
+    constructor(private httpClient: HttpClient, private svgCacheService: SvgCacheService) {
     }
 
     ngOnInit() {
-        this.loadSVG(this.tile.shape, this.tile.color);
+        this.svgContent = this.svgCacheService.getSVG(
+            `assets/qwirkle/${this.tile.shape.toLowerCase()}.svg`,
+            this.ColorRGBMap[this.tile.color],
+            this.tileSize,
+            this.tileSize
+        );
+        //this.loadSVG(this.tile.shape, this.tile.color);
     }
 
-    loadSVG(shape: Shape, color: Color) {
-        this.httpClient.get(`assets/qwirkle/${shape.toLowerCase()}.svg`, {responseType: 'text'})
+    /*loadSVG(shape: Shape, color: Color) {
+        const url = `assets/qwirkle/${shape.toLowerCase()}.svg`;
+
+        if(this.svgCache.has(url)) {
+            this.svgContent = this.svgCache.get(url)!;
+            return;
+        }
+
+        this.httpClient.get(url, {responseType: 'text'})
             .subscribe(data => {
                 let svg = data.replace(/fill="[^"]*"/g, `fill="${this.ColorRGBMap[color]}"`);
                 svg = svg
@@ -49,5 +66,5 @@ export class QwirkleTileComponent implements OnInit {
 
                 this.svgContent = this.sanitizer.bypassSecurityTrustHtml(svg);
             })
-    }
+    }*/
 }
