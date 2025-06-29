@@ -7,8 +7,8 @@ public enum Direction {
     LEFT;
 
     public int getDi() {
-        if(this == Direction.UP) return -1;
-        else if(this == Direction.DOWN) return 1;
+        if(this == Direction.UP) return 1;
+        else if(this == Direction.DOWN) return -1;
 
         return 0;
     }

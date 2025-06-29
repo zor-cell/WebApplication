@@ -1,16 +1,17 @@
 package net.zorphy.backend.project.qwirkle.service;
 
 import net.zorphy.backend.project.qwirkle.dto.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface QwirkleService {
     GameState initGameState(Hand hand);
 
     GameState drawTile(GameState gameState, Tile tile);
 
-    Move makeBestMove(GameState gameState);
+    List<Move> makeBestMoves(GameState gameState, int maxMoves);
 
-    GameState makeMove(GameState gameState, BoardTile boardTile);
+    GameState makeMove(GameState gameState, Move move);
 
     void uploadImage(byte[] file);
 }

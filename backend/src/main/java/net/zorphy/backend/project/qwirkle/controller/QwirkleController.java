@@ -2,18 +2,17 @@ package net.zorphy.backend.project.qwirkle.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.project.qwirkle.dto.*;
 import net.zorphy.backend.project.qwirkle.service.QwirkleService;
 import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/qwirkle")
@@ -57,13 +56,13 @@ public class QwirkleController {
     }
 
     @GetMapping("solve")
-    public Move bestMove(HttpSession session) {
-        return qwirkleService.makeBestMove(getGameState(session));
+    public List<Move> bestMove(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
+        return qwirkleService.makeBestMoves(getGameState(session), maxMoves);
     }
 
     @PostMapping("move")
-    public GameState makeMove(HttpSession session, @RequestBody BoardTile boardTile) {
-        GameState gameState = qwirkleService.makeMove(getGameState(session), boardTile);
+    public GameState makeMove(HttpSession session, @RequestBody Move move) {
+        GameState gameState = qwirkleService.makeMove(getGameState(session), move);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
