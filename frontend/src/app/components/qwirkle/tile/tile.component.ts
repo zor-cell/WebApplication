@@ -18,6 +18,7 @@ import {NgIf} from "@angular/common";
 export class QwirkleTileComponent implements OnInit {
   @Input({required: true}) tile!: Tile;
   @Input() tileCount: number | null = null;
+  @Input() isInteractive : boolean = true;
 
   svgContent: SafeHtml | null = null;
 

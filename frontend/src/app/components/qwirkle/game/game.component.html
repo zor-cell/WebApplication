@@ -7,8 +7,14 @@
             <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
 
-        <div class="board">
-
+        <div #board class="board">
+            <qwirkle-tile *ngFor="let boardTile of gameState.board"
+                          [tile]="boardTile.tile"
+                          [ngStyle]="getTileStyle(boardTile.position)"
+                          [isInteractive]="false"
+                          class="board-tile"
+            >
+            </qwirkle-tile>
         </div>
     </div>
 } @else {

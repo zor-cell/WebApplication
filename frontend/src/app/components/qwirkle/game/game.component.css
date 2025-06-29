@@ -1,8 +1,9 @@
 .game-container {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 300px 1fr;
 
     height: 600px;
+    width: 1000px;
     gap: 1rem;
 }
 
@@ -15,5 +16,14 @@
 }
 
 .board {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
     border: 1px solid black;
+}
+
+.board-tile {
+    position: absolute;
 }
