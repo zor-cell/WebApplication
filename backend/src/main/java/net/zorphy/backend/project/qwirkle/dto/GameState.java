@@ -12,6 +12,6 @@ public record GameState(
 
         List<StackTile> stack,
 
-        Map<Position, BoardTile> board
+        List<BoardTile> board
 ) {
 }

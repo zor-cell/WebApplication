@@ -10,9 +10,24 @@ import net.zorphy.backend.project.qwirkle.service.util.QwirkleUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class QwirkleServiceImpl implements QwirkleService{
+    private static Map<Position, BoardTile> mapFromList(List<BoardTile> board) {
+        return board.stream()
+                .collect(Collectors.toMap(
+                        BoardTile::position,
+                        Function.identity()
+                ));
+    }
+
+    private static List<BoardTile> listFromMap(Map<Position, BoardTile> board) {
+        return board.values().stream()
+                .toList();
+    }
+
     @Override
     public GameState initGameState(Hand hand) {
         //initialise stack
@@ -53,18 +68,18 @@ public class QwirkleServiceImpl implements QwirkleService{
         return new GameState(
                 hand,
                 stack,
-                board
+                listFromMap(board)
         );
     }
 
     @Override
     public List<Move> getValidMoves(GameState gameState, List<Tile> tiles) {
-        return QwirkleUtil.getLegalMoves(gameState.board(), tiles);
+        return QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
     }
 
     @Override
     public List<PositionInfo> getOpenPositions(GameState gameState) {
-        List<Position> openPositions = QwirkleUtil.getOpenPositions(gameState.board());
+        List<Position> openPositions = QwirkleUtil.getOpenPositions(mapFromList(gameState.board()));
 
         return openPositions.stream()
                 .map(p -> new PositionInfo(false, p))
@@ -102,7 +117,7 @@ public class QwirkleServiceImpl implements QwirkleService{
         //find best move in all valid permutation subsets
         List<Move> moves = new ArrayList<>();
         for(List<Tile> tiles : validSubsets) {
-            List<Move> tileMoves = QwirkleUtil.getLegalMoves(gameState.board(), tiles);
+            List<Move> tileMoves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
             moves.addAll(tileMoves);
         }
 
@@ -155,7 +170,7 @@ public class QwirkleServiceImpl implements QwirkleService{
     @Override
     public GameState makeMove(GameState oldState, Move move) {
         Hand hand = new Hand(oldState.hand().tiles());
-        Map<Position, BoardTile> board = new HashMap<>(oldState.board());
+        Map<Position, BoardTile> board = mapFromList(oldState.board());
 
         //check if tiles are present in hand
         boolean allInHand = new HashSet<>(hand.tiles()).containsAll(move.tiles());
@@ -195,7 +210,7 @@ public class QwirkleServiceImpl implements QwirkleService{
         return new GameState(
                 hand,
                 oldState.stack(),
-                board
+                listFromMap(board)
         );
     }
 
