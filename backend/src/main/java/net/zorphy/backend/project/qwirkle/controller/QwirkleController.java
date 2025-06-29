@@ -25,14 +25,32 @@ public class QwirkleController {
         this.qwirkleService = qwirkleService;
     }
 
-    @RequestMapping("state")
-    public void getState(HttpSession session) {
+    @GetMapping("state")
+    public GameState getState(HttpSession session) {
+        return getGameState(session);
+    }
 
+    @GetMapping("moves")
+    public List<Move> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
+        return qwirkleService.getValidMoves(getGameState(session), tiles);
+    }
+
+    @GetMapping("positions")
+    public List<PositionInfo> getOpenPositions(HttpSession session) {
+        return qwirkleService.getOpenPositions(getGameState(session));
+    }
+
+    @GetMapping("solve")
+    public List<Move> bestMove(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
+        return qwirkleService.getBestMoves(getGameState(session), maxMoves);
     }
 
     @PostMapping("clear")
     public void clearState(HttpSession session) {
+        //check for valid session
+        getGameState(session);
 
+        session.removeAttribute(sessionKey);
     }
 
     @PostMapping("start")
@@ -55,11 +73,6 @@ public class QwirkleController {
         return gameState;
     }
 
-    @GetMapping("solve")
-    public List<Move> bestMove(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
-        return qwirkleService.makeBestMoves(getGameState(session), maxMoves);
-    }
-
     @PostMapping("move")
     public GameState makeMove(HttpSession session, @RequestBody Move move) {
         GameState gameState = qwirkleService.makeMove(getGameState(session), move);
@@ -73,6 +86,8 @@ public class QwirkleController {
         Mat mat = Mat.eye(3, 3, CvType.CV_8UC1);
         qwirkleService.uploadImage(file.getBytes());
     }
+
+
 
     private boolean sessionExists(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute(sessionKey);

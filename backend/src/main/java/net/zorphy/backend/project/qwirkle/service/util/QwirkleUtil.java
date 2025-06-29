@@ -103,9 +103,7 @@ public class QwirkleUtil {
         return isValidInDirections(board, boardTile);
     }
 
-
-
-    private static List<Position> getLegalPositions(Map<Position, BoardTile> board, Tile tile) {
+    public static List<Position> getOpenPositions(Map<Position, BoardTile> board) {
         Set<Position> freePositions = new HashSet<>();
 
         //get all neighboring positions
@@ -118,9 +116,17 @@ public class QwirkleUtil {
             }
         }
 
+        return freePositions.stream().toList();
+    }
+
+
+
+    private static List<Position> getLegalPositions(Map<Position, BoardTile> board, Tile tile) {
+        List<Position> openPositions = getOpenPositions(board);
+
         //check valid of all free positions
         List<Position> validPositions = new ArrayList<>();
-        for(Position pos : freePositions) {
+        for(Position pos : openPositions) {
             BoardTile boardTile = new BoardTile(pos, tile);
             if(isValidInDirections(board, boardTile)) {
                 validPositions.add(pos);

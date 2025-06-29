@@ -58,39 +58,21 @@ public class QwirkleServiceImpl implements QwirkleService{
     }
 
     @Override
-    public GameState drawTile(GameState oldState, Tile tile) {
-        List<StackTile> stack = new ArrayList<>(oldState.stack());
-        Hand hand = new Hand(oldState.hand().tiles());
-
-        //remove the tile from the stack
-        Optional<StackTile> found = stack.stream()
-                .filter(t -> t.tile().equals(tile))
-                .findFirst();
-        if(found.isEmpty() || found.get().count() <= 0) {
-            throw new InvalidOperationException("Tile is not present in stack");
-        }
-
-        StackTile stackTile = found.get();
-        StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);
-
-        int index = stack.indexOf(stackTile);
-        stack.set(index, updatedTile);
-
-        //update hand
-        if(hand.tiles().size() >= 6) {
-            throw new InvalidOperationException("Hand is full");
-        }
-        hand.tiles().add(tile);
-
-        return new GameState(
-                hand,
-                stack,
-                oldState.board()
-        );
+    public List<Move> getValidMoves(GameState gameState, List<Tile> tiles) {
+        return QwirkleUtil.getLegalMoves(gameState.board(), tiles);
     }
 
     @Override
-    public List<Move> makeBestMoves(GameState gameState, int maxMoves) {
+    public List<PositionInfo> getOpenPositions(GameState gameState) {
+        List<Position> openPositions = QwirkleUtil.getOpenPositions(gameState.board());
+
+        return openPositions.stream()
+                .map(p -> new PositionInfo(false, p))
+                .toList();
+    }
+
+    @Override
+    public List<Move> getBestMoves(GameState gameState, int maxMoves) {
         //find valid subsets of hand tiles
         List<List<Tile>> allSubsets = Combinatorics.getSubsets(gameState.hand().tiles());
 
@@ -138,7 +120,37 @@ public class QwirkleServiceImpl implements QwirkleService{
         return moves.subList(0, Math.min(maxMoves, moves.size()));
     }
 
+    @Override
+    public GameState drawTile(GameState oldState, Tile tile) {
+        List<StackTile> stack = new ArrayList<>(oldState.stack());
+        Hand hand = new Hand(oldState.hand().tiles());
 
+        //remove the tile from the stack
+        Optional<StackTile> found = stack.stream()
+                .filter(t -> t.tile().equals(tile))
+                .findFirst();
+        if(found.isEmpty() || found.get().count() <= 0) {
+            throw new InvalidOperationException("Tile is not present in stack");
+        }
+
+        StackTile stackTile = found.get();
+        StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);
+
+        int index = stack.indexOf(stackTile);
+        stack.set(index, updatedTile);
+
+        //update hand
+        if(hand.tiles().size() >= 6) {
+            throw new InvalidOperationException("Hand is full");
+        }
+        hand.tiles().add(tile);
+
+        return new GameState(
+                hand,
+                stack,
+                oldState.board()
+        );
+    }
 
     @Override
     public GameState makeMove(GameState oldState, Move move) {
