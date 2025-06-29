@@ -8,6 +8,14 @@ body { margin: 0; font-family: Calibri, "Helvetica Neue", sans-serif; }
     max-width: 1100px;
 }
 
+.highlighted-container {
+    border-radius: 25px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+
+    padding: 1rem;
+}
+
 .flex-container {
     display: flex;
     justify-content: center;

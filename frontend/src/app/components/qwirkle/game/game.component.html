@@ -7,7 +7,7 @@
             <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
 
-        <div #board class="board">
+        <div #board class="highlighted-container board">
             <!--board tiles-->
             <qwirkle-tile *ngFor="let boardTile of gameState.board"
                           [tile]="boardTile.tile"

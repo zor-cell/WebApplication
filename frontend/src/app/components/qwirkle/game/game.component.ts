@@ -121,6 +121,11 @@ export class QwirkleGameComponent implements OnInit {
         this.qwirkleService.createState(this.hand).subscribe({
             next: res => {
                 this.gameState = res;
+
+                this.getOpenPositions();
+
+                //calculate center in next tick
+                setTimeout(() => this.calculateCenter(), 1);
             }
         });
     }
