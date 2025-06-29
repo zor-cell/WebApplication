@@ -12,6 +12,7 @@ import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../dto/qwirkle/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {PositionInfo} from "../../../dto/qwirkle/PositionInfo";
+import {Direction} from "../../../dto/qwirkle/Direction";
 
 @Component({
     selector: 'qwirkle-game',
@@ -63,13 +64,28 @@ export class QwirkleGameComponent implements OnInit {
 
     }
 
-    getTileStyle(position: Position) {
+    getTilePositionStyle(position: Position) {
         return {
             left: `${this.center.j + position.j * this.tileSize - this.tileSize / 2}px`,
             bottom: `${this.center.i + position.i * this.tileSize - this.tileSize / 2}px`,
             width: `${this.tileSize}px`,
             height: `${this.tileSize}px`
         }
+    }
+
+    getValidMoveStyle(move: Move) {
+        const borderMap: Record<Direction, string> = {
+            [Direction.UP]: 'border-top-width',
+            [Direction.RIGHT]: 'border-right-width',
+            [Direction.DOWN]: 'border-bottom-width',
+            [Direction.LEFT]: 'border-left-width',
+        };
+        const borderWidth = 4;
+
+        return {
+            ...this.getTilePositionStyle(move.position),
+            [borderMap[move.direction]]: `${borderWidth}px`,
+        };
     }
 
     private calculateCenter() {

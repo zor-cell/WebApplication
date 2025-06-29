@@ -119,6 +119,38 @@ public class QwirkleUtil {
         return freePositions.stream().toList();
     }
 
+    public static boolean isDeadPosition(Map<Position, BoardTile> board, Position position) {
+        return false;
+
+        /*MultiColor color = new MultiColor();
+        MultiShape shape = new MultiShape();
+
+        for(Direction dir : Direction.values()) {
+            int steps = 1;
+            Position next = position.stepsInDirection(dir, steps);
+            //if no neighbor exists keep going in other directions
+            if(!board.containsKey(next)) {
+                continue;
+            }
+
+            //accumulate colors of neighbors
+            while(board.containsKey(next)) {
+                BoardTile neighbor = board.get(next);
+
+                color.addFlag(neighbor.tile().color());
+                shape.addFlag(neighbor.tile().shape());
+
+                steps++;
+                next = position.stepsInDirection(dir, steps);
+            }
+        }
+
+        boolean colorGood = color.isSingle() || color.getValue() == 0;
+        boolean shapeGood = shape.isSingle() || shape.getValue() == 0;
+
+        return !(colorGood || shapeGood);*/
+    }
+
 
 
     private static List<Position> getLegalPositions(Map<Position, BoardTile> board, Tile tile) {
@@ -176,14 +208,16 @@ public class QwirkleUtil {
             for(Direction dir : pair) {
                 int steps = 1;
                 Position next = boardTile.position().stepsInDirection(dir, steps);
-                //if no neighbor exists keep going in other directions since its valid
+                //if no neighbor exists keep going in other directions
                 if(!board.containsKey(next)) {
                     continue;
                 }
 
+                //accumulate colors of neighbors
                 while(board.containsKey(next)) {
                     BoardTile neighbor = board.get(next);
 
+                    //TODO should i check if i already have this flag?
                     color.addFlag(neighbor.tile().color());
                     shape.addFlag(neighbor.tile().shape());
 
@@ -191,6 +225,7 @@ public class QwirkleUtil {
                     next = boardTile.position().stepsInDirection(dir, steps);
                 }
 
+                //TODO why is this not outside the loop?
                 if(!boardTile.tile().isCompatible(color, shape)) {
                     return false;
                 }
