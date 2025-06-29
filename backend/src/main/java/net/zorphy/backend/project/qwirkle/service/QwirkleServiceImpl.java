@@ -178,13 +178,8 @@ public class QwirkleServiceImpl implements QwirkleService{
             throw new InvalidOperationException("Hand does not contain all given tiles");
         }
 
-        //remove tiles from hand
-        for(Tile tile : move.tiles()) {
-            hand.tiles().remove(tile);
-        }
-
         //check if all moves are valid
-        List<BoardTile> tilesToPlace = new ArrayList<>();
+        List<Position> tempPositions = new ArrayList<>();
         boolean valid = true;
         for(int tileIndex = 0;tileIndex < move.tiles().size();tileIndex++) {
             Position tilePos = move.position().stepsInDirection(move.direction(), tileIndex);
@@ -196,15 +191,21 @@ public class QwirkleServiceImpl implements QwirkleService{
                 break;
             }
 
-            tilesToPlace.add(boardTile);
+            board.put(tilePos, boardTile);
+            tempPositions.add(tilePos);
         }
         if(!valid) {
+            //remove placed tiles from board again if move is invalid
+            for(Position tempPos : tempPositions) {
+                board.remove(tempPos);
+            }
+
             throw new InvalidOperationException("Move is invalid");
         }
 
-        //place all tiles
-        for(BoardTile boardTile : tilesToPlace) {
-            board.put(boardTile.position(), boardTile);
+        //remove tiles from hand
+        for(Tile tile : move.tiles()) {
+            hand.tiles().remove(tile);
         }
 
         return new GameState(
