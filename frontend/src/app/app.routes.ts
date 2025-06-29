@@ -4,6 +4,7 @@ import {ProjectsComponent} from "./components/projects/project-list/projects.com
 import {ProjectInfoComponent} from "./components/projects/project-info/project-info.component";
 import {CatanGameComponent} from "./components/catan/game/game.component";
 import {CatanConfigComponent} from "./components/catan/config/config.component";
+import {QwirkleGameComponent} from "./components/qwirkle/game/game.component";
 
 export const routes: Routes = [
     //project routing
@@ -17,5 +18,9 @@ export const routes: Routes = [
     //catan routing
     {path: 'projects/catan', redirectTo: 'projects/catan/config', pathMatch: 'full'},
     {path: 'projects/catan/config', component: CatanConfigComponent},
-    {path: 'projects/catan/game', component: CatanGameComponent}
+    {path: 'projects/catan/game', component: CatanGameComponent},
+
+    //qwirkle routing
+    {path: 'projects/qwirkle', redirectTo: 'projects/qwirkle/game', pathMatch: 'full'},
+    {path: 'projects/qwirkle/game', component: QwirkleGameComponent}
 ];

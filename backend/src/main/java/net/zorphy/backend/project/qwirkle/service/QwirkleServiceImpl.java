@@ -140,7 +140,7 @@ public class QwirkleServiceImpl implements QwirkleService{
         List<StackTile> stack = new ArrayList<>(oldState.stack());
         Hand hand = new Hand(oldState.hand().tiles());
 
-        //remove the tile from the stack
+        //check if tile exists in stack
         Optional<StackTile> found = stack.stream()
                 .filter(t -> t.tile().equals(tile))
                 .findFirst();
@@ -148,17 +148,20 @@ public class QwirkleServiceImpl implements QwirkleService{
             throw new InvalidOperationException("Tile is not present in stack");
         }
 
+        //check hand size
+        if(hand.tiles().size() >= 6) {
+            throw new InvalidOperationException("Hand is full");
+        }
+
+        //add to hand
+        hand.tiles().add(tile);
+
+        //update count of stack tile
         StackTile stackTile = found.get();
         StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);
 
         int index = stack.indexOf(stackTile);
         stack.set(index, updatedTile);
-
-        //update hand
-        if(hand.tiles().size() >= 6) {
-            throw new InvalidOperationException("Hand is full");
-        }
-        hand.tiles().add(tile);
 
         return new GameState(
                 hand,

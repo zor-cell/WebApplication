@@ -1,0 +1,14 @@
+.stack-container {
+    place-self: center;
+
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+
+    gap: 0.4rem;
+    align-items: center;
+    justify-content: start;
+
+    padding: 0.4rem;
+
+    border: 1px solid black;
+}

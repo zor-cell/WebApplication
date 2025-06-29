@@ -1,0 +1,18 @@
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+
+    height: 600px;
+    gap: 1rem;
+}
+
+.config {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    gap: 1rem;
+}
+
+.board {
+    border: 1px solid black;
+}

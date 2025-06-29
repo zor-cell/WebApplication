@@ -1,0 +1,16 @@
+<app-project-header></app-project-header>
+
+@if (gameState) {
+    <div class="game-container main-container">
+        <div class="config">
+            <qwirkle-hand></qwirkle-hand>
+            <qwirkle-stack [stack]="gameState.stack"></qwirkle-stack>
+        </div>
+
+        <div class="board">
+
+        </div>
+    </div>
+} @else {
+    <button (click)="createState()">Start</button>
+}
