@@ -1,4 +1,4 @@
-.tile svg {
-    width: 25px;
-    height: 25px;
+.tile:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }

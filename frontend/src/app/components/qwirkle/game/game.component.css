@@ -1,6 +1,6 @@
 .game-container {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: auto 1fr;
 
     height: 600px;
     gap: 1rem;
@@ -9,6 +9,7 @@
 .config {
     display: grid;
     grid-template-rows: auto 1fr;
+    align-items: end;
 
     gap: 1rem;
 }

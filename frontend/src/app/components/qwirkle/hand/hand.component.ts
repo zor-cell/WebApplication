@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {QwirkleService} from "../../../services/qwirkle.service";
 import {GameState} from "../../../dto/qwirkle/GameState";
 import {Hand} from "../../../dto/qwirkle/Hand";
@@ -21,18 +21,12 @@ import {QwirkleTileComponent} from "../tile/tile.component";
 })
 export class QwirkleHandComponent {
   private gameState: GameState | null = null;
-  hand: Hand = {
-    tiles: [
-      {color: Color.BLUE, shape: Shape.CLOVER},
-      {color: Color.RED, shape: Shape.CLOVER},
-      {color: Color.ORANGE, shape: Shape.CIRCLE},
-      {color: Color.RED, shape: Shape.CLOVER},
-      {color: Color.RED, shape: Shape.CLOVER},
-      {color: Color.RED, shape: Shape.CLOVER},
-    ]
-  };
+  @Input({required: true}) hand!: Hand;
 
   constructor(private qwirkleService: QwirkleService, ) {
+  }
+
+  tileSelected(tileIndex: number) {
 
   }
 }

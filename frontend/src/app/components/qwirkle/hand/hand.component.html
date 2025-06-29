@@ -1,3 +1,6 @@
 <div class="hand-container">
-    <qwirkle-tile *ngFor="let tile of hand.tiles" [tile]="tile"/>
+    <qwirkle-tile *ngFor="let tile of hand.tiles;let i = index"
+                  [tile]="tile"
+                  (click)="tileSelected(i)"
+    />
 </div>

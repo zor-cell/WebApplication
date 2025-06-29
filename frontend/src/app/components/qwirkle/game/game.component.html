@@ -3,8 +3,8 @@
 @if (gameState) {
     <div class="game-container main-container">
         <div class="config">
-            <qwirkle-hand></qwirkle-hand>
-            <qwirkle-stack [stack]="gameState.stack"></qwirkle-stack>
+            <qwirkle-hand [hand]="gameState.hand"></qwirkle-hand>
+            <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
 
         <div class="board">

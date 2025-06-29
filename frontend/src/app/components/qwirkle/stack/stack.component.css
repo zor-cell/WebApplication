@@ -1,12 +1,10 @@
 .stack-container {
-    place-self: center;
-
     display: grid;
     grid-template-columns: repeat(6, auto);
 
     gap: 0.4rem;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
 
     padding: 0.4rem;
 
