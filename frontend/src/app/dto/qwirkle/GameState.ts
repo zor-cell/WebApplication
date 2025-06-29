@@ -1,9 +1,9 @@
-import {Hand} from "./Hand";
 import {StackTile} from "./StackTile";
 import {BoardTile} from "./BoardTile";
+import {Tile} from "./Tile";
 
 export interface GameState {
-    hand: Hand,
+    hand: Tile[],
     stack: StackTile[],
     board: BoardTile[]
 }

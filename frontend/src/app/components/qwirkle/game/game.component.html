@@ -3,14 +3,24 @@
 @if (gameState) {
     <div class="game-container main-container">
         <div class="config">
-            <qwirkle-hand [hand]="gameState.hand"></qwirkle-hand>
+            <qwirkle-hand [hand]="gameState.hand" (selectTilesEvent)="selectedInHand($event)"></qwirkle-hand>
             <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
 
         <div #board class="board">
+            <!--board tiles-->
             <qwirkle-tile *ngFor="let boardTile of gameState.board"
                           [tile]="boardTile.tile"
                           [ngStyle]="getTileStyle(boardTile.position)"
+                          [isInteractive]="false"
+                          class="board-tile"
+            >
+            </qwirkle-tile>
+
+            <!--valid move tiles-->
+            <qwirkle-tile *ngFor="let move of validMoves"
+                          [tile]="move.tiles[0]"
+                          [ngStyle]="getTileStyle(move.position)"
                           [isInteractive]="false"
                           class="board-tile"
             >

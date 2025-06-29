@@ -1,16 +1,16 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
 import {MainHeaderComponent} from "../../global/main-header/main-header.component";
 import {QwirkleService} from "../../../services/qwirkle.service";
 import {GameState} from "../../../dto/qwirkle/GameState";
-import {Hand} from "../../../dto/qwirkle/Hand";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Shape} from "../../../dto/qwirkle/Shape";
 import {Color} from "../../../dto/qwirkle/Color";
 import {Tile} from "../../../dto/qwirkle/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../dto/qwirkle/Position";
+import {Move} from "../../../dto/qwirkle/Move";
 
 @Component({
     selector: 'qwirkle-game',
@@ -27,7 +27,7 @@ import {Position} from "../../../dto/qwirkle/Position";
     standalone: true,
     styleUrl: './game.component.css'
 })
-export class QwirkleGameComponent implements AfterViewInit {
+export class QwirkleGameComponent implements OnInit {
     @ViewChild('board') boardRef!: ElementRef;
 
     private readonly center: Position = {
@@ -37,21 +37,20 @@ export class QwirkleGameComponent implements AfterViewInit {
     private readonly tileSize = 40;
 
     gameState: GameState | null = null;
-    hand: Hand = {
-        tiles: [
-            {color: Color.BLUE, shape: Shape.CLOVER}
-        ]
-    };
+    hand: Tile[] = [
+        {color: Color.BLUE, shape: Shape.CLOVER}
+    ];
+    validMoves: Move[] = [];
 
     constructor(private qwirkleService: QwirkleService) {
     }
 
-    ngAfterViewInit() {
-
-    }
-
     ngOnInit() {
         this.getState();
+    }
+
+    selectedInHand(tiles: Tile[]) {
+        this.getValidMoves(tiles);
     }
 
     selectedInStack(tile: Tile) {
@@ -66,13 +65,10 @@ export class QwirkleGameComponent implements AfterViewInit {
     }
 
     private calculateCenter() {
-        if(this.boardRef) {
+        if (this.boardRef) {
             const board = this.boardRef.nativeElement as HTMLElement;
             this.center.j = board.clientWidth / 2;
             this.center.i = board.clientHeight / 2;
-
-            console.log(this.center)
-            console.log(board.getBoundingClientRect())
         }
     }
 
@@ -91,6 +87,14 @@ export class QwirkleGameComponent implements AfterViewInit {
                 setTimeout(() => this.calculateCenter());
             }
         });
+    }
+
+    private getValidMoves(tiles: Tile[]) {
+        this.qwirkleService.getValidMoves(tiles).subscribe({
+            next: res => {
+                this.validMoves = res;
+            }
+        })
     }
 
     createState() {

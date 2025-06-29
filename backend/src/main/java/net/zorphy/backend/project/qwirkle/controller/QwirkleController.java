@@ -30,11 +30,6 @@ public class QwirkleController {
         return getGameState(session);
     }
 
-    @GetMapping("moves")
-    public List<Move> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
-        return qwirkleService.getValidMoves(getGameState(session), tiles);
-    }
-
     @GetMapping("positions")
     public List<PositionInfo> getOpenPositions(HttpSession session) {
         return qwirkleService.getOpenPositions(getGameState(session));
@@ -54,7 +49,7 @@ public class QwirkleController {
     }
 
     @PostMapping("start")
-    public GameState createState(HttpSession session, @Valid @RequestBody Hand hand) {
+    public GameState createState(HttpSession session, @Valid @RequestBody List<Tile> hand) {
         if(sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
@@ -63,6 +58,11 @@ public class QwirkleController {
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
+    }
+
+    @PostMapping("moves")
+    public List<Move> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
+        return qwirkleService.getValidMoves(getGameState(session), tiles);
     }
 
     @PostMapping("stack/draw")

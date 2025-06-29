@@ -4,7 +4,6 @@ import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
 import {GameState} from "../dto/qwirkle/GameState";
 import {Move} from "../dto/qwirkle/Move";
-import {Hand} from "../dto/qwirkle/Hand";
 import {Tile} from "../dto/qwirkle/Tile";
 
 @Injectable({
@@ -23,8 +22,8 @@ export class QwirkleService {
     });
   }
 
-  getValidMoves(): Observable<Move[]> {
-    return this.httpClient.get<Move[]>(this.baseUri + '/moves');
+  getValidMoves(tiles: Tile[]): Observable<Move[]> {
+    return this.httpClient.post<Move[]>(this.baseUri + '/moves', tiles);
   }
 
   getOpenPositions(): Observable<Move[]> {
@@ -42,7 +41,7 @@ export class QwirkleService {
         }));
   }
 
-  createState(hand: Hand): Observable<GameState> {
+  createState(hand: Tile[]): Observable<GameState> {
     return this.httpClient.post<GameState>(this.baseUri + '/start', hand);
   }
 

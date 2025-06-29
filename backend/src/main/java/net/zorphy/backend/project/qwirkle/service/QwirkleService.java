@@ -11,7 +11,7 @@ public interface QwirkleService {
 
     List<Move> getBestMoves(GameState gameState, int maxMoves);
 
-    GameState initGameState(Hand hand);
+    GameState initGameState(List<Tile> hand);
 
     GameState drawTile(GameState gameState, Tile tile);
 

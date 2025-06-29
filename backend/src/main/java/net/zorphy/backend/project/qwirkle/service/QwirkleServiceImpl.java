@@ -29,7 +29,7 @@ public class QwirkleServiceImpl implements QwirkleService{
     }
 
     @Override
-    public GameState initGameState(Hand hand) {
+    public GameState initGameState(List<Tile> hand) {
         //initialise stack
         List<StackTile> stack = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public class QwirkleServiceImpl implements QwirkleService{
     @Override
     public List<Move> getBestMoves(GameState gameState, int maxMoves) {
         //find valid subsets of hand tiles
-        List<List<Tile>> allSubsets = Combinatorics.getSubsets(gameState.hand().tiles());
+        List<List<Tile>> allSubsets = Combinatorics.getSubsets(gameState.hand());
 
         List<List<Tile>> validSubsets = new ArrayList<>();
         for(List<Tile> subset : allSubsets) {
@@ -138,7 +138,7 @@ public class QwirkleServiceImpl implements QwirkleService{
     @Override
     public GameState drawTile(GameState oldState, Tile tile) {
         List<StackTile> stack = new ArrayList<>(oldState.stack());
-        Hand hand = new Hand(oldState.hand().tiles());
+        List<Tile> hand = new ArrayList<>(oldState.hand());
 
         //check if tile exists in stack
         Optional<StackTile> found = stack.stream()
@@ -149,12 +149,12 @@ public class QwirkleServiceImpl implements QwirkleService{
         }
 
         //check hand size
-        if(hand.tiles().size() >= 6) {
+        if(hand.size() >= 6) {
             throw new InvalidOperationException("Hand is full");
         }
 
         //add to hand
-        hand.tiles().add(tile);
+        hand.add(tile);
 
         //update count of stack tile
         StackTile stackTile = found.get();
@@ -172,11 +172,11 @@ public class QwirkleServiceImpl implements QwirkleService{
 
     @Override
     public GameState makeMove(GameState oldState, Move move) {
-        Hand hand = new Hand(oldState.hand().tiles());
+        List<Tile> hand = new ArrayList<>(oldState.hand());
         Map<Position, BoardTile> board = mapFromList(oldState.board());
 
         //check if tiles are present in hand
-        boolean allInHand = new HashSet<>(hand.tiles()).containsAll(move.tiles());
+        boolean allInHand = new HashSet<>(hand).containsAll(move.tiles());
         if(!allInHand) {
             throw new InvalidOperationException("Hand does not contain all given tiles");
         }
@@ -208,7 +208,7 @@ public class QwirkleServiceImpl implements QwirkleService{
 
         //remove tiles from hand
         for(Tile tile : move.tiles()) {
-            hand.tiles().remove(tile);
+            hand.remove(tile);
         }
 
         return new GameState(
