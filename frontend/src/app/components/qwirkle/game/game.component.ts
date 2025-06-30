@@ -11,7 +11,6 @@ import {Tile} from "../../../dto/qwirkle/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../dto/qwirkle/Position";
 import {Move} from "../../../dto/qwirkle/Move";
-import {PositionInfo} from "../../../dto/qwirkle/PositionInfo";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
 
@@ -57,6 +56,7 @@ export class QwirkleGameComponent implements OnInit {
     onDocumentClick(event: MouseEvent) : void {
         const target = event.target as HTMLElement;
 
+        //unselect a move when clicking anywhere except on it
         if(!target.closest('.valid-move') && !target.closest('.highlighted-move')) {
             this.selectedMove = null;
         }
@@ -67,6 +67,8 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     selectedInStack(tile: Tile) {
+        if(this.hand.length >= 6) return;
+
         this.drawTile(tile);
     }
 
@@ -74,16 +76,18 @@ export class QwirkleGameComponent implements OnInit {
         this.selectedMove = this.validMoves[moveIndex];
     }
 
-    makeSelectedMove() {
+    makeSelectedMove(direction: Direction) {
         if(!this.selectedMove) return;
 
         const move: Move = {
             position: this.selectedMove.position,
-            direction: this.selectedMove.directions[0],
+            direction: direction,
             tiles: this.selectedMove.tiles
         }
-        this.makeMove(move);
         this.selectedMove = null;
+        this.validMoves = [];
+
+        this.makeMove(move);
     }
 
     getTilePositionStyle(position: Position) {
@@ -111,8 +115,8 @@ export class QwirkleGameComponent implements OnInit {
             ...this.getTilePositionStyle(moveGroup.position)
         }
 
-        for (const direction of moveGroup.directions) {
-            const cssProp = borderMap[direction];
+        for (const groupInfo of moveGroup.groupInfos) {
+            const cssProp = borderMap[groupInfo.direction];
             if (cssProp) {
                 style[cssProp] = `${borderWidth}px`;
             }

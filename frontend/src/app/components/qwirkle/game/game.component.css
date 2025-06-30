@@ -40,6 +40,11 @@
     opacity: 0.5;
 }
 
+.tile-group:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .valid-move:hover {
     cursor: pointer;
     opacity: 0.5;

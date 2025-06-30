@@ -14,19 +14,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class QwirkleServiceImpl implements QwirkleService {
-    private static Map<Position, BoardTile> mapFromList(List<BoardTile> board) {
-        return board.stream()
-                .collect(Collectors.toMap(
-                        BoardTile::position,
-                        Function.identity()
-                ));
-    }
-
-    private static List<BoardTile> listFromMap(Map<Position, BoardTile> board) {
-        return board.values().stream()
-                .toList();
-    }
-
     @Override
     public GameState initGameState(List<Tile> hand) {
         //initialise stack
@@ -76,12 +63,12 @@ public class QwirkleServiceImpl implements QwirkleService {
     public List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles) {
         List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
 
+        //accumulate move groups to group together moves from the same position (because score is irrelevant)
         Map<Position, MoveGroup> moveGroups = new HashMap<>();
         for (Move move : moves) {
             //get board tiles for rendering moves
             List<BoardTile> boardTiles = new ArrayList<>();
-            //dont add start position tile
-            for (int tileIndex = 1; tileIndex < move.tiles().size(); tileIndex++) {
+            for (int tileIndex = 0; tileIndex < move.tiles().size(); tileIndex++) {
                 Position position = move.position().stepsInDirection(move.direction(), tileIndex);
                 Tile tile = move.tiles().get(tileIndex);
 
@@ -92,38 +79,29 @@ public class QwirkleServiceImpl implements QwirkleService {
 
                 boardTiles.add(boardTile);
             }
-
+            GroupInfo groupInfo = new GroupInfo(
+                    move.direction(),
+                    boardTiles
+            );
 
             if (moveGroups.containsKey(move.position())) {
                 MoveGroup found = moveGroups.get(move.position());
-                found.directions().add(move.direction());
-                found.boardTiles().addAll(boardTiles);
+
+                found.groupInfos().add(groupInfo);
             } else {
                 MoveGroup moveGroup = new MoveGroup(
                         move.position(),
                         move.tiles(),
-                        new ArrayList<>(List.of(move.direction())),
-                        boardTiles
+                        new ArrayList<>(List.of(groupInfo))
                 );
                 moveGroups.put(move.position(), moveGroup);
             }
-
         }
 
         return moveGroups.values().stream()
                 .toList();
     }
 
-    private List<PositionInfo> getOpenPositions(Map<Position, BoardTile> board) {
-        List<Position> openPositions = QwirkleUtil.getOpenPositions(board);
-
-        return openPositions.stream()
-                .map(p -> {
-                    boolean isDead = QwirkleUtil.isDeadPosition(board, p);
-                    return new PositionInfo(isDead, p);
-                })
-                .toList();
-    }
 
     @Override
     public List<Move> getBestMoves(GameState gameState, int maxMoves) {
@@ -262,5 +240,29 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public void uploadImage(byte[] file) {
 
+    }
+
+    private static List<PositionInfo> getOpenPositions(Map<Position, BoardTile> board) {
+        List<Position> openPositions = QwirkleUtil.getOpenPositions(board);
+
+        return openPositions.stream()
+                .map(p -> {
+                    boolean isDead = QwirkleUtil.isDeadPosition(board, p);
+                    return new PositionInfo(isDead, p);
+                })
+                .toList();
+    }
+
+    private static Map<Position, BoardTile> mapFromList(List<BoardTile> board) {
+        return board.stream()
+                .collect(Collectors.toMap(
+                        BoardTile::position,
+                        Function.identity()
+                ));
+    }
+
+    private static List<BoardTile> listFromMap(Map<Position, BoardTile> board) {
+        return board.values().stream()
+                .toList();
     }
 }

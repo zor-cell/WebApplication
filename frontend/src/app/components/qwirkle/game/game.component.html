@@ -27,7 +27,7 @@
 
             <!--valid move tiles-->
             <ng-container *ngFor="let move of validMoves;let i = index">
-                <div *ngIf="!(selectedMove && selectedMove.position == move.position)"
+                <div *ngIf="!(selectedMove && selectedMove.position.i == move.position.i && selectedMove.position.j == move.position.j)"
                      [ngStyle]="getValidMoveGroupStyle(move)"
                      (click)="chooseValidMove(i)"
                      class="board-tile valid-move"
@@ -38,22 +38,43 @@
 
             <!--specific valid move tile highlight-->
             <ng-container *ngIf="selectedMove">
-                <!--first tile without event listener because direction is unclear-->
+                <!--draw first tile without clickable if there are many configurations-->
                 <qwirkle-tile
-                              [ngStyle]="getTilePositionStyle(selectedMove.position)"
-                              [tile]="selectedMove.tiles[0]"
-                              [isInteractive]="false"
-                              class="board-tile highlighted-move">
-                </qwirkle-tile>
-
-                <!--rendering other tiles with listener to make move-->
-                <qwirkle-tile *ngFor="let highlight of selectedMove.boardTiles"
-                              [ngStyle]="getTilePositionStyle(highlight.position)"
-                              [tile]="highlight.tile"
-                              (click)="makeSelectedMove()"
-                              class="board-tile highlighted-move"
+                        *ngIf="selectedMove.groupInfos.length > 1"
+                        [ngStyle]="getTilePositionStyle(selectedMove.position)"
+                        [tile]="selectedMove.tiles[0]"
+                        [isInteractive]="false"
+                        class="board-tile highlighted-move"
                 >
                 </qwirkle-tile>
+
+                <div *ngFor="let groupInfo of selectedMove.groupInfos;let i = index"
+                     (click)="makeSelectedMove(groupInfo.direction)"
+                     class="tile-group">
+                    <!--add grouping-->
+                    <ng-container *ngFor="let boardTile of groupInfo.boardTiles">
+                        @if (boardTile.position.i == selectedMove.position.i && boardTile.position.j == selectedMove.position.j) {
+                            <!--draw first tile as clickable if theres only one configuration-->
+                            <qwirkle-tile
+                                    *ngIf="selectedMove.groupInfos.length == 1"
+                                    [ngStyle]="getTilePositionStyle(boardTile.position)"
+                                    [tile]="boardTile.tile"
+                                    [isInteractive]="false"
+                                    class="board-tile highlighted-move"
+                            >
+                            </qwirkle-tile>
+                        } @else {
+                            <!--draw other tiles-->
+                            <qwirkle-tile
+                                    [ngStyle]="getTilePositionStyle(boardTile.position)"
+                                    [tile]="boardTile.tile"
+                                    [isInteractive]="false"
+                                    class="board-tile highlighted-move"
+                            >
+                            </qwirkle-tile>
+                        }
+                    </ng-container>
+                </div>
             </ng-container>
         </div>
     </div>
