@@ -122,6 +122,8 @@ public class QwirkleUtil {
     public static boolean isDeadPosition(Map<Position, BoardTile> board, Position position) {
         Direction[][] directionPairs = Direction.getPairs();
 
+        //TODO: does not work perfectly
+        // rs x rs is not a dead position
         List<MultiColor> allColors = new ArrayList<>();
         List<MultiShape> allShapes = new ArrayList<>();
         for(Direction[] pair : directionPairs) {
@@ -140,6 +142,7 @@ public class QwirkleUtil {
                 while(board.containsKey(next)) {
                     BoardTile neighbor = board.get(next);
 
+                    //TODO: should we check if flag exists?
                     color.addFlag(neighbor.tile().color());
                     shape.addFlag(neighbor.tile().shape());
 
@@ -239,7 +242,11 @@ public class QwirkleUtil {
                 while(board.containsKey(next)) {
                     BoardTile neighbor = board.get(next);
 
-                    //TODO should i check if i already have this flag?
+                    //if the same piece already exists, position is invalid
+                    if(color.hasColor(neighbor.tile().color()) && shape.hasShape(neighbor.tile().shape())) {
+                        return false;
+                    }
+
                     color.addFlag(neighbor.tile().color());
                     shape.addFlag(neighbor.tile().shape());
 
@@ -247,7 +254,8 @@ public class QwirkleUtil {
                     next = boardTile.position().stepsInDirection(dir, steps);
                 }
 
-                //TODO why is this not outside the loop?
+                //check compatibility for every direction for efficiency
+                //the last pass checks for compatibility with all previous directions in pair
                 if(!boardTile.tile().isCompatible(color, shape)) {
                     return false;
                 }
