@@ -6,14 +6,14 @@ public enum Direction {
     DOWN,
     LEFT;
 
-    public int getDi() {
+    public int getDy() {
         if(this == Direction.UP) return 1;
         else if(this == Direction.DOWN) return -1;
 
         return 0;
     }
 
-    public int getDj() {
+    public int getDx() {
         if(this == Direction.LEFT) return -1;
         else if(this == Direction.RIGHT) return 1;
 

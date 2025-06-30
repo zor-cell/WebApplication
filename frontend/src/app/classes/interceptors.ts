@@ -1,7 +1,7 @@
 import {HttpContextToken, HttpInterceptorFn} from "@angular/common/http";
 import {inject} from "@angular/core";
 import {Globals} from "./globals";
-import {catchError, EMPTY} from "rxjs";
+import {catchError, EMPTY, throwError} from "rxjs";
 
 export const SILENT_ERROR_HANDLER = new HttpContextToken<boolean>(() => false);
 
@@ -21,8 +21,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             globals.handleError(err);
         }
 
-        return EMPTY;
-        //return throwError(() => err);
+        //return EMPTY;
+        return throwError(() => err);
       })
   )
 };

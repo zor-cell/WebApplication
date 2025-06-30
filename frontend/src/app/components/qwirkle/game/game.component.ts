@@ -13,6 +13,7 @@ import {Position} from "../../../dto/qwirkle/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
+import {ImageCacheService} from "../../../services/image-cache.service";
 
 @Component({
     selector: 'qwirkle-game',
@@ -33,19 +34,16 @@ export class QwirkleGameComponent implements OnInit {
     @ViewChild('board') boardRef!: ElementRef;
 
     private readonly center: Position = {
-        i: 0,
-        j: 0
+        y: 0,
+        x: 0
     };
-    private readonly tileSize = 40;
+    tileSize = 30;
 
     gameState: GameState | null = null;
-    hand: Tile[] = [
-        {color: Color.BLUE, shape: Shape.CLOVER}
-    ];
     validMoves: MoveGroup[] = [];
     selectedMove: MoveGroup | null = null;
 
-    constructor(private qwirkleService: QwirkleService) {
+    constructor(private qwirkleService: QwirkleService, private imageCacheService: ImageCacheService) {
     }
 
     ngOnInit() {
@@ -62,12 +60,26 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
+    zoomIn() {
+        if(this.tileSize <= 25) return;
+
+        /*this.tileSize--;
+        this.imageCacheService.clear();*/
+    }
+
+    zoomOut() {
+        if(this.tileSize > 70) return;
+
+        /*this.tileSize++;
+        this.imageCacheService.clear();*/
+    }
+
     selectedInHand(tiles: Tile[]) {
         this.getValidMoves(tiles);
     }
 
     selectedInStack(tile: Tile) {
-        if(this.hand.length >= 6) return;
+        if(!this.gameState || !this.gameState.hand || this.gameState?.hand?.length >= 6) return;
 
         this.drawTile(tile);
     }
@@ -92,8 +104,8 @@ export class QwirkleGameComponent implements OnInit {
 
     getTilePositionStyle(position: Position) {
         return {
-            left: `${this.center.j + position.j * this.tileSize - this.tileSize / 2}px`,
-            bottom: `${this.center.i + position.i * this.tileSize - this.tileSize / 2}px`,
+            left: `${this.center.x + position.x * this.tileSize - this.tileSize / 2}px`,
+            bottom: `${this.center.y + position.y * this.tileSize - this.tileSize / 2}px`,
             width: `${this.tileSize}px`,
             height: `${this.tileSize}px`
         }
@@ -128,8 +140,8 @@ export class QwirkleGameComponent implements OnInit {
     private calculateCenter() {
         if (this.boardRef) {
             const board = this.boardRef.nativeElement as HTMLElement;
-            this.center.j = board.clientWidth / 2;
-            this.center.i = board.clientHeight / 2;
+            this.center.x = board.clientWidth / 2;
+            this.center.y = board.clientHeight / 2;
         }
     }
 
@@ -148,6 +160,9 @@ export class QwirkleGameComponent implements OnInit {
 
                 //calculate center in next tick
                 setTimeout(() => this.calculateCenter(), 1);
+            },
+            error: err => {
+                this.createState();
             }
         });
     }
@@ -169,7 +184,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     createState() {
-        this.qwirkleService.createState(this.hand).subscribe({
+        this.qwirkleService.createState([]).subscribe({
             next: res => {
                 this.gameState = res;
 

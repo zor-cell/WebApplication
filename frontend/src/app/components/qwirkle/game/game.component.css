@@ -15,6 +15,17 @@
     gap: 1rem;
 }
 
+.board-container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+}
+
+.board-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .board {
     position: relative;
     overflow: hidden;

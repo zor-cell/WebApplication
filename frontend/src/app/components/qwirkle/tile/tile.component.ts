@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Tile} from "../../../dto/qwirkle/Tile";
 import {Color} from "../../../dto/qwirkle/Color";
 import {SafeHtml} from "@angular/platform-browser";
-import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass, NgIf, NgStyle} from "@angular/common";
 import {ImageCacheService} from "../../../services/image-cache.service";
 import {Observable} from "rxjs";
 
@@ -11,7 +11,8 @@ import {Observable} from "rxjs";
     imports: [
         NgIf,
         AsyncPipe,
-        NgClass
+        NgClass,
+        NgStyle
     ],
     templateUrl: './tile.component.html',
     standalone: true,
