@@ -36,6 +36,10 @@
     border-radius: 12%;
 }
 
+.highlighted-move {
+    opacity: 0.5;
+}
+
 .valid-move:hover {
     cursor: pointer;
     opacity: 0.5;

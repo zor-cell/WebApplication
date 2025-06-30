@@ -18,7 +18,7 @@
             </qwirkle-tile>
 
             <!--open positions-->
-            <ng-container *ngFor="let posInfo of openPositions">
+            <ng-container *ngFor="let posInfo of gameState.openPositions">
                 <div *ngIf="!posInfo.isDead"
                      [ngStyle]="getTilePositionStyle(posInfo.position)"
                      class="board-tile open-position">
@@ -26,12 +26,35 @@
             </ng-container>
 
             <!--valid move tiles-->
-            <div *ngFor="let move of validMoves;let i = index"
-                 [ngStyle]="getValidMoveGroupStyle(move)"
-                 (click)="chooseValidMove(i)"
-                 class="board-tile valid-move"
+            <ng-container *ngFor="let move of validMoves;let i = index">
+                <div *ngIf="!(selectedMove && selectedMove.position == move.position)"
+                     [ngStyle]="getValidMoveGroupStyle(move)"
+                     (click)="chooseValidMove(i)"
+                     class="board-tile valid-move"
                 >
-            </div>
+                </div>
+            </ng-container>
+
+
+            <!--specific valid move tile highlight-->
+            <ng-container *ngIf="selectedMove">
+                <!--first tile without event listener because direction is unclear-->
+                <qwirkle-tile
+                              [ngStyle]="getTilePositionStyle(selectedMove.position)"
+                              [tile]="selectedMove.tiles[0]"
+                              [isInteractive]="false"
+                              class="board-tile highlighted-move">
+                </qwirkle-tile>
+
+                <!--rendering other tiles with listener to make move-->
+                <qwirkle-tile *ngFor="let highlight of selectedMove.boardTiles"
+                              [ngStyle]="getTilePositionStyle(highlight.position)"
+                              [tile]="highlight.tile"
+                              (click)="makeSelectedMove()"
+                              class="board-tile highlighted-move"
+                >
+                </qwirkle-tile>
+            </ng-container>
         </div>
     </div>
 } @else {

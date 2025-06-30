@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
 import {MainHeaderComponent} from "../../global/main-header/main-header.component";
@@ -43,14 +43,23 @@ export class QwirkleGameComponent implements OnInit {
     hand: Tile[] = [
         {color: Color.BLUE, shape: Shape.CLOVER}
     ];
-    openPositions: PositionInfo[] = [];
     validMoves: MoveGroup[] = [];
+    selectedMove: MoveGroup | null = null;
 
     constructor(private qwirkleService: QwirkleService) {
     }
 
     ngOnInit() {
         this.getState();
+    }
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) : void {
+        const target = event.target as HTMLElement;
+
+        if(!target.closest('.valid-move') && !target.closest('.highlighted-move')) {
+            this.selectedMove = null;
+        }
     }
 
     selectedInHand(tiles: Tile[]) {
@@ -62,7 +71,19 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     chooseValidMove(moveIndex: number) {
+        this.selectedMove = this.validMoves[moveIndex];
+    }
 
+    makeSelectedMove() {
+        if(!this.selectedMove) return;
+
+        const move: Move = {
+            position: this.selectedMove.position,
+            direction: this.selectedMove.directions[0],
+            tiles: this.selectedMove.tiles
+        }
+        this.makeMove(move);
+        this.selectedMove = null;
     }
 
     getTilePositionStyle(position: Position) {
@@ -121,10 +142,16 @@ export class QwirkleGameComponent implements OnInit {
             next: res => {
                 this.gameState = res;
 
-                this.getOpenPositions();
-
                 //calculate center in next tick
                 setTimeout(() => this.calculateCenter(), 1);
+            }
+        });
+    }
+
+    private makeMove(move: Move) {
+        this.qwirkleService.makeMove(move).subscribe({
+            next: res => {
+                this.gameState = res;
             }
         });
     }
@@ -137,20 +164,10 @@ export class QwirkleGameComponent implements OnInit {
         })
     }
 
-    private getOpenPositions() {
-        this.qwirkleService.getOpenPositions().subscribe({
-            next: res => {
-                this.openPositions = res;
-            }
-        })
-    }
-
     createState() {
         this.qwirkleService.createState(this.hand).subscribe({
             next: res => {
                 this.gameState = res;
-
-                this.getOpenPositions();
 
                 //calculate center in next tick
                 setTimeout(() => this.calculateCenter(), 1);

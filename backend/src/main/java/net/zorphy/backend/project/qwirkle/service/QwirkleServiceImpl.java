@@ -67,7 +67,8 @@ public class QwirkleServiceImpl implements QwirkleService {
         return new GameState(
                 hand,
                 stack,
-                listFromMap(board)
+                listFromMap(board),
+                getOpenPositions(board)
         );
     }
 
@@ -76,31 +77,49 @@ public class QwirkleServiceImpl implements QwirkleService {
         List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
 
         Map<Position, MoveGroup> moveGroups = new HashMap<>();
-        for(Move move : moves) {
-            if(moveGroups.containsKey(move.position())) {
+        for (Move move : moves) {
+            //get board tiles for rendering moves
+            List<BoardTile> boardTiles = new ArrayList<>();
+            //dont add start position tile
+            for (int tileIndex = 1; tileIndex < move.tiles().size(); tileIndex++) {
+                Position position = move.position().stepsInDirection(move.direction(), tileIndex);
+                Tile tile = move.tiles().get(tileIndex);
+
+                BoardTile boardTile = new BoardTile(
+                        position,
+                        tile
+                );
+
+                boardTiles.add(boardTile);
+            }
+
+
+            if (moveGroups.containsKey(move.position())) {
                 MoveGroup found = moveGroups.get(move.position());
                 found.directions().add(move.direction());
+                found.boardTiles().addAll(boardTiles);
             } else {
                 MoveGroup moveGroup = new MoveGroup(
                         move.position(),
+                        move.tiles(),
                         new ArrayList<>(List.of(move.direction())),
-                        move.tiles()
+                        boardTiles
                 );
                 moveGroups.put(move.position(), moveGroup);
             }
+
         }
 
         return moveGroups.values().stream()
                 .toList();
     }
 
-    @Override
-    public List<PositionInfo> getOpenPositions(GameState gameState) {
-        List<Position> openPositions = QwirkleUtil.getOpenPositions(mapFromList(gameState.board()));
+    private List<PositionInfo> getOpenPositions(Map<Position, BoardTile> board) {
+        List<Position> openPositions = QwirkleUtil.getOpenPositions(board);
 
         return openPositions.stream()
                 .map(p -> {
-                    boolean isDead = QwirkleUtil.isDeadPosition(mapFromList(gameState.board()), p);
+                    boolean isDead = QwirkleUtil.isDeadPosition(board, p);
                     return new PositionInfo(isDead, p);
                 })
                 .toList();
@@ -186,7 +205,8 @@ public class QwirkleServiceImpl implements QwirkleService {
         return new GameState(
                 hand,
                 stack,
-                oldState.board()
+                oldState.board(),
+                getOpenPositions(mapFromList(oldState.board()))
         );
     }
 
@@ -234,7 +254,8 @@ public class QwirkleServiceImpl implements QwirkleService {
         return new GameState(
                 hand,
                 oldState.stack(),
-                listFromMap(board)
+                listFromMap(board),
+                getOpenPositions(board)
         );
     }
 

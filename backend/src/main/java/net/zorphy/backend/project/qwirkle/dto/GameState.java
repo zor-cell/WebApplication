@@ -9,9 +9,8 @@ import java.util.Map;
 
 public record GameState(
         List<Tile> hand,
-
         List<StackTile> stack,
-
-        List<BoardTile> board
+        List<BoardTile> board,
+        List<PositionInfo> openPositions
 ) {
 }

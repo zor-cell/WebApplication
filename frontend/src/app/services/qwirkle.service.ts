@@ -28,10 +28,6 @@ export class QwirkleService {
     return this.httpClient.post<MoveGroup[]>(this.baseUri + '/moves', tiles);
   }
 
-  getOpenPositions(): Observable<PositionInfo[]> {
-    return this.httpClient.get<PositionInfo[]>(this.baseUri + '/positions');
-  }
-
   getBestMoves(): Observable<Move[]> {
     return this.httpClient.get<Move[]>(this.baseUri + '/solve');
   }

@@ -6,5 +6,5 @@ export interface Move {
     position: Position,
     direction: Direction,
     tiles: Tile[],
-    score: number
+    score?: number
 }

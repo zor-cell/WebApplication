@@ -30,11 +30,6 @@ public class QwirkleController {
         return getGameState(session);
     }
 
-    @GetMapping("positions")
-    public List<PositionInfo> getOpenPositions(HttpSession session) {
-        return qwirkleService.getOpenPositions(getGameState(session));
-    }
-
     @GetMapping("solve")
     public List<Move> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
         return qwirkleService.getBestMoves(getGameState(session), maxMoves);
