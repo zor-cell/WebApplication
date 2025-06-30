@@ -26,4 +26,8 @@ public class MultiShape {
     public boolean isSingle() {
         return Integer.bitCount(flags) == 1;
     }
+
+    public boolean isCompatible(MultiShape shape) {
+        return (this.flags & shape.flags) == 0;
+    }
 }

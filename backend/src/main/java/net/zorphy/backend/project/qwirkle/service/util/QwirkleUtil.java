@@ -120,35 +120,57 @@ public class QwirkleUtil {
     }
 
     public static boolean isDeadPosition(Map<Position, BoardTile> board, Position position) {
-        return false;
+        Direction[][] directionPairs = Direction.getPairs();
 
-        /*MultiColor color = new MultiColor();
-        MultiShape shape = new MultiShape();
+        List<MultiColor> allColors = new ArrayList<>();
+        List<MultiShape> allShapes = new ArrayList<>();
+        for(Direction[] pair : directionPairs) {
+            MultiColor color = new MultiColor();
+            MultiShape shape = new MultiShape();
 
-        for(Direction dir : Direction.values()) {
-            int steps = 1;
-            Position next = position.stepsInDirection(dir, steps);
-            //if no neighbor exists keep going in other directions
-            if(!board.containsKey(next)) {
-                continue;
+            for(Direction dir : pair) {
+                int steps = 1;
+                Position next = position.stepsInDirection(dir, steps);
+                //if no neighbor exists keep going in other directions
+                if(!board.containsKey(next)) {
+                    continue;
+                }
+
+                //accumulate colors of neighbors
+                while(board.containsKey(next)) {
+                    BoardTile neighbor = board.get(next);
+
+                    color.addFlag(neighbor.tile().color());
+                    shape.addFlag(neighbor.tile().shape());
+
+                    steps++;
+                    next = position.stepsInDirection(dir, steps);
+                }
             }
 
-            //accumulate colors of neighbors
-            while(board.containsKey(next)) {
-                BoardTile neighbor = board.get(next);
+            boolean colorGood = color.isSingle() || color.getValue() == 0;
+            boolean shapeGood = shape.isSingle() || shape.getValue() == 0;
+            if(!(colorGood || shapeGood)) {
+                return true;
+            }
 
-                color.addFlag(neighbor.tile().color());
-                shape.addFlag(neighbor.tile().shape());
+            allColors.add(color);
+            allShapes.add(shape);
+        }
 
-                steps++;
-                next = position.stepsInDirection(dir, steps);
+        //the direction pairs have to be compatible with each other
+        MultiColor accCol = allColors.getFirst();
+        MultiShape accShape = allShapes.getFirst();
+        for(int i = 1;i < allColors.size();i++) {
+            MultiColor color = allColors.get(i);
+            MultiShape shape = allShapes.get(i);
+
+            if(!(accCol.isCompatible(color) && accShape.isCompatible(shape))) {
+                return true;
             }
         }
 
-        boolean colorGood = color.isSingle() || color.getValue() == 0;
-        boolean shapeGood = shape.isSingle() || shape.getValue() == 0;
-
-        return !(colorGood || shapeGood);*/
+        return false;
     }
 
 

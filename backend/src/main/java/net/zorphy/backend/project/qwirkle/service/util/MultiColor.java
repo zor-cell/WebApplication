@@ -26,4 +26,8 @@ public class MultiColor {
     public boolean isSingle() {
         return Integer.bitCount(flags) == 1;
     }
+
+    public boolean isCompatible(MultiColor color) {
+        return (this.flags & color.flags) == 0;
+    }
 }

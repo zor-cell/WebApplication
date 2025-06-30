@@ -27,7 +27,7 @@
 
             <!--valid move tiles-->
             <div *ngFor="let move of validMoves;let i = index"
-                 [ngStyle]="getValidMoveStyle(move)"
+                 [ngStyle]="getValidMoveGroupStyle(move)"
                  (click)="chooseValidMove(i)"
                  class="board-tile valid-move"
                 >

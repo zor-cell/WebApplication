@@ -72,8 +72,26 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public List<Move> getValidMoves(GameState gameState, List<Tile> tiles) {
-        return QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
+    public List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles) {
+        List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
+
+        Map<Position, MoveGroup> moveGroups = new HashMap<>();
+        for(Move move : moves) {
+            if(moveGroups.containsKey(move.position())) {
+                MoveGroup found = moveGroups.get(move.position());
+                found.directions().add(move.direction());
+            } else {
+                MoveGroup moveGroup = new MoveGroup(
+                        move.position(),
+                        new ArrayList<>(List.of(move.direction())),
+                        move.tiles()
+                );
+                moveGroups.put(move.position(), moveGroup);
+            }
+        }
+
+        return moveGroups.values().stream()
+                .toList();
     }
 
     @Override

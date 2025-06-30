@@ -6,6 +6,7 @@ import {GameState} from "../dto/qwirkle/GameState";
 import {Move} from "../dto/qwirkle/Move";
 import {Tile} from "../dto/qwirkle/Tile";
 import {PositionInfo} from "../dto/qwirkle/PositionInfo";
+import {MoveGroup} from "../dto/qwirkle/MoveGroup";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class QwirkleService {
     });
   }
 
-  getValidMoves(tiles: Tile[]): Observable<Move[]> {
-    return this.httpClient.post<Move[]>(this.baseUri + '/moves', tiles);
+  getValidMoves(tiles: Tile[]): Observable<MoveGroup[]> {
+    return this.httpClient.post<MoveGroup[]>(this.baseUri + '/moves', tiles);
   }
 
   getOpenPositions(): Observable<PositionInfo[]> {

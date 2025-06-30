@@ -13,6 +13,7 @@ import {Position} from "../../../dto/qwirkle/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {PositionInfo} from "../../../dto/qwirkle/PositionInfo";
 import {Direction} from "../../../dto/qwirkle/Direction";
+import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
 
 @Component({
     selector: 'qwirkle-game',
@@ -43,7 +44,7 @@ export class QwirkleGameComponent implements OnInit {
         {color: Color.BLUE, shape: Shape.CLOVER}
     ];
     openPositions: PositionInfo[] = [];
-    validMoves: Move[] = [];
+    validMoves: MoveGroup[] = [];
 
     constructor(private qwirkleService: QwirkleService) {
     }
@@ -73,19 +74,30 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
-    getValidMoveStyle(move: Move) {
+    getValidMoveGroupStyle(moveGroup: MoveGroup) {
         const borderMap: Record<Direction, string> = {
             [Direction.UP]: 'border-top-width',
             [Direction.RIGHT]: 'border-right-width',
             [Direction.DOWN]: 'border-bottom-width',
             [Direction.LEFT]: 'border-left-width',
         };
-        const borderWidth = 4;
+        let borderWidth = 4;
+        if(moveGroup.tiles.length === 1) {
+            borderWidth = 1;
+        }
 
-        return {
-            ...this.getTilePositionStyle(move.position),
-            [borderMap[move.direction]]: `${borderWidth}px`,
-        };
+        const style: Record<string, string> = {
+            ...this.getTilePositionStyle(moveGroup.position)
+        }
+
+        for (const direction of moveGroup.directions) {
+            const cssProp = borderMap[direction];
+            if (cssProp) {
+                style[cssProp] = `${borderWidth}px`;
+            }
+        }
+
+        return style;
     }
 
     private calculateCenter() {

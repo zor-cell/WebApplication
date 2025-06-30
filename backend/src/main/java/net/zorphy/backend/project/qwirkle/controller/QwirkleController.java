@@ -61,7 +61,7 @@ public class QwirkleController {
     }
 
     @PostMapping("moves")
-    public List<Move> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
+    public List<MoveGroup> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
         return qwirkleService.getValidMoves(getGameState(session), tiles);
     }
 
