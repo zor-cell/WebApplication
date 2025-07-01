@@ -68,6 +68,14 @@ public class QwirkleController {
         return gameState;
     }
 
+    @PostMapping("hand/clear")
+    public GameState clearHand(HttpSession session) {
+        GameState gameState = qwirkleService.clearHand(getGameState(session));
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
+    }
+
     @PostMapping("move")
     public GameState makeMove(HttpSession session, @RequestBody Move move) {
         GameState gameState = qwirkleService.makeMove(getGameState(session), move);

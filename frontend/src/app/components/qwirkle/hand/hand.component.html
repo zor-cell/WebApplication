@@ -1,3 +1,6 @@
+<div class="hand-actions">
+    <i class="bi bi-x-circle clear-icon danger-color" (click)="removeTile(0)"></i>
+</div>
 <div class="highlighted-container hand-wrapper">
     <div class="hand-container">
         <ng-container *ngFor="let _ of [].constructor(6);let i = index">
@@ -15,8 +18,5 @@
                 </div>
             }
         </ng-container>
-    </div>
-    <div *ngIf="false" class="hand-actions">
-        <i class="bi bi-x-circle clear-icon danger-color" (click)="clearHand()"></i>
     </div>
 </div>

@@ -68,6 +68,10 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     //event from children
+    clearedHand() {
+        this.clearHand();
+    }
+
     selectedInHand(tiles: Tile[]) {
         this.getValidMoves(tiles);
     }
@@ -144,6 +148,14 @@ export class QwirkleGameComponent implements OnInit {
     //requests
     private drawTile(tile: Tile) {
         this.qwirkleService.drawTile(tile).subscribe({
+            next: res => {
+                this.gameState = res;
+            }
+        })
+    }
+
+    private clearHand() {
+        this.qwirkleService.clearHand().subscribe({
             next: res => {
                 this.gameState = res;
             }

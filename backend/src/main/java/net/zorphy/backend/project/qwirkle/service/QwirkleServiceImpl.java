@@ -189,6 +189,37 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
+    public GameState clearHand(GameState oldState) {
+        List<Tile> hand = new ArrayList<>(oldState.hand());
+        List<StackTile> stack = new ArrayList<>(oldState.stack());
+
+        //check if tile is in stack
+        for(var tile : hand) {
+            Optional<StackTile> found = stack.stream()
+                    .filter(t -> t.tile().equals(tile))
+                    .findFirst();
+            if (found.isEmpty()) {
+                continue;
+            }
+
+            //update count of tile in stack
+            StackTile stackTile = found.get();
+            StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() + 1);
+
+            int index = stack.indexOf(stackTile);
+            stack.set(index, updatedTile);
+
+        }
+
+        return new GameState(
+                new ArrayList<>(),
+                stack,
+                oldState.board(),
+                getOpenPositions(mapFromList(oldState.board()))
+        );
+    }
+
+    @Override
     public GameState makeMove(GameState oldState, Move move) {
         List<Tile> hand = new ArrayList<>(oldState.hand());
         Map<Position, BoardTile> board = mapFromList(oldState.board());

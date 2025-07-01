@@ -46,6 +46,10 @@ export class QwirkleService {
         return this.httpClient.post<GameState>(this.baseUri + '/stack/draw', tile);
     }
 
+    clearHand(): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/hand/clear', {});
+    }
+
     makeMove(move: Move): Observable<GameState> {
         return this.httpClient.post<GameState>(this.baseUri + '/move', move);
     }

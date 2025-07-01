@@ -13,6 +13,8 @@ public interface QwirkleService {
 
     GameState drawTile(GameState gameState, Tile tile);
 
+    GameState clearHand(GameState gameState);
+
     GameState makeMove(GameState gameState, Move move);
 
     void uploadImage(byte[] file);

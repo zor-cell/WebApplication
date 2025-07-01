@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {NgForOf, NgStyle} from "@angular/common";
+import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Tile} from "../../../dto/qwirkle/Tile";
 
@@ -8,7 +8,8 @@ import {Tile} from "../../../dto/qwirkle/Tile";
     imports: [
         NgForOf,
         QwirkleTileComponent,
-        NgStyle
+        NgStyle,
+        NgIf
     ],
     templateUrl: './hand.component.html',
     standalone: true,
@@ -17,6 +18,7 @@ import {Tile} from "../../../dto/qwirkle/Tile";
 export class QwirkleHandComponent implements OnChanges {
     @Input({required: true}) hand!: Tile[];
     @Output() selectTilesEvent = new EventEmitter<Tile[]>();
+    @Output() removeTileEvent = new EventEmitter<Tile>();
     tileSize: number = 40;
 
     selected: Tile[] = [];
@@ -28,8 +30,12 @@ export class QwirkleHandComponent implements OnChanges {
         }
     }
 
-    clearHand() {
+    removeTile(tileIndex: number) {
+        this.selected = [];
+        this.updateSelected();
 
+        const tile = this.hand[tileIndex];
+        this.removeTileEvent.emit(tile);
     }
 
     tileSelected(tileIndex: number) {
