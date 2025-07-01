@@ -1,0 +1,20 @@
+<div class="highlighted-container pan-container"
+     (mousedown)="startPan($event)"
+     (mousemove)="pan($event)"
+     (mouseup)="endPan()"
+     (mouseleave)="endPan()">
+    <div class="pan-actions">
+        <button class="small-btn">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button class="small-btn" (click)="zoomIn()">
+            <i class="bi bi-zoom-in"></i>
+        </button>
+        <button class="small-btn" (click)="zoomOut()">
+            <i class="bi bi-zoom-out"></i>
+        </button>
+    </div>
+    <div [ngStyle]="panStyle">
+        <ng-content></ng-content>
+    </div>
+</div>

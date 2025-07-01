@@ -14,6 +14,7 @@ import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
 import {ImageCacheService} from "../../../services/image-cache.service";
+import {PanContainerComponent} from "../../global/pan-container/pan-container.component";
 
 @Component({
     selector: 'qwirkle-game',
@@ -24,7 +25,8 @@ import {ImageCacheService} from "../../../services/image-cache.service";
         NgIf,
         QwirkleTileComponent,
         NgForOf,
-        NgStyle
+        NgStyle,
+        PanContainerComponent
     ],
     templateUrl: './game.component.html',
     standalone: true,
@@ -33,9 +35,9 @@ import {ImageCacheService} from "../../../services/image-cache.service";
 export class QwirkleGameComponent implements OnInit {
     @ViewChild('board') boardRef!: ElementRef;
 
-    private readonly center: Position = {
+    readonly center: Position = {
+        x: 0,
         y: 0,
-        x: 0
     };
     tileSize = 30;
 
@@ -59,6 +61,15 @@ export class QwirkleGameComponent implements OnInit {
             this.selectedMove = null;
         }
     }
+
+
+    //TODO: implement pan container
+
+
+
+
+
+
 
     zoomIn() {
         if(this.tileSize <= 25) return;
