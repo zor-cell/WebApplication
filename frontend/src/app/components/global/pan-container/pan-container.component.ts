@@ -30,24 +30,27 @@ export class PanContainerComponent {
     x: 0,
     y: 0
   };
+
+  private minZoom: number = 0.3;
+  private maxZoom: number = 2;
   private zoomScale: number = 1;
+  private initialPinchDistance: number | null = null;
 
-  constructor(public elementRef: ElementRef) {
-  }
+  constructor(public elementRef: ElementRef) {}
 
-  get panStyle() {
+  get transformStyle() {
     return {
       transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px) scale(${this.zoomScale})`,
       transformOrigin: `0 0`
     };
   }
 
-  zoomIn() {
-
-  }
-
-  zoomOut() {
-
+  resetOffset() {
+    this.panOffset = {
+      x: 0,
+      y: 0
+    };
+    this.zoomScale = 1;
   }
 
   startPan(event: MouseEvent | TouchEvent) {
@@ -57,8 +60,16 @@ export class PanContainerComponent {
     this.lastMousePosition = this.getEventPos(event);
   }
 
+  touchStart(event: TouchEvent) {
+    if(event.touches.length === 1) {
+      this.startPan(event);
+    } else if(event.touches.length === 2) {
+      this.initialPinchDistance = this.getPinchDistance(event);
+    }
+  }
+
   pan(event: MouseEvent | TouchEvent) {
-    if (!this.isPanning) return;
+    if (!this.isPanning || !this.canPan) return;
     event.preventDefault();
 
     const eventPos: Position = this.getEventPos(event);
@@ -78,6 +89,30 @@ export class PanContainerComponent {
     this.isPanning = false;
   }
 
+  scroll(event: WheelEvent) {
+    if(!this.canZoom) return;
+    event.preventDefault();
+
+    const delta = -event.deltaY;
+    const zoomFactor = delta > 0 ? 1.1 : 0.9;
+    this.zoomScale = Math.min(this.maxZoom, Math.max(this.minZoom, this.zoomScale * zoomFactor));
+
+  }
+
+  pinch(event: TouchEvent) {
+    if(!this.canZoom || event.touches.length !== 2) return;
+    event.preventDefault();
+
+    const currentDistance = this.getPinchDistance(event);
+    if (this.initialPinchDistance) {
+      const scaleChange = currentDistance / this.initialPinchDistance;
+      const newZoom = this.zoomScale * scaleChange;
+
+      this.zoomScale = Math.min(this.maxZoom, Math.max(this.minZoom, newZoom));
+      this.initialPinchDistance = currentDistance; // Update for next frame
+    }
+  }
+
   private getEventPos(event: MouseEvent | TouchEvent): Position {
     if (event instanceof MouseEvent) {
       return {
@@ -91,5 +126,12 @@ export class PanContainerComponent {
         y: touch.clientY
       }
     }
+  }
+
+  private getPinchDistance(event: TouchEvent): number {
+    const [touch1, touch2] = [event.touches[0], event.touches[1]];
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }
