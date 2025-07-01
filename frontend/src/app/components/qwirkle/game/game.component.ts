@@ -35,15 +35,22 @@ import {PanContainerComponent} from "../../global/pan-container/pan-container.co
 export class QwirkleGameComponent implements OnInit {
     @ViewChild('board') board!: PanContainerComponent;
 
-    readonly center: Position = {
-        x: 0,
-        y: 0,
-    };
     tileSize = 40;
 
     gameState: GameState | null = null;
     validMoves: MoveGroup[] = [];
     selectedMove: MoveGroup | null = null;
+
+    private readonly localCenter: Position = {
+        x: 0,
+        y: 0,
+    };
+    get center() {
+        return {
+            x: this.localCenter.x - this.tileSize / 2,
+            y: this.localCenter.y - this.tileSize / 2
+        }
+    }
 
     constructor(private qwirkleService: QwirkleService) {
     }
@@ -62,6 +69,7 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
+    //event from children
     selectedInHand(tiles: Tile[]) {
         this.getValidMoves(tiles);
     }
@@ -72,6 +80,7 @@ export class QwirkleGameComponent implements OnInit {
         this.drawTile(tile);
     }
 
+    //events from board
     chooseValidMove(moveIndex: number) {
         this.selectedMove = this.validMoves[moveIndex];
     }
@@ -92,8 +101,8 @@ export class QwirkleGameComponent implements OnInit {
 
     getTilePositionStyle(position: Position) {
         return {
-            left: `${this.center.x + position.x * this.tileSize - this.tileSize / 2}px`,
-            bottom: `${this.center.y + position.y * this.tileSize - this.tileSize / 2}px`,
+            left: `${position.x * this.tileSize - this.tileSize / 2}px`,
+            bottom: `${position.y * this.tileSize - this.tileSize / 2}px`,
             width: `${this.tileSize}px`,
             height: `${this.tileSize}px`
         }
@@ -128,11 +137,14 @@ export class QwirkleGameComponent implements OnInit {
     private calculateCenter() {
         if (this.board) {
             const board = this.board.elementRef.nativeElement as HTMLElement;
-            this.center.x = board.clientWidth / 2;
-            this.center.y = board.clientHeight / 2;
+            this.localCenter.x = board.clientWidth / 2;
+            this.localCenter.y = board.clientHeight / 2;
         }
     }
 
+
+
+    //requests
     private drawTile(tile: Tile) {
         this.qwirkleService.drawTile(tile).subscribe({
             next: res => {
@@ -171,7 +183,7 @@ export class QwirkleGameComponent implements OnInit {
         })
     }
 
-    createState() {
+    private createState() {
         this.qwirkleService.createState([]).subscribe({
             next: res => {
                 this.gameState = res;

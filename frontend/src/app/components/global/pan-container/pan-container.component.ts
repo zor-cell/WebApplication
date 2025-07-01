@@ -37,7 +37,8 @@ export class PanContainerComponent {
 
   get panStyle() {
     return {
-      transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px) scale(${this.zoomScale})`
+      transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px) scale(${this.zoomScale})`,
+      transformOrigin: `0 0`
     };
   }
 

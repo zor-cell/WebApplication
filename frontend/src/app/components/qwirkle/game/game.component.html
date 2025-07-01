@@ -8,7 +8,8 @@
         </div>
 
 
-        <app-pan-container #board class="board" [centerPosition]="center">
+        <app-pan-container #board class="board"
+                           [centerPosition]="center">
             <!--board tiles-->
             <qwirkle-tile *ngFor="let boardTile of gameState.board"
                           [tile]="boardTile.tile"
