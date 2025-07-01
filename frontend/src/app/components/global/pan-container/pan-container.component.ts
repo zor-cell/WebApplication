@@ -36,11 +36,15 @@ export class PanContainerComponent {
   private zoomScale: number = 1;
   private initialPinchDistance: number | null = null;
 
+  private rotation: number = 0;
+
   constructor(public elementRef: ElementRef) {}
 
   get transformStyle() {
     return {
-      transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px) scale(${this.zoomScale})`,
+      transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px)
+        scale(${this.zoomScale})
+        rotate(${this.rotation}deg)`,
       transformOrigin: `0 0`
     };
   }
@@ -51,10 +55,14 @@ export class PanContainerComponent {
       y: 0
     };
     this.zoomScale = 1;
+    this.rotation = 0;
+  }
+
+  rotate() {
+    this.rotation = (this.rotation + 90) % 360;
   }
 
   startPan(event: MouseEvent | TouchEvent) {
-    event.preventDefault();
     this.isPanning = true;
 
     this.lastMousePosition = this.getEventPos(event);
@@ -65,6 +73,7 @@ export class PanContainerComponent {
       this.startPan(event);
     } else if(event.touches.length === 2) {
       this.initialPinchDistance = this.getPinchDistance(event);
+      event.preventDefault();
     }
   }
 
