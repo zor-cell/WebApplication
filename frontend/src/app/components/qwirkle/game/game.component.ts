@@ -9,7 +9,7 @@ import {Shape} from "../../../dto/qwirkle/Shape";
 import {Color} from "../../../dto/qwirkle/Color";
 import {Tile} from "../../../dto/qwirkle/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
-import {Position} from "../../../dto/qwirkle/Position";
+import {Position} from "../../../dto/global/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
@@ -33,19 +33,19 @@ import {PanContainerComponent} from "../../global/pan-container/pan-container.co
     styleUrl: './game.component.css'
 })
 export class QwirkleGameComponent implements OnInit {
-    @ViewChild('board') boardRef!: ElementRef;
+    @ViewChild('board') board!: PanContainerComponent;
 
     readonly center: Position = {
         x: 0,
         y: 0,
     };
-    tileSize = 30;
+    tileSize = 40;
 
     gameState: GameState | null = null;
     validMoves: MoveGroup[] = [];
     selectedMove: MoveGroup | null = null;
 
-    constructor(private qwirkleService: QwirkleService, private imageCacheService: ImageCacheService) {
+    constructor(private qwirkleService: QwirkleService) {
     }
 
     ngOnInit() {
@@ -60,29 +60,6 @@ export class QwirkleGameComponent implements OnInit {
         if(!target.closest('.valid-move') && !target.closest('.highlighted-move')) {
             this.selectedMove = null;
         }
-    }
-
-
-    //TODO: implement pan container
-
-
-
-
-
-
-
-    zoomIn() {
-        if(this.tileSize <= 25) return;
-
-        /*this.tileSize--;
-        this.imageCacheService.clear();*/
-    }
-
-    zoomOut() {
-        if(this.tileSize > 70) return;
-
-        /*this.tileSize++;
-        this.imageCacheService.clear();*/
     }
 
     selectedInHand(tiles: Tile[]) {
@@ -149,8 +126,8 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     private calculateCenter() {
-        if (this.boardRef) {
-            const board = this.boardRef.nativeElement as HTMLElement;
+        if (this.board) {
+            const board = this.board.elementRef.nativeElement as HTMLElement;
             this.center.x = board.clientWidth / 2;
             this.center.y = board.clientHeight / 2;
         }
