@@ -23,6 +23,7 @@ export class QwirkleTileComponent implements OnInit {
     @Input() tileSize: number = 40;
     @Input() tileText: number | null = null;
     @Input() isInteractive: boolean = true;
+    @Input() isDisabled: boolean = false;
 
     svgContent!: Observable<SafeHtml>;
 

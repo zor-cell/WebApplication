@@ -7,11 +7,7 @@
     opacity: 0.8;
 }
 
-.tile-image {
-
-}
-
-.tile-count {
+.tile-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -21,4 +17,8 @@
 .interactive:hover {
     cursor: pointer;
     opacity: 0.6;
+}
+
+.disabled {
+    opacity: 0.3;
 }

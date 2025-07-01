@@ -1,5 +1,6 @@
 <div class="highlighted-container stack-container">
     <qwirkle-tile *ngFor="let stackTile of stack;let i = index"
+                  [isDisabled]="stackTile.count === 0"
                   [tile]="stackTile.tile"
                   [tileText]="stackTile.count"
                   (click)="selectedTile(i)"
