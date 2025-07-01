@@ -16,12 +16,12 @@
     margin: auto;
 
     background-color: white;
-    border: solid 2px rgba(0,0,0,0.25);
+    border: solid 2px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
 
 .slider-checkbox:hover {
-    border-color: rgba(0,0,0,0.5);
+    border-color: rgba(0, 0, 0, 0.5);
 }
 
 .checkbox {

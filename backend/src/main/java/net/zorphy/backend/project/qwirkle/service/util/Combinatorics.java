@@ -26,7 +26,6 @@ public class Combinatorics {
     }
 
 
-
     public static <T> List<List<T>> getPermutations(List<T> input) {
         List<List<T>> result = new ArrayList<>();
         calcPermutations(input, 0, result);

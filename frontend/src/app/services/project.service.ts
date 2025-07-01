@@ -5,27 +5,27 @@ import {Observable, tap} from "rxjs";
 import {ProjectDetails, ProjectMetadata} from "../dto/projects/responses";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProjectService {
-  private readonly baseUri: string;
+    private readonly baseUri: string;
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
-    this.baseUri = this.globals.backendUri + '/projects';
-  }
+    constructor(private httpClient: HttpClient, private globals: Globals) {
+        this.baseUri = this.globals.backendUri + '/projects';
+    }
 
-  getProjects(): Observable<ProjectMetadata[]> {
-    return this.httpClient.get<ProjectMetadata[]>(this.baseUri);
-  }
+    getProjects(): Observable<ProjectMetadata[]> {
+        return this.httpClient.get<ProjectMetadata[]>(this.baseUri);
+    }
 
-  getProject(name: string): Observable<ProjectDetails> {
-    return this.httpClient.get<ProjectDetails>(`${this.baseUri}/${name}`);
-  }
+    getProject(name: string): Observable<ProjectDetails> {
+        return this.httpClient.get<ProjectDetails>(`${this.baseUri}/${name}`);
+    }
 
-  updateProject(project: ProjectDetails) {
-    return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project).pipe(
-        tap(() => {
-          this.globals.handleSuccess('Updated project data');
-        }));
-  }
+    updateProject(project: ProjectDetails) {
+        return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project).pipe(
+            tap(() => {
+                this.globals.handleSuccess('Updated project data');
+            }));
+    }
 }

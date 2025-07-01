@@ -28,7 +28,7 @@ public class Solver extends Thread {
     public Solver(SolveRequest request) {
         this.config = request;
 
-        if(config.version() == Version.V2_1) {
+        if (config.version() == Version.V2_1) {
             useTable = true;
             table = new TranspositionTable(Math.max(request.tableSize(), 0));
         } else {
@@ -65,7 +65,7 @@ public class Solver extends Thread {
 
         try {
             solverThread.join();
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println("Main Thread interrupted");
         }
         //System.out.println("Nodes looked up in Transposition table: " + String.format("%,d", solverThread.tableStored));
@@ -90,7 +90,7 @@ public class Solver extends Thread {
 
             //iterative deepening
             int maxDepth = config.maxDepth() >= 1 ? config.maxDepth() : 42 - board.getMoves();
-            for(depth = 1;depth <= maxDepth;depth++) {
+            for (depth = 1; depth <= maxDepth; depth++) {
                 //the best move score is > 0 when favorable for config.player (no matter which player)
                 prevBestMove = negamax(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
@@ -98,7 +98,7 @@ public class Solver extends Thread {
             }
 
             System.out.println("Solver Thread finished normally. Reached depth " + maxDepth + "!");
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println("Solver Thread interrupted. Reached depth " + (depth - 1) + "!");
         }
     }
@@ -107,12 +107,12 @@ public class Solver extends Thread {
         int alphaOrigin = alpha;
 
         //break out of computation when max thinking time is surpassed
-        if(config.maxTime() >= 0 && System.currentTimeMillis() - startTime > config.maxTime()) {
+        if (config.maxTime() >= 0 && System.currentTimeMillis() - startTime > config.maxTime()) {
             throw new InterruptedException();
         }
 
         //transposition table lookup
-        if(useTable) {
+        if (useTable) {
             TableEntry storedEntry = table.get(board.getHash());
             if (storedEntry != null && storedEntry.depth >= depth) {
                 tableStored++;
@@ -134,22 +134,22 @@ public class Solver extends Thread {
         nodesVisited++;
 
         //check if player can easily win on next move and instantly make move
-        for(int move = 0;move < board.getColumns();move++) {
-            if(board.isWinningMove(move)) {
+        for (int move = 0; move < board.getColumns(); move++) {
+            if (board.isWinningMove(move)) {
                 return new BestMove(move, Scores.WIN - board.getMoves(), 0);
             }
         }
 
         //check if search or game is over
         GameState gameState = board.getGameState();
-        if(depth == 0 || gameState != GameState.RUNNING) {
+        if (depth == 0 || gameState != GameState.RUNNING) {
             int score = board.heuristics();
             return new BestMove(null, score);
         }
 
         //go through children positions
         BestMove bestMove = new BestMove(null, Integer.MIN_VALUE, -1);
-        for(Integer move : getPossibleMoves(board)) {
+        for (Integer move : getPossibleMoves(board)) {
             Board moveBoard = Board.getInstance(board);
             assert moveBoard != null;
             moveBoard.makeMove(move);
@@ -159,7 +159,7 @@ public class Solver extends Thread {
             int winDistance = child.winDistance;
 
             //update best move
-            if(score > bestMove.score) {
+            if (score > bestMove.score) {
                 //add randomness on equally good moves
                 //boolean update = score > bestMove.score || Math.random() < 0.05;
 
@@ -172,13 +172,13 @@ public class Solver extends Thread {
 
             //alpha-beta pruning
             alpha = Math.max(alpha, score);
-            if(alpha >= beta) {
+            if (alpha >= beta) {
                 break;
             }
         }
 
         //save result to transposition table
-        if(useTable) {
+        if (useTable) {
             TableFlag flag = TableFlag.EXACT;
             if (bestMove.score <= alphaOrigin) {
                 flag = TableFlag.UPPER_BOUND;
@@ -199,10 +199,10 @@ public class Solver extends Thread {
         Integer[] orderedCols = {3, 2, 4, 1, 5, 0, 6};
 
         //search best move from previous iteration first
-        if(prevBestMove != null) {
+        if (prevBestMove != null) {
             Arrays.sort(orderedCols, (a, b) -> {
-                if(a.equals(prevBestMove.move)) return -1;
-                if(b.equals(prevBestMove.move)) return 1;
+                if (a.equals(prevBestMove.move)) return -1;
+                if (b.equals(prevBestMove.move)) return 1;
 
                 return 0;
             });
@@ -212,8 +212,8 @@ public class Solver extends Thread {
         }
 
         //add valid moves
-        for(int j : orderedCols) {
-            if(board.canMakeMove(j)) {
+        for (int j : orderedCols) {
+            if (board.canMakeMove(j)) {
                 moves.add(j);
             }
         }
@@ -223,9 +223,9 @@ public class Solver extends Thread {
 
     //separate function due to asymmetric bounds
     private static int invert(int a) {
-        if(a == Integer.MIN_VALUE) {
+        if (a == Integer.MIN_VALUE) {
             return Integer.MAX_VALUE;
-        } else if(a == Integer.MAX_VALUE) {
+        } else if (a == Integer.MAX_VALUE) {
             return Integer.MIN_VALUE;
         }
 

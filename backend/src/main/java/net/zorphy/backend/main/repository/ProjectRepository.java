@@ -11,5 +11,6 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
     @Override
     @NonNull
     List<Project> findAll();
+
     Project findByName(String name);
 }

@@ -9,67 +9,68 @@ import {SaveGameState} from "../../../../dto/catan/SaveGameState";
 import {SaveTeamState} from "../../../../dto/catan/SaveTeamState";
 
 @Component({
-  selector: 'catan-save-popup',
-  imports: [
-    NgForOf,
-    ReactiveFormsModule
-  ],
-  templateUrl: './save-popup.component.html',
-  standalone: true,
-  styleUrl: './save-popup.component.css'
+    selector: 'catan-save-popup',
+    imports: [
+        NgForOf,
+        ReactiveFormsModule
+    ],
+    templateUrl: './save-popup.component.html',
+    standalone: true,
+    styleUrl: './save-popup.component.css'
 })
 export class CatanSavePopupComponent implements OnInit {
-  @ViewChild('savePopup') saveTemplate!: TemplateRef<any>;
-  saveForm!: FormGroup;
+    @ViewChild('savePopup') saveTemplate!: TemplateRef<any>;
+    saveForm!: FormGroup;
 
-  @Input({required: true}) teams!: Team[];
+    @Input({required: true}) teams!: Team[];
 
-  constructor(private popupService: PopupService,
-              private catanService: CatanService,
-              private fb: FormBuilder) {}
-
-  ngOnInit() {
-    const controls: any = {};
-
-    for(let team of this.teams) {
-      controls[team.name] = [null, Validators.required];
+    constructor(private popupService: PopupService,
+                private catanService: CatanService,
+                private fb: FormBuilder) {
     }
 
-    this.saveForm = this.fb.group(controls);
-  }
+    ngOnInit() {
+        const controls: any = {};
 
-  openPopup() {
-    this.popupService.createPopup(
-        'Save Game Data',
-        this.saveTemplate,
-        this.callback.bind(this),
-        () => this.saveForm.valid,
-        'Save'
-    );
-  }
+        for (let team of this.teams) {
+            controls[team.name] = [null, Validators.required];
+        }
 
-  private callback(result: PopupResultType) {
-    if(result === PopupResultType.SUBMIT) {
-      this.saveGame();
-    } else if(result === PopupResultType.CANCEL) {
-      this.saveForm.reset();
-    }
-  }
-
-  private saveGame() {
-    const teamState: SaveTeamState[] = this.teams.map(team => ({
-      team: team,
-      score: this.saveForm.value[team.name]
-    }));
-
-    const gameState: SaveGameState = {
-      teams: teamState
+        this.saveForm = this.fb.group(controls);
     }
 
-    this.catanService.save(gameState).subscribe({
-      next: res => {
-        this.saveForm.reset();
-      }
-    });
-  }
+    openPopup() {
+        this.popupService.createPopup(
+            'Save Game Data',
+            this.saveTemplate,
+            this.callback.bind(this),
+            () => this.saveForm.valid,
+            'Save'
+        );
+    }
+
+    private callback(result: PopupResultType) {
+        if (result === PopupResultType.SUBMIT) {
+            this.saveGame();
+        } else if (result === PopupResultType.CANCEL) {
+            this.saveForm.reset();
+        }
+    }
+
+    private saveGame() {
+        const teamState: SaveTeamState[] = this.teams.map(team => ({
+            team: team,
+            score: this.saveForm.value[team.name]
+        }));
+
+        const gameState: SaveGameState = {
+            teams: teamState
+        }
+
+        this.catanService.save(gameState).subscribe({
+            next: res => {
+                this.saveForm.reset();
+            }
+        });
+    }
 }

@@ -7,6 +7,7 @@ import net.zorphy.backend.main.dto.GameDetails;
 
 public interface CatanService {
     GameState initGameState(GameConfig gameConfig);
+
     GameState updateGameState(GameState gameState, GameConfig gameConfig);
 
     GameState rollDice(GameState gameState, boolean isAlchemist);

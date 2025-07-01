@@ -15,7 +15,7 @@ public class TranspositionTable {
         int index = (int) (key % entries.length);
 
         TableEntry entry = entries[index];
-        if(entry != null && entry.key == key) {
+        if (entry != null && entry.key == key) {
             return entry;
         }
 

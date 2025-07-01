@@ -17,12 +17,12 @@ export class DelayLoader {
     }
 
     set isLoading(value: boolean) {
-        if(value) {
+        if (value) {
             this.loadingTimeout = setTimeout(() => {
                 this._isLoading = true;
             }, this.delay);
         } else {
-            if(this.loadingTimeout) clearTimeout(this.loadingTimeout);
+            if (this.loadingTimeout) clearTimeout(this.loadingTimeout);
             this._isLoading = false;
         }
     }

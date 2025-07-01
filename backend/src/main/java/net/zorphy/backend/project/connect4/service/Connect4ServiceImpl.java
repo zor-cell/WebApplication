@@ -42,7 +42,7 @@ public class Connect4ServiceImpl implements Connect4Service {
         Position move = board.getMoveFromCol(request.move());
 
         //check for invalid move
-        if(move == null) {
+        if (move == null) {
             throw new InvalidOperationException("Invalid Move. Column is full");
         }
 
@@ -62,7 +62,7 @@ public class Connect4ServiceImpl implements Connect4Service {
 
         //undo move
         Position move = board.getLastInCol(request.move());
-        if(move == null) {
+        if (move == null) {
             throw new InvalidOperationException("Invalid Move. Column is empty");
         }
 

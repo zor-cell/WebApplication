@@ -32,52 +32,52 @@ public class CatanServiceImpl implements CatanService {
 
     private List<DicePair> initClassicCards() {
         List<DicePair> classicCards = new ArrayList<>(Arrays.asList(
-            new DicePair(1, 1, "Each player receives 1 resource of their choice"),
+                new DicePair(1, 1, "Each player receives 1 resource of their choice"),
 
-            new DicePair(1, 2, "The player with the most knight cards or the “Largest Army” may steal a card from another player"),
-            new DicePair(2, 1, "No Event"),
+                new DicePair(1, 2, "The player with the most knight cards or the “Largest Army” may steal a card from another player"),
+                new DicePair(2, 1, "No Event"),
 
-            new DicePair(1, 3, "The robber is moved back to the desert"),
-            new DicePair(2, 2, "The robber is moved back to the desert"),
-            new DicePair(3, 1, "No Event"),
+                new DicePair(1, 3, "The robber is moved back to the desert"),
+                new DicePair(2, 2, "The robber is moved back to the desert"),
+                new DicePair(3, 1, "No Event"),
 
-            new DicePair(1, 4, "The player with the “Longest Road” may steal a resource from another player"),
-            new DicePair(2, 3, "The player with the most knight cards receives 1 resource of their choice"),
-            new DicePair(3, 2, "No Event"),
-            new DicePair(4, 1, "No Event"),
+                new DicePair(1, 4, "The player with the “Longest Road” may steal a resource from another player"),
+                new DicePair(2, 3, "The player with the most knight cards receives 1 resource of their choice"),
+                new DicePair(3, 2, "No Event"),
+                new DicePair(4, 1, "No Event"),
 
-            new DicePair(1, 5, "Each player gives one resource to their left-hand neighbor"),
-            new DicePair(2, 4, "An earthquake destroys one road of each player, which must be repaired at normal road-building cost before new roads can be built"),
-            new DicePair(3, 3, "Players receive only 1 resource per city"),
-            new DicePair(4, 2, "No Event"),
-            new DicePair(5, 1, "No Event"),
+                new DicePair(1, 5, "Each player gives one resource to their left-hand neighbor"),
+                new DicePair(2, 4, "An earthquake destroys one road of each player, which must be repaired at normal road-building cost before new roads can be built"),
+                new DicePair(3, 3, "Players receive only 1 resource per city"),
+                new DicePair(4, 2, "No Event"),
+                new DicePair(5, 1, "No Event"),
 
-            new DicePair(1, 6, "Robber"),
-            new DicePair(2, 5, "Robber"),
-            new DicePair(3, 4, "Robber"),
-            new DicePair(4, 3, "Robber"),
-            new DicePair(5, 2, "Robber"),
-            new DicePair(6, 1, "Robber"),
+                new DicePair(1, 6, "Robber"),
+                new DicePair(2, 5, "Robber"),
+                new DicePair(3, 4, "Robber"),
+                new DicePair(4, 3, "Robber"),
+                new DicePair(5, 2, "Robber"),
+                new DicePair(6, 1, "Robber"),
 
-            new DicePair(2, 6, "Players receive only 1 resource per city"),
-            new DicePair(3, 5, "No Event"),
-            new DicePair(4, 4, "No Event"),
-            new DicePair(5, 3, "No Event"),
-            new DicePair(6, 2, "No Event"),
+                new DicePair(2, 6, "Players receive only 1 resource per city"),
+                new DicePair(3, 5, "No Event"),
+                new DicePair(4, 4, "No Event"),
+                new DicePair(5, 3, "No Event"),
+                new DicePair(6, 2, "No Event"),
 
-            new DicePair(3, 6, "Players with the most harbors receive 1 resource of their choice"),
-            new DicePair(4, 5, "No Event"),
-            new DicePair(5, 4, "No Event"),
-            new DicePair(6, 3, "No Event"),
+                new DicePair(3, 6, "Players with the most harbors receive 1 resource of their choice"),
+                new DicePair(4, 5, "No Event"),
+                new DicePair(5, 4, "No Event"),
+                new DicePair(6, 3, "No Event"),
 
-            new DicePair(4, 6, "The player(s) with the most victory points must give one resource to another player"),
-            new DicePair(5, 5, "No Event"),
-            new DicePair(6, 4, "No Event"),
+                new DicePair(4, 6, "The player(s) with the most victory points must give one resource to another player"),
+                new DicePair(5, 5, "No Event"),
+                new DicePair(6, 4, "No Event"),
 
-            new DicePair(5, 6, "The player(s) with the most victory points must give one resource to another player"),
-            new DicePair(6, 5, "No Event"),
+                new DicePair(5, 6, "The player(s) with the most victory points must give one resource to another player"),
+                new DicePair(6, 5, "No Event"),
 
-            new DicePair(6, 6, "Players with the most harbors receive 1 resource of their choice")
+                new DicePair(6, 6, "Players with the most harbors receive 1 resource of their choice")
         ));
 
         Collections.shuffle(classicCards);
@@ -94,13 +94,13 @@ public class CatanServiceImpl implements CatanService {
     public GameState initGameState(GameConfig gameConfig) {
         //shuffle balanced classic dice deck
         List<DicePair> classicCards = null;
-        if(gameConfig.classicDice().isBalanced()) {
+        if (gameConfig.classicDice().isBalanced()) {
             classicCards = initClassicCards();
         }
 
         //shuffle balance event cards
         List<Character> eventCards = null;
-        if(gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+        if (gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
             if (gameConfig.eventDice().isBalanced()) {
                 eventCards = initEventCards();
             }
@@ -124,8 +124,8 @@ public class CatanServiceImpl implements CatanService {
 
         //update classic cards
         List<DicePair> classicCards = null;
-        if(gameConfig.classicDice().isBalanced()) {
-            if(oldState.gameConfig().classicDice().isBalanced()) {
+        if (gameConfig.classicDice().isBalanced()) {
+            if (oldState.gameConfig().classicDice().isBalanced()) {
                 //reuse cards from old config if still balanced
                 classicCards = oldState.classicCards();
             } else {
@@ -136,7 +136,7 @@ public class CatanServiceImpl implements CatanService {
 
         //update event cards
         List<Character> eventCards = null;
-        if(gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+        if (gameConfig.gameMode() == GameMode.CITIES_AND_KNIGHTS) {
             if (gameConfig.eventDice().isBalanced()) {
                 if (oldState.gameConfig().eventDice().isBalanced()) {
                     eventCards = oldState.eventCards();
@@ -168,7 +168,7 @@ public class CatanServiceImpl implements CatanService {
 
         //classic dice roll
         DicePair dicePair;
-        if(isAlchemist) {
+        if (isAlchemist) {
             //alchemist roll
             dicePair = new DicePair(0, 0, null);
         } else {
@@ -187,7 +187,7 @@ public class CatanServiceImpl implements CatanService {
 
         //event dice roll
         Character eventDice = null;
-        if(oldState.gameConfig().gameMode() == GameMode.CITIES_AND_KNIGHTS) {
+        if (oldState.gameConfig().gameMode() == GameMode.CITIES_AND_KNIGHTS) {
             if (eventCards == null || !oldState.gameConfig().eventDice().isBalanced()) {
                 int eventIndex = rand.nextInt(possibleEvents.size());
                 eventDice = possibleEvents.get(eventIndex);
@@ -199,12 +199,12 @@ public class CatanServiceImpl implements CatanService {
             }
 
             //reset ship to start if charge happened last round
-            if(currentShipTurn >= oldState.gameConfig().maxShipTurns() - 1) {
+            if (currentShipTurn >= oldState.gameConfig().maxShipTurns() - 1) {
                 currentShipTurn = 0;
             }
 
             //update ship
-            if(eventDice.equals('e')) {
+            if (eventDice.equals('e')) {
                 currentShipTurn = (currentShipTurn + 1) % oldState.gameConfig().maxShipTurns();
             }
         }
@@ -212,8 +212,8 @@ public class CatanServiceImpl implements CatanService {
         DiceRoll diceRoll = new DiceRoll(dicePair, eventDice, currentTeam.name());
 
         //don't allow 2 same dice rolls after another
-        if(oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
-            if(!diceRolls.isEmpty()) {
+        if (oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
+            if (!diceRolls.isEmpty()) {
                 DiceRoll lastRoll = diceRolls.getLast();
                 if (lastRoll.teamName().equals(currentTeam.name()) && lastRoll.dicePair().sum() == diceRoll.dicePair().sum()) {
                     //if all cards are the same, no choice but to have two in row
@@ -240,11 +240,11 @@ public class CatanServiceImpl implements CatanService {
         }
 
         //update team
-        if(oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
+        if (oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {
             //only update to next team if team also rolled last roll
-            if(!diceRolls.isEmpty()) {
+            if (!diceRolls.isEmpty()) {
                 DiceRoll lastRoll = diceRolls.getLast();
-                if(lastRoll.teamName().equals(currentTeam.name())) {
+                if (lastRoll.teamName().equals(currentTeam.name())) {
                     currentTeamTurn = (currentTeamTurn + 1) % oldState.gameConfig().teams().size();
                 }
             }
@@ -274,11 +274,11 @@ public class CatanServiceImpl implements CatanService {
                 .collect(Collectors.toSet());
 
         Game toSave = new Game(
-            LocalDate.now(),
-            GameType.CATAN,
-            gameState,
-            saveGameState,
-            players
+                LocalDate.now(),
+                GameType.CATAN,
+                gameState,
+                saveGameState,
+                players
         );
         Game saved = gameRepository.save(toSave);
         return gameMapper.gameToGameDetails(saved);

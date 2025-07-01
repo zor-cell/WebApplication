@@ -17,102 +17,103 @@ import {AuthService} from "../../../services/auth.service";
 import {GameMode} from "../../../dto/catan/GameMode";
 
 @Component({
-  selector: 'catan-game',
-  imports: [
-    CatanConfigComponent,
-    NgIf,
-    NgForOf,
-    NgClass,
-    CatanDiceRollComponent,
-    MainHeaderComponent,
-    BaseChartDirective,
-    CatanHistogramComponent,
-    ReactiveFormsModule,
-    CatanSavePopupComponent
-  ],
-  templateUrl: './game.component.html',
-  standalone: true,
-  styleUrl: './game.component.css'
+    selector: 'catan-game',
+    imports: [
+        CatanConfigComponent,
+        NgIf,
+        NgForOf,
+        NgClass,
+        CatanDiceRollComponent,
+        MainHeaderComponent,
+        BaseChartDirective,
+        CatanHistogramComponent,
+        ReactiveFormsModule,
+        CatanSavePopupComponent
+    ],
+    templateUrl: './game.component.html',
+    standalone: true,
+    styleUrl: './game.component.css'
 })
 export class CatanGameComponent implements OnInit {
-  @ViewChild('savePopup') savePopup!: CatanSavePopupComponent;
+    @ViewChild('savePopup') savePopup!: CatanSavePopupComponent;
 
-  gameState!: GameState;
-  showChart: boolean = false;
+    gameState!: GameState;
+    showChart: boolean = false;
 
-  //TODO: undo roll button
+    //TODO: undo roll button
 
-  get currentRoll(): DiceRoll | null {
-    if(!this.gameState) return null;
+    get currentRoll(): DiceRoll | null {
+        if (!this.gameState) return null;
 
-    if(this.gameState.diceRolls.length === 0) return {
-      dicePair: {
-        dice1: 4,
-        dice2: 3,
-        event: '-'
-      },
-      diceEvent: 'b',
-      teamName: ''
-    };
+        if (this.gameState.diceRolls.length === 0) return {
+            dicePair: {
+                dice1: 4,
+                dice2: 3,
+                event: '-'
+            },
+            diceEvent: 'b',
+            teamName: ''
+        };
 
 
-    return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
-  }
-
-  get lastPlayer(): Team | null {
-    if(!this.gameState || this.gameState.gameConfig.teams.length === 0 || this.gameState.diceRolls.length === 0) return null;
-
-    const lastRollTeam = this.gameState.diceRolls[this.gameState.diceRolls.length - 1].teamName;
-    const found = this.gameState.gameConfig.teams.find(team => team.name === lastRollTeam);
-    if(found === undefined) {
-      return null;
+        return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
     }
 
-    return found;
+    get lastPlayer(): Team | null {
+        if (!this.gameState || this.gameState.gameConfig.teams.length === 0 || this.gameState.diceRolls.length === 0) return null;
 
-    /*const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
-    return this.gameState.gameConfig.teams[index];*/
-  }
+        const lastRollTeam = this.gameState.diceRolls[this.gameState.diceRolls.length - 1].teamName;
+        const found = this.gameState.gameConfig.teams.find(team => team.name === lastRollTeam);
+        if (found === undefined) {
+            return null;
+        }
 
-  get attackText(): string {
-    return 'CHARGE ';
-  }
+        return found;
 
-  constructor(private globals: Globals,
-              private catanService: CatanService,
-              private router: Router,
-              public authService: AuthService) {}
+        /*const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
+        return this.gameState.gameConfig.teams[index];*/
+    }
 
-  ngOnInit() {
-    this.getSession();
-  }
+    get attackText(): string {
+        return 'CHARGE ';
+    }
 
-  rollDice(isAlchemist = false) {
-    this.catanService.rollDice(isAlchemist).subscribe({
-      next: res => {
-        this.gameState = res;
-      }
-    });
-  }
+    constructor(private globals: Globals,
+                private catanService: CatanService,
+                private router: Router,
+                public authService: AuthService) {
+    }
 
-  toggleChart() {
-    this.showChart = !this.showChart;
-  }
+    ngOnInit() {
+        this.getSession();
+    }
 
-  openSavePopup() {
-    this.savePopup.openPopup();
-  }
+    rollDice(isAlchemist = false) {
+        this.catanService.rollDice(isAlchemist).subscribe({
+            next: res => {
+                this.gameState = res;
+            }
+        });
+    }
 
-  private getSession() {
-    this.catanService.state().subscribe({
-      next: res => {
-        this.gameState = res;
-      },
-      error: err => {
-        this.router.navigate(['projects/catan']);
-      }
-    });
-  }
+    toggleChart() {
+        this.showChart = !this.showChart;
+    }
 
-  protected readonly GameMode = GameMode;
+    openSavePopup() {
+        this.savePopup.openPopup();
+    }
+
+    private getSession() {
+        this.catanService.state().subscribe({
+            next: res => {
+                this.gameState = res;
+            },
+            error: err => {
+                this.router.navigate(['projects/catan']);
+            }
+        });
+    }
+
+    protected readonly GameMode = GameMode;
 }

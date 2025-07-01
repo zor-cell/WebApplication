@@ -33,7 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDetails getPlayer(String name) {
         Player player = playerRepository.findByName(name);
-        if(player == null) {
+        if (player == null) {
             throw new NotFoundException(String.format("Player with name %s not found", name));
         }
 

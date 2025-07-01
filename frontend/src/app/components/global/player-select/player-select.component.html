@@ -2,19 +2,21 @@
     <div class="select-container">
         <i *ngIf="authService.isAdmin()" class="bi bi-person-plus-fill default-color" (click)="openPlayerPopup()"></i>
         <select [disabled]="!currentPlayer" (change)="updateCurrentPlayer($event)">
-            @if(currentPlayer) {
+            @if (currentPlayer) {
                 <option *ngFor="let player of availablePlayers" [value]="player.name">
-                    {{player.name}}
+                    {{ player.name }}
                 </option>
             } @else {
                 <option>EMPTY</option>
             }
         </select>
-        <button [disabled]="!currentPlayer || selectedTeams.length >= maxTeams" class="small-btn" (click)="addPlayer()">Add</button>
+        <button [disabled]="!currentPlayer || selectedTeams.length >= maxTeams" class="small-btn" (click)="addPlayer()">
+            Add
+        </button>
     </div>
 
 
-    @if(selectedTeams.length === 0) {
+    @if (selectedTeams.length === 0) {
         <div>
             <div class="fw-lighter">EMPTY</div>
         </div>
@@ -32,12 +34,12 @@
                             [disabled]="teamHostIndex === i"
                             [ngClass]="{'highlighted' : teamHostIndex >= 0 && i !== teamHostIndex}"
                             class="drag-player">
-                        <span class="player-number">{{i + 1}}. </span>
-                        <span class="player-name">{{team.name}}</span>
+                        <span class="player-number">{{ i + 1 }}. </span>
+                        <span class="player-name">{{ team.name }}</span>
 
                         <!-- dragging preview -->
                         <div *cdkDragPreview class="drag-player">
-                            <span class="player-number">{{i + 1}}. </span>
+                            <span class="player-number">{{ i + 1 }}. </span>
                             <span class="player-name">{{ team.name }}</span>
                         </div>
                     </button>
@@ -47,7 +49,8 @@
                 <ng-container *ngFor="let _ of [].constructor(selectedTeams.length);let i = index">
                     <div class="flex-container flex-row gap-2">
                         <div *ngIf="allowTeams" class="drag-element" (click)="makeHost(i)">
-                            <i class="bi default-color" [ngClass]="teamHostIndex === i ? 'bi-people-fill' : 'bi-people'" ></i>
+                            <i class="bi default-color"
+                               [ngClass]="teamHostIndex === i ? 'bi-people-fill' : 'bi-people'"></i>
                         </div>
                         <div class="drag-element" (click)="removePlayer(i)">
                             <i class="bi bi-person-x-fill danger-color"></i>

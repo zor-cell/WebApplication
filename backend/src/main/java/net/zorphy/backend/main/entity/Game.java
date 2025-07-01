@@ -38,7 +38,8 @@ public class Game {
     )
     private Set<Player> players;
 
-    public Game() {}
+    public Game() {
+    }
 
     public Game(LocalDate playedAt, GameType gameType, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;

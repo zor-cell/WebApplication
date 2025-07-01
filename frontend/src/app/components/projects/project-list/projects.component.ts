@@ -15,7 +15,8 @@ import {ProjectCardComponent} from "../project-card/project-card.component";
 export class ProjectsComponent implements OnInit {
     projects!: ProjectMetadata[];
 
-    constructor(private globals: Globals, private projectService: ProjectService) {}
+    constructor(private globals: Globals, private projectService: ProjectService) {
+    }
 
     ngOnInit(): void {
         this.getProjects();

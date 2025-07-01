@@ -13,14 +13,16 @@
         version="1.1"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-     id="defs6"><clipPath
+        rdf:resource="http://purl.org/dc/dcmitype/StillImage"/></cc:Work></rdf:RDF></metadata>
+    <defs
+            id="defs6"><clipPath
        id="clipPath24"
        clipPathUnits="userSpaceOnUse"><path
          id="path22"
-         d="M 0.073862,0.926138 V 0.8906231 H 0.8906231 V 0.1093769 H 0.1093769 V 0.926138 H 0.073862 V 0.8906231 0.926138 H 0.0383522 V 0.0383522 H 0.9616478 V 0.9616478 H 0.0383522 V 0.926138 H 0.073862 Z" /></clipPath></defs><g
-     transform="matrix(1.3333333,0,0,-1.3333333,0,112.64)"
-     id="g10"><g
+         d="M 0.073862,0.926138 V 0.8906231 H 0.8906231 V 0.1093769 H 0.1093769 V 0.926138 H 0.073862 V 0.8906231 0.926138 H 0.0383522 V 0.0383522 H 0.9616478 V 0.9616478 H 0.0383522 V 0.926138 H 0.073862 Z" /></clipPath></defs>
+    <g
+            transform="matrix(1.3333333,0,0,-1.3333333,0,112.64)"
+            id="g10"><g
        id="g12"><g
          transform="scale(84.48)"
          id="g14"><image
@@ -31,7 +33,7 @@
            style="image-rendering:optimizeSpeed"
            height="1"
            width="1" /><g
-           id="g18"><g
+            id="g18"><g
              clip-path="url(#clipPath24)"
              id="g20"><image
                id="image26"

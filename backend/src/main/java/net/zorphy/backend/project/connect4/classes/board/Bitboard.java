@@ -26,14 +26,14 @@ public class Bitboard implements Board {
         this.cols = board[0].length;
         this.player = player;
 
-        for(int i = 0;i < rows;i++) {
-            for(int j = 0;j < cols;j++) {
-                if(board[i][j] == 0) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 0) {
                     continue;
                 }
 
                 long pos = 1L << (rows - 1 - i) << (rows + 1) * j;
-                if(board[i][j] == player) {
+                if (board[i][j] == player) {
                     currentPlayer |= pos;
                 }
                 allPlayers |= pos;
@@ -89,13 +89,13 @@ public class Bitboard implements Board {
 
     @Override
     public GameState getGameState() {
-        if(isWinningPosition(currentPlayer)) {
+        if (isWinningPosition(currentPlayer)) {
             return (player == 1 ? GameState.PLAYER1 : GameState.PLAYER2);
-        } else if(isWinningPosition(currentPlayer ^ allPlayers)) {
+        } else if (isWinningPosition(currentPlayer ^ allPlayers)) {
             return (player == 1 ? GameState.PLAYER2 : GameState.PLAYER1);
         }
 
-        if(moves == rows * cols) {
+        if (moves == rows * cols) {
             return GameState.DRAW;
         }
 
@@ -103,7 +103,9 @@ public class Bitboard implements Board {
     }
 
     @Override
-    public int getMoves() {return moves;}
+    public int getMoves() {
+        return moves;
+    }
 
     @Override
     public int getColumns() {
@@ -135,11 +137,11 @@ public class Bitboard implements Board {
                 currentPlayer,
                 opponentPlayer
         };
-        for(long pos : positions) {
+        for (long pos : positions) {
             //scores for current player are always positive
             //and scores for opponent are always negative (no matter which players turn it is)
             int player = 1;
-            if(pos == opponentPlayer) {
+            if (pos == opponentPlayer) {
                 player = -1;
             }
 
@@ -164,7 +166,7 @@ public class Bitboard implements Board {
 
 
                     int bits = Long.bitCount(left) + Long.bitCount(right) + Long.bitCount(ends) + Long.bitCount(middle) + Long.bitCount(left1) + Long.bitCount(right1);
-                    if(bits > 0) {
+                    if (bits > 0) {
                         score += bits * Scores.TWO_IN_ROW * player;
                     }
                 }
@@ -221,9 +223,9 @@ public class Bitboard implements Board {
         };
 
         long m;
-        for(int shift : shifts) {
+        for (int shift : shifts) {
             m = pos & (pos >> shift); //makes sure to not count empty spaces between pieces
-            if((m & (m >> 2 * shift)) > 0) {
+            if ((m & (m >> 2 * shift)) > 0) {
                 return true;
             }
         }
@@ -248,7 +250,6 @@ public class Bitboard implements Board {
     }
 
 
-
     public static int[][] boardFromBitboard(long bitboard) {
         String boardStr = String.format("%49s", Long.toBinaryString(bitboard))
                 .replace(' ', '0');
@@ -258,13 +259,13 @@ public class Bitboard implements Board {
 
         int[][] board = new int[rows + 1][cols];
         int i = 0, l = 0;
-        for(int r = 0;r < boardStr.length();r++) {
-            if(r > 0 && r % (rows + 1) == 0 || r == boardStr.length() - 1) {
-                if(r == boardStr.length() - 1) r++;
+        for (int r = 0; r < boardStr.length(); r++) {
+            if (r > 0 && r % (rows + 1) == 0 || r == boardStr.length() - 1) {
+                if (r == boardStr.length() - 1) r++;
 
                 String sub = boardStr.substring(l, r);
-                for(int j = 0;j < Math.min(sub.length(), cols);j++) {
-                    if(i >= 7) break;
+                for (int j = 0; j < Math.min(sub.length(), cols); j++) {
+                    if (i >= 7) break;
                     board[i][j] = sub.charAt(j) - '0';
                 }
 
@@ -283,8 +284,8 @@ public class Bitboard implements Board {
 
         int[][] currentBoardArr = boardFromBitboard(currentPlayer);
         res += "Current Board:\n";
-        for(int i = 0;i < currentBoardArr.length;i++) {
-            for(int j = 0;j < currentBoardArr[0].length;j++) {
+        for (int i = 0; i < currentBoardArr.length; i++) {
+            for (int j = 0; j < currentBoardArr[0].length; j++) {
                 res += currentBoardArr[i][j];
             }
             res += "\n";
@@ -293,8 +294,8 @@ public class Bitboard implements Board {
 
         int[][] maskBoardArr = boardFromBitboard(allPlayers);
         res += "Mask Board:\n";
-        for(int i = 0;i < maskBoardArr.length;i++) {
-            for(int j = 0;j < maskBoardArr[0].length;j++) {
+        for (int i = 0; i < maskBoardArr.length; i++) {
+            for (int j = 0; j < maskBoardArr[0].length; j++) {
                 res += maskBoardArr[i][j];
             }
             res += "\n";
@@ -313,8 +314,8 @@ public class Bitboard implements Board {
 
     private void printArr(int[][] arr) {
         String res = "";
-        for(int i = 0;i < arr.length;i++) {
-            for(int j = 0;j < arr[0].length;j++) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[0].length; j++) {
                 res += arr[i][j];
             }
             res += "\n";
@@ -329,7 +330,7 @@ public class Bitboard implements Board {
         int[][] ret = new int[N][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < N; c++) {
-                ret[c][M-1-r] = mat[r][c];
+                ret[c][M - 1 - r] = mat[r][c];
             }
         }
         return ret;

@@ -54,9 +54,9 @@ public interface Board {
      * Returns the correct instance board for a given board by calling its copy constructor.
      */
     static Board getInstance(Board board) {
-        if(board instanceof Bitboard) {
+        if (board instanceof Bitboard) {
             return new Bitboard((Bitboard) board);
-        } else if(board instanceof SimpleBoard) {
+        } else if (board instanceof SimpleBoard) {
             return new SimpleBoard((SimpleBoard) board);
         }
 
@@ -67,9 +67,9 @@ public interface Board {
      * Returns the correct instance board for a given request.
      */
     static Board getInstance(SolveRequest request) {
-        if(request.version() == Version.V2_0 || request.version() == Version.V2_1) {
+        if (request.version() == Version.V2_0 || request.version() == Version.V2_1) {
             return new Bitboard(request.board(), request.player());
-        } else if(request.version() == Version.V1_0) {
+        } else if (request.version() == Version.V1_0) {
             return new SimpleBoard(request.board(), request.player());
         }
 

@@ -22,7 +22,7 @@ import {MainHeaderComponent} from "../global/main-header/main-header.component";
     standalone: true,
     styleUrl: './connect4.component.css'
 })
-export class Connect4Component  {
+export class Connect4Component {
     board!: number[][];
     moves!: number[];
     gameOver!: boolean;
@@ -52,11 +52,11 @@ export class Connect4Component  {
         this._gameState = value;
 
         //check game state for end
-        if(this._gameState === GameState.RUNNING) {
+        if (this._gameState === GameState.RUNNING) {
             this.gameOver = false;
         } else {
             this.gameOver = true;
-            if(this._gameState === GameState.PLAYER1 || this._gameState === GameState.PLAYER2) {
+            if (this._gameState === GameState.PLAYER1 || this._gameState === GameState.PLAYER2) {
                 const winner = this._gameState === GameState.PLAYER1 ? "1" : "2";
                 this.gameOverText = `Player ${winner} won!`;
             } else {
@@ -69,9 +69,9 @@ export class Connect4Component  {
         this._currentPlayer = value;
 
         //start next ai move
-        if(this.gameState !== GameState.RUNNING || this._currentPlayer === undefined) return;
+        if (this.gameState !== GameState.RUNNING || this._currentPlayer === undefined) return;
 
-        if(this._currentPlayer.isAi && !this.isUndoing) {
+        if (this._currentPlayer.isAi && !this.isUndoing) {
             this.solve(this._currentPlayer);
         }
     }
@@ -84,7 +84,7 @@ export class Connect4Component  {
         this.player1 = config;
 
         //first init
-        if(this.currentPlayer === undefined) {
+        if (this.currentPlayer === undefined) {
             this.currentPlayer = this.player1;
         }
     }
@@ -121,7 +121,7 @@ export class Connect4Component  {
 
                 this.moves.push(moveRequest.move);
                 this.togglePlayer();
-                }
+            }
         })
     }
 
@@ -139,12 +139,12 @@ export class Connect4Component  {
 
                 this.moves.pop();
                 this.togglePlayer();
-                }
+            }
         })
     }
 
     solve(player: PlayerConfig | undefined) {
-        if(this.gameOver || player === undefined) return;
+        if (this.gameOver || player === undefined) return;
 
         let solveRequest: SolveRequest = {
             board: this.board,
@@ -167,7 +167,7 @@ export class Connect4Component  {
 
                 this.moves.push(res.move);
                 this.togglePlayer();
-                },
+            },
             error: err => {
                 this.delayLoader.isLoading = false;
             }
@@ -175,13 +175,13 @@ export class Connect4Component  {
     }
 
     isLastMove(i: number, j: number): boolean {
-        if(this.moves.length === 0) return false;
+        if (this.moves.length === 0) return false;
 
         const col = this.moves[this.moves.length - 1];
-        if(j != col) return false;
+        if (j != col) return false;
 
-        for(let k = 0;k < this.board.length;k++) {
-            if(this.board[k][col] !== 0) {
+        for (let k = 0; k < this.board.length; k++) {
+            if (this.board[k][col] !== 0) {
                 return i == k;
             }
         }
@@ -198,7 +198,7 @@ export class Connect4Component  {
     }
 
     private togglePlayer(): void {
-        if(!this.currentPlayer) return;
+        if (!this.currentPlayer) return;
 
         this.currentPlayer = this.currentPlayer.value === this.player1.value ? this.player2 : this.player1;
     }

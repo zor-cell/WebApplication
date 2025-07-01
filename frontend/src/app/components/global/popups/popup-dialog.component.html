@@ -8,7 +8,9 @@
     <button type="button" class="btn btn-outline-secondary" (click)="cancel()">{{ cancelText }}</button>
 
     <div class="dialog-main-actions">
-        <button *ngIf="discardText !== null" type="button" class="btn btn-outline-danger" (click)="discard()">{{discardText}}</button>
+        <button *ngIf="discardText !== null" type="button" class="btn btn-outline-danger"
+                (click)="discard()">{{ discardText }}
+        </button>
         <button [disabled]="!valid" type="submit" class="btn btn-primary" (click)="submit()">{{ submitText }}</button>
     </div>
 </div>

@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDetails getProject(String name, String baseUrl) {
         Project project = projectRepository.findByName(name);
-        if(project == null) {
+        if (project == null) {
             throw new NotFoundException(String.format("Project with name %s not found", name));
         }
 
@@ -53,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectMetadata metadata = projectDetails.metadata();
 
         Project project = projectRepository.findByName(metadata.name());
-        if(project == null) {
+        if (project == null) {
             throw new NotFoundException("Project with name %s not found".formatted(metadata.name()));
         }
 
@@ -67,7 +67,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setFilePath(projectDetails.filePath());
 
         //remove host from image path before update
-        if(metadata.imagePath() != null) {
+        if (metadata.imagePath() != null) {
             URI uri = URI.create(metadata.imagePath());
             String path = uri.getPath();
             project.setImagePath(path.startsWith("/") ? path.substring(1) : path);

@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
 
     title = 'frontend';
 
-    constructor(private globals: Globals, public authService: AuthService) {}
+    constructor(private globals: Globals, public authService: AuthService) {
+    }
 
     ngOnInit() {
         this.authService.loadUser().subscribe({

@@ -47,7 +47,7 @@ public class CatanController {
 
     @PostMapping("start")
     public GameState start(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        if(sessionExists(session)) {
+        if (sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
@@ -88,7 +88,7 @@ public class CatanController {
 
     private GameState getGameState(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute(sessionKey);
-        if(gameState == null) {
+        if (gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
         }
 

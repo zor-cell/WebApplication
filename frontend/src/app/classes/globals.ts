@@ -9,7 +9,8 @@ import {SILENT_ERROR_HANDLER} from "./interceptors";
 export class Globals {
     readonly backendUri: string = this.getBackendUrl();
 
-    constructor(private toastr: ToastrService) {}
+    constructor(private toastr: ToastrService) {
+    }
 
     private getBackendUrl(): string {
         if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080

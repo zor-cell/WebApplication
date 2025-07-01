@@ -20,7 +20,7 @@ export class QwirkleHandComponent implements OnChanges {
     selected: Tile[] = [];
 
     ngOnChanges(changes: SimpleChanges): void {
-        if(changes['hand']) {
+        if (changes['hand']) {
             this.selected = [];
             this.updateSelected();
         }
@@ -32,7 +32,7 @@ export class QwirkleHandComponent implements OnChanges {
         const tile = this.hand[tileIndex];
         const index = this.selected.indexOf(tile);
 
-        if(index > -1) {
+        if (index > -1) {
             this.selected.splice(index, 1);
         } else {
             this.selected.push(tile);

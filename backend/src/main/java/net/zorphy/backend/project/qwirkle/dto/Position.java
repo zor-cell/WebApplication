@@ -8,6 +8,6 @@ public record Position(
         return new Position(
                 this.x + direction.getDx() * steps,
                 this.y + direction.getDy() * steps
-                );
+        );
     }
 }

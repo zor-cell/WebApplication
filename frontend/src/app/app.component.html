@@ -7,10 +7,10 @@
     <nav>
         <a routerLink="/projects">Projects</a>
         <a>About Me</a>
-        @if(!authService.isAuthenticated()) {
+        @if (!authService.isAuthenticated()) {
             <button class="btn btn-primary text-white" (click)="openLoginPopup()">Login</button>
         } @else {
-            <a>Hello, <b>{{authService.user!.username}}</b>!</a>
+            <a>Hello, <b>{{ authService.user!.username }}</b>!</a>
         }
     </nav>
 </header>

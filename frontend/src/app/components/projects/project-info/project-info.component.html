@@ -1,5 +1,6 @@
-@if(project) {
-    <app-project-header [project]="project.metadata" [showWebsite]="true" [customTemplate]="editButton"></app-project-header>
+@if (project) {
+    <app-project-header [project]="project.metadata" [showWebsite]="true"
+                        [customTemplate]="editButton"></app-project-header>
 
     <div class="main-container">
         <div [innerHTML]="project.content"></div>

@@ -9,5 +9,5 @@ public record GameState(
         List<DicePair> classicCards,
         List<Character> eventCards,
         List<DiceRoll> diceRolls
-        ) {
+) {
 }

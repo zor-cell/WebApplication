@@ -1,19 +1,16 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
 import {MainHeaderComponent} from "../../global/main-header/main-header.component";
 import {QwirkleService} from "../../../services/qwirkle.service";
 import {GameState} from "../../../dto/qwirkle/GameState";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
-import {Shape} from "../../../dto/qwirkle/Shape";
-import {Color} from "../../../dto/qwirkle/Color";
 import {Tile} from "../../../dto/qwirkle/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../dto/global/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
-import {ImageCacheService} from "../../../services/image-cache.service";
 import {PanContainerComponent} from "../../global/pan-container/pan-container.component";
 
 @Component({
@@ -45,6 +42,7 @@ export class QwirkleGameComponent implements OnInit {
         x: 0,
         y: 0,
     };
+
     get center() {
         return {
             x: this.localCenter.x - this.tileSize / 2,
@@ -60,11 +58,11 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) : void {
+    onDocumentClick(event: MouseEvent): void {
         const target = event.target as HTMLElement;
 
         //unselect a move when clicking anywhere except on it
-        if(!target.closest('.valid-move') && !target.closest('.highlighted-move')) {
+        if (!target.closest('.valid-move') && !target.closest('.highlighted-move')) {
             this.selectedMove = null;
         }
     }
@@ -75,7 +73,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     selectedInStack(tile: Tile) {
-        if(!this.gameState || !this.gameState.hand || this.gameState?.hand?.length >= 6) return;
+        if (!this.gameState || !this.gameState.hand || this.gameState?.hand?.length >= 6) return;
 
         this.drawTile(tile);
     }
@@ -86,7 +84,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     makeSelectedMove(direction: Direction) {
-        if(!this.selectedMove) return;
+        if (!this.selectedMove) return;
 
         const move: Move = {
             position: this.selectedMove.position,
@@ -116,7 +114,7 @@ export class QwirkleGameComponent implements OnInit {
             [Direction.LEFT]: 'border-left-width',
         };
         let borderWidth = 4;
-        if(moveGroup.tiles.length === 1) {
+        if (moveGroup.tiles.length === 1) {
             borderWidth = 1;
         }
 
@@ -141,7 +139,6 @@ export class QwirkleGameComponent implements OnInit {
             this.localCenter.y = board.clientHeight / 2;
         }
     }
-
 
 
     //requests

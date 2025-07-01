@@ -1,5 +1,5 @@
 export enum GameMode {
-    ONE_VS_ONE= 'ONE_VS_ONE',
+    ONE_VS_ONE = 'ONE_VS_ONE',
     CLASSIC = 'CLASSIC',
     CITIES_AND_KNIGHTS = 'CITIES_AND_KNIGHTS'
 }

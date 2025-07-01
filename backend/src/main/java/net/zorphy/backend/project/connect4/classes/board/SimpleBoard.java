@@ -19,7 +19,7 @@ public class SimpleBoard implements Board {
         this.moves = simpleBoard.moves;
 
         this.board = new int[rows][cols];
-        for(int i = 0;i < rows;i++) {
+        for (int i = 0; i < rows; i++) {
             System.arraycopy(simpleBoard.board[i], 0, this.board[i], 0, cols);
         }
     }
@@ -30,9 +30,9 @@ public class SimpleBoard implements Board {
         this.player = player;
 
         this.board = new int[rows][cols];
-        for(int i = 0;i < rows;i++) {
-            for(int j = 0;j < cols;j++) {
-                if(board[i][j] != 0) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] != 0) {
                     moves++;
                 }
 
@@ -67,7 +67,7 @@ public class SimpleBoard implements Board {
 
     @Override
     public boolean isWinningMove(int col) {
-        if(!canMakeMove(col)) return false;
+        if (!canMakeMove(col)) return false;
 
         Position move = getMoveFromCol(col);
         int[][] dirs = {
@@ -77,13 +77,13 @@ public class SimpleBoard implements Board {
                 {1, -1}, //diagonal down left
         };
 
-        for(int[] dir : dirs) {
+        for (int[] dir : dirs) {
             int count = 0;
             //check direction
             for (int k = 1; k < 4; k++) {
                 Position next = new Position(move.i + dir[0] * k, move.j + dir[1] * k);
-                if(!next.isInBounds(rows, cols)) break;
-                if(board[next.i][next.j] != player) break;
+                if (!next.isInBounds(rows, cols)) break;
+                if (board[next.i][next.j] != player) break;
 
                 count++;
             }
@@ -92,13 +92,13 @@ public class SimpleBoard implements Board {
             int[] inv = {dir[0] * -1, dir[1] * -1};
             for (int k = 1; k < 4; k++) {
                 Position next = new Position(move.i + inv[0] * k, move.j + inv[1] * k);
-                if(!next.isInBounds(rows, cols)) break;
-                if(board[next.i][next.j] != player) break;
+                if (!next.isInBounds(rows, cols)) break;
+                if (board[next.i][next.j] != player) break;
 
                 count++;
             }
 
-            if(count >= 3) return true;
+            if (count >= 3) return true;
         }
 
         return false;
@@ -127,21 +127,21 @@ public class SimpleBoard implements Board {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 int cur = board[i][j];
-                if(cur == 0) continue;
+                if (cur == 0) continue;
 
                 for (int[] dir : dirs) {
                     //check 4 in a row
                     int countPlayer = 1;
                     for (int k = 1; k < 4; k++) {
                         Position next = new Position(i + dir[0] * k, j + dir[1] * k);
-                        if(!next.isInBounds(rows, cols)) break;
+                        if (!next.isInBounds(rows, cols)) break;
 
-                        if(board[next.i][next.j] == cur) {
+                        if (board[next.i][next.j] == cur) {
                             countPlayer++;
                         }
                     }
 
-                    if(countPlayer == 4) {
+                    if (countPlayer == 4) {
                         return cur == 1 ? GameState.PLAYER1 : GameState.PLAYER2;
                     }
                 }
@@ -150,13 +150,13 @@ public class SimpleBoard implements Board {
 
         //check for draw
         boolean draw = true;
-        for(int j = 0;j < cols;j++) {
-            if(board[0][j] == 0) {
+        for (int j = 0; j < cols; j++) {
+            if (board[0][j] == 0) {
                 draw = false;
                 break;
             }
         }
-        if(draw) return GameState.DRAW;
+        if (draw) return GameState.DRAW;
 
         return GameState.RUNNING;
     }
@@ -180,7 +180,7 @@ public class SimpleBoard implements Board {
     @Override
     public int heuristics() {
         int score = 0;
-        for(int player : new int[] {-1, 1}) {
+        for (int player : new int[]{-1, 1}) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
                     //direction is important since no empty can be below v, dl and dr
@@ -196,22 +196,22 @@ public class SimpleBoard implements Board {
                         int countEmpty = 0;
                         for (int k = 0; k <= 3; k++) {
                             Position next = new Position(i + dir[0] * k, j + dir[1] * k);
-                            if(!next.isInBounds(rows, cols)) break;
+                            if (!next.isInBounds(rows, cols)) break;
 
-                            if(board[next.i][next.j] == player) {
+                            if (board[next.i][next.j] == player) {
                                 countPlayer++;
-                            } else if(board[next.i][next.j] == 0) {
+                            } else if (board[next.i][next.j] == 0) {
                                 countEmpty++;
                             }
                         }
 
-                        if(countPlayer == 4) {
+                        if (countPlayer == 4) {
                             //4 in a row
                             score += player * 1000;
-                        } else if(countPlayer == 3 && countEmpty == 1) {
+                        } else if (countPlayer == 3 && countEmpty == 1) {
                             //3 in row with 1 empty somewhere between
                             score += player * Scores.THREE_IN_ROW;
-                        } else if(countPlayer == 2 && countEmpty == 2) {
+                        } else if (countPlayer == 2 && countEmpty == 2) {
                             //2 in row with 2 empties somewhere between
                             score += player * Scores.TWO_IN_ROW;
                         }
@@ -229,10 +229,10 @@ public class SimpleBoard implements Board {
 
     public Position getMoveFromCol(int col) {
         int i = board.length - 1;
-        while(i >= 0 && board[i][col] != 0) {
+        while (i >= 0 && board[i][col] != 0) {
             i--;
         }
-        if(i >= 0) {
+        if (i >= 0) {
             return new Position(i, col);
         }
 
@@ -241,10 +241,10 @@ public class SimpleBoard implements Board {
 
     public Position getLastInCol(int col) {
         int i = 0;
-        while(i < board.length && board[i][col] == 0) {
+        while (i < board.length && board[i][col] == 0) {
             i++;
         }
-        if(i < board.length) {
+        if (i < board.length) {
             return new Position(i, col);
         }
 

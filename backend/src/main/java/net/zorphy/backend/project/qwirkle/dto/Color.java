@@ -20,4 +20,4 @@ public enum Color {
     public int getValue() {
         return value;
     }
- }
+}

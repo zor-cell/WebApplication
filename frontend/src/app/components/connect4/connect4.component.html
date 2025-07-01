@@ -6,7 +6,7 @@
                 [isAi]="false"
                 (settingsEvent)="initPlayer1($event)"
                 (makeMoveEvent)="solve($event)"
-                />
+        />
         <connect4-player-settings
                 [playerValue]="-1"
                 [canStart]="currentPlayer !== undefined && currentPlayer.value === -1 && !delayLoader.isLoading && !gameOver && (moves.length === 0 || isUndoing)"
@@ -19,7 +19,8 @@
     <div id="board-container">
         <div id="buttons" class="flex-container">
             <div>
-                <button class="btn btn-primary" [disabled]="delayLoader.isLoading || moves.length === 0" (click)="undoMove(moves[moves.length - 1])">
+                <button class="btn btn-primary" [disabled]="delayLoader.isLoading || moves.length === 0"
+                        (click)="undoMove(moves[moves.length - 1])">
                     <i class="bi bi-arrow-left-circle"></i> Undo
                 </button>
                 <button class="btn btn-success" [disabled]="delayLoader.isLoading" (click)="refresh()">
@@ -44,13 +45,13 @@
                 <img src="loading.gif" alt="Loading" width="30" height="30"/>
             </div>
             <div *ngIf="gameOver" class="board-overlay">
-                <span id="game-over-screen">Game Over! {{gameOverText}}</span>
+                <span id="game-over-screen">Game Over! {{ gameOverText }}</span>
             </div>
         </div>
     </div>
 
     <div class="flex-container mt-3 mb-4">
-        <p *ngIf="winDistance < 0" class="m-0"><b>Score:</b> {{score}}</p>
-        <p *ngIf="winDistance >= 0" class="m-0">Player x wins in {{Math.ceil(winDistance / 2)}} moves!</p>
+        <p *ngIf="winDistance < 0" class="m-0"><b>Score:</b> {{ score }}</p>
+        <p *ngIf="winDistance >= 0" class="m-0">Player x wins in {{ Math.ceil(winDistance / 2) }} moves!</p>
     </div>
 </div>

@@ -45,7 +45,7 @@ public class QwirkleController {
 
     @PostMapping("start")
     public GameState createState(HttpSession session, @Valid @RequestBody List<Tile> hand) {
-        if(sessionExists(session)) {
+        if (sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
@@ -83,7 +83,6 @@ public class QwirkleController {
     }
 
 
-
     private boolean sessionExists(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute(sessionKey);
         return gameState != null;
@@ -91,7 +90,7 @@ public class QwirkleController {
 
     private GameState getGameState(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute(sessionKey);
-        if(gameState == null) {
+        if (gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
         }
 

@@ -28,6 +28,8 @@ public abstract class UserMapper {
 
     @Mapping(source = "authorities", target = "roles", qualifiedByName = "rolesFromAuth")
     public abstract UserDetails authDetailsToUserDetails(org.springframework.security.core.userdetails.UserDetails authDetails);
+
     public abstract UserDetails userToUserDetails(User user);
+
     public abstract User userDetailsToUser(UserDetails userDetails);
 }

@@ -17,10 +17,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Secured({ "ROLE_USER", "ROLE_ADMIN" })
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/me")
     public UserDetails getCurrentUser(Authentication authentication) {
-        if(authentication == null || !authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             throw new InvalidSessionException("No authentication info exists in current session");
         }
 

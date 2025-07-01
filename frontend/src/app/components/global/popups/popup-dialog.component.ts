@@ -6,44 +6,45 @@ import {PopupResultType} from "../../../dto/global/PopupResultType";
 
 
 @Component({
-  selector: 'app-popup-dialog',
-  imports: [
-    ReactiveFormsModule,
-    NgTemplateOutlet,
-    NgIf
-  ],
-  templateUrl: './popup-dialog.component.html',
-  standalone: true,
-  styleUrl: './popup-dialog.component.css'
+    selector: 'app-popup-dialog',
+    imports: [
+        ReactiveFormsModule,
+        NgTemplateOutlet,
+        NgIf
+    ],
+    templateUrl: './popup-dialog.component.html',
+    standalone: true,
+    styleUrl: './popup-dialog.component.css'
 })
 export class PopupDialogComponent {
-  @Input() title: string = 'Modal';
-  @Input() cancelText: string = 'Cancel';
-  @Input() submitText: string = 'Submit';
-  @Input() discardText: string | null = null;
+    @Input() title: string = 'Modal';
+    @Input() cancelText: string = 'Cancel';
+    @Input() submitText: string = 'Submit';
+    @Input() discardText: string | null = null;
 
-  @Input({required: true}) bodyTemplate!: TemplateRef<any>;
-  @Input() submitValidator: (() => boolean) | null = null;
+    @Input({required: true}) bodyTemplate!: TemplateRef<any>;
+    @Input() submitValidator: (() => boolean) | null = null;
 
-  constructor(private activeModal: NgbActiveModal) {}
-
-  get valid() {
-    if(this.submitValidator === null) return true;
-
-    return this.submitValidator();
-  }
-
-  cancel() {
-    this.activeModal.dismiss(PopupResultType.CANCEL)
-  }
-
-  discard() {
-    this.activeModal.close(PopupResultType.DISCARD);
-  }
-
-  submit() {
-    if(this.valid) {
-      this.activeModal.close(PopupResultType.SUBMIT);
+    constructor(private activeModal: NgbActiveModal) {
     }
-  }
+
+    get valid() {
+        if (this.submitValidator === null) return true;
+
+        return this.submitValidator();
+    }
+
+    cancel() {
+        this.activeModal.dismiss(PopupResultType.CANCEL)
+    }
+
+    discard() {
+        this.activeModal.close(PopupResultType.DISCARD);
+    }
+
+    submit() {
+        if (this.valid) {
+            this.activeModal.close(PopupResultType.SUBMIT);
+        }
+    }
 }

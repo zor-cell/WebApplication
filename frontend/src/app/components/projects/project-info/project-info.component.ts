@@ -10,48 +10,49 @@ import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.c
 import {AuthService} from "../../../services/auth.service";
 
 @Component({
-  selector: 'app-project-info',
-  imports: [
-    NgIf,
-    RouterLink,
-    MainHeaderComponent,
-    CatanUpdatePopupComponent,
-    ProjectUpdatePopupComponent
-  ],
-  templateUrl: './project-info.component.html',
-  standalone: true,
-  styleUrl: './project-info.component.css'
+    selector: 'app-project-info',
+    imports: [
+        NgIf,
+        RouterLink,
+        MainHeaderComponent,
+        CatanUpdatePopupComponent,
+        ProjectUpdatePopupComponent
+    ],
+    templateUrl: './project-info.component.html',
+    standalone: true,
+    styleUrl: './project-info.component.css'
 })
 export class ProjectInfoComponent implements OnInit {
-  @ViewChild('updatePopup') updatePopup!: ProjectUpdatePopupComponent;
+    @ViewChild('updatePopup') updatePopup!: ProjectUpdatePopupComponent;
 
-  projectName: string | null = null;
-  project: ProjectDetails | null = null;
+    projectName: string | null = null;
+    project: ProjectDetails | null = null;
 
-  constructor(private globals: Globals,
-              public authService: AuthService,
-              private projectService: ProjectService,
-              private route: ActivatedRoute) {}
+    constructor(private globals: Globals,
+                public authService: AuthService,
+                private projectService: ProjectService,
+                private route: ActivatedRoute) {
+    }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.projectName = params.get('name');
+    ngOnInit(): void {
+        this.route.paramMap.subscribe(params => {
+            this.projectName = params.get('name');
 
-      this.getProject();
-    });
-  }
+            this.getProject();
+        });
+    }
 
-  getProject() {
-    if(this.projectName == null) return;
+    getProject() {
+        if (this.projectName == null) return;
 
-    this.projectService.getProject(this.projectName).subscribe({
-      next: res => {
-        this.project = res;
-      }
-    });
-  }
+        this.projectService.getProject(this.projectName).subscribe({
+            next: res => {
+                this.project = res;
+            }
+        });
+    }
 
-  openUpdatePopup() {
-    this.updatePopup.openPopup();
-  }
+    openUpdatePopup() {
+        this.updatePopup.openPopup();
+    }
 }
