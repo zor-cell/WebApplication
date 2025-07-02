@@ -104,7 +104,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
 
     @Override
-    public List<Move> getBestMoves(GameState gameState, int maxMoves) {
+    public List<MoveGroup> getBestMoves(GameState gameState, int maxMoves) {
         //find valid subsets of hand tiles
         List<List<Tile>> allSubsets = Combinatorics.getSubsets(gameState.hand());
 
@@ -149,7 +149,29 @@ public class QwirkleServiceImpl implements QwirkleService {
         });
 
 
-        return moves.subList(0, Math.min(maxMoves, moves.size()));
+        return moves.subList(0, Math.min(maxMoves, moves.size())).stream()
+                .map(m -> {
+                    List<BoardTile> boardTiles = new ArrayList<>();
+                    for (int i = 0; i < m.tiles().size(); i++) {
+                        Position pos = m.position().stepsInDirection(m.direction(), i);
+                        Tile tile = m.tiles().get(i);
+                        BoardTile boardTile = new BoardTile(
+                                pos,
+                                tile
+                        );
+                        boardTiles.add(boardTile);
+                    }
+
+                    GroupInfo groupInfo = new GroupInfo(
+                            m.direction(),
+                            boardTiles
+                    );
+
+                    return new MoveGroup(m.position(),
+                            m.tiles(),
+                            List.of(groupInfo)
+                    );
+                }).toList();
     }
 
     @Override
@@ -194,7 +216,7 @@ public class QwirkleServiceImpl implements QwirkleService {
         List<StackTile> stack = new ArrayList<>(oldState.stack());
 
         //check if tile is in stack
-        for(var tile : hand) {
+        for (var tile : hand) {
             Optional<StackTile> found = stack.stream()
                     .filter(t -> t.tile().equals(tile))
                     .findFirst();

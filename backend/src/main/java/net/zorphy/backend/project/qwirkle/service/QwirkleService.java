@@ -7,7 +7,7 @@ import java.util.List;
 public interface QwirkleService {
     List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles);
 
-    List<Move> getBestMoves(GameState gameState, int maxMoves);
+    List<MoveGroup> getBestMoves(GameState gameState, int maxMoves);
 
     GameState initGameState(List<Tile> hand);
 

@@ -3,7 +3,8 @@
 @if (gameState) {
     <div class="game-container main-container">
         <div class="config">
-            <qwirkle-hand [hand]="gameState.hand" (selectTilesEvent)="selectedInHand($event)" (removeTileEvent)="clearedHand()"></qwirkle-hand>
+            <qwirkle-hand [hand]="gameState.hand" (selectTilesEvent)="selectedInHand($event)"
+                          (clearTilesEvent)="clearedHand()"></qwirkle-hand>
             <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
 
@@ -27,6 +28,21 @@
                      class="board-tile open-position">
                 </div>
             </ng-container>
+
+            <!--best move highlight-->
+            <div *ngFor="let move of bestMoves;let i = index" (click)="makeBestMove(i)" class="tile-group">
+                <!--add grouping-->
+                <ng-container *ngFor="let boardTile of move.groupInfos[0].boardTiles;let j = index">
+                    <qwirkle-tile
+                            [ngStyle]="getTilePositionStyle(boardTile.position)"
+                            [tile]="boardTile.tile"
+                            [tileSize]="tileSize"
+                            [isInteractive]="false"
+                            class="board-tile highlighted-move"
+                    >
+                    </qwirkle-tile>
+                </ng-container>
+            </div>
 
             <!--valid move tiles-->
             <ng-container *ngFor="let move of validMoves;let i = index">

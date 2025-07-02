@@ -27,8 +27,10 @@ export class QwirkleService {
         return this.httpClient.post<MoveGroup[]>(this.baseUri + '/moves', tiles);
     }
 
-    getBestMoves(): Observable<Move[]> {
-        return this.httpClient.get<Move[]>(this.baseUri + '/solve');
+    getBestMoves(maxMoves: number = 1): Observable<MoveGroup[]> {
+        return this.httpClient.get<MoveGroup[]>(this.baseUri + '/solve', {
+            params: {maxMoves: maxMoves.toString()}
+        });
     }
 
     clearState(): Observable<void> {

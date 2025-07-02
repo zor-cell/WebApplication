@@ -31,7 +31,7 @@ public class QwirkleController {
     }
 
     @GetMapping("solve")
-    public List<Move> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
+    public List<MoveGroup> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
         return qwirkleService.getBestMoves(getGameState(session), maxMoves);
     }
 

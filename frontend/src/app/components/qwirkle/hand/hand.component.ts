@@ -18,7 +18,7 @@ import {Tile} from "../../../dto/qwirkle/Tile";
 export class QwirkleHandComponent implements OnChanges {
     @Input({required: true}) hand!: Tile[];
     @Output() selectTilesEvent = new EventEmitter<Tile[]>();
-    @Output() removeTileEvent = new EventEmitter<Tile>();
+    @Output() clearTilesEvent = new EventEmitter<void>();
     tileSize: number = 40;
 
     selected: Tile[] = [];
@@ -30,12 +30,20 @@ export class QwirkleHandComponent implements OnChanges {
         }
     }
 
-    removeTile(tileIndex: number) {
-        this.selected = [];
-        this.updateSelected();
+    get paddedHand() {
+        const maxHandSize = 6;
+        const padded: (Tile | null)[] = [...this.hand];
+        while (padded.length < maxHandSize) {
+            padded.push(null);
+        }
+        return padded;
+    }
 
-        const tile = this.hand[tileIndex];
-        this.removeTileEvent.emit(tile);
+    tilesCleared() {
+        //this.selected = [];
+        //this.updateSelected();
+
+        this.clearTilesEvent.emit();
     }
 
     tileSelected(tileIndex: number) {
@@ -56,4 +64,6 @@ export class QwirkleHandComponent implements OnChanges {
     private updateSelected() {
         this.selectTilesEvent.emit(this.selected);
     }
+
+    protected readonly Array = Array;
 }
