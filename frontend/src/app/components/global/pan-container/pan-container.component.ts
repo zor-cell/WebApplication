@@ -78,6 +78,14 @@ export class PanContainerComponent {
         }
     }
 
+    touchMove(event: TouchEvent) {
+        if(event.touches.length === 1) {
+            this.pan(event);
+        } else if(event.touches.length === 2) {
+            this.pinch(event);
+        }
+    }
+
     pan(event: MouseEvent | TouchEvent) {
         if (!this.isPanning || !this.canPan) return;
         event.preventDefault();

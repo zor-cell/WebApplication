@@ -97,7 +97,7 @@
         grid-template-columns: 1fr; /* Single column */
         grid-template-rows: auto auto; /* Optional: allow height to adjust */
 
-        max-width: 300px;
+        width: 300px;
         max-height: none; /* Allow height to grow if needed */
         gap: 0;
     }
