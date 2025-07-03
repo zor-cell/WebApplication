@@ -30,19 +30,21 @@
             </ng-container>
 
             <!--best move highlight-->
-            <div *ngFor="let move of bestMoves;let i = index" (click)="makeBestMove(i)" class="tile-group">
-                <!--add grouping-->
-                <ng-container *ngFor="let boardTile of move.groupInfos[0].boardTiles;let j = index">
-                    <qwirkle-tile
-                            [ngStyle]="getTilePositionStyle(boardTile.position)"
-                            [tile]="boardTile.tile"
-                            [tileSize]="tileSize"
-                            [isInteractive]="false"
-                            class="board-tile highlighted-move"
-                    >
-                    </qwirkle-tile>
-                </ng-container>
-            </div>
+            <ng-container *ngIf="!selectedMove">
+                <div *ngFor="let move of bestMoves;let i = index" (click)="makeBestMove(i)" class="tile-group">
+                    <!--add grouping-->
+                    <ng-container *ngFor="let boardTile of move.groupInfos[0].boardTiles;let j = index">
+                        <qwirkle-tile
+                                [ngStyle]="getTilePositionStyle(boardTile.position)"
+                                [tile]="boardTile.tile"
+                                [tileSize]="tileSize"
+                                [isInteractive]="false"
+                                class="board-tile highlighted-move"
+                        >
+                        </qwirkle-tile>
+                    </ng-container>
+                </div>
+            </ng-container>
 
             <!--valid move tiles-->
             <ng-container *ngFor="let move of validMoves;let i = index">

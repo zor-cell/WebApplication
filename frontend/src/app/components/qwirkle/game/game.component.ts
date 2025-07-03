@@ -12,6 +12,7 @@ import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
 import {PanContainerComponent} from "../../global/pan-container/pan-container.component";
+import {HandInfo} from "../../../dto/qwirkle/HandInfo";
 
 @Component({
     selector: 'qwirkle-game',
@@ -37,6 +38,8 @@ export class QwirkleGameComponent implements OnInit {
     validMoves: MoveGroup[] = [];
     selectedMove: MoveGroup | null = null;
     bestMoves: MoveGroup[] | null = null;
+
+    handInfo: HandInfo[] = [];
 
     private readonly localCenter: Position = {
         x: 0,
@@ -67,12 +70,13 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
-    //event from children
+    //events from children
     clearedHand() {
         this.clearHand();
     }
 
     selectedInHand(tiles: Tile[]) {
+        this.validateHand(tiles);
         this.getValidMoves(tiles);
     }
 
@@ -160,6 +164,14 @@ export class QwirkleGameComponent implements OnInit {
 
 
     //requests
+    private validateHand(tiles: Tile[]) {
+        this.qwirkleService.validateHand(tiles).subscribe({
+            next: res => {
+                this.handInfo = res;
+            }
+        })
+    }
+
     private findBestMoves() {
         this.qwirkleService.getBestMoves().subscribe({
             next: res => {

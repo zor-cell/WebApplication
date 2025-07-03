@@ -33,7 +33,7 @@ public class QwirkleServiceImpl implements QwirkleService {
             }
         }
 
-        Map<Position, BoardTile> board = new HashMap<>();
+        /*Map<Position, BoardTile> board = new HashMap<>();
         BoardTile[] temp = new BoardTile[]{
                 new BoardTile(new Position(0, 0), new Tile(Color.PURPLE, Shape.SQUARE)),
                 new BoardTile(new Position(1, 0), new Tile(Color.YELLOW, Shape.SQUARE)),
@@ -48,14 +48,14 @@ public class QwirkleServiceImpl implements QwirkleService {
         };
         for (var t : temp) {
             board.put(t.position(), t);
-        }
+        }*/
 
 
         return new GameState(
                 hand,
                 stack,
-                listFromMap(board),
-                getOpenPositions(board)
+                new ArrayList<>(),
+                new ArrayList<>()
         );
     }
 
@@ -102,6 +102,50 @@ public class QwirkleServiceImpl implements QwirkleService {
                 .toList();
     }
 
+
+    @Override
+    public List<HandInfo> validateHand(GameState gameState, List<Tile> selected) {
+        if(!isValidTiles(selected)) {
+            throw new InvalidOperationException("Invalid selected tiles");
+        }
+
+        MultiColor color = new MultiColor();
+        MultiShape shape = new MultiShape();
+        for(var tile : selected) {
+            color.addFlag(tile.color());
+            shape.addFlag(tile.shape());
+        }
+
+        List<HandInfo> handInfo = new ArrayList<>();
+        for(Tile tile: gameState.hand()) {
+            boolean valid = true;
+            if(!tile.isCompatible(color, shape)) {
+                valid = false;
+            }
+
+            handInfo.add(new HandInfo(tile, valid));
+        }
+
+        return handInfo;
+    }
+
+    private boolean isValidTiles(List<Tile> tiles) {
+        if(tiles.size() <= 1) {
+            return true;
+        }
+
+        for(int i = 0;i < tiles.size();i++) {
+            for(int j = 0;j < tiles.size();j++) {
+                if(i == j) continue;
+
+                if(!tiles.get(i).isCompatible(tiles.get(j))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     @Override
     public List<MoveGroup> getBestMoves(GameState gameState, int maxMoves) {

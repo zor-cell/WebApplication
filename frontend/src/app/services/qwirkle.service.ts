@@ -6,6 +6,7 @@ import {GameState} from "../dto/qwirkle/GameState";
 import {Move} from "../dto/qwirkle/Move";
 import {Tile} from "../dto/qwirkle/Tile";
 import {MoveGroup} from "../dto/qwirkle/MoveGroup";
+import {HandInfo} from "../dto/qwirkle/HandInfo";
 
 @Injectable({
     providedIn: 'root'
@@ -50,6 +51,10 @@ export class QwirkleService {
 
     clearHand(): Observable<GameState> {
         return this.httpClient.post<GameState>(this.baseUri + '/hand/clear', {});
+    }
+
+    validateHand(selected: Tile[]): Observable<HandInfo[]> {
+        return this.httpClient.post<HandInfo[]>(this.baseUri + '/hand/valid', selected);
     }
 
     makeMove(move: Move): Observable<GameState> {

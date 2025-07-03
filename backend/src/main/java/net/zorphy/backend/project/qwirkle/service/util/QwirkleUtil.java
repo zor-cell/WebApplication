@@ -15,6 +15,14 @@ public class QwirkleUtil {
 
         if (tiles.isEmpty()) {
             return moves;
+        } else if(board.isEmpty()) {
+            //only allow center as first position
+            for(Direction dir : Direction.values()) {
+                Move move = new Move(new Position(0, 0), dir, tiles, tiles.size());
+                moves.add(move);
+            }
+
+            return moves;
         }
 
         List<Position> legalPositions = getLegalPositions(board, tiles.getFirst());
@@ -23,7 +31,6 @@ public class QwirkleUtil {
             return legalPositions.stream()
                     .map(pos -> {
                         int score = scoreInDirections(board, pos, Direction.getPairs());
-                        ;
                         return new Move(pos, Direction.UP, tiles, score);
                     })
                     .toList();

@@ -76,6 +76,11 @@ public class QwirkleController {
         return gameState;
     }
 
+    @PostMapping("hand/valid")
+    public List<HandInfo> validateHand(HttpSession session, @Valid @RequestBody List<Tile> selected) {
+        return qwirkleService.validateHand(getGameState(session), selected);
+    }
+
     @PostMapping("move")
     public GameState makeMove(HttpSession session, @RequestBody Move move) {
         GameState gameState = qwirkleService.makeMove(getGameState(session), move);

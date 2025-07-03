@@ -15,4 +15,13 @@ public record Tile(
 
         return sameColorMissingShape || sameShapeMissingColor;
     }
+
+    public boolean isCompatible(Tile tile) {
+        //if the color is the same, the shape has to be different
+        boolean sameColorMissingShape = this.color.getValue() == tile.color.getValue() && this.shape.getValue() != tile.shape.getValue();
+        //if the shape is the same, the color has to be different
+        boolean sameShapeMissingColor = this.shape.getValue() == tile.shape.getValue() && this.color.getValue() != tile.color.getValue();
+
+        return sameColorMissingShape || sameShapeMissingColor;
+    }
 }
