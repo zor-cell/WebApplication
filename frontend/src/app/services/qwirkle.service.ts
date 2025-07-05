@@ -64,6 +64,10 @@ export class QwirkleService {
         const formData = new FormData();
         formData.append('file', image);
 
-        return this.httpClient.post<void>(this.baseUri + '/image', formData);
+        return this.httpClient.post<void>(this.baseUri + '/image/upload', formData);
+    }
+
+    confirmImage(): Observable<void> {
+        return this.httpClient.post<void>(this.baseUri + '/image/confirm', {});
     }
 }

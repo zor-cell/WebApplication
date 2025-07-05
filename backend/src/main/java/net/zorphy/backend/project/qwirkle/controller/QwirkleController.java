@@ -88,9 +88,14 @@ public class QwirkleController {
         return gameState;
     }
 
-    @PostMapping("image")
-    public void uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("image/upload")
+    public void uploadImage(HttpSession session, @RequestParam("file") MultipartFile file) throws IOException {
         qwirkleService.uploadImage(file.getBytes());
+    }
+
+    @PostMapping("image/confirm")
+    public void confirmImage(HttpSession session) {
+
     }
 
 

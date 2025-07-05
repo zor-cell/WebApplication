@@ -9,10 +9,7 @@ import net.zorphy.backend.project.qwirkle.dto.tile.BoardTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.SelectionTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.StackTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.Tile;
-import net.zorphy.backend.project.qwirkle.service.util.Combinatorics;
-import net.zorphy.backend.project.qwirkle.service.util.MultiColor;
-import net.zorphy.backend.project.qwirkle.service.util.MultiShape;
-import net.zorphy.backend.project.qwirkle.service.util.QwirkleUtil;
+import net.zorphy.backend.project.qwirkle.service.util.*;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -281,6 +278,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     public void uploadImage(byte[] file) {
         Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_COLOR);
         //LocalTests.parseImage(image);
+        OpenCVUtil.test(image);
     }
 
     private static MoveGroupInfo groupInfoFromMove(Move move) {
