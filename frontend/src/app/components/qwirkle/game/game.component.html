@@ -3,7 +3,7 @@
 @if (gameState) {
     <div class="game-container main-container">
         <div class="config">
-            <qwirkle-hand [hand]="gameState.hand" (selectTilesEvent)="selectedInHand($event)"
+            <qwirkle-hand [hand]="gameState.hand" [selectionTiles]="selectionInfo ? selectionInfo.tiles : null" (selectTilesEvent)="selectedInHand($event)"
                           (clearTilesEvent)="clearedHand()"></qwirkle-hand>
             <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
         </div>
@@ -47,7 +47,7 @@
             </ng-container>
 
             <!--valid move tiles-->
-            <ng-container *ngFor="let move of validMoves;let i = index">
+            <ng-container *ngFor="let move of selectionInfo?.moves;let i = index">
                 <div *ngIf="!(selectedMove && selectedMove.position.y == move.position.y && selectedMove.position.x == move.position.x)"
                      [ngStyle]="getValidMoveGroupStyle(move)"
                      (click)="chooseValidMove(i)"

@@ -5,13 +5,21 @@
     <div class="hand-container">
         <ng-container *ngFor="let tile of paddedHand;let i = index">
             @if (tile) {
-                <qwirkle-tile
-                        [tile]="tile"
-                        [tileSize]="tileSize"
-                        [tileText]="selected.includes(tile) ? selected.indexOf(tile) + 1 : null"
-                        (click)="tileSelected(i)"
-                        [class.selected]="selected.includes(tile)"
-                />
+                @if(selectionTiles && !selectionTiles[i].valid && !selected.includes(tile)) {
+                    <qwirkle-tile
+                            [tile]="tile"
+                            [tileSize]="tileSize"
+                            [isDisabled]="true"
+                    />
+                } @else {
+                    <qwirkle-tile
+                            [tile]="tile"
+                            [tileSize]="tileSize"
+                            [tileText]="selected.includes(tile) ? selected.indexOf(tile) + 1 : null"
+                            (click)="tileSelected(i)"
+                            [class.selected]="selected.includes(tile)"
+                    />
+                }
             } @else {
                 <div class="empty-tile"
                         [ngStyle]="{width: tileSize + 'px', height: tileSize + 'px'}">

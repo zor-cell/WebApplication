@@ -25,22 +25,17 @@ public class QwirkleController {
         this.qwirkleService = qwirkleService;
     }
 
-    @GetMapping("state")
-    public GameState getState(HttpSession session) {
-        return getGameState(session);
-    }
-
-    @GetMapping("solve")
-    public List<MoveGroup> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
-        return qwirkleService.getBestMoves(getGameState(session), maxMoves);
-    }
-
     @PostMapping("clear")
     public void clearState(HttpSession session) {
         //check for valid session
         getGameState(session);
 
         session.removeAttribute(sessionKey);
+    }
+
+    @GetMapping("state")
+    public GameState getState(HttpSession session) {
+        return getGameState(session);
     }
 
     @PostMapping("start")
@@ -55,17 +50,11 @@ public class QwirkleController {
         return gameState;
     }
 
-    @PostMapping("moves")
-    public List<MoveGroup> getValidMoves(HttpSession session, @RequestBody List<Tile> tiles) {
-        return qwirkleService.getValidMoves(getGameState(session), tiles);
-    }
 
-    @PostMapping("stack/draw")
-    public GameState drawTile(HttpSession session, @Valid @RequestBody Tile tile) {
-        GameState gameState = qwirkleService.drawTile(getGameState(session), tile);
-        session.setAttribute(sessionKey, gameState);
 
-        return gameState;
+    @GetMapping("solve")
+    public List<MoveGroup> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
+        return qwirkleService.getBestMoves(getGameState(session), maxMoves);
     }
 
     @PostMapping("hand/clear")
@@ -76,9 +65,17 @@ public class QwirkleController {
         return gameState;
     }
 
-    @PostMapping("hand/valid")
-    public List<HandInfo> validateHand(HttpSession session, @Valid @RequestBody List<Tile> selected) {
-        return qwirkleService.validateHand(getGameState(session), selected);
+    @PostMapping("hand/selection")
+    public SelectionInfo getSelectionInfo(HttpSession session, @Valid @RequestBody List<Tile> selected) {
+        return qwirkleService.selectInHand(getGameState(session), selected);
+    }
+
+    @PostMapping("stack/draw")
+    public GameState drawTile(HttpSession session, @Valid @RequestBody Tile tile) {
+        GameState gameState = qwirkleService.drawTile(getGameState(session), tile);
+        session.setAttribute(sessionKey, gameState);
+
+        return gameState;
     }
 
     @PostMapping("move")

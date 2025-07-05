@@ -59,7 +59,6 @@ public class QwirkleServiceImpl implements QwirkleService {
         );
     }
 
-    @Override
     public List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles) {
         List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
 
@@ -103,8 +102,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
 
-    @Override
-    public List<HandInfo> validateHand(GameState gameState, List<Tile> selected) {
+    public List<SelectionTile> validateHand(GameState gameState, List<Tile> selected) {
         if(!isValidTiles(selected)) {
             throw new InvalidOperationException("Invalid selected tiles");
         }
@@ -116,17 +114,24 @@ public class QwirkleServiceImpl implements QwirkleService {
             shape.addFlag(tile.shape());
         }
 
-        List<HandInfo> handInfo = new ArrayList<>();
+        List<SelectionTile> handInfo = new ArrayList<>();
         for(Tile tile: gameState.hand()) {
-            boolean valid = true;
-            if(!tile.isCompatible(color, shape)) {
-                valid = false;
-            }
+            boolean valid = tile.isCompatible(color, shape);
 
-            handInfo.add(new HandInfo(tile, valid));
+            handInfo.add(new SelectionTile(tile, valid));
         }
 
         return handInfo;
+    }
+
+    public SelectionInfo selectInHand(GameState gameState, List<Tile> selected) {
+        List<SelectionTile> tiles = validateHand(gameState, selected);
+        List<MoveGroup> moves = getValidMoves(gameState, selected);
+
+        return new SelectionInfo(
+                tiles,
+                moves
+        );
     }
 
     private boolean isValidTiles(List<Tile> tiles) {

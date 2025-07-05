@@ -5,15 +5,12 @@ import net.zorphy.backend.project.qwirkle.dto.*;
 import java.util.List;
 
 public interface QwirkleService {
-    List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles);
-
     List<MoveGroup> getBestMoves(GameState gameState, int maxMoves);
 
     GameState initGameState(List<Tile> hand);
 
     GameState drawTile(GameState gameState, Tile tile);
-
-    List<HandInfo> validateHand(GameState gameState, List<Tile> selected);
+    SelectionInfo selectInHand(GameState gameState, List<Tile> selected);
 
     GameState clearHand(GameState gameState);
 
