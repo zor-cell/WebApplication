@@ -67,14 +67,14 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public SelectionInfo selectInHand(GameState gameState, List<Tile> selected) {
+    public SelectionInfo selectInHand(GameState gameState, List<Tile> tiles) {
         //check if selected tiles are valid
-        if(!QwirkleUtil.isValidTiles(selected)) {
+        if(!QwirkleUtil.isValidTiles(tiles)) {
             throw new InvalidOperationException("Invalid selected tiles");
         }
 
         //get valid moves for selected tiles
-        List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), selected);
+        List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
 
         //accumulate move groups to group together moves from the same position (because score is irrelevant)
         Map<Position, MoveGroup> moveGroups = new HashMap<>();
@@ -101,7 +101,7 @@ public class QwirkleServiceImpl implements QwirkleService {
         //check which tiles in hand are valid with the selected tiles
         MultiColor color = new MultiColor();
         MultiShape shape = new MultiShape();
-        for(Tile tile : selected) {
+        for(Tile tile : tiles) {
             color.addFlag(tile.color());
             shape.addFlag(tile.shape());
         }

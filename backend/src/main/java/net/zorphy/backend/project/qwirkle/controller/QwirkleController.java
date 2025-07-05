@@ -32,7 +32,6 @@ public class QwirkleController {
     public void clearState(HttpSession session) {
         //check for valid session
         getGameState(session);
-
         session.removeAttribute(sessionKey);
     }
 
