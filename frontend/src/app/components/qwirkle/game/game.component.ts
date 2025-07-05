@@ -230,7 +230,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     private createState() {
-        this.qwirkleService.createState([]).subscribe(res => {
+        this.qwirkleService.createState().subscribe(res => {
             this.gameState = res;
 
             //calculate center in next tick

@@ -33,8 +33,8 @@ export class QwirkleService {
         });
     }
 
-    createState(hand: Tile[]): Observable<GameState> {
-        return this.httpClient.post<GameState>(this.baseUri + '/start', hand);
+    createState(): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/start', {});
     }
 
     //qwirkle management

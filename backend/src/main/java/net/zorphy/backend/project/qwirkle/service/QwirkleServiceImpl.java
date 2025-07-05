@@ -13,6 +13,10 @@ import net.zorphy.backend.project.qwirkle.service.util.Combinatorics;
 import net.zorphy.backend.project.qwirkle.service.util.MultiColor;
 import net.zorphy.backend.project.qwirkle.service.util.MultiShape;
 import net.zorphy.backend.project.qwirkle.service.util.QwirkleUtil;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class QwirkleServiceImpl implements QwirkleService {
     @Override
-    public GameState initGameState(List<Tile> hand) {
+    public GameState initGameState() {
         //initialise stack
         List<StackTile> stack = new ArrayList<>();
 
@@ -40,26 +44,8 @@ public class QwirkleServiceImpl implements QwirkleService {
             }
         }
 
-        /*Map<Position, BoardTile> board = new HashMap<>();
-        BoardTile[] temp = new BoardTile[]{
-                new BoardTile(new Position(0, 0), new Tile(Color.PURPLE, Shape.SQUARE)),
-                new BoardTile(new Position(1, 0), new Tile(Color.YELLOW, Shape.SQUARE)),
-                new BoardTile(new Position(2, 0), new Tile(Color.ORANGE, Shape.SQUARE)),
-                new BoardTile(new Position(3, 0), new Tile(Color.BLUE, Shape.SQUARE)),
-                new BoardTile(new Position(0, -1), new Tile(Color.RED, Shape.SQUARE)),
-                new BoardTile(new Position(-1, -1), new Tile(Color.RED, Shape.CIRCLE)),
-                new BoardTile(new Position(1, 1), new Tile(Color.YELLOW, Shape.STAR4)),
-                new BoardTile(new Position(2, 1), new Tile(Color.ORANGE, Shape.STAR4)),
-                new BoardTile(new Position(3, 1), new Tile(Color.BLUE, Shape.STAR4)),
-                new BoardTile(new Position(3, 2), new Tile(Color.BLUE, Shape.STAR8)),
-        };
-        for (var t : temp) {
-            board.put(t.position(), t);
-        }*/
-
-
         return new GameState(
-                hand,
+                new ArrayList<>(),
                 stack,
                 new ArrayList<>(),
                 new ArrayList<>()
@@ -293,7 +279,8 @@ public class QwirkleServiceImpl implements QwirkleService {
 
     @Override
     public void uploadImage(byte[] file) {
-
+        Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_COLOR);
+        //LocalTests.parseImage(image);
     }
 
     private static MoveGroupInfo groupInfoFromMove(Move move) {

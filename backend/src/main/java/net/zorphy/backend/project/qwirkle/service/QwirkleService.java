@@ -16,7 +16,7 @@ public interface QwirkleService {
     /**
      * Initialises the game state for the session.
      */
-    GameState initGameState(List<Tile> hand);
+    GameState initGameState();
 
     /**
      * Draws the given {@code tile} from the stack in the given {@code gameState}.

@@ -41,12 +41,12 @@ public class QwirkleController {
     }
 
     @PostMapping("start")
-    public GameState createState(HttpSession session, @Valid @RequestBody List<Tile> hand) {
+    public GameState createState(HttpSession session) {
         if (sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
-        GameState gameState = qwirkleService.initGameState(hand);
+        GameState gameState = qwirkleService.initGameState();
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
@@ -90,7 +90,6 @@ public class QwirkleController {
 
     @PostMapping("image")
     public void uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        Mat mat = Mat.eye(3, 3, CvType.CV_8UC1);
         qwirkleService.uploadImage(file.getBytes());
     }
 
