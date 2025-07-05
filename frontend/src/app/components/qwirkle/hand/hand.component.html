@@ -5,7 +5,7 @@
     <div class="hand-container">
         <ng-container *ngFor="let tile of paddedHand;let i = index">
             @if (tile) {
-                @if(selectionTiles && !selectionTiles[i].valid && !selected.includes(tile)) {
+                @if(selectionTiles && selectionTiles[i] && !selectionTiles[i].valid && !selected.includes(tile)) {
                     <qwirkle-tile
                             [tile]="tile"
                             [tileSize]="tileSize"

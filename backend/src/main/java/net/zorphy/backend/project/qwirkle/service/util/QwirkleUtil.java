@@ -17,9 +17,16 @@ public class QwirkleUtil {
             return moves;
         } else if(board.isEmpty()) {
             //only allow center as first position
-            for(Direction dir : Direction.values()) {
-                Move move = new Move(new Position(0, 0), dir, tiles, tiles.size());
+            if(tiles.size() == 1) {
+                //for only one tile only do one direction
+                Move move = new Move(new Position(0, 0), Direction.UP, tiles, tiles.size());
                 moves.add(move);
+            } else {
+                //for multiple tiles allow every direction
+                for(Direction dir : Direction.values()) {
+                    Move move = new Move(new Position(0, 0), dir, tiles, tiles.size());
+                    moves.add(move);
+                }
             }
 
             return moves;

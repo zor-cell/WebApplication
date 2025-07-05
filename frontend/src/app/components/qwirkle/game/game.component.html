@@ -22,6 +22,10 @@
             </qwirkle-tile>
 
             <!--open positions-->
+            <div *ngIf="gameState.board.length === 0"
+                 [ngStyle]="getTilePositionStyle({x: 0, y: 0})"
+                 class="board-tile open-position">
+            </div>
             <ng-container *ngFor="let posInfo of gameState.openPositions">
                 <div *ngIf="!posInfo.isDead"
                      [ngStyle]="getTilePositionStyle(posInfo.position)"
