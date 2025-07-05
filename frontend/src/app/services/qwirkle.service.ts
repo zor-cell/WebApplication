@@ -60,7 +60,10 @@ export class QwirkleService {
         return this.httpClient.post<GameState>(this.baseUri + '/move', move);
     }
 
-    uploadImage(image: string): Observable<void> {
-        return this.httpClient.post<void>(this.baseUri + '/image', image);
+    uploadImage(image: File): Observable<void> {
+        const formData = new FormData();
+        formData.append('file', image);
+
+        return this.httpClient.post<void>(this.baseUri + '/image', formData);
     }
 }

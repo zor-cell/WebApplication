@@ -14,6 +14,7 @@ import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
 import {PanContainerComponent} from "../../global/pan-container/pan-container.component";
 import {HandInfo} from "../../../dto/qwirkle/HandInfo";
 import {SelectionInfo} from "../../../dto/qwirkle/SelectionInfo";
+import {ImageInputComponent} from "../image-input/image-input.component";
 
 @Component({
     selector: 'qwirkle-game',
@@ -25,7 +26,8 @@ import {SelectionInfo} from "../../../dto/qwirkle/SelectionInfo";
         QwirkleTileComponent,
         NgForOf,
         NgStyle,
-        PanContainerComponent
+        PanContainerComponent,
+        ImageInputComponent
     ],
     templateUrl: './game.component.html',
     standalone: true,
@@ -157,6 +159,10 @@ export class QwirkleGameComponent implements OnInit {
         }
 
         return style;
+    }
+
+    image() {
+        navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}}).then()
     }
 
     private calculateCenter() {
