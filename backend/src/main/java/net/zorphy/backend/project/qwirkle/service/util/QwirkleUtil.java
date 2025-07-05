@@ -1,6 +1,9 @@
 package net.zorphy.backend.project.qwirkle.service.util;
 
 import net.zorphy.backend.project.qwirkle.dto.*;
+import net.zorphy.backend.project.qwirkle.dto.move.Move;
+import net.zorphy.backend.project.qwirkle.dto.tile.BoardTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.Tile;
 
 import java.util.*;
 
@@ -93,7 +96,29 @@ public class QwirkleUtil {
     }
 
     /**
+     * Computes all open position for the given {@code board}.
+     * An open position is a neighbor position of a board tile.
+     */
+    public static List<Position> getOpenPositions(Map<Position, BoardTile> board) {
+        Set<Position> freePositions = new HashSet<>();
+
+        //get all neighboring positions
+        for (Position pos : board.keySet()) {
+            for (Direction dir : Direction.values()) {
+                Position neighbor = pos.stepsInDirection(dir, 1);
+                if (!board.containsKey(neighbor)) {
+                    freePositions.add(neighbor);
+                }
+            }
+        }
+
+        return freePositions.stream().toList();
+    }
+
+    /**
      * Indicates whether a given {@code boardTile} is valid on a given {@code board}.
+     * A board tile is valid if for each direction pair ([UP, DOWN], [LEFT, RIGHT])
+     * the tile is compatible with all tiles in the directions.
      */
     public static boolean isValidMove(Map<Position, BoardTile> board, BoardTile boardTile) {
         if (board.isEmpty()) {
@@ -118,22 +143,10 @@ public class QwirkleUtil {
         return isValidInDirections(board, boardTile);
     }
 
-    public static List<Position> getOpenPositions(Map<Position, BoardTile> board) {
-        Set<Position> freePositions = new HashSet<>();
-
-        //get all neighboring positions
-        for (Position pos : board.keySet()) {
-            for (Direction dir : Direction.values()) {
-                Position neighbor = pos.stepsInDirection(dir, 1);
-                if (!board.containsKey(neighbor)) {
-                    freePositions.add(neighbor);
-                }
-            }
-        }
-
-        return freePositions.stream().toList();
-    }
-
+    /**
+     * Indicates whether the given {@code position} is a dead position on the given {@code board}.
+     * A dead position is a position that can never be will with a tile, no matter which color or shape.
+     */
     public static boolean isDeadPosition(Map<Position, BoardTile> board, Position position) {
         Direction[][] directionPairs = Direction.getPairs();
 
@@ -189,6 +202,27 @@ public class QwirkleUtil {
         }
 
         return false;
+    }
+
+    /**
+     * Indicates whether the given {@code tiles} are all compatible with each other.
+     */
+    public static boolean isValidTiles(List<Tile> tiles) {
+        if(tiles.size() <= 1) {
+            return true;
+        }
+
+        for(int i = 0;i < tiles.size();i++) {
+            for(int j = 0;j < tiles.size();j++) {
+                if(i == j) continue;
+
+                if(!tiles.get(i).isCompatible(tiles.get(j))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 

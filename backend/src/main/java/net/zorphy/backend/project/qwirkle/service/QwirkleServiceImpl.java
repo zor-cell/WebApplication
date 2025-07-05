@@ -2,6 +2,13 @@ package net.zorphy.backend.project.qwirkle.service;
 
 import net.zorphy.backend.project.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.project.qwirkle.dto.*;
+import net.zorphy.backend.project.qwirkle.dto.move.MoveGroupInfo;
+import net.zorphy.backend.project.qwirkle.dto.move.Move;
+import net.zorphy.backend.project.qwirkle.dto.move.MoveGroup;
+import net.zorphy.backend.project.qwirkle.dto.tile.BoardTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.SelectionTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.StackTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.Tile;
 import net.zorphy.backend.project.qwirkle.service.util.Combinatorics;
 import net.zorphy.backend.project.qwirkle.service.util.MultiColor;
 import net.zorphy.backend.project.qwirkle.service.util.MultiShape;
@@ -59,35 +66,27 @@ public class QwirkleServiceImpl implements QwirkleService {
         );
     }
 
-    public List<MoveGroup> getValidMoves(GameState gameState, List<Tile> tiles) {
-        List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), tiles);
+    @Override
+    public SelectionInfo selectInHand(GameState gameState, List<Tile> selected) {
+        //check if selected tiles are valid
+        if(!QwirkleUtil.isValidTiles(selected)) {
+            throw new InvalidOperationException("Invalid selected tiles");
+        }
+
+        //get valid moves for selected tiles
+        List<Move> moves = QwirkleUtil.getLegalMoves(mapFromList(gameState.board()), selected);
 
         //accumulate move groups to group together moves from the same position (because score is irrelevant)
         Map<Position, MoveGroup> moveGroups = new HashMap<>();
         for (Move move : moves) {
-            //get board tiles for rendering moves
-            List<BoardTile> boardTiles = new ArrayList<>();
-            for (int tileIndex = 0; tileIndex < move.tiles().size(); tileIndex++) {
-                Position position = move.position().stepsInDirection(move.direction(), tileIndex);
-                Tile tile = move.tiles().get(tileIndex);
-
-                BoardTile boardTile = new BoardTile(
-                        position,
-                        tile
-                );
-
-                boardTiles.add(boardTile);
-            }
-            GroupInfo groupInfo = new GroupInfo(
-                    move.direction(),
-                    boardTiles
-            );
+            MoveGroupInfo groupInfo = groupInfoFromMove(move);
 
             if (moveGroups.containsKey(move.position())) {
+                //add group info to group if exists
                 MoveGroup found = moveGroups.get(move.position());
-
                 found.groupInfos().add(groupInfo);
             } else {
+                //create first group for position
                 MoveGroup moveGroup = new MoveGroup(
                         move.position(),
                         move.tiles(),
@@ -96,60 +95,28 @@ public class QwirkleServiceImpl implements QwirkleService {
                 moveGroups.put(move.position(), moveGroup);
             }
         }
-
-        return moveGroups.values().stream()
+        List<MoveGroup> validMoves = moveGroups.values().stream()
                 .toList();
-    }
 
-
-    public List<SelectionTile> validateHand(GameState gameState, List<Tile> selected) {
-        if(!isValidTiles(selected)) {
-            throw new InvalidOperationException("Invalid selected tiles");
-        }
-
+        //check which tiles in hand are valid with the selected tiles
         MultiColor color = new MultiColor();
         MultiShape shape = new MultiShape();
-        for(var tile : selected) {
+        for(Tile tile : selected) {
             color.addFlag(tile.color());
             shape.addFlag(tile.shape());
         }
 
-        List<SelectionTile> handInfo = new ArrayList<>();
+        List<SelectionTile> selectionTiles = new ArrayList<>();
         for(Tile tile: gameState.hand()) {
             boolean valid = tile.isCompatible(color, shape);
 
-            handInfo.add(new SelectionTile(tile, valid));
+            selectionTiles.add(new SelectionTile(tile, valid));
         }
-
-        return handInfo;
-    }
-
-    public SelectionInfo selectInHand(GameState gameState, List<Tile> selected) {
-        List<SelectionTile> tiles = validateHand(gameState, selected);
-        List<MoveGroup> moves = getValidMoves(gameState, selected);
 
         return new SelectionInfo(
-                tiles,
-                moves
+                selectionTiles,
+                validMoves
         );
-    }
-
-    private boolean isValidTiles(List<Tile> tiles) {
-        if(tiles.size() <= 1) {
-            return true;
-        }
-
-        for(int i = 0;i < tiles.size();i++) {
-            for(int j = 0;j < tiles.size();j++) {
-                if(i == j) continue;
-
-                if(!tiles.get(i).isCompatible(tiles.get(j))) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     @Override
@@ -200,22 +167,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
         return moves.subList(0, Math.min(maxMoves, moves.size())).stream()
                 .map(m -> {
-                    List<BoardTile> boardTiles = new ArrayList<>();
-                    for (int i = 0; i < m.tiles().size(); i++) {
-                        Position pos = m.position().stepsInDirection(m.direction(), i);
-                        Tile tile = m.tiles().get(i);
-                        BoardTile boardTile = new BoardTile(
-                                pos,
-                                tile
-                        );
-                        boardTiles.add(boardTile);
-                    }
-
-                    GroupInfo groupInfo = new GroupInfo(
-                            m.direction(),
-                            boardTiles
-                    );
-
+                    MoveGroupInfo groupInfo = groupInfoFromMove(m);
                     return new MoveGroup(m.position(),
                             m.tiles(),
                             List.of(groupInfo)
@@ -342,6 +294,26 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public void uploadImage(byte[] file) {
 
+    }
+
+    private static MoveGroupInfo groupInfoFromMove(Move move) {
+        List<BoardTile> boardTiles = new ArrayList<>();
+        for (int tileIndex = 0; tileIndex < move.tiles().size(); tileIndex++) {
+            Position position = move.position().stepsInDirection(move.direction(), tileIndex);
+            Tile tile = move.tiles().get(tileIndex);
+
+            BoardTile boardTile = new BoardTile(
+                    position,
+                    tile
+            );
+
+            boardTiles.add(boardTile);
+        }
+
+        return new MoveGroupInfo(
+                move.direction(),
+                boardTiles
+        );
     }
 
     private static List<PositionInfo> getOpenPositions(Map<Position, BoardTile> board) {

@@ -1,11 +1,10 @@
 package net.zorphy.backend.project.qwirkle.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Size;
+import net.zorphy.backend.project.qwirkle.dto.tile.BoardTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.StackTile;
+import net.zorphy.backend.project.qwirkle.dto.tile.Tile;
 
 import java.util.List;
-import java.util.Map;
 
 public record GameState(
         List<Tile> hand,

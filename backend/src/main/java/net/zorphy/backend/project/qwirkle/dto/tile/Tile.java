@@ -1,5 +1,7 @@
-package net.zorphy.backend.project.qwirkle.dto;
+package net.zorphy.backend.project.qwirkle.dto.tile;
 
+import net.zorphy.backend.project.qwirkle.dto.Color;
+import net.zorphy.backend.project.qwirkle.dto.Shape;
 import net.zorphy.backend.project.qwirkle.service.util.MultiColor;
 import net.zorphy.backend.project.qwirkle.service.util.MultiShape;
 
