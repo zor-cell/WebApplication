@@ -24,7 +24,6 @@ public class QwirkleController {
     private final QwirkleService qwirkleService;
 
     public QwirkleController(QwirkleService qwirkleService) {
-        OpenCV.loadLocally();
         this.qwirkleService = qwirkleService;
     }
 

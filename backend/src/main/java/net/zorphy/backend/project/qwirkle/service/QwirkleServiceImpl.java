@@ -10,10 +10,10 @@ import net.zorphy.backend.project.qwirkle.dto.tile.SelectionTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.StackTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.Tile;
 import net.zorphy.backend.project.qwirkle.service.util.*;
+import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class QwirkleServiceImpl implements QwirkleService {
+    public QwirkleServiceImpl() {
+        OpenCV.loadLocally();
+    }
+
     @Override
     public GameState initGameState() {
         //initialise stack
@@ -278,7 +282,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     public void uploadImage(byte[] file) {
         Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_COLOR);
         //LocalTests.parseImage(image);
-        OpenCVUtil.test(image);
+        OpenCVUtil.parseImage(image);
     }
 
     private static MoveGroupInfo groupInfoFromMove(Move move) {
