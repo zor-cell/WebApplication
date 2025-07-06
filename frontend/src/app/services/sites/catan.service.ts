@@ -50,8 +50,14 @@ export class CatanService {
             }));
     }
 
-    save(saveGameState: SaveGameState) {
-        return this.httpClient.post<GameDetails>(this.baseUri + '/save', saveGameState).pipe(
+    save(saveGameState: SaveGameState, imageFile: File | null = null) {
+        const formData = new FormData();
+        formData.append('gameState', new Blob([JSON.stringify(saveGameState)], { type: 'application/json' }));
+        if (imageFile) {
+            formData.append('image', imageFile, imageFile.name);
+        }
+
+        return this.httpClient.post<GameDetails>(this.baseUri + '/save', formData).pipe(
             tap(() => {
                 this.globals.handleSuccess('Saved session data');
             }));

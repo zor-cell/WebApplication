@@ -23,6 +23,7 @@ export class CatanSavePopupComponent implements OnInit {
     saveForm!: FormGroup;
 
     @Input({required: true}) teams!: Team[];
+    imageFile: File | null = null;
 
     constructor(private popupService: PopupService,
                 private catanService: CatanService,
@@ -49,6 +50,15 @@ export class CatanSavePopupComponent implements OnInit {
         );
     }
 
+    onFileChanged(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if(!input.files?.length) return;
+
+        if(input.files) {
+            this.imageFile = input.files![0];
+        }
+    }
+
     private callback(result: PopupResultType) {
         if (result === PopupResultType.SUBMIT) {
             this.saveGame();
@@ -67,7 +77,7 @@ export class CatanSavePopupComponent implements OnInit {
             teams: teamState
         }
 
-        this.catanService.save(gameState).subscribe({
+        this.catanService.save(gameState, this.imageFile).subscribe({
             next: res => {
                 this.saveForm.reset();
             }

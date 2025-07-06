@@ -46,10 +46,11 @@ public class Game {
     public Game() {
     }
 
-    public Game(LocalDateTime playedAt, Duration duration, GameType gameType, Object gameState, Object result, Set<Player> players) {
+    public Game(LocalDateTime playedAt, Duration duration, GameType gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;
         this.duration = duration;
         this.gameType = gameType;
+        this.imageUrl = imageUrl;
         this.gameState = gameState;
         this.result = result;
         this.players = players;

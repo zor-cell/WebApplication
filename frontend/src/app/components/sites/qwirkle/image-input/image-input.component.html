@@ -1,5 +1,5 @@
 <div class="file-container">
-    <input hidden #cameraInput type="file" accept="image/*" capture="environment">
+    <input hidden #cameraInput type="file" accept="image/*" capture="environment" (change)="onFileChanged($event)">
     <input hidden #galleryInput type="file" accept="image/*" (change)="onFileChanged($event)">
 
     <button class="btn btn-outline-primary" (click)="galleryInput.click()" (change)="onFileChanged($event)">

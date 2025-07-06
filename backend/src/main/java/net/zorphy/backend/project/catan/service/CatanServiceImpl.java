@@ -282,10 +282,13 @@ public class CatanServiceImpl implements CatanService {
                 .map(playerRepository::findByName)
                 .collect(Collectors.toSet());
 
+        String path = fileStorageService.saveFile(image);
+
         Game toSave = new Game(
                 LocalDateTime.now(),
                 Duration.between(gameState.startTime(), LocalDateTime.now()),
                 GameType.CATAN,
+                path,
                 gameState,
                 saveGameState,
                 players

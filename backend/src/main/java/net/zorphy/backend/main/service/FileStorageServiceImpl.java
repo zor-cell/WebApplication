@@ -37,6 +37,8 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public String saveFile(MultipartFile file) {
+        if(file == null) return null;
+
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
