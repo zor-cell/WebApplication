@@ -65,6 +65,8 @@ export class CatanSavePopupComponent implements OnInit {
         } else if (result === PopupResultType.CANCEL) {
             this.saveForm.reset();
         }
+
+        this.imageFile = null;
     }
 
     private saveGame() {
