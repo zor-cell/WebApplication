@@ -9,8 +9,10 @@ import net.zorphy.backend.main.entity.Player;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
+import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.project.catan.dto.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -24,11 +26,13 @@ public class CatanServiceImpl implements CatanService {
     private final GameMapper gameMapper;
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
+    private final FileStorageService fileStorageService;
 
-    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository) {
+    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository, FileStorageService fileStorageService) {
         this.gameMapper = gameMapper;
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     private List<DicePair> initClassicCards() {
@@ -270,7 +274,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameDetails saveGame(GameState gameState, SaveGameState saveGameState) {
+    public GameDetails saveGame(GameState gameState, SaveGameState saveGameState, MultipartFile image) {
         //get all players in team from db
         Set<Player> players = gameState.gameConfig().teams().stream()
                 .flatMap(team -> team.players().stream())

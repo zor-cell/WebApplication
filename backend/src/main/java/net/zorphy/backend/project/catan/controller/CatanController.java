@@ -9,9 +9,12 @@ import net.zorphy.backend.project.catan.dto.GameConfig;
 import net.zorphy.backend.project.catan.dto.GameState;
 import net.zorphy.backend.project.catan.dto.SaveGameState;
 import net.zorphy.backend.project.catan.service.CatanService;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -72,9 +75,11 @@ public class CatanController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PostMapping("save")
-    public GameDetails saveGame(HttpSession session, @Valid @RequestBody SaveGameState saveGameState) {
-        return catanService.saveGame(getGameState(session), saveGameState);
+    @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public GameDetails saveGame(HttpSession session,
+                                @RequestPart("gameState") @Valid SaveGameState saveGameState,
+                                @RequestPart(value = "image", required = false) MultipartFile image) {
+        return catanService.saveGame(getGameState(session), saveGameState, image);
     }
 
 
