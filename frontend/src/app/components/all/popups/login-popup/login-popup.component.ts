@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {UserLoginDetails} from "../../../../dto/all/UserLoginDetails";
-import {AuthService} from "../../../../services/auth.service";
+import {AuthService} from "../../../../services/all/auth.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 
 @Component({

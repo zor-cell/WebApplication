@@ -2,6 +2,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     margin-top: 3rem;
+}
+
+.game-row {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+    border: 1px solid gray;
+}
+
+.game-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 1rem;
+    padding: 0.2rem;
+
+    border-right: 1px solid gray;
+}
+
+.game-cell:last-child {
+    border-right: none;
 }

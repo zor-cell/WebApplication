@@ -3,7 +3,7 @@ import {Tile} from "../../../../dto/sites/qwirkle/Tile";
 import {Color} from "../../../../dto/sites/qwirkle/Color";
 import {SafeHtml} from "@angular/platform-browser";
 import {AsyncPipe, NgClass, NgIf, NgStyle} from "@angular/common";
-import {ImageCacheService} from "../../../../services/image-cache.service";
+import {ImageCacheService} from "../../../../services/all/image-cache.service";
 import {Observable} from "rxjs";
 
 @Component({

@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import net.zorphy.backend.main.dto.game.GameType;
 import org.hibernate.annotations.Type;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -18,6 +20,8 @@ public class Game {
     private UUID id;
 
     private LocalDate playedAt;
+
+    private Duration duration;
 
     @Enumerated(EnumType.STRING)
     private GameType gameType;
@@ -63,6 +67,14 @@ public class Game {
 
     public void setPlayedAt(LocalDate playedAt) {
         this.playedAt = playedAt;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
     public GameType getGameType() {

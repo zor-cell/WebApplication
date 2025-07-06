@@ -13,7 +13,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component";
 import {Router} from "@angular/router";
 import {Team} from "../../../../dto/all/Team";
-import {AuthService} from "../../../../services/auth.service";
+import {AuthService} from "../../../../services/all/auth.service";
 import {GameMode} from "../../../../dto/sites/catan/GameMode";
 
 @Component({

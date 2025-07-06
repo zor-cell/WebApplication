@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Globals} from "../classes/globals";
+import {Globals} from "../../classes/globals";
 import {Observable, tap} from "rxjs";
-import {UserLoginDetails} from "../dto/all/UserLoginDetails";
-import {UserDetails} from "../dto/all/UserDetails";
-import {Role} from "../dto/all/Role";
+import {UserLoginDetails} from "../../dto/all/UserLoginDetails";
+import {UserDetails} from "../../dto/all/UserDetails";
+import {Role} from "../../dto/all/Role";
 
 @Injectable({
     providedIn: 'root'

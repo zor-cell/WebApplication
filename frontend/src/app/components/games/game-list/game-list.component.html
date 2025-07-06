@@ -1,3 +1,23 @@
 <div class="main-container games-container">
-    <p>test</p>
+    <div class="game-row">
+        <div class="game-cell"><b>Game Type</b></div>
+        <div class="game-cell"><b>Date</b></div>
+        <div class="game-cell"><b>Duration</b></div>
+        <div class="game-cell"><b>Players</b></div>
+        <div class="game-cell"><b>Actions</b></div>
+    </div>
+    <div *ngFor="let game of games" class="game-row">
+        <div class="game-cell">{{game.gameType}}</div>
+        <div class="game-cell">{{game.playedAt | date}}</div>
+        <div class="game-cell">{{game.duration}}</div>
+        <div class="game-cell">{{game.players.length}}</div>
+        <div class="game-cell game-actions">
+            <button class="btn btn-sm btn-primary">
+                <i class="bi bi-info-circle"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-warning">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+        </div>
+    </div>
 </div>

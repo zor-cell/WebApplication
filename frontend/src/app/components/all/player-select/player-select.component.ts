@@ -15,7 +15,7 @@ import {
 import {Team} from "../../../dto/all/Team";
 import {PopupDialogComponent} from "../popups/popup-dialog/popup-dialog.component";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
-import {AuthService} from "../../../services/auth.service";
+import {AuthService} from "../../../services/all/auth.service";
 
 @Component({
     selector: 'app-player-select',

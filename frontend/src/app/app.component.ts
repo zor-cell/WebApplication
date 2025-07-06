@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {AuthService} from "./services/auth.service";
+import {AuthService} from "./services/all/auth.service";
 import {Globals} from "./classes/globals";
 import {LoginPopupComponent} from "./components/all/popups/login-popup/login-popup.component";
 
