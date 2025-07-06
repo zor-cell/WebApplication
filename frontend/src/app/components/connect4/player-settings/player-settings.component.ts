@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlayerConfig, Version} from "../../../dto/connect4/data";
-import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
+import {SliderCheckboxComponent} from "../../all/slider-checkbox/slider-checkbox.component";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 

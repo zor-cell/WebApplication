@@ -6,13 +6,13 @@ import {NgForOf} from "@angular/common";
 import {ProjectCardComponent} from "../project-card/project-card.component";
 
 @Component({
-    selector: 'app-projects',
+    selector: 'project-list',
     imports: [NgForOf, ProjectCardComponent],
-    templateUrl: './projects.component.html',
+    templateUrl: './project-list.component.html',
     standalone: true,
-    styleUrl: './projects.component.css'
+    styleUrl: './project-list.component.css'
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectListComponent implements OnInit {
     projects!: ProjectMetadata[];
 
     constructor(private globals: Globals, private projectService: ProjectService) {

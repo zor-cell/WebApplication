@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SliderCheckboxComponent} from "../../global/slider-checkbox/slider-checkbox.component";
+import {SliderCheckboxComponent} from "../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {GameConfig} from "../../../dto/catan/GameConfig";
 import {CatanService} from "../../../services/catan.service";
-import {PlayerSelectComponent} from "../../global/player-select/player-select.component";
+import {PlayerSelectComponent} from "../../all/player-select/player-select.component";
 import {Router} from "@angular/router";
-import {MainHeaderComponent} from "../../global/main-header/main-header.component";
+import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {ProjectService} from "../../../services/project.service";
 import {ProjectMetadata} from "../../../dto/projects/responses";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";

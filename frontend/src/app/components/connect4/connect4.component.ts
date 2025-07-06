@@ -7,7 +7,7 @@ import {GameState, PlayerConfig} from "../../dto/connect4/data";
 import {Globals} from "../../classes/globals";
 import {PlayerSettingsComponent} from "./player-settings/player-settings.component";
 import {DelayLoader} from "../../classes/delay-loader";
-import {MainHeaderComponent} from "../global/main-header/main-header.component";
+import {MainHeaderComponent} from "../all/main-header/main-header.component";
 
 @Component({
     selector: 'app-connect4',

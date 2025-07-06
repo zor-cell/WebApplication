@@ -6,7 +6,7 @@ import {CatanService} from "../../../services/catan.service";
 import {Globals} from "../../../classes/globals";
 import {CatanDiceRollComponent} from "../dice-roll/dice-roll.component";
 import {DiceRoll} from "../../../dto/catan/DiceRoll";
-import {MainHeaderComponent} from "../../global/main-header/main-header.component";
+import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {BaseChartDirective} from "ng2-charts";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {ReactiveFormsModule} from "@angular/forms";

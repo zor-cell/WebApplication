@@ -4,7 +4,7 @@ import {NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
-    selector: 'app-project-card',
+    selector: 'project-card',
     imports: [
         NgIf,
         RouterLink

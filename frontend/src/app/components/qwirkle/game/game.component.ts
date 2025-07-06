@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
-import {MainHeaderComponent} from "../../global/main-header/main-header.component";
+import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {QwirkleService} from "../../../services/qwirkle.service";
 import {GameState} from "../../../dto/qwirkle/GameState";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
@@ -11,7 +11,7 @@ import {Position} from "../../../dto/global/Position";
 import {Move} from "../../../dto/qwirkle/Move";
 import {Direction} from "../../../dto/qwirkle/Direction";
 import {MoveGroup} from "../../../dto/qwirkle/MoveGroup";
-import {PanContainerComponent} from "../../global/pan-container/pan-container.component";
+import {PanContainerComponent} from "../../all/pan-container/pan-container.component";
 import {HandInfo} from "../../../dto/qwirkle/HandInfo";
 import {SelectionInfo} from "../../../dto/qwirkle/SelectionInfo";
 import {ImageInputComponent} from "../image-input/image-input.component";

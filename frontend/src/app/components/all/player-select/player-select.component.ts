@@ -13,7 +13,7 @@ import {
     moveItemInArray
 } from "@angular/cdk/drag-drop";
 import {Team} from "../../../dto/global/Team";
-import {PopupDialogComponent} from "../popups/popup-dialog.component";
+import {PopupDialogComponent} from "../popups/popup-dialog/popup-dialog.component";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 import {AuthService} from "../../../services/auth.service";
 

@@ -4,13 +4,13 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
-import {MainHeaderComponent} from "../../global/main-header/main-header.component";
+import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {CatanUpdatePopupComponent} from "../../catan/popups/update-popup/update-popup.component";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {AuthService} from "../../../services/auth.service";
 
 @Component({
-    selector: 'app-project-info',
+    selector: 'project-info',
     imports: [
         NgIf,
         RouterLink,
