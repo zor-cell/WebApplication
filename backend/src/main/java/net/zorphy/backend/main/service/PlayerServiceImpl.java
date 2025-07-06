@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.PlayerDetails;
+import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Player;
 import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.PlayerMapper;

@@ -1,8 +1,8 @@
 package net.zorphy.backend.main.mapper;
 
-import net.zorphy.backend.main.dto.UserDetails;
+import net.zorphy.backend.main.dto.user.UserDetails;
 import net.zorphy.backend.main.entity.User;
-import net.zorphy.backend.main.enums.Role;
+import net.zorphy.backend.main.dto.user.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

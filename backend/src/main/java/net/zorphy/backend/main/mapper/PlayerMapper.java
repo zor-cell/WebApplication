@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.mapper;
 
-import net.zorphy.backend.main.dto.PlayerDetails;
+import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Player;
 import org.mapstruct.Mapper;
 

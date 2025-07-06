@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProjectDetails} from "../../../dto/projects/responses";
+import {ProjectDetails} from "../../../dto/projects/ProjectDetails";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
-import {CatanUpdatePopupComponent} from "../../catan/popups/update-popup/update-popup.component";
+import {CatanUpdatePopupComponent} from "../../sites/catan/popups/update-popup/update-popup.component";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {AuthService} from "../../../services/auth.service";
 

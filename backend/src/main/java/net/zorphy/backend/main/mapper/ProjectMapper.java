@@ -1,8 +1,8 @@
 package net.zorphy.backend.main.mapper;
 
 import net.zorphy.backend.main.component.FileContentReader;
-import net.zorphy.backend.main.dto.ProjectDetails;
-import net.zorphy.backend.main.dto.ProjectMetadata;
+import net.zorphy.backend.main.dto.project.ProjectDetails;
+import net.zorphy.backend.main.dto.project.ProjectMetadata;
 import net.zorphy.backend.main.entity.Project;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;

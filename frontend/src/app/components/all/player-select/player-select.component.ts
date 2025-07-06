@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {Globals} from "../../../classes/globals";
-import {PlayerDetails} from "../../../dto/global/PlayerDetails";
+import {PlayerDetails} from "../../../dto/all/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
@@ -12,7 +12,7 @@ import {
     CdkDropListGroup,
     moveItemInArray
 } from "@angular/cdk/drag-drop";
-import {Team} from "../../../dto/global/Team";
+import {Team} from "../../../dto/all/Team";
 import {PopupDialogComponent} from "../popups/popup-dialog/popup-dialog.component";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 import {AuthService} from "../../../services/auth.service";

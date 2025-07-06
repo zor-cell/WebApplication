@@ -2,7 +2,7 @@ package net.zorphy.backend.project.catan.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import net.zorphy.backend.main.dto.TeamDetails;
+import net.zorphy.backend.main.dto.player.TeamDetails;
 
 public record SaveTeamState(
         @Valid

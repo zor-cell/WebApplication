@@ -2,9 +2,9 @@ import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {UserLoginDetails} from "../../../../dto/global/UserLoginDetails";
+import {UserLoginDetails} from "../../../../dto/all/UserLoginDetails";
 import {AuthService} from "../../../../services/auth.service";
-import {PopupResultType} from "../../../../dto/global/PopupResultType";
+import {PopupResultType} from "../../../../dto/all/PopupResultType";
 
 @Component({
     selector: 'app-login-popup',

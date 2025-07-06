@@ -1,11 +1,11 @@
 package net.zorphy.backend.project.catan.service;
 
-import net.zorphy.backend.main.dto.GameDetails;
-import net.zorphy.backend.main.dto.PlayerDetails;
-import net.zorphy.backend.main.dto.TeamDetails;
+import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.player.PlayerDetails;
+import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.entity.Player;
-import net.zorphy.backend.main.enums.GameType;
+import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;

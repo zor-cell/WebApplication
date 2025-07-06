@@ -3,7 +3,7 @@ package net.zorphy.backend.project.catan.service;
 import net.zorphy.backend.project.catan.dto.GameConfig;
 import net.zorphy.backend.project.catan.dto.GameState;
 import net.zorphy.backend.project.catan.dto.SaveGameState;
-import net.zorphy.backend.main.dto.GameDetails;
+import net.zorphy.backend.main.dto.game.GameDetails;
 
 public interface CatanService {
     GameState initGameState(GameConfig gameConfig);

@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.GameDetails;
+import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import org.springframework.stereotype.Service;

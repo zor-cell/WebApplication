@@ -2,9 +2,9 @@ import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {PlayerDetails} from "../../../../dto/global/PlayerDetails";
+import {PlayerDetails} from "../../../../dto/all/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
-import {PopupResultType} from "../../../../dto/global/PopupResultType";
+import {PopupResultType} from "../../../../dto/all/PopupResultType";
 
 @Component({
     selector: 'app-new-player-popup',

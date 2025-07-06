@@ -1,7 +1,7 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.ProjectDetails;
-import net.zorphy.backend.main.dto.ProjectMetadata;
+import net.zorphy.backend.main.dto.project.ProjectDetails;
+import net.zorphy.backend.main.dto.project.ProjectMetadata;
 
 import java.util.List;
 

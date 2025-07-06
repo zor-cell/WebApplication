@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
-import {PlayerDetails} from "../dto/global/PlayerDetails";
+import {PlayerDetails} from "../dto/all/PlayerDetails";
 
 @Injectable({
     providedIn: 'root'

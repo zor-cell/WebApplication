@@ -2,7 +2,7 @@ package net.zorphy.backend.main.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-import net.zorphy.backend.main.enums.GameType;
+import net.zorphy.backend.main.dto.game.GameType;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDate;

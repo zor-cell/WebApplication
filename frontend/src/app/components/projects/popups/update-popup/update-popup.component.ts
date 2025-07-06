@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
-import {PopupResultType} from "../../../../dto/global/PopupResultType";
+import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";
-import {ProjectDetails} from "../../../../dto/projects/responses";
+import {ProjectDetails} from "../../../../dto/projects/ProjectDetails";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({

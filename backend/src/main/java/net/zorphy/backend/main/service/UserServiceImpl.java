@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.UserDetails;
+import net.zorphy.backend.main.dto.user.UserDetails;
 import net.zorphy.backend.main.entity.User;
 import net.zorphy.backend.main.mapper.UserMapper;
 import net.zorphy.backend.main.repository.UserRepository;

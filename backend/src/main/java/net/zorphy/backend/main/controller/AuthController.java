@@ -2,7 +2,7 @@ package net.zorphy.backend.main.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import net.zorphy.backend.main.dto.UserLoginDetails;
+import net.zorphy.backend.main.dto.user.UserLoginDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

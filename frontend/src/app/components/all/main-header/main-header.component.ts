@@ -1,7 +1,7 @@
 import {Component, Input, TemplateRef} from '@angular/core';
 import {Location, NgIf, NgTemplateOutlet} from "@angular/common";
 import {RouterLink} from "@angular/router";
-import {ProjectMetadata} from "../../../dto/projects/responses";
+import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
 
 @Component({
     selector: 'app-project-header',

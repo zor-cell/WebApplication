@@ -1,7 +1,7 @@
 package net.zorphy.backend.main.entity;
 
 import jakarta.persistence.*;
-import net.zorphy.backend.main.enums.Role;
+import net.zorphy.backend.main.dto.user.Role;
 
 import java.util.Objects;
 import java.util.UUID;

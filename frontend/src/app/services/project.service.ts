@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
-import {ProjectDetails, ProjectMetadata} from "../dto/projects/responses";
+import {ProjectMetadata} from "../dto/projects/ProjectMetadata";
+import {ProjectDetails} from "../dto/projects/ProjectDetails";
 
 @Injectable({
     providedIn: 'root'
