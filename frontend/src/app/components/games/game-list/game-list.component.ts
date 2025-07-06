@@ -1,7 +1,4 @@
-import { Component } from '@angular/core';
-import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
-import {Globals} from "../../../classes/globals";
-import {ProjectService} from "../../../services/project.service";
+import {Component} from '@angular/core';
 import {GameService} from "../../../services/game.service";
 import {GameDetails} from "../../../dto/games/GameDetails";
 import {DatePipe, NgForOf} from "@angular/common";

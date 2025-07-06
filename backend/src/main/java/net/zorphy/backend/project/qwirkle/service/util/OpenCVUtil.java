@@ -1,6 +1,5 @@
 package net.zorphy.backend.project.qwirkle.service.util;
 
-import net.zorphy.backend.project.qwirkle.dto.Shape;
 import nu.pattern.OpenCV;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;

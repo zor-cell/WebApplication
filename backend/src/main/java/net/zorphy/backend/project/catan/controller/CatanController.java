@@ -2,13 +2,13 @@ package net.zorphy.backend.project.catan.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.project.catan.dto.DiceRoll;
 import net.zorphy.backend.project.catan.dto.GameConfig;
 import net.zorphy.backend.project.catan.dto.GameState;
 import net.zorphy.backend.project.catan.dto.SaveGameState;
 import net.zorphy.backend.project.catan.service.CatanService;
-import net.zorphy.backend.main.dto.game.GameDetails;
-import net.zorphy.backend.main.exception.InvalidSessionException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 

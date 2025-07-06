@@ -1,8 +1,6 @@
 package net.zorphy.backend.project.qwirkle.dto;
 
 
-import java.util.EnumSet;
-
 public enum Color {
     ORANGE(1),
     PURPLE(1 << 1),

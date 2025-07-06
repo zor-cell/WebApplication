@@ -1,6 +1,7 @@
 package net.zorphy.backend.project.qwirkle.service;
 
-import net.zorphy.backend.project.qwirkle.dto.*;
+import net.zorphy.backend.project.qwirkle.dto.GameState;
+import net.zorphy.backend.project.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.project.qwirkle.dto.move.Move;
 import net.zorphy.backend.project.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.project.qwirkle.dto.tile.Tile;

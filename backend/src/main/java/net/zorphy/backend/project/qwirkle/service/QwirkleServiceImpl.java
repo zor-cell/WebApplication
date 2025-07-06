@@ -2,9 +2,9 @@ package net.zorphy.backend.project.qwirkle.service;
 
 import net.zorphy.backend.project.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.project.qwirkle.dto.*;
-import net.zorphy.backend.project.qwirkle.dto.move.MoveGroupInfo;
 import net.zorphy.backend.project.qwirkle.dto.move.Move;
 import net.zorphy.backend.project.qwirkle.dto.move.MoveGroup;
+import net.zorphy.backend.project.qwirkle.dto.move.MoveGroupInfo;
 import net.zorphy.backend.project.qwirkle.dto.tile.BoardTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.SelectionTile;
 import net.zorphy.backend.project.qwirkle.dto.tile.StackTile;

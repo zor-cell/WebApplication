@@ -1,9 +1,5 @@
 package net.zorphy.backend.project.catan.dto;
 
-import jakarta.validation.constraints.Min;
-
-import java.util.Objects;
-
 public record DicePair(
         int dice1,
 

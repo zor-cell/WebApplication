@@ -1,8 +1,8 @@
 package net.zorphy.backend.config;
 
-import net.zorphy.backend.project.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.main.exception.NotFoundException;
+import net.zorphy.backend.project.connect4.exception.InvalidOperationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
