@@ -11,6 +11,7 @@ import net.zorphy.backend.project.qwirkle.service.QwirkleService;
 import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,9 +88,9 @@ public class QwirkleController {
         return gameState;
     }
 
-    @PostMapping("image/upload")
-    public void uploadImage(HttpSession session, @RequestParam("file") MultipartFile file) throws IOException {
-        qwirkleService.uploadImage(file.getBytes());
+    @PostMapping(value = "image/upload", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] uploadImage(HttpSession session, @RequestParam("file") MultipartFile file) throws IOException {
+        return qwirkleService.uploadImage(file.getBytes());
     }
 
     @PostMapping("image/confirm")

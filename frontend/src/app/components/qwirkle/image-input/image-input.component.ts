@@ -13,7 +13,8 @@ import {QwirkleService} from "../../../services/qwirkle.service";
   styleUrl: './image-input.component.css'
 })
 export class ImageInputComponent {
-  selectedFile: File | null = null;
+  originalFile: File | null = null;
+  processedFileUrl: string | null = null;
 
   constructor(private qwirkleService: QwirkleService) {
   }
@@ -23,10 +24,18 @@ export class ImageInputComponent {
     if(!input.files?.length) return;
 
     if(input.files) {
-      const file = input.files![0];
-      this.qwirkleService.uploadImage(file).subscribe(res => {
-
+      this.originalFile = input.files![0];
+      this.qwirkleService.uploadImage(this.originalFile).subscribe(res => {
+        this.createImageFromBlob(res);
       });
     }
+  }
+
+  private createImageFromBlob(blob: Blob) {
+    if(this.processedFileUrl) {
+      URL.revokeObjectURL(this.processedFileUrl);
+    }
+
+    this.processedFileUrl = URL.createObjectURL(blob);
   }
 }

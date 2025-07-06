@@ -7,3 +7,7 @@
 
     padding: 2rem;
 }
+
+.file-image {
+    object-fit: contain;
+}

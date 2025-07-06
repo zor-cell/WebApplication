@@ -23,7 +23,7 @@ public class OpenCVUtil {
         parseImage(image);
     }
 
-    public static void parseImage(Mat image) {
+    public static Mat parseImage(Mat image) {
         saveImage("original", image);
 
         Mat boosted = boostColors(image);
@@ -48,6 +48,8 @@ public class OpenCVUtil {
         //find contours
         Mat contoured = findContours(closed, boosted);
         saveImage("contoured", contoured);
+
+        return contoured;
     }
 
     private static Mat findContours(Mat closed, Mat boosted) {

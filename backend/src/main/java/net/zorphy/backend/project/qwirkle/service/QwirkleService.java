@@ -38,5 +38,5 @@ public interface QwirkleService {
      */
     GameState makeMove(GameState gameState, Move move);
 
-    void uploadImage(byte[] file);
+    byte[] uploadImage(byte[] file);
 }

@@ -60,11 +60,13 @@ export class QwirkleService {
         return this.httpClient.post<GameState>(this.baseUri + '/move', move);
     }
 
-    uploadImage(image: File): Observable<void> {
+    uploadImage(image: File): Observable<Blob> {
         const formData = new FormData();
         formData.append('file', image);
 
-        return this.httpClient.post<void>(this.baseUri + '/image/upload', formData);
+        return this.httpClient.post<Blob>(this.baseUri + '/image/upload', formData, {
+            responseType: 'blob' as 'json'
+        }) as Observable<Blob>;
     }
 
     confirmImage(): Observable<void> {

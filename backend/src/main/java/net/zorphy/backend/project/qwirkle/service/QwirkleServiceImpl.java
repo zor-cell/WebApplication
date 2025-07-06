@@ -279,10 +279,14 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public void uploadImage(byte[] file) {
+    public byte[] uploadImage(byte[] file) {
         Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_COLOR);
-        //LocalTests.parseImage(image);
-        OpenCVUtil.parseImage(image);
+        Mat processed = OpenCVUtil.parseImage(image);
+
+        MatOfByte buffer = new MatOfByte();
+        Imgcodecs.imencode(".png", processed, buffer);
+
+        return buffer.toArray();
     }
 
     private static MoveGroupInfo groupInfoFromMove(Move move) {
