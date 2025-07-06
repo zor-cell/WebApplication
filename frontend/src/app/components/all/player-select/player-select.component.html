@@ -3,7 +3,7 @@
         <i *ngIf="authService.isAdmin()" class="bi bi-person-plus-fill default-color" (click)="openPlayerPopup()"></i>
         <select [disabled]="!currentPlayer" (change)="updateCurrentPlayer($event)">
             @if (currentPlayer) {
-                <option *ngFor="let player of availablePlayers" [value]="player.name">
+                <option *ngFor="let player of availablePlayers" [value]="player.id">
                     {{ player.name }}
                 </option>
             } @else {

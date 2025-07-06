@@ -8,8 +8,8 @@
     </div>
     <div *ngFor="let game of games" class="game-row">
         <div class="game-cell">{{game.gameType}}</div>
-        <div class="game-cell">{{game.playedAt | date}}</div>
-        <div class="game-cell">{{game.duration}}</div>
+        <div class="game-cell">{{game.playedAt |  date:'MMM d, yyyy HH:mm'}}</div>
+        <div class="game-cell">{{game.duration | duration}}</div>
         <div class="game-cell">{{game.players.length}}</div>
         <div class="game-cell game-actions">
             <button class="btn btn-sm btn-primary">

@@ -12,7 +12,8 @@ import net.zorphy.backend.main.repository.PlayerRepository;
 import net.zorphy.backend.project.catan.dto.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -107,6 +108,7 @@ public class CatanServiceImpl implements CatanService {
         }
 
         return new GameState(
+                LocalDateTime.now(),
                 gameConfig,
                 0,
                 0,
@@ -147,6 +149,7 @@ public class CatanServiceImpl implements CatanService {
         }
 
         return new GameState(
+                oldState.startTime(),
                 gameConfig,
                 currentPlayerTurn,
                 currentShipTurn,
@@ -227,6 +230,7 @@ public class CatanServiceImpl implements CatanService {
                     //try to roll again with reshuffled deck
                     if (!allSame) {
                         return rollDice(new GameState(
+                                oldState.startTime(),
                                 oldState.gameConfig(),
                                 oldState.currentPlayerTurn(),
                                 oldState.currentShipTurn(),
@@ -255,6 +259,7 @@ public class CatanServiceImpl implements CatanService {
         diceRolls.add(diceRoll);
 
         return new GameState(
+                oldState.startTime(),
                 oldState.gameConfig(),
                 currentTeamTurn,
                 currentShipTurn,
@@ -274,7 +279,8 @@ public class CatanServiceImpl implements CatanService {
                 .collect(Collectors.toSet());
 
         Game toSave = new Game(
-                LocalDate.now(),
+                LocalDateTime.now(),
+                Duration.between(gameState.startTime(), LocalDateTime.now()),
                 GameType.CATAN,
                 gameState,
                 saveGameState,

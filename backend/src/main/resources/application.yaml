@@ -11,6 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: true
   servlet:
     multipart:
       max-file-size: 10MB

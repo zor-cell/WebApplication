@@ -6,8 +6,7 @@ import net.zorphy.backend.main.dto.game.GameType;
 import org.hibernate.annotations.Type;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -19,12 +18,14 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private LocalDate playedAt;
+    private LocalDateTime playedAt;
 
     private Duration duration;
 
     @Enumerated(EnumType.STRING)
     private GameType gameType;
+
+    private String imageUrl;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
@@ -45,8 +46,9 @@ public class Game {
     public Game() {
     }
 
-    public Game(LocalDate playedAt, GameType gameType, Object gameState, Object result, Set<Player> players) {
+    public Game(LocalDateTime playedAt, Duration duration, GameType gameType, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;
+        this.duration = duration;
         this.gameType = gameType;
         this.gameState = gameState;
         this.result = result;
@@ -61,11 +63,11 @@ public class Game {
         this.id = id;
     }
 
-    public LocalDate getPlayedAt() {
+    public LocalDateTime getPlayedAt() {
         return playedAt;
     }
 
-    public void setPlayedAt(LocalDate playedAt) {
+    public void setPlayedAt(LocalDateTime playedAt) {
         this.playedAt = playedAt;
     }
 
@@ -83,6 +85,14 @@ public class Game {
 
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Object getGameState() {

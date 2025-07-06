@@ -5,6 +5,7 @@ import {PopupService} from "../../../../services/popup.service";
 import {PlayerDetails} from "../../../../dto/all/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
+import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
 
 @Component({
     selector: 'app-new-player-popup',
@@ -51,7 +52,7 @@ export class NewPlayerPopupComponent {
     }
 
     private savePlayer() {
-        const player: PlayerDetails = {
+        const player: PlayerCreate = {
             name: this.playerForm.value.name
         };
 

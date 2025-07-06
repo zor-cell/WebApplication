@@ -7,8 +7,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "standalone": true,
-          "skipTests": true
+          "skipTests": true,
+          "standalone": true
         },
         "@schematics/angular:service": {
           "skipTests": true

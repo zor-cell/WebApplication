@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
 import {PlayerDetails} from "../dto/all/PlayerDetails";
+import {PlayerCreate} from "../dto/all/PlayerCreate";
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,7 @@ export class PlayerService {
         return this.httpClient.get<PlayerDetails>(`${this.baseUri}/${name}`);
     }
 
-    savePlayer(player: PlayerDetails): Observable<PlayerDetails> {
+    savePlayer(player: PlayerCreate): Observable<PlayerDetails> {
         return this.httpClient.post<PlayerDetails>(`${this.baseUri}/save`, player).pipe(
             tap(() => {
                 this.globals.handleSuccess('Saved player data');
