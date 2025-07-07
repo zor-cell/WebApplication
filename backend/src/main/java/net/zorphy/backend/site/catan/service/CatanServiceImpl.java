@@ -274,7 +274,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameDetails saveGame(GameState gameState, SaveGameState saveGameState, MultipartFile image) {
+    public GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image) {
         //get all players in team from db
         Set<Player> players = gameState.gameConfig().teams().stream()
                 .flatMap(team -> team.players().stream())
@@ -290,7 +290,7 @@ public class CatanServiceImpl implements CatanService {
                 GameType.CATAN,
                 path,
                 gameState,
-                saveGameState,
+                resultState,
                 players
         );
         Game saved = gameRepository.save(toSave);

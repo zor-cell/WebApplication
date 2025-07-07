@@ -5,8 +5,8 @@ import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
 import {CatanService} from "../../../../../services/sites/catan.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
-import {SaveGameState} from "../../../../../dto/sites/catan/SaveGameState";
-import {SaveTeamState} from "../../../../../dto/sites/catan/SaveTeamState";
+import {ResultState} from "../../../../../dto/sites/catan/ResultState";
+import {ResultTeamState} from "../../../../../dto/sites/catan/ResultTeamState";
 
 @Component({
     selector: 'catan-save-popup',
@@ -75,12 +75,12 @@ export class CatanSavePopupComponent implements OnInit {
     }
 
     private saveGame() {
-        const teamState: SaveTeamState[] = this.teams.map(team => ({
+        const teamState: ResultTeamState[] = this.teams.map(team => ({
             team: team,
             score: Number(this.saveForm.value[team.name])
         }));
 
-        const gameState: SaveGameState = {
+        const gameState: ResultState = {
             teams: teamState
         }
 

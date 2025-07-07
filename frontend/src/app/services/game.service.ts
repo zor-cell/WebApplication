@@ -18,4 +18,8 @@ export class GameService {
   getGames(): Observable<GameMetadata[]> {
     return this.httpClient.get<GameMetadata[]>(this.baseUri);
   }
+
+  getGame(id: string): Observable<GameDetails> {
+    return this.httpClient.get<GameDetails>(this.baseUri + '/' + id);
+  }
 }

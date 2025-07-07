@@ -1,23 +1,31 @@
 <div class="main-container games-container">
-    <div class="game-row">
-        <div class="game-cell"><b>Game Type</b></div>
-        <div class="game-cell"><b>Date</b></div>
-        <div class="game-cell"><b>Duration</b></div>
-        <div class="game-cell"><b>Players</b></div>
-        <div class="game-cell"><b>Actions</b></div>
-    </div>
-    <div *ngFor="let game of games" class="game-row">
-        <div class="game-cell">{{game.gameType}}</div>
-        <div class="game-cell">{{game.playedAt |  date:'MMM d, yyyy HH:mm'}}</div>
-        <div class="game-cell">{{game.duration | duration}}</div>
-        <div class="game-cell">{{game.players.length}}</div>
-        <div class="game-cell game-actions">
-            <button class="btn btn-sm btn-primary">
-                <i class="bi bi-info-circle"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-warning">
-                <i class="bi bi-pencil-square"></i>
-            </button>
-        </div>
-    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Game Type</th>
+            <th scope="col">Date</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Players</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let game of games;let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ game.gameType }}</td>
+            <td>{{ game.playedAt |  date:'MMM d, yyyy HH:mm' : '+0200' }}</td>
+            <td>{{ game.duration |  duration }}</td>
+            <td>{{ game.players.length }}</td>
+            <td class="row-actions">
+                <button class="btn btn-sm btn-primary" (click)="openGameInfo(game.id)">
+                    <i class="bi bi-info-circle"></i>
+                </button>
+                <button class="btn btn-sm btn-warning">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>

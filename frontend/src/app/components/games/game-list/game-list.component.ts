@@ -4,6 +4,8 @@ import {GameDetails} from "../../../dto/games/GameDetails";
 import {DatePipe, NgForOf} from "@angular/common";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {GameMetadata} from "../../../dto/games/GameMetadata";
+import {Router} from "@angular/router";
+import {GameType} from "../../../dto/games/GameType";
 
 @Component({
   selector: 'game-list',
@@ -19,11 +21,15 @@ import {GameMetadata} from "../../../dto/games/GameMetadata";
 export class GameListComponent {
   games!: GameMetadata[];
 
-  constructor(private gameService: GameService) {
+  constructor(private router: Router, private gameService: GameService) {
   }
 
   ngOnInit(): void {
     this.getProjects();
+  }
+
+  openGameInfo(id: string) {
+    this.router.navigate(['/games', id]);
   }
 
 

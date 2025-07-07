@@ -7,7 +7,7 @@ import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.GameConfig;
 import net.zorphy.backend.site.catan.dto.GameState;
-import net.zorphy.backend.site.catan.dto.SaveGameState;
+import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.catan.service.CatanService;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -76,9 +76,9 @@ public class CatanController {
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public GameDetails saveGame(HttpSession session,
-                                @RequestPart("gameState") @Valid SaveGameState saveGameState,
+                                @RequestPart("gameState") @Valid ResultState resultState,
                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        return catanService.saveGame(getGameState(session), saveGameState, image);
+        return catanService.saveGame(getGameState(session), resultState, image);
     }
 
 

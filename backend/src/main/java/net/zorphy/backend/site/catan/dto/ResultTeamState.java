@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 
-public record SaveTeamState(
+public record ResultTeamState(
         @Valid
         TeamDetails team,
 

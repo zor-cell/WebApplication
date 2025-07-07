@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-public record SaveGameState(
+public record ResultState(
         @NotEmpty
         @Valid
-        List<SaveTeamState> teams
+        List<ResultTeamState> teams
 ) {
 }

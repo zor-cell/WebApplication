@@ -5,7 +5,7 @@ import {Observable, tap} from "rxjs";
 import {GameState} from "../../dto/sites/catan/GameState";
 import {GameConfig} from "../../dto/sites/catan/GameConfig";
 import {GameDetails} from "../../dto/games/GameDetails";
-import {SaveGameState} from "../../dto/sites/catan/SaveGameState";
+import {ResultState} from "../../dto/sites/catan/ResultState";
 
 @Injectable({
     providedIn: 'root'
@@ -50,7 +50,7 @@ export class CatanService {
             }));
     }
 
-    save(saveGameState: SaveGameState, imageFile: File | null = null) {
+    save(saveGameState: ResultState, imageFile: File | null = null) {
         const formData = new FormData();
         formData.append('gameState', new Blob([JSON.stringify(saveGameState)], { type: 'application/json' }));
         if (imageFile) {
