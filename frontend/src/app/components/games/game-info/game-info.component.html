@@ -1,6 +1,11 @@
-<div *ngIf="game">
-    {{ game.metadata.gameType }}
-</div>
+<app-main-header></app-main-header>
 
-<ng-template #content></ng-template>
+<div class="main-container ">
+    <h3>Game Info</h3>
+    <div *ngIf="game">
+        {{ game.metadata.gameType }}
+    </div>
+
+    <ng-template #content></ng-template>
+</div>
 

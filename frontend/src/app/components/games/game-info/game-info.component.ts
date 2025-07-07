@@ -5,12 +5,14 @@ import {ActivatedRoute} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {CatanGameInfoComponent} from "../../sites/catan/game-info/game-info.component";
 import {GameType} from "../../../dto/games/GameType";
+import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 
 @Component({
     standalone: true,
     selector: 'game-info',
     imports: [
-        NgIf
+        NgIf,
+        MainHeaderComponent
     ],
     templateUrl: './game-info.component.html',
     styleUrl: './game-info.component.css'

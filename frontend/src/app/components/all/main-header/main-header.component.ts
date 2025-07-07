@@ -4,7 +4,7 @@ import {RouterLink} from "@angular/router";
 import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
 
 @Component({
-    selector: 'app-project-header',
+    selector: 'app-main-header',
     imports: [
         NgIf,
         RouterLink,
@@ -17,8 +17,6 @@ import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
 export class MainHeaderComponent {
     @Input() project: ProjectMetadata | null = null;
     @Input() showWebsite: boolean = false;
-
-    @Input() customTemplate!: TemplateRef<any>;
 
     constructor(private location: Location) {
     }

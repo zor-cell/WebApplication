@@ -1,6 +1,9 @@
 @if (project) {
-    <app-project-header [project]="project.metadata" [showWebsite]="true"
-                        [customTemplate]="editButton"></app-project-header>
+    <app-main-header [project]="project.metadata" [showWebsite]="true">
+        <button *ngIf="authService.isAdmin()" class="btn btn-outline-warning" (click)="openUpdatePopup()">
+            <i class="bi bi-pencil-square"></i>
+        </button>
+    </app-main-header>
 
     <div class="main-container">
         <div [innerHTML]="project.content"></div>
