@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "file-storage")
 public class FileStorageProperty {
-    private String uploadDirectory;
+    private String directory;
 
-    public String getUploadDirectory() {
-        return uploadDirectory;
+    public String getDirectory() {
+        return directory;
     }
 
-    public void setUploadDirectory(String uploadDirectory) {
-        this.uploadDirectory = uploadDirectory;
+    public void setDirectory(String directory) {
+        this.directory = directory;
     }
 }

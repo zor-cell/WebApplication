@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,45 +24,47 @@ public class FileStorageServiceImpl implements FileStorageService {
     private final Path fileStorageLocation;
 
     public FileStorageServiceImpl(FileStorageProperty fileStorageProperty) throws IOException {
-        this.fileStorageLocation = Paths.get(fileStorageProperty.getUploadDirectory()).toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(fileStorageProperty.getDirectory()).toAbsolutePath().normalize();
         Files.createDirectories(this.fileStorageLocation);
-        logger.info("File storage location initialized to: {}", this.fileStorageLocation.toString()); // Add this line
 
-        Path testFilePath = this.fileStorageLocation.resolve("hello.html");
-        boolean exists = Files.exists(testFilePath);
-        boolean isReadable = Files.isReadable(testFilePath);
-        logger.info("Checking file at {}: Exists = {}, Is Readable = {}", testFilePath, exists, isReadable);
-
+        logger.info("File storage location initialized to: {}", this.fileStorageLocation);
     }
 
 
     @Override
-    public String saveFile(MultipartFile file) {
-        if(file == null) return null;
+    public String saveFile(String subDirectory, MultipartFile file) {
+        if (file == null) return null;
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
-            // Check if the file's name contains invalid characters
+            //check for invalid characters
             if (originalFilename.contains("..")) {
                 throw new NotFoundException("Sorry! Filename contains invalid path sequence " + originalFilename);
             }
 
-            // Generate a unique filename to prevent overwriting
+            //generate unique filename
             String fileExtension = "";
             int dotIndex = originalFilename.lastIndexOf('.');
             if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
                 fileExtension = originalFilename.substring(dotIndex);
             }
-            String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+            String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + fileExtension;
 
-            // Resolve the target path
-            Path targetLocation = this.fileStorageLocation.resolve(uniqueFilename);
+            //write to target location
+            Path targetLocation = this.fileStorageLocation.resolve(subDirectory).resolve(uniqueFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return uniqueFilename; // Return the unique filename saved
+            return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
             throw new NotFoundException("Could not store file " + originalFilename + ". Please try again!");
         }
+    }
+
+    private String formatPath(String subDirectory, String filename) {
+        subDirectory = subDirectory.replaceAll("^/+|/+$", ""); // remove leading/trailing slashes
+        filename = filename.replaceAll("^/+", ""); // remove leading slashes
+
+        return subDirectory + "/" + filename;
     }
 }

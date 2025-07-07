@@ -29,8 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Map the URL path /uploads/files/** to the file system directory where your files are stored
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + fileStorageProperty.getUploadDirectory());
+        Path dir = Paths.get(fileStorageProperty.getDirectory()).toAbsolutePath().normalize();
+
+        registry.addResourceHandler("files/**")
+                .addResourceLocations("file:" + dir);
     }
 }

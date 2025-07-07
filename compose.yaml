@@ -32,6 +32,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      SPRING_PROFILES_ACTIVE: prod
+    volumes:
+      - ./file-storage:/app/images
 
   frontend:
     build:

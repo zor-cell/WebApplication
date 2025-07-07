@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
@@ -12,7 +12,8 @@ import {SaveTeamState} from "../../../../../dto/sites/catan/SaveTeamState";
     selector: 'catan-save-popup',
     imports: [
         NgForOf,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgIf
     ],
     templateUrl: './save-popup.component.html',
     standalone: true,
@@ -24,6 +25,7 @@ export class CatanSavePopupComponent implements OnInit {
 
     @Input({required: true}) teams!: Team[];
     imageFile: File | null = null;
+    imageUrl: string | null = null;
 
     constructor(private popupService: PopupService,
                 private catanService: CatanService,
@@ -56,6 +58,7 @@ export class CatanSavePopupComponent implements OnInit {
 
         if(input.files) {
             this.imageFile = input.files![0];
+            this.createImageFromBlob(this.imageFile);
         }
     }
 
@@ -67,12 +70,14 @@ export class CatanSavePopupComponent implements OnInit {
         }
 
         this.imageFile = null;
+        if(this.imageUrl) URL.revokeObjectURL(this.imageUrl);
+        this.imageUrl = null;
     }
 
     private saveGame() {
         const teamState: SaveTeamState[] = this.teams.map(team => ({
             team: team,
-            score: this.saveForm.value[team.name]
+            score: Number(this.saveForm.value[team.name])
         }));
 
         const gameState: SaveGameState = {
@@ -84,5 +89,13 @@ export class CatanSavePopupComponent implements OnInit {
                 this.saveForm.reset();
             }
         });
+    }
+
+    private createImageFromBlob(blob: Blob) {
+        if(this.imageUrl) {
+            URL.revokeObjectURL(this.imageUrl);
+        }
+
+        this.imageUrl = URL.createObjectURL(blob);
     }
 }

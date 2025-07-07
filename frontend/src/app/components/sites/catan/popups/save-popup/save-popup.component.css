@@ -26,3 +26,14 @@
     align-items: center;
     flex-direction: row;
 }
+
+.image-container {
+    display: flex;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+.image {
+    object-fit: contain;
+}
