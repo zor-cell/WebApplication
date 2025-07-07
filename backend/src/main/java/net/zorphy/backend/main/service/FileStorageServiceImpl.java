@@ -53,7 +53,10 @@ public class FileStorageServiceImpl implements FileStorageService {
             String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + fileExtension;
 
             //write to target location
-            Path targetLocation = this.fileStorageLocation.resolve(subDirectory).resolve(uniqueFilename);
+            Path subLocation = this.fileStorageLocation.resolve(subDirectory);
+            Files.createDirectories(subLocation);
+
+            Path targetLocation = subLocation.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return formatPath(subDirectory, uniqueFilename);
