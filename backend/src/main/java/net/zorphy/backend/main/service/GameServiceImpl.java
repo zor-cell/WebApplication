@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GameDetails> getGames() {
+    public List<GameMetadata> getGames() {
         return gameRepository.findAll()
                 .stream()
-                .map(gameMapper::gameToGameDetails)
+                .map(gameMapper::gameToGameMetadata)
                 .collect(Collectors.toList());
     }
 

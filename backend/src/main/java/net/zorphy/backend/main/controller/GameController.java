@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.controller;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.service.GameService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class GameController {
     }
 
     @GetMapping()
-    public List<GameDetails> getGames() {
+    public List<GameMetadata> getGames() {
         return gameService.getGames();
     }
 

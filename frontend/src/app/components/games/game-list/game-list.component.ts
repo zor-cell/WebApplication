@@ -3,6 +3,7 @@ import {GameService} from "../../../services/game.service";
 import {GameDetails} from "../../../dto/games/GameDetails";
 import {DatePipe, NgForOf} from "@angular/common";
 import {DurationPipe} from "../../../pipes/DurationPipe";
+import {GameMetadata} from "../../../dto/games/GameMetadata";
 
 @Component({
   selector: 'game-list',
@@ -16,7 +17,7 @@ import {DurationPipe} from "../../../pipes/DurationPipe";
   styleUrl: './game-list.component.css'
 })
 export class GameListComponent {
-  games!: GameDetails[];
+  games!: GameMetadata[];
 
   constructor(private gameService: GameService) {
   }

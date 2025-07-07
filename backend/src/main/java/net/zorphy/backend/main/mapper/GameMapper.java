@@ -1,13 +1,15 @@
 package net.zorphy.backend.main.mapper;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.entity.Game;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class GameMapper {
+    public abstract GameMetadata gameToGameMetadata(Game game);
+
+    @Mapping(source = "game", target = "metadata")
     public abstract GameDetails gameToGameDetails(Game game);
-
-    public abstract Game gameDetailsToGame(GameDetails gameDetails);
-
 }

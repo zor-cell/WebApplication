@@ -7,9 +7,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record GameDetails(
-        GameMetadata metadata,
-        Object gameState,
-        Object result
+public record GameMetadata(
+        UUID id,
+        LocalDateTime playedAt,
+        Duration duration,
+        GameType gameType,
+        String imageUrl,
+        List<PlayerDetails> players
 ) {
 }

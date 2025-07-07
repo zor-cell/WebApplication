@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.config.property.FileStorageProperty;
+import net.zorphy.backend.main.exception.FileStorageException;
 import net.zorphy.backend.main.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             //check for invalid characters
             if (originalFilename.contains("..")) {
-                throw new NotFoundException("Sorry! Filename contains invalid path sequence " + originalFilename);
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + originalFilename);
             }
 
             //generate unique filename
@@ -57,7 +58,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
-            throw new NotFoundException("Could not store file " + originalFilename + ". Please try again!");
+            throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
     }
 
