@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class FileContentReader {
+public class FileReaderComponent {
     private final ResourceLoader resourceLoader;
     private final Parser parser;
     private final HtmlRenderer renderer;
 
-    public FileContentReader(ResourceLoader resourceLoader) {
+    public FileReaderComponent(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
         parser = Parser.builder()
                 .build();

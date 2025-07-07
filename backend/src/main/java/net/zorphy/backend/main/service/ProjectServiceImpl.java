@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.component.FileContentReader;
+import net.zorphy.backend.main.component.FileReaderComponent;
 import net.zorphy.backend.main.dto.project.ProjectDetails;
 import net.zorphy.backend.main.dto.project.ProjectMetadata;
 import net.zorphy.backend.main.entity.Project;
@@ -18,19 +18,17 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-    private final FileContentReader fileContentReader;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, FileContentReader fileContentReader) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, FileReaderComponent fileReaderComponent) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
-        this.fileContentReader = fileContentReader;
     }
 
     @Override
     public List<ProjectMetadata> getProjects(String baseUrl) {
         return projectRepository.findAll()
                 .stream()
-                .map(project -> projectMapper.projectToProjectMetadata(project, baseUrl, fileContentReader))
+                .map(projectMapper::projectToProjectMetadata)
                 .sorted(Comparator
                         .comparing(ProjectMetadata::isFavorite).reversed()
                         .thenComparing(ProjectMetadata::name)
@@ -45,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NotFoundException(String.format("Project with name %s not found", name));
         }
 
-        return projectMapper.projectToProjectDetails(project, baseUrl, fileContentReader);
+        return projectMapper.projectToProjectDetails(project);
     }
 
     @Override
@@ -76,6 +74,6 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project updated = projectRepository.save(project);
-        return projectMapper.projectToProjectDetails(updated, baseUrl, fileContentReader);
+        return projectMapper.projectToProjectDetails(updated);
     }
 }

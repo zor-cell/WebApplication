@@ -1,2 +1,5 @@
+app:
+  base-url: https://server.zorphy.net/api/
+
 file-storage:
   directory: /app/file-storage
