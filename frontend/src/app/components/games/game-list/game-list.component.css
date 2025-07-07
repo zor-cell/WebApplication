@@ -11,3 +11,7 @@
     display: flex;
     gap: 0.2rem;
 }
+
+.table tbody tr td, .table tbody tr th {
+    vertical-align: middle;
+}

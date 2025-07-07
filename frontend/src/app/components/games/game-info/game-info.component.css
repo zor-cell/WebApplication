@@ -10,3 +10,7 @@
 .default-info {
 
 }
+
+.game-image {
+    object-fit: contain;
+}

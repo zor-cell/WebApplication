@@ -2,10 +2,18 @@
 
 <div class="main-container info-container">
     <div class="default-info">
-        <h3>Game Info</h3>
+        <!--<div>Game Info</div>-->
         <div *ngIf="game">
-            <img *ngIf="game.metadata.imageUrl" [src]="game.metadata.imageUrl">
-            {{ game.metadata.gameType }}
+            <img *ngIf="game.metadata.imageUrl" [ngSrc]="game.metadata.imageUrl" class="game-image" width="500" height="400" alt="">
+
+            <div>
+                <div>{{game.metadata.gameType}}</div>
+                <div>{{game.metadata.playedAt | date:'MMM d, yyyy HH:mm' : '+0200'}}</div>
+                <div>{{game.metadata.duration | duration}}</div>
+                <div *ngFor="let player of game.metadata.players;let i = index">
+                    <div>{{i + 1}}. {{player.name}}</div>
+                </div>
+            </div>
         </div>
     </div>
 

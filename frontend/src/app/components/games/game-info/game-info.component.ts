@@ -2,17 +2,22 @@ import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild, ViewContainer
 import {GameService} from "../../../services/game.service";
 import {GameDetails} from "../../../dto/games/GameDetails";
 import {ActivatedRoute} from "@angular/router";
-import {NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {CatanGameInfoComponent} from "../../sites/catan/game-info/game-info.component";
 import {GameType} from "../../../dto/games/GameType";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
+import {DurationPipe} from "../../../pipes/DurationPipe";
 
 @Component({
     standalone: true,
     selector: 'game-info',
     imports: [
         NgIf,
-        MainHeaderComponent
+        MainHeaderComponent,
+        NgOptimizedImage,
+        NgForOf,
+        DurationPipe,
+        DatePipe
     ],
     templateUrl: './game-info.component.html',
     styleUrl: './game-info.component.css'

@@ -1,4 +1,18 @@
 <div *ngIf="metadata">
-    {{metadata.players[0].name}}
+
 </div>
+
+<div *ngIf="resultState">
+    <div *ngFor="let team of resultState.teams">
+        <div>{{team.team.name}}</div>
+        <div>{{team.score}}</div>
+    </div>
+</div>
+
+<div *ngIf="gameState">
+    {{gameState.diceRolls.length}}
+    <catan-histogram [diceRolls]="gameState.diceRolls" [isVisible]="true"></catan-histogram>
+</div>
+
+
 
