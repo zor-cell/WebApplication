@@ -12,7 +12,7 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = {FileReaderComponent.class, FileUrlComponent.class})
 public abstract class ProjectMapper {
-    @Mapping(source = "imagePath", target = "imagePath", qualifiedByName = "resolveFileUrl")
+    @Mapping(source = "imagePath", target = "imagePath", qualifiedByName = "resolveStaticUrl")
     public abstract ProjectMetadata projectToProjectMetadata(Project project);
 
     @Mapping(source = "project", target = "metadata")

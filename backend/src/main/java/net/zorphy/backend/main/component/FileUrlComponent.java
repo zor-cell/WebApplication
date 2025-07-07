@@ -12,17 +12,29 @@ public class FileUrlComponent {
         this.baseUrlProperty = baseUrlProperty;
     }
 
-    @Named("resolveFileUrl")
-    public String resolveFileUrl(String filePath) {
+    private String resolveUrl(String prefix, String filePath) {
         if (filePath == null) return null;
 
         String baseUrl = baseUrlProperty.getBaseUrl();
-        if (baseUrl.endsWith("/") && filePath.startsWith("/")) {
-            return baseUrl + filePath.substring(1);
-        } else if (!baseUrl.endsWith("/") && !filePath.startsWith("/")) {
-            return baseUrl + "/" + filePath;
+        String fullPath = prefix.isEmpty() ? filePath : prefix + "/" + filePath;
+
+        // Normalize slashes
+        if (baseUrl.endsWith("/") && fullPath.startsWith("/")) {
+            return baseUrl + fullPath.substring(1);
+        } else if (!baseUrl.endsWith("/") && !fullPath.startsWith("/")) {
+            return baseUrl + "/" + fullPath;
         } else {
-            return baseUrl + filePath;
+            return baseUrl + fullPath;
         }
+    }
+
+    @Named("resolveFileUrl")
+    public String resolveFileUrl(String filePath) {
+        return resolveUrl("files", filePath);
+    }
+
+    @Named("resolveStaticUrl")
+    public String resolveStaticUrl(String filePath) {
+        return resolveUrl("", filePath);
     }
 }
