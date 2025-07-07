@@ -1,2 +1,2 @@
 file-storage:
-  directory: /app/images
+  directory: /app/file-storage
