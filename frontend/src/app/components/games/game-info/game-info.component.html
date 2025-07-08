@@ -1,28 +1,28 @@
 <app-main-header></app-main-header>
 
 <div class="main-container">
-    <div *ngIf=game  class="header">{{game.metadata.gameType}} GAME INFO</div>
-    <div class="default-info-container">
-    <div *ngIf=game  class="default-info">
-        @if(game.metadata.imageUrl) {
-            <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
-        } @else {
-            <div class="highlighted-container game-image" style="height: 400px;"></div>
-        }
+    <div *ngIf=game class="header">{{ game.metadata.gameType }} GAME INFO</div>
+    <div class="info-container">
+        <div *ngIf=game class="default-info">
+            @if (game.metadata.imageUrl) {
+                <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
+            } @else {
+                <div class="highlighted-container game-image" style="height: 400px;"></div>
+            }
 
-        <div class="meta">
-            <div class="meta-item">
-                <div class="meta-label">Date</div>
-                <div>{{game.metadata.playedAt | date:'MMM d, yyyy HH:mm' : '+0200'}}</div>
-            </div>
-            <div class="meta-item">
-                <div class="meta-label">Duration</div>
-                <div>{{game.metadata.duration | duration}}</div>
+            <div class="meta">
+                <div class="meta-item">
+                    <div class="meta-label">Date</div>
+                    <div>{{ game.metadata.playedAt | date:'MMM d, yyyy HH:mm'}}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Duration</div>
+                    <div>{{ game.metadata.duration | duration }}</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <ng-template #content></ng-template>
+        <ng-template #content></ng-template>
     </div>
 </div>
 

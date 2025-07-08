@@ -38,12 +38,12 @@
                     <div class="meta-text">{{ getGameModeName(gameState.gameConfig.gameMode) }}</div>
                 </div>
                 <div class="meta-entry">
-                    <div class="meta-label">Classic Dice</div>
+                    <div class="meta-label">Classic Cards</div>
                     <input [checked]="gameState.gameConfig.classicDice.isBalanced" class="form-check-input"
                            type="checkbox" disabled>
                 </div>
                 <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="meta-entry">
-                    <div class="meta-label">Event Dice</div>
+                    <div class="meta-label">Event Cards</div>
                     <input [checked]="gameState.gameConfig.eventDice.isBalanced" class="form-check-input"
                            type="checkbox" disabled>
                 </div>

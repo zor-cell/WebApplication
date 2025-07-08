@@ -22,15 +22,11 @@ import {DurationPipe} from "../../../pipes/DurationPipe";
     templateUrl: './game-info.component.html',
     styleUrl: './game-info.component.css'
 })
-export class GameInfoComponent implements OnInit, AfterViewInit {
+export class GameInfoComponent implements AfterViewInit {
     @ViewChild('content', {read: ViewContainerRef}) viewContainerRef!: ViewContainerRef;
     game: GameDetails | null = null;
 
     constructor(private route: ActivatedRoute, private gameService: GameService) {
-    }
-
-    ngOnInit() {
-
     }
 
     ngAfterViewInit(): void {

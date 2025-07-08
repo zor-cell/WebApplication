@@ -21,12 +21,22 @@ import {GameType} from "../../../dto/games/GameType";
 })
 export class GameListComponent {
   games!: GameMetadata[];
+  dateFormat = 'MMM d, yyyy HH:mm';
+
 
   constructor(private router: Router, private gameService: GameService) {
   }
 
   ngOnInit(): void {
     this.getProjects();
+
+    //adjust date format
+    const mql = window.matchMedia('(max-width: 600px)');
+    this.updateDateFormat(mql.matches);
+
+    mql.addEventListener('change', (e) => {
+      this.updateDateFormat(e.matches);
+    });
   }
 
   openGameInfo(id: string) {
@@ -40,5 +50,10 @@ export class GameListComponent {
         this.games = res;
       }
     });
+  }
+
+  private updateDateFormat(isSmallScreen: boolean) {
+    this.dateFormat = isSmallScreen ? 'dd.MM.yyyy' : 'MMM d, yyyy HH:mm';
+    console.log(this.dateFormat)
   }
 }
