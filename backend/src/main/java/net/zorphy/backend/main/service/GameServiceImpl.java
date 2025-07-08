@@ -8,6 +8,7 @@ import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +29,10 @@ public class GameServiceImpl implements GameService {
         return gameRepository.findAll()
                 .stream()
                 .map(gameMapper::gameToGameMetadata)
+                .sorted(Comparator
+                        .comparing(GameMetadata::playedAt)
+                        .thenComparing(GameMetadata::duration)
+                )
                 .collect(Collectors.toList());
     }
 

@@ -14,7 +14,7 @@
         <tr *ngFor="let game of games;let i = index">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ game.gameType }}</td>
-            <td>{{ game.playedAt |  date:'MMM d, yyyy HH:mm' : '+0200' }}</td>
+            <td>{{ game.playedAt |  date:'MMM d, yyyy HH:mm'}}</td>
             <td>{{ game.duration |  duration }}</td>
             <td>{{ game.players.length }}</td>
             <td class="row-actions">
