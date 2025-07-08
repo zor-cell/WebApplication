@@ -11,7 +11,7 @@ import {ProjectService} from "../../../../services/project.service";
 import {ProjectMetadata} from "../../../../dto/projects/ProjectMetadata";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 import {CatanUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
-import {GameMode} from "../../../../dto/sites/catan/GameMode";
+import {GameMode, getGameModeName} from "../../../../dto/sites/catan/GameMode";
 
 @Component({
     selector: 'catan-game-settings',
@@ -135,4 +135,5 @@ export class CatanConfigComponent implements OnInit {
     }
 
     protected readonly GameMode = GameMode;
+    protected readonly getGameModeName = getGameModeName;
 }

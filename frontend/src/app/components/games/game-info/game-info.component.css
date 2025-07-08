@@ -1,16 +1,43 @@
-.info-container {
+.header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+
+    padding: 0 1rem 1rem 1rem;
+}
+
+.default-info-container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+
+    gap: 2rem;
+}
+
+.default-info {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     flex-direction: column;
 
     gap: 1rem;
 }
 
-.default-info {
-
-}
-
 .game-image {
+    width: 100%;
     object-fit: contain;
 }
+
+.meta {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.meta-label {
+    font-weight: bold;
+}
+

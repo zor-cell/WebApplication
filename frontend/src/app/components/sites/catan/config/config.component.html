@@ -12,7 +12,7 @@
             <h3 class="config-header">Mode</h3>
             <div class="select-container">
                 <select [(ngModel)]="gameConfig.gameMode">
-                    <option *ngFor="let mode of gameModes" [ngValue]="mode">{{ mapGameMode(mode) }}</option>
+                    <option *ngFor="let mode of gameModes" [ngValue]="mode">{{ getGameModeName(GameMode[mode]) }}</option>
                 </select>
             </div>
             <div class="dice-mode-grid">

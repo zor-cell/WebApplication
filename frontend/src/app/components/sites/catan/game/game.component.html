@@ -59,7 +59,9 @@
         </div>
     </div>
 
-    <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls"/>
+    <div style="margin: 15rem auto 0 auto">
+        <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls"/>
+    </div>
 </div>
 
 <catan-save-popup #savePopup *ngIf="gameState" [teams]="gameState.gameConfig.teams"></catan-save-popup>

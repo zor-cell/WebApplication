@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 import {NgIf} from "@angular/common";
@@ -14,7 +14,7 @@ import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
     standalone: true,
     styleUrl: './histogram.component.css'
 })
-export class CatanHistogramComponent implements OnChanges, OnInit {
+export class CatanHistogramComponent implements OnChanges, AfterViewInit {
     @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
     @Input({required: true}) diceRolls!: DiceRoll[];
     @Input() isVisible: boolean = false;
@@ -83,7 +83,7 @@ export class CatanHistogramComponent implements OnChanges, OnInit {
         },
     };
 
-    ngOnInit() {
+    ngAfterViewInit() {
         this.refillChartData();
     }
 
