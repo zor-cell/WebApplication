@@ -65,9 +65,11 @@ public class QwirkleController {
         return gameState;
     }
 
-    @PostMapping("hand/selection")
-    public SelectionInfo getSelectionInfo(HttpSession session, @Valid @RequestBody List<Tile> selected) {
-        return qwirkleService.selectInHand(getGameState(session), selected);
+    @PostMapping("selection")
+    public SelectionInfo getSelectionInfo(HttpSession session,
+                                          @Valid @RequestBody List<Tile> selected,
+                                          @RequestParam(value = "fromStack", defaultValue = "false") boolean fromStack) {
+        return qwirkleService.getSelectionInfo(getGameState(session), selected, fromStack);
     }
 
     @PostMapping("stack/draw")
@@ -79,8 +81,10 @@ public class QwirkleController {
     }
 
     @PostMapping("move")
-    public GameState makeMove(HttpSession session, @RequestBody Move move) {
-        GameState gameState = qwirkleService.makeMove(getGameState(session), move);
+    public GameState makeMove(HttpSession session,
+                              @RequestBody Move move,
+                              @RequestParam(value = "fromStack", defaultValue = "false") boolean fromStack) {
+        GameState gameState = qwirkleService.makeMove(getGameState(session), move, fromStack);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;

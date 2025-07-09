@@ -27,7 +27,7 @@ public interface QwirkleService {
     /**
      * Retrieves the selection information for the given {@code tiles} in the given {@code gameState}.
      */
-    SelectionInfo selectInHand(GameState gameState, List<Tile> tiles);
+    SelectionInfo getSelectionInfo(GameState gameState, List<Tile> tiles, boolean fromStack);
 
     /**
      * Clears the hand in the given {@code gameState}.
@@ -37,7 +37,7 @@ public interface QwirkleService {
     /**
      * Makes the given {@code move} in the given {@code gameState}.
      */
-    GameState makeMove(GameState gameState, Move move);
+    GameState makeMove(GameState gameState, Move move, boolean fromStack);
 
     byte[] uploadImage(byte[] file);
 }

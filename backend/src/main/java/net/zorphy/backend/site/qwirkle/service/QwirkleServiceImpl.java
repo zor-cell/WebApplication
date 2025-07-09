@@ -54,7 +54,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public SelectionInfo selectInHand(GameState gameState, List<Tile> tiles) {
+    public SelectionInfo getSelectionInfo(GameState gameState, List<Tile> tiles, boolean fromStack) {
         //check if selected tiles are valid
         if(!QwirkleUtil.isValidTiles(tiles)) {
             throw new InvalidOperationException("Invalid selected tiles");
@@ -95,7 +95,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
         List<SelectionTile> selectionTiles = new ArrayList<>();
         for(Tile tile: gameState.hand()) {
-            boolean valid = tile.isCompatible(color, shape);
+            boolean valid = tile.isCompatible(color, shape) || fromStack; //when selecting from stack always valid
 
             selectionTiles.add(new SelectionTile(tile, valid));
         }
@@ -230,14 +230,16 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public GameState makeMove(GameState oldState, Move move) {
+    public GameState makeMove(GameState oldState, Move move, boolean fromStack) {
         List<Tile> hand = new ArrayList<>(oldState.hand());
         Map<Position, BoardTile> board = mapFromList(oldState.board());
 
-        //check if tiles are present in hand
-        boolean allInHand = new HashSet<>(hand).containsAll(move.tiles());
-        if (!allInHand) {
-            throw new InvalidOperationException("Hand does not contain all given tiles");
+        //check if tiles are present in hand (only important when playing from hand)
+        if(!fromStack) {
+            boolean allInHand = new HashSet<>(hand).containsAll(move.tiles());
+            if (!allInHand) {
+                throw new InvalidOperationException("Hand does not contain all given tiles");
+            }
         }
 
         //check if all moves are valid

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Globals} from "../../classes/globals";
-import {Observable, tap} from "rxjs";
+import {from, Observable, tap} from "rxjs";
 import {GameState} from "../../dto/sites/qwirkle/GameState";
 import {Move} from "../../dto/sites/qwirkle/Move";
 import {Tile} from "../../dto/sites/qwirkle/Tile";
@@ -41,8 +41,12 @@ export class QwirkleService {
         return this.httpClient.post<GameState>(this.baseUri + '/hand/clear', {});
     }
 
-    getSelectionInfo(selected: Tile[]): Observable<SelectionInfo> {
-        return this.httpClient.post<SelectionInfo>(this.baseUri + '/hand/selection', selected);
+    getSelectionInfo(selected: Tile[], fromStack: boolean = false): Observable<SelectionInfo> {
+        return this.httpClient.post<SelectionInfo>(this.baseUri + '/selection', selected, {
+            params: {
+                fromStack: fromStack
+            }
+        });
     }
 
     getBestMoves(maxMoves: number = 1): Observable<MoveGroup[]> {
@@ -55,8 +59,12 @@ export class QwirkleService {
         return this.httpClient.post<GameState>(this.baseUri + '/stack/draw', tile);
     }
 
-    makeMove(move: Move): Observable<GameState> {
-        return this.httpClient.post<GameState>(this.baseUri + '/move', move);
+    makeMove(move: Move, fromStack: boolean = false): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/move', move, {
+            params: {
+                fromStack: fromStack
+            }
+        });
     }
 
     uploadImage(image: File): Observable<Blob> {

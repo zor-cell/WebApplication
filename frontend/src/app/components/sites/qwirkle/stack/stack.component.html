@@ -1,6 +1,7 @@
+<input type="checkbox" [(ngModel)]="fromStack">
 <div class="highlighted-container stack-container">
     <qwirkle-tile *ngFor="let stackTile of stack;let i = index"
-                  [isDisabled]="stackTile.count === 0"
+                  [isDisabled]="stackTile.count === 0 || (fromStack && selectedIndex !== null && i !== selectedIndex)"
                   [tile]="stackTile.tile"
                   [tileText]="stackTile.count"
                   (click)="selectedTile(i)"

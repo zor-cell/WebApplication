@@ -7,7 +7,10 @@
                 <qwirkle-hand [hand]="gameState.hand" [selectionTiles]="selectionInfo ? selectionInfo.tiles : null"
                               (selectTilesEvent)="selectedInHand($event)"
                               (clearTilesEvent)="clearedHand()"></qwirkle-hand>
-                <qwirkle-stack [stack]="gameState.stack" (selectTileEvent)="selectedInStack($event)"></qwirkle-stack>
+                <qwirkle-stack [stack]="gameState.stack"
+                               (selectTileEvent)="selectedInStack($event)"
+                               (updateFromStackEvent)="fromStack = $event"
+                ></qwirkle-stack>
             </div>
 
 
