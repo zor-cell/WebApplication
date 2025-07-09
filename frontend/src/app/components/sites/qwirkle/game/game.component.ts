@@ -234,7 +234,6 @@ export class QwirkleGameComponent implements OnInit {
 
             //calculate center in next tick
             setTimeout(() => this.calculateCenter(), 1);
-
         });
     }
 }

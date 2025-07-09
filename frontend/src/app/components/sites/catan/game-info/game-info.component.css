@@ -47,10 +47,6 @@
     font-weight: bold;
 }
 
-.teams {
-
-}
-
 .team-row {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -58,15 +54,22 @@
     gap: 1rem;
 }
 
-.meta-text {
-
-}
-
-.result-info {
-
-}
-
 .winner-icon {
     color: gold;
     padding: 0 0.5rem;
+}
+
+@media(max-width: 600px) {
+    .info-container {
+        gap: 1.5rem;
+    }
+
+    .game-info {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        gap: 1.5rem;
+
+        padding: 0 1rem;
+    }
 }

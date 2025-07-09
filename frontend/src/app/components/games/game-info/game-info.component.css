@@ -24,11 +24,13 @@
 
 .game-image {
     width: 100%;
+    max-width: 400px;
     object-fit: contain;
 }
 
 .meta {
     width: 100%;
+    max-width: 400px;
     padding: 0 1rem;
 }
 
@@ -41,12 +43,16 @@
     font-weight: bold;
 }
 
-@media(max-width: 600px) {
+@media(max-width: 992px) {
     .info-container {
         display: grid;
         grid-template-columns: 1fr;
         grid-auto-flow: row;
 
         gap: 4rem;
+    }
+
+    .default-info {
+        align-items: center;
     }
 }

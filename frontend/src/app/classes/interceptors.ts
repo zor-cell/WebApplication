@@ -17,11 +17,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError(err => {
-            if(silentErrorHandling) {
-                return EMPTY;
+            if(!silentErrorHandling) {
+                globals.handleError(err);
             }
 
-            globals.handleError(err);
             return throwError(() => err);
         })
     )
