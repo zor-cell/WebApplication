@@ -4,11 +4,7 @@
     <div *ngIf=game class="header">{{ game.metadata.gameType }} GAME INFO</div>
     <div class="info-container">
         <div *ngIf=game class="default-info">
-            @if (game.metadata.imageUrl) {
-                <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
-            } @else {
-                <div class="highlighted-container game-image" style="height: 400px;"></div>
-            }
+            <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
 
             <div class="meta">
                 <div class="meta-item">
