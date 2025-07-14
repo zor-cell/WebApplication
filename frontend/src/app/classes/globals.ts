@@ -25,7 +25,8 @@ export class Globals {
     }
 
     handleError(error: any): void {
-        const message: string = error instanceof Object ? error.error : error;
+      const e = error instanceof Object ? error.error : error;
+      const message = e instanceof ProgressEvent ? error.message : e;
         const status: number = error.status;
 
         this.toastr.error(message, 'ERROR ' + status);

@@ -11,7 +11,14 @@
     margin: 0 auto;
 }
 
-.project-header-icons {
+.header-middle {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.header-icons {
     display: flex;
     gap: 0.5rem;
 }
