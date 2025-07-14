@@ -14,8 +14,6 @@ import {DurationPipe} from "../../../pipes/DurationPipe";
     imports: [
         NgIf,
         MainHeaderComponent,
-        NgOptimizedImage,
-        NgForOf,
         DurationPipe,
         DatePipe
     ],

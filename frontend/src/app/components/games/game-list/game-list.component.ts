@@ -6,6 +6,7 @@ import {DurationPipe} from "../../../pipes/DurationPipe";
 import {GameMetadata} from "../../../dto/games/GameMetadata";
 import {Router} from "@angular/router";
 import {GameType} from "../../../dto/games/GameType";
+import {MainHeaderComponent} from '../../all/main-header/main-header.component';
 
 @Component({
   selector: 'game-list',
@@ -13,7 +14,8 @@ import {GameType} from "../../../dto/games/GameType";
     NgForOf,
     DatePipe,
     DurationPipe,
-    NgIf
+    NgIf,
+    MainHeaderComponent
   ],
   templateUrl: './game-list.component.html',
   standalone: true,

@@ -1,4 +1,9 @@
-<app-main-header [project]="project"/>
+<app-main-header *ngIf="project">
+  <a *ngIf="project.githubUrl" class="btn btn-secondary" [href]="project.githubUrl" target="_blank"
+     rel="noopener noreferrer">
+    <i class="bi bi-github"></i>
+  </a>
+</app-main-header>
 
 <div class="main-container">
     <section class="config-container">
