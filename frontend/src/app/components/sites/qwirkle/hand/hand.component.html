@@ -1,11 +1,11 @@
 <div class="hand-actions">
-    <i class="bi bi-x-circle clear-icon danger-color" (click)="tilesCleared()"></i>
+    <i class="bi bi-x-circle clear-icon danger-color" (click)="clearHand()"></i>
 </div>
 <div class="highlighted-container hand-wrapper">
     <div class="hand-container">
         <ng-container *ngFor="let tile of paddedHand;let i = index">
             @if (tile) {
-                @if(selectionTiles && selectionTiles[i] && !selectionTiles[i].valid && !selected.includes(tile)) {
+                @if(selectionInfo && selectionInfo.tiles[i] && !selectionInfo.tiles[i].valid && !selected.includes(tile)) {
                     <qwirkle-tile
                             [tile]="tile"
                             [tileSize]="tileSize"
@@ -16,7 +16,7 @@
                             [tile]="tile"
                             [tileSize]="tileSize"
                             [tileText]="selected.includes(tile) ? selected.indexOf(tile) + 1 : null"
-                            (click)="tileSelected(i)"
+                            (click)="selectTile(i)"
                             [class.selected]="selected.includes(tile)"
                     />
                 }

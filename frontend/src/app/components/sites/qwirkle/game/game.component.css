@@ -28,14 +28,17 @@
 }
 
 .board-container {
-    display: grid;
-    grid-template-rows: 1fr;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .board-actions {
+    align-self: end;
+
     display: flex;
     gap: 0.5rem;
+    padding: 0 1rem;
 }
 
 .board {

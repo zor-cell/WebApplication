@@ -96,6 +96,7 @@ public class QwirkleServiceImpl implements QwirkleService {
         List<SelectionTile> selectionTiles = new ArrayList<>();
         for(Tile tile: gameState.hand()) {
             boolean valid = tile.isCompatible(color, shape) || fromStack; //when selecting from stack always valid
+            valid = valid || tiles.isEmpty(); //if empty tiles always valid
 
             selectionTiles.add(new SelectionTile(tile, valid));
         }

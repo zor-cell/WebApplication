@@ -74,15 +74,16 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     //events from children
-    clearedHand() {
-        this.clearHand();
+    clearedHand(gameState: GameState) {
+        this.gameState = gameState;
+        this.bestMoves = null;
     }
 
-    selectedInHand(selected: Tile[]) {
-        if(selected.length === 0) {
+    selectedInHand(selectionInfo: SelectionInfo) {
+        if(selectionInfo.tiles.length === 0) {
             this.selectionInfo = null;
         } else {
-            this.getSelectionInfo(selected);
+            this.selectionInfo = selectionInfo;
         }
     }
 
@@ -90,7 +91,7 @@ export class QwirkleGameComponent implements OnInit {
         if(!this.gameState) return;
 
         if(this.fromStack) {
-            this.getSelectionInfo([tile], this.fromStack);
+            //this.getSelectionInfo([tile], this.fromStack);
         } else {
             if (!this.gameState.hand || this.gameState?.hand?.length >= 6) return;
             this.drawTile(tile);
@@ -167,10 +168,6 @@ export class QwirkleGameComponent implements OnInit {
         return style;
     }
 
-    image() {
-        navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}}).then()
-    }
-
     private calculateCenter() {
         if (this.board) {
             const board = this.board.elementRef.nativeElement as HTMLElement;
@@ -181,12 +178,6 @@ export class QwirkleGameComponent implements OnInit {
 
 
     //requests
-    private getSelectionInfo(selected: Tile[], fromStack: boolean = false) {
-        this.qwirkleService.getSelectionInfo(selected, fromStack).subscribe(res => {
-            this.selectionInfo = res;
-        });
-    }
-
     private findBestMoves() {
         this.qwirkleService.getBestMoves().subscribe({
             next: res => {
