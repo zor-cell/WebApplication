@@ -1,9 +1,9 @@
 import {Position} from "../../all/Position";
 import {Tile} from "./Tile";
-import {groupInfo} from "./GroupInfo";
+import {MoveGroupInfo} from "./MoveGroupInfo";
 
 export interface MoveGroup {
     position: Position,
     tiles: Tile[]
-    groupInfos: groupInfo[]
+    groupInfos: MoveGroupInfo[]
 }

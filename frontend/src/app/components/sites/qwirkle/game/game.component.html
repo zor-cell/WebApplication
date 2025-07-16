@@ -57,6 +57,7 @@
                                 <qwirkle-tile
                                         [ngStyle]="getTilePositionStyle(boardTile.position)"
                                         [tile]="boardTile.tile"
+                                        [tileText]="move.groupInfos[0].score"
                                         [tileSize]="tileSize"
                                         [isInteractive]="false"
                                         class="board-tile highlighted-move"

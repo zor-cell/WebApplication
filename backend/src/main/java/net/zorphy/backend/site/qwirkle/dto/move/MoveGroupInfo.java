@@ -7,6 +7,7 @@ import java.util.List;
 
 public record MoveGroupInfo(
         Direction direction,
+        Integer score,
         List<BoardTile> boardTiles
 ) {
 }

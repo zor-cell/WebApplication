@@ -56,7 +56,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public SelectionInfo getSelectionInfo(GameState gameState, List<Tile> tiles, boolean fromStack) {
         //check if selected tiles are valid
-        if(!QwirkleUtil.isValidTiles(tiles)) {
+        if (!QwirkleUtil.isValidTiles(tiles)) {
             throw new InvalidOperationException("Invalid selected tiles");
         }
 
@@ -88,13 +88,13 @@ public class QwirkleServiceImpl implements QwirkleService {
         //check which tiles in hand are valid with the selected tiles
         MultiColor color = new MultiColor();
         MultiShape shape = new MultiShape();
-        for(Tile tile : tiles) {
+        for (Tile tile : tiles) {
             color.addFlag(tile.color());
             shape.addFlag(tile.shape());
         }
 
         List<SelectionTile> selectionTiles = new ArrayList<>();
-        for(Tile tile: gameState.hand()) {
+        for (Tile tile : gameState.hand()) {
             boolean valid = tile.isCompatible(color, shape) || fromStack; //when selecting from stack always valid
             valid = valid || tiles.isEmpty(); //if empty tiles always valid
 
@@ -214,12 +214,7 @@ public class QwirkleServiceImpl implements QwirkleService {
             }
 
             //update count of tile in stack
-            StackTile stackTile = found.get();
-            StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() + 1);
-
-            int index = stack.indexOf(stackTile);
-            stack.set(index, updatedTile);
-
+            drawTileFromStack(found.get(), stack);
         }
 
         return new GameState(
@@ -233,10 +228,22 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public GameState makeMove(GameState oldState, Move move, boolean fromStack) {
         List<Tile> hand = new ArrayList<>(oldState.hand());
+        List<StackTile> stack = new ArrayList<>(oldState.stack());
         Map<Position, BoardTile> board = mapFromList(oldState.board());
 
-        //check if tiles are present in hand (only important when playing from hand)
-        if(!fromStack) {
+        if(fromStack) {
+            //check if tiles are present in stack
+            boolean allInStack = move.tiles().stream().allMatch(t -> {
+                return stack.stream().filter(s -> s.tile().equals(t))
+                        .findFirst()
+                        .map(s -> s.count() >= 1)
+                        .orElse(false);
+            });
+            if(!allInStack) {
+                throw new InvalidOperationException("Stack does not contain all given tiles");
+            }
+        } else {
+            //check if tiles are present in hand
             boolean allInHand = new HashSet<>(hand).containsAll(move.tiles());
             if (!allInHand) {
                 throw new InvalidOperationException("Hand does not contain all given tiles");
@@ -268,14 +275,23 @@ public class QwirkleServiceImpl implements QwirkleService {
             throw new InvalidOperationException("Move is invalid");
         }
 
-        //remove tiles from hand
         for (Tile tile : move.tiles()) {
-            hand.remove(tile);
+            if (fromStack) {
+                //remove tiles from stack
+                Optional<StackTile> found = stack.stream()
+                        .filter(t -> t.tile().equals(tile))
+                        .findFirst();
+                found.ifPresent(stackTile -> drawTileFromStack(stackTile, stack));
+            } else {
+                //remove tile from hand
+                hand.remove(tile);
+            }
         }
+
 
         return new GameState(
                 hand,
-                oldState.stack(),
+                stack,
                 listFromMap(board),
                 getOpenPositions(board)
         );
@@ -290,6 +306,13 @@ public class QwirkleServiceImpl implements QwirkleService {
         Imgcodecs.imencode(".png", processed, buffer);
 
         return buffer.toArray();
+    }
+
+    private static void drawTileFromStack(StackTile stackTile, List<StackTile> stack) {
+        StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);
+
+        int index = stack.indexOf(stackTile);
+        stack.set(index, updatedTile);
     }
 
     private static MoveGroupInfo groupInfoFromMove(Move move) {
@@ -308,6 +331,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
         return new MoveGroupInfo(
                 move.direction(),
+                move.score(),
                 boardTiles
         );
     }
