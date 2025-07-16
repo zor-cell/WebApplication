@@ -1,4 +1,15 @@
-import {Component, EventEmitter, inject, input, OnChanges, Output, output, signal, SimpleChanges} from '@angular/core';
+import {
+    Component,
+    effect,
+    EventEmitter,
+    inject,
+    input,
+    OnChanges,
+    Output,
+    output,
+    signal,
+    SimpleChanges
+} from '@angular/core';
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Tile} from "../../../../dto/sites/qwirkle/Tile";
@@ -18,10 +29,10 @@ import {GameState} from "../../../../dto/sites/qwirkle/GameState";
     standalone: true,
     styleUrl: './hand.component.css'
 })
-export class QwirkleHandComponent implements OnChanges {
+export class QwirkleHandComponent {
     hand = input.required<Tile[]>();
     handCleared = output<GameState>();
-    selectionInfoChanged = output<SelectionInfo>();
+    tilesSelected = output<SelectionInfo>();
 
     tileSize: number = 40;
     selected: Tile[] = [];
@@ -36,14 +47,13 @@ export class QwirkleHandComponent implements OnChanges {
         return padded;
     }
 
-    private qwirkleService = inject(QwirkleService);
+    private changeEffect = effect(() => {
+        const change = this.hand();
+        this.selected = [];
+        this.getSelectionInfo();
+    });
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['hand']) {
-            this.selected = [];
-            this.getSelectionInfo();
-        }
-    }
+    private qwirkleService = inject(QwirkleService);
 
     selectTile(tileIndex: number) {
         if (tileIndex < 0 || tileIndex > this.hand().length - 1) return;
@@ -68,9 +78,8 @@ export class QwirkleHandComponent implements OnChanges {
 
     private getSelectionInfo() {
         this.qwirkleService.getSelectionInfo(this.selected, false).subscribe(res => {
-            console.log(res)
             this.selectionInfo = res;
-            this.selectionInfoChanged.emit(res);
+            this.tilesSelected.emit(res);
         });
     }
 }

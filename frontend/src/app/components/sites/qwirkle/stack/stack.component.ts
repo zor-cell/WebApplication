@@ -1,9 +1,13 @@
-import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import {Component, effect, HostListener, inject, input, OnChanges, output, SimpleChanges} from '@angular/core';
 import {StackTile} from "../../../../dto/sites/qwirkle/StackTile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {NgClass, NgForOf} from "@angular/common";
 import {Tile} from "../../../../dto/sites/qwirkle/Tile";
 import {FormsModule} from "@angular/forms";
+import {QwirkleService} from "../../../../services/sites/qwirkle.service";
+import {GameState} from "../../../../dto/sites/qwirkle/GameState";
+import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
+import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 
 @Component({
     selector: 'qwirkle-stack',
@@ -11,44 +15,73 @@ import {FormsModule} from "@angular/forms";
         QwirkleTileComponent,
         NgForOf,
         FormsModule,
-        NgClass
+        NgClass,
+        SliderCheckboxComponent
     ],
     templateUrl: './stack.component.html',
     standalone: true,
     styleUrl: './stack.component.css'
 })
 export class QwirkleStackComponent {
-    @Input({required: true}) stack: StackTile[] = [];
-    @Output() selectTileEvent = new EventEmitter<Tile>();
-    @Output() updateFromStackEvent = new EventEmitter<boolean>();
+    stack = input.required<StackTile[]>();
+    tileDrawn = output<GameState>();
+    tileSelected = output<SelectionInfo>();
+    editModeChanged = output<boolean>();
 
-    fromStack: boolean = false;
-    selectedIndex: number | null = null;
+    protected editMode: boolean = false;
+    protected selected: Tile[] = [];
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent): void {
-        const target = event.target as HTMLElement;
+    private changeEffect = effect(() => {
+        //detect stack changes
+        const change = this.stack();
+        this.resetSelection();
+    });
+    private qwirkleService = inject(QwirkleService);
 
-        //unselect a move when clicking anywhere except on it
-        if (!target.closest('.stack-container')) {
-            //this.selectedIndex = null;
+    changeEditMode(editMode: boolean) {
+        this.resetSelection();
+
+        this.editModeChanged.emit(editMode);
+        this.editMode = editMode;
+    }
+
+    selectTile(tileIndex: number) {
+        if (tileIndex < 0 || tileIndex > this.stack().length - 1) return;
+
+        const stackTile = this.stack()[tileIndex];
+        if (stackTile.count <= 0) return;
+
+        if (this.editMode) {
+            const tile = stackTile.tile;
+            const selectedIndex = this.selected.indexOf(tile);
+            if(selectedIndex > -1) {
+                this.selected.splice(selectedIndex, 1);
+            } else {
+                this.selected.push(tile)
+            }
+
+            this.getSelectionInfo();
+        } else {
+            this.drawTile(stackTile.tile);
         }
     }
 
-    selectedTile(tileIndex: number) {
-        if (tileIndex < 0 || tileIndex > this.stack.length - 1) return;
-
-        const stackTile = this.stack[tileIndex];
-
-        if (stackTile.count >= 1) {
-            this.updateFromStackEvent.emit(this.fromStack);
-            this.selectTileEvent.emit(stackTile.tile);
-
-            if(this.fromStack) {
-                this.selectedIndex = tileIndex;
-            } else {
-                this.selectedIndex = null;
-            }
+    private resetSelection() {
+        this.selected = [];
+        if(this.editMode) {
+            this.getSelectionInfo();
         }
+    }
+
+    private drawTile(tile: Tile) {
+        this.qwirkleService.drawTile(tile).subscribe(res => {
+            this.tileDrawn.emit(res);
+        });
+    }
+
+    private getSelectionInfo() {
+        this.qwirkleService.getSelectionInfo(this.selected, true).subscribe(res => {
+            this.tileSelected.emit(res);
+        });
     }
 }

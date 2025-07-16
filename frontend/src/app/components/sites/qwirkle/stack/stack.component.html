@@ -1,9 +1,14 @@
-<input type="checkbox" [(ngModel)]="fromStack">
+<div class="flex-container align-items-start">
+    <app-slider-checkbox [isChecked]="editMode"
+                         (checkedEvent)="changeEditMode($event)"
+    />
+</div>
 <div class="highlighted-container stack-container">
-    <qwirkle-tile *ngFor="let stackTile of stack;let i = index"
-                  [isDisabled]="stackTile.count === 0 || (fromStack && selectedIndex !== null && i !== selectedIndex)"
+    <qwirkle-tile *ngFor="let stackTile of stack();let i = index"
+                  [isDisabled]="stackTile.count === 0"
                   [tile]="stackTile.tile"
                   [tileText]="stackTile.count"
-                  (click)="selectedTile(i)"
+                  (click)="selectTile(i)"
+                  [class.selected]="selected.includes(stackTile.tile)"
     ></qwirkle-tile>
 </div>

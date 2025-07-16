@@ -42,7 +42,7 @@ export class QwirkleGameComponent implements OnInit {
     bestMoves: MoveGroup[] | null = null;
     selectionInfo: SelectionInfo | null = null;
 
-    fromStack: boolean = false;
+    editMode: boolean = false;
 
     private readonly localCenter: Position = {
         x: 0,
@@ -87,15 +87,13 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
-    selectedInStack(tile: Tile) {
-        if(!this.gameState) return;
+    drewTile(gameState: GameState) {
+        this.gameState = gameState;
+        this.findBestMoves();
+    }
 
-        if(this.fromStack) {
-            //this.getSelectionInfo([tile], this.fromStack);
-        } else {
-            if (!this.gameState.hand || this.gameState?.hand?.length >= 6) return;
-            this.drawTile(tile);
-        }
+    selectedInStack(selectionInfo: SelectionInfo) {
+       this.selectionInfo = selectionInfo;
     }
 
     //events from board
@@ -130,7 +128,7 @@ export class QwirkleGameComponent implements OnInit {
         this.selectedMove = null;
         this.selectionInfo = null;
 
-        this.makeMove(move, this.fromStack);
+        this.makeMove(move, this.editMode);
     }
 
     getTilePositionStyle(position: Position) {
@@ -183,23 +181,6 @@ export class QwirkleGameComponent implements OnInit {
             next: res => {
                 this.bestMoves = res;
             }
-        })
-    }
-
-    private drawTile(tile: Tile) {
-        this.qwirkleService.drawTile(tile).subscribe(res => {
-            this.gameState = res;
-
-            this.findBestMoves();
-        })
-    }
-
-    private clearHand() {
-        this.qwirkleService.clearHand().subscribe(res => {
-            this.gameState = res;
-
-            this.bestMoves = null;
-
         })
     }
 

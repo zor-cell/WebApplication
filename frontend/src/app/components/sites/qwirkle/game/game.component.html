@@ -6,11 +6,12 @@
             <div class="config">
                 <qwirkle-hand [hand]="gameState.hand"
                               (handCleared)="clearedHand($event)"
-                              (selectionInfoChanged)="selectedInHand($event)"
+                              (tilesSelected)="selectedInHand($event)"
                               ></qwirkle-hand>
                 <qwirkle-stack [stack]="gameState.stack"
-                               (selectTileEvent)="selectedInStack($event)"
-                               (updateFromStackEvent)="fromStack = $event"
+                               (tileDrawn)="drewTile($event)"
+                               (tileSelected)="selectedInStack($event)"
+                               (editModeChanged)="editMode = $event"
                 ></qwirkle-stack>
             </div>
 
