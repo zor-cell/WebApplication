@@ -28,7 +28,7 @@ public class CatanController extends GameSessionController<GameConfig, GameState
     }
 
     @PostMapping("dice-roll")
-    public GameState makeDiceRoll(HttpSession session,
+    public GameState rollDice(HttpSession session,
                                   @RequestParam(name = "alchemist", required = false, defaultValue = "false") boolean alchemist) {
         GameState gameState = catanService.rollDice(getSessionState(session), alchemist);
         setSessionState(session, gameState);
