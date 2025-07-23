@@ -1,0 +1,24 @@
+<ng-template #savePopup>
+    <form [formGroup]="saveForm" novalidate class="main-flex">
+        <div class="teams">
+            <div *ngFor="let team of teams; let i = index" class="player-save">
+                <div class="input-label">
+                    <label>Team</label>
+                    <input disabled type="text" class="form-control" [value]="team.name">
+                </div>
+                <div class="input-label">
+                    <label>Score</label>
+                    <input type="number" class="form-control" [formControlName]="team.name">
+                </div>
+            </div>
+        </div>
+
+        <div class="input-label">
+            <label>Image</label>
+            <input type="file" accept="image/*" capture="environment" class="form-control" (change)="onFileChanged($event)">
+        </div>
+    </form>
+    <div *ngIf="imageUrl" class="image-container">
+        <img [src]="imageUrl" alt="" width="300" height="300" class="image">
+    </div>
+</ng-template>

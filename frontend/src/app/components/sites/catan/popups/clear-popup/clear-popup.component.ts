@@ -36,7 +36,7 @@ export class CatanClearPopupComponent {
     }
 
     private clearSession() {
-        this.catanService.clear().subscribe({
+        this.catanService.clearSession().subscribe({
             next: res => {
                 this.hasSessionEvent.emit(false);
             }

@@ -1,4 +1,8 @@
-<app-main-header/>
+<app-main-header>
+    <button *ngIf="authService.isAdmin()" class="btn btn-primary" (click)="openSavePopup()">
+        <i class="bi bi-floppy"></i>
+    </button>
+</app-main-header>
 
 <div *ngIf="gameState" class="main-container">
     <div>
@@ -55,7 +59,6 @@
 
         <div class="game-actions">
             <button class="small-btn" (click)="toggleChart()">History</button>
-            <button *ngIf="authService.isAdmin()" class="small-btn" (click)="openSavePopup()">Save</button>
         </div>
     </div>
 

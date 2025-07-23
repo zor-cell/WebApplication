@@ -105,7 +105,7 @@ export class CatanGameComponent implements OnInit {
     }
 
     private getSession() {
-        this.catanService.state().subscribe({
+        this.catanService.getSession().subscribe({
             next: res => {
                 this.gameState = res;
             },

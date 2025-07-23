@@ -69,7 +69,7 @@ export class CatanConfigComponent implements OnInit {
         });
 
         //check if session state exists
-        this.catanService.state().subscribe({
+        this.catanService.getSession().subscribe({
             next: res => {
                 this.hasSession = true;
                 this.gameConfig = res.gameConfig;
@@ -82,7 +82,7 @@ export class CatanConfigComponent implements OnInit {
     startGame() {
         if (this.hasSession) return;
 
-        this.catanService.start(this.gameConfig).subscribe({
+        this.catanService.createSession(this.gameConfig).subscribe({
             next: res => {
                 this.goToGame();
             }

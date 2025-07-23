@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
 import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
@@ -14,6 +14,8 @@ import {MoveGroup} from "../../../../dto/sites/qwirkle/MoveGroup";
 import {PanContainerComponent} from "../../../all/pan-container/pan-container.component";
 import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
 import {ImageInputComponent} from "../image-input/image-input.component";
+import {AuthService} from "../../../../services/all/auth.service";
+import {CatanSavePopupComponent} from "../../catan/popups/save-popup/save-popup.component";
 
 @Component({
     selector: 'qwirkle-game',
@@ -26,13 +28,15 @@ import {ImageInputComponent} from "../image-input/image-input.component";
         NgForOf,
         NgStyle,
         PanContainerComponent,
-        ImageInputComponent
+        ImageInputComponent,
+        CatanSavePopupComponent
     ],
     templateUrl: './game.component.html',
     standalone: true,
     styleUrl: './game.component.css'
 })
 export class QwirkleGameComponent implements OnInit {
+    @ViewChild('savePopup') savePopup!: CatanSavePopupComponent;
     @ViewChild('board') board!: PanContainerComponent;
 
     tileSize = 40;
@@ -56,8 +60,8 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
-    constructor(private qwirkleService: QwirkleService) {
-    }
+    protected authService = inject(AuthService);
+    private qwirkleService = inject(QwirkleService)
 
     ngOnInit() {
         this.getState();
@@ -166,6 +170,10 @@ export class QwirkleGameComponent implements OnInit {
         return style;
     }
 
+    openSavePopup() {
+        this.savePopup.openPopup();
+    }
+
     private calculateCenter() {
         if (this.board) {
             const board = this.board.elementRef.nativeElement as HTMLElement;
@@ -185,7 +193,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     private getState() {
-        this.qwirkleService.getState().subscribe({
+        this.qwirkleService.getSession().subscribe({
             next: res => {
                 this.gameState = res;
 
@@ -208,7 +216,7 @@ export class QwirkleGameComponent implements OnInit {
     }
 
     private createState() {
-        this.qwirkleService.createState().subscribe(res => {
+        this.qwirkleService.createSession().subscribe(res => {
             this.gameState = res;
 
             //calculate center in next tick

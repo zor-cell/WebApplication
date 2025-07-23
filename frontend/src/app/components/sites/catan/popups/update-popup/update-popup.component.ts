@@ -42,7 +42,7 @@ export class CatanUpdatePopupComponent {
     }
 
     private updateSession() {
-        this.catanService.update(this.gameConfig).subscribe({
+        this.catanService.updateSession(this.gameConfig).subscribe({
             next: res => {
                 this.updatedSessionEvent.emit(true);
             }

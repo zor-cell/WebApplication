@@ -84,7 +84,7 @@ export class CatanSavePopupComponent implements OnInit {
             teams: teamState
         }
 
-        this.catanService.save(gameState, this.imageFile).subscribe({
+        this.catanService.saveSession(gameState, this.imageFile).subscribe({
             next: res => {
                 this.saveForm.reset();
             }

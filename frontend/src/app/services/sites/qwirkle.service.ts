@@ -7,36 +7,21 @@ import {Move} from "../../dto/sites/qwirkle/Move";
 import {Tile} from "../../dto/sites/qwirkle/Tile";
 import {MoveGroup} from "../../dto/sites/qwirkle/MoveGroup";
 import {SelectionInfo} from "../../dto/sites/qwirkle/SelectionInfo";
+import {ResultState} from "../../dto/sites/catan/ResultState";
+import {GameDetails} from "../../dto/games/GameDetails";
+import {GameSessionService} from "./game-session.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class QwirkleService {
-    private readonly baseUri: string;
+export class QwirkleService extends GameSessionService<void, GameState> {
+    protected readonly baseUri: string;
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(httpClient: HttpClient, globals: Globals) {
+        super(httpClient, globals);
         this.baseUri = this.globals.backendUri + '/qwirkle';
     }
 
-    //session management
-    clearState(): Observable<void> {
-        return this.httpClient.post<void>(this.baseUri + '/clear', {}).pipe(
-            tap(() => {
-                this.globals.handleSuccess('Cleared session data');
-            }));
-    }
-
-    getState(): Observable<GameState> {
-        return this.httpClient.get<GameState>(this.baseUri + '/state', {
-            context: this.globals.silentErrorContext
-        });
-    }
-
-    createState(): Observable<GameState> {
-        return this.httpClient.post<GameState>(this.baseUri + '/start', {});
-    }
-
-    //qwirkle management
     clearHand(): Observable<GameState> {
         return this.httpClient.post<GameState>(this.baseUri + '/hand/clear', {});
     }
