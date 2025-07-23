@@ -12,35 +12,35 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public abstract class GameSessionController<T, R> {
-    private final GameSessionService<T, R> sessionService;
+public abstract class GameSessionController<Config, State> {
+    private final GameSessionService<Config, State> sessionService;
     private final String SESSION_KEY;
 
-    public GameSessionController(GameSessionService<T, R> sessionService, GameType gameType) {
+    public GameSessionController(GameSessionService<Config, State> sessionService, GameType gameType) {
         this.sessionService = sessionService;
         this.SESSION_KEY = gameType.toString() + "_sessionState";
     }
 
     @GetMapping("session")
-    public R getSession(HttpSession session) {
+    public State getSession(HttpSession session) {
         return getSessionState(session);
     }
 
     @PostMapping("session")
-    public R createSession(HttpSession session, @Valid @RequestBody T gameConfig) {
+    public State createSession(HttpSession session, @Valid @RequestBody Config gameConfig) {
         if (sessionExists(session)) {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
-        R gameState = sessionService.createSession(gameConfig);
+        State gameState = sessionService.createSession(gameConfig);
         setSessionState(session, gameState);
 
         return gameState;
     }
 
     @PutMapping("session")
-    public R updateSession(HttpSession session, @Valid @RequestBody T gameConfig) {
-        R gameState = sessionService.updateSession(getSessionState(session), gameConfig);
+    public State updateSession(HttpSession session, @Valid @RequestBody Config gameConfig) {
+        State gameState = sessionService.updateSession(getSessionState(session), gameConfig);
         setSessionState(session, gameState);
 
         return gameState;
@@ -62,8 +62,8 @@ public abstract class GameSessionController<T, R> {
         return sessionService.saveSession(getSessionState(session), resultState, image);
     }
 
-    public R getSessionState(HttpSession session) {
-        R gameState = (R) session.getAttribute(SESSION_KEY);
+    public State getSessionState(HttpSession session) {
+        State gameState = (State) session.getAttribute(SESSION_KEY);
         if (gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
         }
@@ -71,7 +71,7 @@ public abstract class GameSessionController<T, R> {
         return gameState;
     }
 
-    public void setSessionState(HttpSession session, R state) {
+    public void setSessionState(HttpSession session, State state) {
         session.setAttribute(SESSION_KEY, state);
     }
 

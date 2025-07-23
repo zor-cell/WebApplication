@@ -10,23 +10,23 @@ import {GameConfig} from "../../dto/sites/catan/GameConfig";
 @Injectable({
   providedIn: 'root'
 })
-export abstract class GameSessionService<T, R> {
+export abstract class GameSessionService<Config, State> {
   protected abstract readonly baseUri: string;
 
   protected constructor(protected httpClient: HttpClient, protected globals: Globals) {}
 
-  getSession(): Observable<R> {
-    return this.httpClient.get<R>(this.baseUri + '/session', {
+  getSession(): Observable<State> {
+    return this.httpClient.get<State>(this.baseUri + '/session', {
       context: this.globals.silentErrorContext
     });
   }
 
-  createSession(config: T): Observable<R> {
-    return this.httpClient.post<R>(this.baseUri + '/session', config);
+  createSession(config: Config): Observable<State> {
+    return this.httpClient.post<State>(this.baseUri + '/session', config);
   }
 
-  updateSession(config: T): Observable<R> {
-    return this.httpClient.put<R>(this.baseUri + '/session', config).pipe(
+  updateSession(config: Config): Observable<State> {
+    return this.httpClient.put<State>(this.baseUri + '/session', config).pipe(
         tap(() => {
           this.globals.handleSuccess('Updated session data');
         }));
