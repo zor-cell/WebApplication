@@ -1,6 +1,7 @@
 package net.zorphy.backend.site.qwirkle.service;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.site.GameSessionService;
 import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.qwirkle.dto.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
@@ -11,16 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface QwirkleService {
+public interface QwirkleService extends GameSessionService<Object, GameState> {
     /**
      * Retrieves the {@code N} best moves for the given {@code gameState} where {@code N} is {@code maxMoves}.
      */
     List<MoveGroup> getBestMoves(GameState gameState, int maxMoves);
-
-    /**
-     * Initialises the game state for the session.
-     */
-    GameState initGameState();
 
     /**
      * Draws the given {@code tile} from the stack in the given {@code gameState}.
@@ -43,6 +39,4 @@ public interface QwirkleService {
     GameState makeMove(GameState gameState, Move move, boolean fromStack);
 
     byte[] uploadImage(byte[] file);
-
-    GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image);
 }

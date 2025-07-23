@@ -14,7 +14,7 @@ import {GameSessionService} from "./game-session.service";
 @Injectable({
     providedIn: 'root'
 })
-export class QwirkleService extends GameSessionService<void, GameState> {
+export class QwirkleService extends GameSessionService<Object, GameState> {
     protected readonly baseUri: string;
 
     constructor(httpClient: HttpClient, globals: Globals) {

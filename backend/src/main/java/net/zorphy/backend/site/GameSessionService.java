@@ -5,10 +5,6 @@ import net.zorphy.backend.site.catan.dto.ResultState;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface GameSessionService<T, R> {
-    //void clearSession();
-
-    //R getSession();
-
     R createSession(T config);
 
     R updateSession(R oldState, T config);

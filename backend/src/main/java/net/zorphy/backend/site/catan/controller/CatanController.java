@@ -3,7 +3,8 @@ package net.zorphy.backend.site.catan.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.game.GameDetails;
-import net.zorphy.backend.main.exception.InvalidSessionException;
+import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.site.GameSessionController;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.GameConfig;
 import net.zorphy.backend.site.catan.dto.GameState;
@@ -18,80 +19,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/catan")
-public class CatanController {
+public class CatanController extends GameSessionController<GameConfig, GameState> {
     private final CatanService catanService;
-    private static final String sessionKey = "catan_gameState";
 
     public CatanController(CatanService catanService) {
+        super(catanService, GameType.CATAN);
         this.catanService = catanService;
-    }
-
-    @GetMapping("state")
-    public GameState getState(HttpSession session) {
-        return getGameState(session);
-    }
-
-    @GetMapping("dice-rolls")
-    public List<DiceRoll> getDiceRolls(HttpSession session) {
-        return getGameState(session).diceRolls();
-    }
-
-    @PostMapping("clear")
-    public void clear(HttpSession session) {
-        //check for valid session
-        getGameState(session);
-
-        session.removeAttribute(sessionKey);
-    }
-
-    @PostMapping("start")
-    public GameState start(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        if (sessionExists(session)) {
-            throw new InvalidSessionException("A game state for this session already exists");
-        }
-
-        GameState gameState = catanService.createSession(gameConfig);
-        session.setAttribute(sessionKey, gameState);
-
-        return gameState;
-    }
-
-    @PutMapping("update")
-    public GameState updateGame(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        GameState gameState = catanService.updateSession(getGameState(session), gameConfig);
-        session.setAttribute(sessionKey, gameState);
-
-        return gameState;
     }
 
     @PostMapping("dice-roll")
     public GameState makeDiceRoll(HttpSession session,
                                   @RequestParam(name = "alchemist", required = false, defaultValue = "false") boolean alchemist) {
-        GameState gameState = catanService.rollDice(getGameState(session), alchemist);
-        session.setAttribute(sessionKey, gameState);
-
-        return gameState;
-    }
-
-    @Secured("ROLE_ADMIN")
-    @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public GameDetails saveGame(HttpSession session,
-                                @RequestPart("gameState") @Valid ResultState resultState,
-                                @RequestPart(value = "image", required = false) MultipartFile image) {
-        return catanService.saveSession(getGameState(session), resultState, image);
-    }
-
-
-    private boolean sessionExists(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute(sessionKey);
-        return gameState != null;
-    }
-
-    private GameState getGameState(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute(sessionKey);
-        if (gameState == null) {
-            throw new InvalidSessionException("No game state for this session exists");
-        }
+        GameState gameState = catanService.rollDice(getSessionState(session), alchemist);
+        setSessionState(session, gameState);
 
         return gameState;
     }

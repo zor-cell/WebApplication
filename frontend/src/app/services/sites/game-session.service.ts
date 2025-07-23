@@ -15,27 +15,27 @@ export abstract class GameSessionService<T, R> {
 
   protected constructor(protected httpClient: HttpClient, protected globals: Globals) {}
 
-  clearSession(): Observable<void> {
-    return this.httpClient.post<void>(this.baseUri + '/clear', {}).pipe(
-        tap(() => {
-          this.globals.handleSuccess('Cleared session data');
-        }));
-  }
-
   getSession(): Observable<R> {
-    return this.httpClient.get<R>(this.baseUri + '/state', {
+    return this.httpClient.get<R>(this.baseUri + '/session', {
       context: this.globals.silentErrorContext
     });
   }
 
   createSession(config: T): Observable<R> {
-    return this.httpClient.post<R>(this.baseUri + '/start', config);
+    return this.httpClient.post<R>(this.baseUri + '/session', config);
   }
 
   updateSession(config: T): Observable<R> {
-    return this.httpClient.put<R>(this.baseUri + '/update', config).pipe(
+    return this.httpClient.put<R>(this.baseUri + '/session', config).pipe(
         tap(() => {
           this.globals.handleSuccess('Updated session data');
+        }));
+  }
+
+  clearSession(): Observable<void> {
+    return this.httpClient.delete<void>(this.baseUri + '/session').pipe(
+        tap(() => {
+          this.globals.handleSuccess('Cleared session data');
         }));
   }
   
@@ -46,7 +46,7 @@ export abstract class GameSessionService<T, R> {
       formData.append('image', imageFile, imageFile.name);
     }
 
-    return this.httpClient.post<GameDetails>(this.baseUri + '/save', formData).pipe(
+    return this.httpClient.post<GameDetails>(this.baseUri + '/session/save', formData).pipe(
         tap(() => {
           this.globals.handleSuccess('Saved session data');
         }));

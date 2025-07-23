@@ -3,7 +3,9 @@ package net.zorphy.backend.site.qwirkle.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;
+import net.zorphy.backend.site.GameSessionController;
 import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.qwirkle.dto.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
@@ -21,49 +23,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/qwirkle")
-public class QwirkleController {
-    private static final String sessionKey = "qwirkle_gameState";
+public class QwirkleController extends GameSessionController<Object, GameState> {
     private final QwirkleService qwirkleService;
 
     public QwirkleController(QwirkleService qwirkleService) {
+        super(qwirkleService, GameType.QWIRKLE);
         this.qwirkleService = qwirkleService;
     }
 
-    @PostMapping("clear")
-    public void clearState(HttpSession session) {
-        //check for valid session
-        getGameState(session);
-        session.removeAttribute(sessionKey);
-    }
-
-    @GetMapping("state")
-    public GameState getState(HttpSession session) {
-        return getGameState(session);
-    }
-
-    @PostMapping("start")
-    public GameState createState(HttpSession session) {
-        if (sessionExists(session)) {
-            throw new InvalidSessionException("A game state for this session already exists");
-        }
-
-        GameState gameState = qwirkleService.initGameState();
-        session.setAttribute(sessionKey, gameState);
-
-        return gameState;
-    }
-
-
-
     @GetMapping("solve")
     public List<MoveGroup> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
-        return qwirkleService.getBestMoves(getGameState(session), maxMoves);
+        return qwirkleService.getBestMoves(getSessionState(session), maxMoves);
     }
 
     @PostMapping("hand/clear")
     public GameState clearHand(HttpSession session) {
-        GameState gameState = qwirkleService.clearHand(getGameState(session));
-        session.setAttribute(sessionKey, gameState);
+        GameState gameState = qwirkleService.clearHand(getSessionState(session));
+        setSessionState(session, gameState);
 
         return gameState;
     }
@@ -72,13 +48,13 @@ public class QwirkleController {
     public SelectionInfo getSelectionInfo(HttpSession session,
                                           @Valid @RequestBody List<Tile> selected,
                                           @RequestParam(value = "fromStack", defaultValue = "false") boolean fromStack) {
-        return qwirkleService.getSelectionInfo(getGameState(session), selected, fromStack);
+        return qwirkleService.getSelectionInfo(getSessionState(session), selected, fromStack);
     }
 
     @PostMapping("stack/draw")
     public GameState drawTile(HttpSession session, @Valid @RequestBody Tile tile) {
-        GameState gameState = qwirkleService.drawTile(getGameState(session), tile);
-        session.setAttribute(sessionKey, gameState);
+        GameState gameState = qwirkleService.drawTile(getSessionState(session), tile);
+        setSessionState(session, gameState);
 
         return gameState;
     }
@@ -87,8 +63,8 @@ public class QwirkleController {
     public GameState makeMove(HttpSession session,
                               @RequestBody Move move,
                               @RequestParam(value = "fromStack", defaultValue = "false") boolean fromStack) {
-        GameState gameState = qwirkleService.makeMove(getGameState(session), move, fromStack);
-        session.setAttribute(sessionKey, gameState);
+        GameState gameState = qwirkleService.makeMove(getSessionState(session), move, fromStack);
+        setSessionState(session, gameState);
 
         return gameState;
     }
@@ -101,28 +77,5 @@ public class QwirkleController {
     @PostMapping("image/confirm")
     public void confirmImage(HttpSession session) {
 
-    }
-
-    @Secured("ROLE_ADMIN")
-    @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public GameDetails saveGame(HttpSession session,
-                                @RequestPart("gameState") @Valid ResultState resultState,
-                                @RequestPart(value = "image", required = false) MultipartFile image) {
-        return qwirkleService.saveGame(getGameState(session), resultState, image);
-    }
-
-
-    private boolean sessionExists(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute(sessionKey);
-        return gameState != null;
-    }
-
-    private GameState getGameState(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute(sessionKey);
-        if (gameState == null) {
-            throw new InvalidSessionException("No game state for this session exists");
-        }
-
-        return gameState;
     }
 }

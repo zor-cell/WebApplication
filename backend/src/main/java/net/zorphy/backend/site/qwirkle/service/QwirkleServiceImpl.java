@@ -38,7 +38,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public GameState initGameState() {
+    public GameState createSession(Object config) {
         //initialise stack
         List<StackTile> stack = new ArrayList<>();
 
@@ -61,6 +61,23 @@ public class QwirkleServiceImpl implements QwirkleService {
                 stack,
                 new ArrayList<>(),
                 new ArrayList<>()
+        );
+    }
+
+    @Override
+    public GameState updateSession(GameState oldState, Object config) {
+        return null;
+    }
+
+    @Override
+    public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
+        return gameService.saveGame(
+                null,
+                GameType.QWIRKLE,
+                gameState,
+                resultState,
+                image,
+                List.of()
         );
     }
 
@@ -319,17 +336,7 @@ public class QwirkleServiceImpl implements QwirkleService {
         return buffer.toArray();
     }
 
-    @Override
-    public GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image) {
-        return gameService.saveGame(
-                null,
-                GameType.QWIRKLE,
-                gameState,
-                resultState,
-                image,
-                List.of()
-        );
-    }
+
 
 
     private static void drawTileFromStack(StackTile stackTile, List<StackTile> stack) {
