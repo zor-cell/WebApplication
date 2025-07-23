@@ -50,7 +50,7 @@ public class CatanController {
             throw new InvalidSessionException("A game state for this session already exists");
         }
 
-        GameState gameState = catanService.initGameState(gameConfig);
+        GameState gameState = catanService.createSession(gameConfig);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
@@ -58,7 +58,7 @@ public class CatanController {
 
     @PutMapping("update")
     public GameState updateGame(HttpSession session, @Valid @RequestBody GameConfig gameConfig) {
-        GameState gameState = catanService.updateGameState(getGameState(session), gameConfig);
+        GameState gameState = catanService.updateSession(getGameState(session), gameConfig);
         session.setAttribute(sessionKey, gameState);
 
         return gameState;
@@ -78,7 +78,7 @@ public class CatanController {
     public GameDetails saveGame(HttpSession session,
                                 @RequestPart("gameState") @Valid ResultState resultState,
                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        return catanService.saveGame(getGameState(session), resultState, image);
+        return catanService.saveSession(getGameState(session), resultState, image);
     }
 
 

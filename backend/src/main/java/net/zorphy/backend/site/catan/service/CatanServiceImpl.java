@@ -26,17 +26,9 @@ public class CatanServiceImpl implements CatanService {
     private final Random rand = new Random();
 
     private final GameService gameService;
-    private final GameMapper gameMapper;
-    private final GameRepository gameRepository;
-    private final PlayerRepository playerRepository;
-    private final FileStorageService fileStorageService;
 
-    public CatanServiceImpl(GameService gameService, GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository, FileStorageService fileStorageService) {
+    public CatanServiceImpl(GameService gameService) {
         this.gameService = gameService;
-        this.gameMapper = gameMapper;
-        this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
-        this.fileStorageService = fileStorageService;
     }
 
     private List<DicePair> initClassicCards() {
@@ -100,7 +92,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameState initGameState(GameConfig gameConfig) {
+    public GameState createSession(GameConfig gameConfig) {
         //shuffle balanced classic dice deck
         List<DicePair> classicCards = null;
         if (gameConfig.classicDice().isBalanced()) {
@@ -127,7 +119,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameState updateGameState(GameState oldState, GameConfig gameConfig) {
+    public GameState updateSession(GameState oldState, GameConfig gameConfig) {
         //update turns if players changed
         int currentPlayerTurn = oldState.currentPlayerTurn() % gameConfig.teams().size();
         int currentShipTurn = oldState.currentShipTurn() % gameConfig.maxShipTurns();
@@ -164,6 +156,18 @@ public class CatanServiceImpl implements CatanService {
                 classicCards,
                 eventCards,
                 oldState.diceRolls()
+        );
+    }
+
+    @Override
+    public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
+        return gameService.saveGame(
+                Duration.between(gameState.startTime(), LocalDateTime.now()),
+                GameType.CATAN,
+                gameState,
+                resultState,
+                image,
+                gameState.gameConfig().teams()
         );
     }
 
@@ -275,38 +279,5 @@ public class CatanServiceImpl implements CatanService {
                 eventCards,
                 diceRolls
         );
-    }
-
-    @Override
-    public GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image) {
-        return gameService.saveGame(
-                Duration.between(gameState.startTime(), LocalDateTime.now()),
-                GameType.CATAN,
-                gameState,
-                resultState,
-                image,
-                gameState.gameConfig().teams()
-        );
-        /*
-        //get all players in team from db
-        Set<Player> players = gameState.gameConfig().teams().stream()
-                .flatMap(team -> team.players().stream())
-                .map(PlayerDetails::name)
-                .map(playerRepository::findByName)
-                .collect(Collectors.toSet());
-
-        String path = fileStorageService.saveFile("games", image);
-
-        Game toSave = new Game(
-                LocalDateTime.now(),
-                Duration.between(gameState.startTime(), LocalDateTime.now()),
-                GameType.CATAN,
-                path,
-                gameState,
-                resultState,
-                players
-        );
-        Game saved = gameRepository.save(toSave);
-        return gameMapper.gameToGameDetails(saved);*/
     }
 }
