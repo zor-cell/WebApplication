@@ -29,12 +29,4 @@ public class GameController {
     public GameDetails getGame(@PathVariable UUID id) {
         return gameService.getGame(id);
     }
-
-    /*
-    @PostMapping("/save")
-    public GameDetails saveGame(@RequestBody GameDetails gameDetails) {
-        LOGGER.info("GET /games/save");
-
-        return gameService.saveGame(gameDetails);
-    }*/
 }

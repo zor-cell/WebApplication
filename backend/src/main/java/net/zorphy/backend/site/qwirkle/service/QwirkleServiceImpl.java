@@ -1,5 +1,9 @@
 package net.zorphy.backend.site.qwirkle.service;
 
+import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.service.GameService;
+import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.qwirkle.dto.*;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
@@ -15,14 +19,21 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class QwirkleServiceImpl implements QwirkleService {
-    public QwirkleServiceImpl() {
+    private final GameService gameService;
+
+    public QwirkleServiceImpl(GameService gameService) {
+        this.gameService = gameService;
+
         OpenCV.loadLocally();
     }
 
@@ -307,6 +318,19 @@ public class QwirkleServiceImpl implements QwirkleService {
 
         return buffer.toArray();
     }
+
+    @Override
+    public GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image) {
+        return gameService.saveGame(
+                null,
+                GameType.QWIRKLE,
+                gameState,
+                resultState,
+                image,
+                List.of()
+        );
+    }
+
 
     private static void drawTileFromStack(StackTile stackTile, List<StackTile> stack) {
         StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);

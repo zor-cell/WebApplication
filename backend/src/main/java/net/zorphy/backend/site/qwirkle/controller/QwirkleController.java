@@ -2,7 +2,9 @@ package net.zorphy.backend.site.qwirkle.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.exception.InvalidSessionException;
+import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.qwirkle.dto.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
@@ -10,6 +12,7 @@ import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;
 import net.zorphy.backend.site.qwirkle.service.QwirkleService;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,6 +101,14 @@ public class QwirkleController {
     @PostMapping("image/confirm")
     public void confirmImage(HttpSession session) {
 
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public GameDetails saveGame(HttpSession session,
+                                @RequestPart("gameState") @Valid ResultState resultState,
+                                @RequestPart(value = "image", required = false) MultipartFile image) {
+        return qwirkleService.saveGame(getGameState(session), resultState, image);
     }
 
 

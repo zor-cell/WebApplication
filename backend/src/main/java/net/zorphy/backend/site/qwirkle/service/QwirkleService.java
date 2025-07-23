@@ -1,10 +1,13 @@
 package net.zorphy.backend.site.qwirkle.service;
 
+import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.site.catan.dto.ResultState;
 import net.zorphy.backend.site.qwirkle.dto.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -40,4 +43,6 @@ public interface QwirkleService {
     GameState makeMove(GameState gameState, Move move, boolean fromStack);
 
     byte[] uploadImage(byte[] file);
+
+    GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image);
 }

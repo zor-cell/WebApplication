@@ -10,6 +10,7 @@ import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
 import net.zorphy.backend.main.service.FileStorageService;
+import net.zorphy.backend.main.service.GameService;
 import net.zorphy.backend.site.catan.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,12 +24,15 @@ import java.util.stream.Collectors;
 public class CatanServiceImpl implements CatanService {
     private final List<Character> possibleEvents = new ArrayList<>(Arrays.asList('e', 'e', 'e', 'y', 'b', 'g'));
     private final Random rand = new Random();
+
+    private final GameService gameService;
     private final GameMapper gameMapper;
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
     private final FileStorageService fileStorageService;
 
-    public CatanServiceImpl(GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository, FileStorageService fileStorageService) {
+    public CatanServiceImpl(GameService gameService, GameMapper gameMapper, GameRepository gameRepository, PlayerRepository playerRepository, FileStorageService fileStorageService) {
+        this.gameService = gameService;
         this.gameMapper = gameMapper;
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
@@ -275,6 +279,15 @@ public class CatanServiceImpl implements CatanService {
 
     @Override
     public GameDetails saveGame(GameState gameState, ResultState resultState, MultipartFile image) {
+        return gameService.saveGame(
+                Duration.between(gameState.startTime(), LocalDateTime.now()),
+                GameType.CATAN,
+                gameState,
+                resultState,
+                image,
+                gameState.gameConfig().teams()
+        );
+        /*
         //get all players in team from db
         Set<Player> players = gameState.gameConfig().teams().stream()
                 .flatMap(team -> team.players().stream())
@@ -294,6 +307,6 @@ public class CatanServiceImpl implements CatanService {
                 players
         );
         Game saved = gameRepository.save(toSave);
-        return gameMapper.gameToGameDetails(saved);
+        return gameMapper.gameToGameDetails(saved);*/
     }
 }
