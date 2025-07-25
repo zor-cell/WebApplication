@@ -12,7 +12,7 @@ import {ProjectMetadata} from "../../../../dto/projects/ProjectMetadata";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 import {CatanUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
-import {GameSessionComponent} from "../../GameSessionComponent";
+import {GameSessionComponentBase} from "../../game-session-component-base.directive";
 import {GameState} from "../../../../dto/sites/catan/game/GameState";
 
 @Component({
@@ -32,11 +32,9 @@ import {GameState} from "../../../../dto/sites/catan/game/GameState";
     standalone: true,
     styleUrl: './config.component.css'
 })
-export class CatanConfigComponent extends GameSessionComponent<GameConfig, GameState> {
+export class CatanConfigComponent extends GameSessionComponentBase<GameConfig, GameState> {
     @ViewChild('clearPopup') clearPopup!: CatanClearPopupComponent;
     @ViewChild('updatePopup') updatePopup!: CatanUpdatePopupComponent;
-
-    project!: ProjectMetadata;
 
     gameModes = Object.values(GameMode);
 

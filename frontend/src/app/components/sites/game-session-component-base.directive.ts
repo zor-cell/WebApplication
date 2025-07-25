@@ -1,13 +1,13 @@
 import {GameSessionService} from "../../services/sites/game-session.service";
-import {Directive, OnInit} from "@angular/core";
+import {Component, Directive, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {GameConfig} from "../../dto/sites/catan/game/GameConfig";
 
 @Directive()
-export abstract class GameSessionComponent<Config, State> implements OnInit {
-    gameConfig!: Config;
-    hasSession: boolean = false;
-    originalConfig: Config | null = null;
+export abstract class GameSessionComponentBase<Config, State> implements OnInit {
+    protected gameConfig!: Config;
+    protected hasSession: boolean = false;
+    private originalConfig: Config | null = null;
 
     abstract clearPopup: {openPopup(): void}
     abstract updatePopup: {openPopup(): void}
