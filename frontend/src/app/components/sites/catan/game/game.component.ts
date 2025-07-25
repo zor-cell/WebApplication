@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CatanConfigComponent} from "../config/config.component";
-import {GameState} from "../../../../dto/sites/catan/GameState";
+import {GameState} from "../../../../dto/sites/catan/game/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {Globals} from "../../../../classes/globals";
@@ -14,7 +14,7 @@ import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component
 import {Router} from "@angular/router";
 import {Team} from "../../../../dto/all/Team";
 import {AuthService} from "../../../../services/all/auth.service";
-import {GameMode} from "../../../../dto/sites/catan/GameMode";
+import {GameMode} from "../../../../dto/sites/catan/enums/GameMode";
 
 @Component({
     selector: 'catan-game',

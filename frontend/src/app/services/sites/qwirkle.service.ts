@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Globals} from "../../classes/globals";
 import {from, Observable, tap} from "rxjs";
-import {GameState} from "../../dto/sites/qwirkle/GameState";
-import {Move} from "../../dto/sites/qwirkle/Move";
-import {Tile} from "../../dto/sites/qwirkle/Tile";
-import {MoveGroup} from "../../dto/sites/qwirkle/MoveGroup";
+import {GameState} from "../../dto/sites/qwirkle/game/GameState";
+import {Move} from "../../dto/sites/qwirkle/move/Move";
+import {Tile} from "../../dto/sites/qwirkle/tile/Tile";
+import {MoveGroup} from "../../dto/sites/qwirkle/move/MoveGroup";
 import {SelectionInfo} from "../../dto/sites/qwirkle/SelectionInfo";
-import {ResultState} from "../../dto/sites/catan/ResultState";
+import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameDetails} from "../../dto/games/GameDetails";
 import {GameSessionService} from "./game-session.service";
 

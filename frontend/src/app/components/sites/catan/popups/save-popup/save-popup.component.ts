@@ -5,8 +5,8 @@ import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
 import {CatanService} from "../../../../../services/sites/catan.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
-import {ResultState} from "../../../../../dto/sites/catan/ResultState";
-import {ResultTeamState} from "../../../../../dto/sites/catan/ResultTeamState";
+import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
+import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
 
 @Component({
     selector: 'catan-save-popup',

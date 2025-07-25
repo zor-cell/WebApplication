@@ -1,4 +1,4 @@
-import {Tile} from "./Tile";
+import {Tile} from "./tile/Tile";
 
 export interface HandInfo {
     tile: Tile,

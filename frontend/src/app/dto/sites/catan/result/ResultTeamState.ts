@@ -1,4 +1,4 @@
-import {Team} from "../../all/Team";
+import {Team} from "../../../all/Team";
 
 export interface ResultTeamState {
     team: Team,

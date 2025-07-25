@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
 import {NgIf} from "@angular/common";
-import {GameMode} from "../../../../dto/sites/catan/GameMode";
+import {GameMode} from "../../../../dto/sites/catan/enums/GameMode";
 
 @Component({
     selector: 'catan-dice-roll',

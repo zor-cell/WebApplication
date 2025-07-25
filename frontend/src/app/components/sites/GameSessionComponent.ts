@@ -1,15 +1,20 @@
 import {GameSessionService} from "../../services/sites/game-session.service";
-import {OnInit} from "@angular/core";
+import {Directive, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
+import {GameConfig} from "../../dto/sites/catan/game/GameConfig";
 
+@Directive()
 export abstract class GameSessionComponent<Config, State> implements OnInit {
     gameConfig!: Config;
     hasSession: boolean = false;
     originalConfig: Config | null = null;
 
-    constructor(protected sessionService: GameSessionService<Config, State>, protected projectName: string, private router: Router) {
+    abstract clearPopup: {openPopup(): void}
+    abstract updatePopup: {openPopup(): void}
 
-    }
+    protected constructor(protected sessionService: GameSessionService<Config, State>,
+                          protected projectName: string,
+                          private router: Router) {}
 
     ngOnInit() {
         this.sessionService.getSession().subscribe(res => {
@@ -22,6 +27,8 @@ export abstract class GameSessionComponent<Config, State> implements OnInit {
         });
     }
 
+    abstract isValidConfig() : boolean;
+
     startGame() {
         if(this.hasSession) return;
 
@@ -30,7 +37,30 @@ export abstract class GameSessionComponent<Config, State> implements OnInit {
         });
     }
 
+    continueGame() {
+        if (!this.hasSession || this.originalConfig === null) return;
+
+        //only show popup if changes to the config have been made
+        if (this.configsAreEqual(this.gameConfig, this.originalConfig)) {
+            this.goToGame();
+        } else {
+            this.openUpdatePopup();
+        }
+    }
+
     goToGame() {
         this.router.navigate([`projects/${this.projectName}/game`]);
+    }
+
+    openClearPopup() {
+        this.clearPopup.openPopup();
+    }
+
+    openUpdatePopup() {
+        this.updatePopup.openPopup();
+    }
+
+    private configsAreEqual(config1: Config, config2: Config): boolean {
+        return JSON.stringify(config1) === JSON.stringify(config2);
     }
 }

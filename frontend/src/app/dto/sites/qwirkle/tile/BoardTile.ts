@@ -1,4 +1,4 @@
-import {Position} from "../../all/Position";
+import {Position} from "../../../all/Position";
 import {Tile} from "./Tile";
 
 export interface BoardTile {

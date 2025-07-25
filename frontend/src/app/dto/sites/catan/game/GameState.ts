@@ -1,6 +1,6 @@
-import {DiceRoll} from "./DiceRoll";
+import {DiceRoll} from "../DiceRoll";
 import {GameConfig} from "./GameConfig";
-import {DicePair} from "./DicePair";
+import {DicePair} from "../DicePair";
 
 export interface GameState {
     gameConfig: GameConfig,

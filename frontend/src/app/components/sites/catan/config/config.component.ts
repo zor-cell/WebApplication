@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {GameConfig} from "../../../../dto/sites/catan/GameConfig";
+import {GameConfig} from "../../../../dto/sites/catan/game/GameConfig";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Router} from "@angular/router";
@@ -11,7 +11,9 @@ import {ProjectService} from "../../../../services/project.service";
 import {ProjectMetadata} from "../../../../dto/projects/ProjectMetadata";
 import {CatanClearPopupComponent} from "../popups/clear-popup/clear-popup.component";
 import {CatanUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
-import {GameMode, getGameModeName} from "../../../../dto/sites/catan/GameMode";
+import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
+import {GameSessionComponent} from "../../GameSessionComponent";
+import {GameState} from "../../../../dto/sites/catan/game/GameState";
 
 @Component({
     selector: 'catan-game-settings',
@@ -30,86 +32,32 @@ import {GameMode, getGameModeName} from "../../../../dto/sites/catan/GameMode";
     standalone: true,
     styleUrl: './config.component.css'
 })
-export class CatanConfigComponent implements OnInit {
+export class CatanConfigComponent extends GameSessionComponent<GameConfig, GameState> {
     @ViewChild('clearPopup') clearPopup!: CatanClearPopupComponent;
     @ViewChild('updatePopup') updatePopup!: CatanUpdatePopupComponent;
 
     project!: ProjectMetadata;
-    gameConfig: GameConfig = {
-        teams: [],
-        gameMode: GameMode.CITIES_AND_KNIGHTS,
-        classicDice: {
-            isBalanced: true,
-            shuffleThreshold: 5,
-            useEvents: false
-        },
-        eventDice: {
-            isBalanced: false,
-            shuffleThreshold: 2,
-            useEvents: false
-        },
-        maxShipTurns: 7
-    };
-    hasSession: boolean = false;
-    originalConfig: GameConfig | null = null;
 
     gameModes = Object.values(GameMode);
 
-    constructor(private projectService: ProjectService,
-                private catanService: CatanService,
-                private router: Router) {
-    }
+    constructor(protected catanService: CatanService, router: Router) {
+        super(catanService, "catan", router);
 
-    ngOnInit(): void {
-        //get project metadata for header
-        this.projectService.getProject("catan").subscribe({
-            next: res => {
-                this.project = res.metadata;
-            }
-        });
-
-        //check if session state exists
-        this.catanService.getSession().subscribe({
-            next: res => {
-                this.hasSession = true;
-                this.gameConfig = res.gameConfig;
-
-                this.originalConfig = structuredClone(this.gameConfig);
-            }
-        });
-    }
-
-    startGame() {
-        if (this.hasSession) return;
-
-        this.catanService.createSession(this.gameConfig).subscribe({
-            next: res => {
-                this.goToGame();
-            }
-        });
-    }
-
-    continueGame() {
-        if (!this.hasSession || this.originalConfig === null) return;
-
-        //only show popup if changes to the config have been made
-        if (this.configsAreEqual(this.gameConfig, this.originalConfig)) {
-            this.goToGame();
-        } else {
-            this.openUpdatePopup();
-        }
-    }
-
-    openClearPopup() {
-        this.clearPopup.openPopup();
-    }
-
-    openUpdatePopup() {
-        this.updatePopup.openPopup();
-    }
-
-    goToGame() {
-        this.router.navigate(['projects/catan/game']);
+        this.gameConfig = {
+            teams: [],
+            gameMode: GameMode.CITIES_AND_KNIGHTS,
+            classicDice: {
+                isBalanced: true,
+                shuffleThreshold: 5,
+                useEvents: false
+            },
+            eventDice: {
+                isBalanced: false,
+                shuffleThreshold: 2,
+                useEvents: false
+            },
+            maxShipTurns: 7
+        };
     }
 
     isValidConfig() {
@@ -118,10 +66,6 @@ export class CatanConfigComponent implements OnInit {
         }
 
         return this.gameConfig.teams.length >= 2;
-    }
-
-    private configsAreEqual(config1: GameConfig, config2: GameConfig): boolean {
-        return JSON.stringify(config1) === JSON.stringify(config2);
     }
 
     protected readonly GameMode = GameMode;

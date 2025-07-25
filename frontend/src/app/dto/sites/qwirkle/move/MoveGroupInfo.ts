@@ -1,5 +1,5 @@
-import {Direction} from "./Direction";
-import {BoardTile} from "./BoardTile";
+import {Direction} from "../enums/Direction";
+import {BoardTile} from "../tile/BoardTile";
 
 export interface MoveGroupInfo {
     direction: Direction,

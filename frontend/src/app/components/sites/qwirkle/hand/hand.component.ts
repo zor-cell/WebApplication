@@ -12,10 +12,10 @@ import {
 } from '@angular/core';
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {QwirkleTileComponent} from "../tile/tile.component";
-import {Tile} from "../../../../dto/sites/qwirkle/Tile";
+import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
 import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
-import {GameState} from "../../../../dto/sites/qwirkle/GameState";
+import {GameState} from "../../../../dto/sites/qwirkle/game/GameState";
 
 @Component({
     selector: 'qwirkle-hand',

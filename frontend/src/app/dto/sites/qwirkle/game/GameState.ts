@@ -1,7 +1,7 @@
-import {StackTile} from "./StackTile";
-import {BoardTile} from "./BoardTile";
-import {Tile} from "./Tile";
-import {PositionInfo} from "./PositionInfo";
+import {StackTile} from "../tile/StackTile";
+import {BoardTile} from "../tile/BoardTile";
+import {Tile} from "../tile/Tile";
+import {PositionInfo} from "../PositionInfo";
 import {GameConfig} from "./GameConfig";
 
 export interface GameState {

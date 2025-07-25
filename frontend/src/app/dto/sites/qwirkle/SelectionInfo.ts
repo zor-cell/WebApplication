@@ -1,5 +1,5 @@
-import {MoveGroup} from "./MoveGroup";
-import {SelectionTile} from "./SelectionTile";
+import {MoveGroup} from "./move/MoveGroup";
+import {SelectionTile} from "./tile/SelectionTile";
 
 export interface SelectionInfo {
     tiles: SelectionTile[],

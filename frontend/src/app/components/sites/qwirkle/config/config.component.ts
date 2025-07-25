@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
-import {GameConfig} from "../../../../dto/sites/qwirkle/GameConfig";
+import {GameConfig} from "../../../../dto/sites/qwirkle/game/GameConfig";
 
 @Component({
   selector: 'qwirkle-game-config',

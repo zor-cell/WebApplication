@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tile} from "../../../../dto/sites/qwirkle/Tile";
-import {Color} from "../../../../dto/sites/qwirkle/Color";
+import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
+import {Color} from "../../../../dto/sites/qwirkle/enums/Color";
 import {SafeHtml} from "@angular/platform-browser";
 import {AsyncPipe, NgClass, NgIf, NgStyle} from "@angular/common";
 import {ImageCacheService} from "../../../../services/all/image-cache.service";

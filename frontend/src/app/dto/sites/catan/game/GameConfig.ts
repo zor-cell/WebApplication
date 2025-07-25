@@ -1,6 +1,6 @@
-import {DiceConfig} from "./DiceConfig";
-import {Team} from "../../all/Team";
-import {GameMode} from "./GameMode";
+import {DiceConfig} from "../DiceConfig";
+import {Team} from "../../../all/Team";
+import {GameMode} from "../enums/GameMode";
 
 export interface GameConfig {
     teams: Team[],
