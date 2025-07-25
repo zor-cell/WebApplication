@@ -2,23 +2,20 @@ package net.zorphy.backend.site.catan.service;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
-import net.zorphy.backend.main.entity.Game;
-import net.zorphy.backend.main.entity.Player;
-import net.zorphy.backend.main.mapper.GameMapper;
-import net.zorphy.backend.main.repository.GameRepository;
-import net.zorphy.backend.main.repository.PlayerRepository;
-import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.service.GameService;
-import net.zorphy.backend.site.catan.dto.*;
+import net.zorphy.backend.site.catan.dto.DicePair;
+import net.zorphy.backend.site.catan.dto.DiceRoll;
+import net.zorphy.backend.site.catan.dto.enums.GameMode;
+import net.zorphy.backend.site.catan.dto.game.GameConfig;
+import net.zorphy.backend.site.catan.dto.game.GameState;
+import net.zorphy.backend.site.catan.dto.result.ResultState;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CatanServiceImpl implements CatanService {

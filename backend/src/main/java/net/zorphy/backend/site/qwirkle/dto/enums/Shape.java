@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.qwirkle.dto;
+package net.zorphy.backend.site.qwirkle.dto.enums;
 
 public enum Shape {
     CIRCLE(1),

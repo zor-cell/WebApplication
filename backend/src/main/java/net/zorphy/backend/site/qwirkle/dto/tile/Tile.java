@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.qwirkle.dto.tile;
 
-import net.zorphy.backend.site.qwirkle.dto.Color;
-import net.zorphy.backend.site.qwirkle.dto.Shape;
+import net.zorphy.backend.site.qwirkle.dto.enums.Color;
+import net.zorphy.backend.site.qwirkle.dto.enums.Shape;
 import net.zorphy.backend.site.qwirkle.service.util.MultiColor;
 import net.zorphy.backend.site.qwirkle.service.util.MultiShape;
 

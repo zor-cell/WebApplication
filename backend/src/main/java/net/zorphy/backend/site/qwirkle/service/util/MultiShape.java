@@ -1,6 +1,6 @@
 package net.zorphy.backend.site.qwirkle.service.util;
 
-import net.zorphy.backend.site.qwirkle.dto.Shape;
+import net.zorphy.backend.site.qwirkle.dto.enums.Shape;
 
 public class MultiShape {
     private int flags = 0;

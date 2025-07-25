@@ -3,9 +3,13 @@ package net.zorphy.backend.site.qwirkle.service;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.GameService;
-import net.zorphy.backend.site.catan.dto.ResultState;
+import net.zorphy.backend.site.catan.dto.result.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.qwirkle.dto.*;
+import net.zorphy.backend.site.qwirkle.dto.enums.Color;
+import net.zorphy.backend.site.qwirkle.dto.enums.Shape;
+import net.zorphy.backend.site.qwirkle.dto.game.GameConfig;
+import net.zorphy.backend.site.qwirkle.dto.game.GameState;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroupInfo;
@@ -21,8 +25,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public GameState createSession(Object config) {
+    public GameState createSession(GameConfig config) {
         //initialise stack
         List<StackTile> stack = new ArrayList<>();
 
@@ -65,7 +67,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     }
 
     @Override
-    public GameState updateSession(GameState oldState, Object config) {
+    public GameState updateSession(GameState oldState, GameConfig config) {
         return null;
     }
 

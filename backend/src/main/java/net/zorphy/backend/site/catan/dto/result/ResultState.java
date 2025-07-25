@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.catan.dto;
+package net.zorphy.backend.site.catan.dto.result;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

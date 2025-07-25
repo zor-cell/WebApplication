@@ -1,5 +1,7 @@
 package net.zorphy.backend.site.qwirkle.dto;
 
+import net.zorphy.backend.site.qwirkle.dto.enums.Direction;
+
 public record Position(
         Integer x,
         Integer y

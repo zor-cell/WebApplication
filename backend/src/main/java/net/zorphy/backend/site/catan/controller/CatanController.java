@@ -1,21 +1,12 @@
 package net.zorphy.backend.site.catan.controller;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.site.GameSessionController;
-import net.zorphy.backend.site.catan.dto.DiceRoll;
-import net.zorphy.backend.site.catan.dto.GameConfig;
-import net.zorphy.backend.site.catan.dto.GameState;
-import net.zorphy.backend.site.catan.dto.ResultState;
+import net.zorphy.backend.site.catan.dto.game.GameConfig;
+import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.service.CatanService;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/catan")

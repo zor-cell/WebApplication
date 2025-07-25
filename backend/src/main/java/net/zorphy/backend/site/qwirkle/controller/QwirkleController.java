@@ -2,19 +2,16 @@ package net.zorphy.backend.site.qwirkle.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.site.GameSessionController;
-import net.zorphy.backend.site.catan.dto.ResultState;
-import net.zorphy.backend.site.qwirkle.dto.GameState;
+import net.zorphy.backend.site.qwirkle.dto.game.GameConfig;
+import net.zorphy.backend.site.qwirkle.dto.game.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;
 import net.zorphy.backend.site.qwirkle.service.QwirkleService;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/qwirkle")
-public class QwirkleController extends GameSessionController<Object, GameState> {
+public class QwirkleController extends GameSessionController<GameConfig, GameState> {
     private final QwirkleService qwirkleService;
 
     public QwirkleController(QwirkleService qwirkleService) {

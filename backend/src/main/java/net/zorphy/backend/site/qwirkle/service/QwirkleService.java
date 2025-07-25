@@ -1,18 +1,16 @@
 package net.zorphy.backend.site.qwirkle.service;
 
-import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.site.GameSessionService;
-import net.zorphy.backend.site.catan.dto.ResultState;
-import net.zorphy.backend.site.qwirkle.dto.GameState;
+import net.zorphy.backend.site.qwirkle.dto.game.GameConfig;
+import net.zorphy.backend.site.qwirkle.dto.game.GameState;
 import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface QwirkleService extends GameSessionService<Object, GameState> {
+public interface QwirkleService extends GameSessionService<GameConfig, GameState> {
     /**
      * Retrieves the {@code N} best moves for the given {@code gameState} where {@code N} is {@code maxMoves}.
      */

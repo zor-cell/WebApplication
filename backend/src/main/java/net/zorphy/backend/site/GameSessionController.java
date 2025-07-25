@@ -5,14 +5,14 @@ import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;
-import net.zorphy.backend.site.catan.dto.GameState;
-import net.zorphy.backend.site.catan.dto.ResultState;
+import net.zorphy.backend.site.catan.dto.game.GameState;
+import net.zorphy.backend.site.catan.dto.result.ResultState;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public abstract class GameSessionController<Config, State> {
+public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase> {
     private final GameSessionService<Config, State> sessionService;
     private final String SESSION_KEY;
 

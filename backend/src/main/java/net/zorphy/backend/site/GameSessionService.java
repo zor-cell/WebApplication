@@ -1,13 +1,13 @@
 package net.zorphy.backend.site;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
-import net.zorphy.backend.site.catan.dto.ResultState;
+import net.zorphy.backend.site.catan.dto.result.ResultState;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface GameSessionService<T, R> {
-    R createSession(T config);
+public interface GameSessionService<Config extends GameConfigBase, State extends GameStateBase> {
+    State createSession(Config config);
 
-    R updateSession(R oldState, T config);
+    State updateSession(State oldState, Config config);
 
-    GameDetails saveSession(R state, ResultState resultState, MultipartFile image);
+    GameDetails saveSession(State state, ResultState resultState, MultipartFile image);
 }

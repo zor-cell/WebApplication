@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.catan.dto;
+package net.zorphy.backend.site.catan.dto.enums;
 
 public enum GameMode {
     ONE_VS_ONE,

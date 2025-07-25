@@ -1,6 +1,6 @@
 package net.zorphy.backend.site.qwirkle.service.util;
 
-import net.zorphy.backend.site.qwirkle.dto.Color;
+import net.zorphy.backend.site.qwirkle.dto.enums.Color;
 
 public class MultiColor {
     private int flags = 0;
