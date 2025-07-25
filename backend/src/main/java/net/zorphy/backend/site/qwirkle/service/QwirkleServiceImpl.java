@@ -25,6 +25,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -59,6 +60,9 @@ public class QwirkleServiceImpl implements QwirkleService {
         }
 
         return new GameState(
+                LocalDateTime.now(),
+                config,
+                0,
                 new ArrayList<>(),
                 stack,
                 new ArrayList<>(),
@@ -222,6 +226,9 @@ public class QwirkleServiceImpl implements QwirkleService {
         stack.set(index, updatedTile);
 
         return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                oldState.currentPlayerTurn(),
                 hand,
                 stack,
                 oldState.board(),
@@ -231,6 +238,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
     @Override
     public GameState clearHand(GameState oldState) {
+        int currentPlayerTurn = oldState.currentPlayerTurn() % oldState.gameConfig().teams().size();
         List<Tile> hand = new ArrayList<>(oldState.hand());
         List<StackTile> stack = new ArrayList<>(oldState.stack());
 
@@ -248,6 +256,9 @@ public class QwirkleServiceImpl implements QwirkleService {
         }
 
         return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                oldState.currentPlayerTurn(),
                 new ArrayList<>(),
                 stack,
                 oldState.board(),
@@ -257,6 +268,7 @@ public class QwirkleServiceImpl implements QwirkleService {
 
     @Override
     public GameState makeMove(GameState oldState, Move move, boolean fromStack) {
+        int currentPlayerTurn = oldState.currentPlayerTurn() % oldState.gameConfig().teams().size();
         List<Tile> hand = new ArrayList<>(oldState.hand());
         List<StackTile> stack = new ArrayList<>(oldState.stack());
         Map<Position, BoardTile> board = mapFromList(oldState.board());
@@ -320,6 +332,9 @@ public class QwirkleServiceImpl implements QwirkleService {
 
 
         return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                currentPlayerTurn,
                 hand,
                 stack,
                 listFromMap(board),
