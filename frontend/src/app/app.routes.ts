@@ -7,6 +7,7 @@ import {CatanConfigComponent} from "./components/sites/catan/config/config.compo
 import {QwirkleGameComponent} from "./components/sites/qwirkle/game/game.component";
 import {GameListComponent} from "./components/games/game-list/game-list.component";
 import {GameInfoComponent} from "./components/games/game-info/game-info.component";
+import {QwirkleConfigComponent} from "./components/sites/qwirkle/config/config.component";
 
 export const routes: Routes = [
     //project routing
@@ -27,6 +28,7 @@ export const routes: Routes = [
     {path: 'projects/catan/game', component: CatanGameComponent},
 
     //qwirkle routing
-    {path: 'projects/qwirkle', redirectTo: 'projects/qwirkle/game', pathMatch: 'full'},
+    {path: 'projects/qwirkle', redirectTo: 'projects/qwirkle/config', pathMatch: 'full'},
+    {path: 'projects/qwirkle/config', component: QwirkleConfigComponent},
     {path: 'projects/qwirkle/game', component: QwirkleGameComponent}
 ];

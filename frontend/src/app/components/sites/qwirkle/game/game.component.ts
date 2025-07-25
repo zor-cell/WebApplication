@@ -16,6 +16,7 @@ import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
 import {ImageInputComponent} from "../image-input/image-input.component";
 import {AuthService} from "../../../../services/all/auth.service";
 import {CatanSavePopupComponent} from "../../catan/popups/save-popup/save-popup.component";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'qwirkle-game',
@@ -62,9 +63,10 @@ export class QwirkleGameComponent implements OnInit {
 
     protected authService = inject(AuthService);
     private qwirkleService = inject(QwirkleService)
+    private router = inject(Router);
 
     ngOnInit() {
-        this.getState();
+        this.getSession();
     }
 
     @HostListener('document:click', ['$event'])
@@ -192,7 +194,7 @@ export class QwirkleGameComponent implements OnInit {
         })
     }
 
-    private getState() {
+    private getSession() {
         this.qwirkleService.getSession().subscribe({
             next: res => {
                 this.gameState = res;
@@ -203,7 +205,7 @@ export class QwirkleGameComponent implements OnInit {
                 setTimeout(() => this.calculateCenter(), 1);
             },
             error: err => {
-                this.createState();
+                this.router.navigate(['projects/qwirkle']);
             }
         });
     }
@@ -212,15 +214,6 @@ export class QwirkleGameComponent implements OnInit {
         this.qwirkleService.makeMove(move, fromStack).subscribe(res => {
             this.gameState = res;
             this.findBestMoves();
-        });
-    }
-
-    private createState() {
-        this.qwirkleService.createSession({}).subscribe(res => {
-            this.gameState = res;
-
-            //calculate center in next tick
-            setTimeout(() => this.calculateCenter(), 1);
         });
     }
 }

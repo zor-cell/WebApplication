@@ -120,16 +120,6 @@ export class CatanConfigComponent implements OnInit {
         return this.gameConfig.teams.length >= 2;
     }
 
-    mapGameMode(mode: string): string {
-        if (mode === GameMode.ONE_VS_ONE) {
-            return '1 vs 1';
-        } else if (mode === GameMode.CLASSIC) {
-            return 'Classic';
-        }
-
-        return 'Cities and Knights';
-    }
-
     private configsAreEqual(config1: GameConfig, config2: GameConfig): boolean {
         return JSON.stringify(config1) === JSON.stringify(config2);
     }
