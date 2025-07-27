@@ -10,33 +10,28 @@ import {MainHeaderComponent} from "../../../all/main-header/main-header.componen
 import {BaseChartDirective} from "ng2-charts";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {ReactiveFormsModule} from "@angular/forms";
-import {CatanSavePopupComponent} from "../popups/save-popup/save-popup.component";
 import {Router} from "@angular/router";
 import {Team} from "../../../../dto/all/Team";
 import {AuthService} from "../../../../services/all/auth.service";
 import {GameMode} from "../../../../dto/sites/catan/enums/GameMode";
+import {GameSessionGameComponent} from "../../game-session/game-session-game.component";
 
 @Component({
     selector: 'catan-game',
     imports: [
-        CatanConfigComponent,
         NgIf,
         NgForOf,
         NgClass,
         CatanDiceRollComponent,
-        MainHeaderComponent,
-        BaseChartDirective,
         CatanHistogramComponent,
         ReactiveFormsModule,
-        CatanSavePopupComponent
+        GameSessionGameComponent
     ],
     templateUrl: './game.component.html',
     standalone: true,
     styleUrl: './game.component.css'
 })
 export class CatanGameComponent implements OnInit {
-    @ViewChild('savePopup') savePopup!: CatanSavePopupComponent;
-
     gameState!: GameState;
     showChart: boolean = false;
 
@@ -79,7 +74,7 @@ export class CatanGameComponent implements OnInit {
     }
 
     constructor(private globals: Globals,
-                private catanService: CatanService,
+                protected catanService: CatanService,
                 private router: Router,
                 public authService: AuthService) {
     }
@@ -98,10 +93,6 @@ export class CatanGameComponent implements OnInit {
 
     toggleChart() {
         this.showChart = !this.showChart;
-    }
-
-    openSavePopup() {
-        this.savePopup.openPopup();
     }
 
     private getSession() {

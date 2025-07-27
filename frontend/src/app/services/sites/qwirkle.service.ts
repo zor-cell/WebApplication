@@ -10,11 +10,12 @@ import {SelectionInfo} from "../../dto/sites/qwirkle/SelectionInfo";
 import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameDetails} from "../../dto/games/GameDetails";
 import {GameSessionService} from "./game-session.service";
+import {GameConfig} from "../../dto/sites/qwirkle/game/GameConfig";
 
 @Injectable({
     providedIn: 'root'
 })
-export class QwirkleService extends GameSessionService<Object, GameState> {
+export class QwirkleService extends GameSessionService<GameConfig, GameState> {
     protected readonly baseUri: string;
 
     constructor(httpClient: HttpClient, globals: Globals) {

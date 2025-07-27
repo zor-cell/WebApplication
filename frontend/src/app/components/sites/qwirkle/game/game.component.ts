@@ -15,33 +15,31 @@ import {PanContainerComponent} from "../../../all/pan-container/pan-container.co
 import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
 import {ImageInputComponent} from "../image-input/image-input.component";
 import {AuthService} from "../../../../services/all/auth.service";
-import {CatanSavePopupComponent} from "../../catan/popups/save-popup/save-popup.component";
 import {Router} from "@angular/router";
+import {GameSessionGameComponent} from "../../game-session/game-session-game.component";
 
 @Component({
     selector: 'qwirkle-game',
     imports: [
         QwirkleHandComponent,
         QwirkleStackComponent,
-        MainHeaderComponent,
         NgIf,
         QwirkleTileComponent,
         NgForOf,
         NgStyle,
         PanContainerComponent,
         ImageInputComponent,
-        CatanSavePopupComponent
+        GameSessionGameComponent
     ],
     templateUrl: './game.component.html',
     standalone: true,
     styleUrl: './game.component.css'
 })
 export class QwirkleGameComponent implements OnInit {
-    @ViewChild('savePopup') savePopup!: CatanSavePopupComponent;
     @ViewChild('board') board!: PanContainerComponent;
 
     tileSize = 40;
-    gameState: GameState | null = null;
+    gameState!: GameState;
     selectedMove: MoveGroup | null = null;
 
     bestMoves: MoveGroup[] | null = null;
@@ -61,8 +59,7 @@ export class QwirkleGameComponent implements OnInit {
         }
     }
 
-    protected authService = inject(AuthService);
-    private qwirkleService = inject(QwirkleService)
+    protected qwirkleService = inject(QwirkleService)
     private router = inject(Router);
 
     ngOnInit() {
@@ -170,10 +167,6 @@ export class QwirkleGameComponent implements OnInit {
         }
 
         return style;
-    }
-
-    openSavePopup() {
-        this.savePopup.openPopup();
     }
 
     private calculateCenter() {

@@ -1,8 +1,6 @@
-<app-main-header>
-    <button *ngIf="authService.isAdmin()" class="btn btn-primary" (click)="openSavePopup()">
-        <i class="bi bi-floppy"></i>
-    </button>
-</app-main-header>
+<game-session-game [sessionService]="catanService"
+                   [(gameState)]="gameState"
+>
 
 <div *ngIf="gameState" class="main-container">
     <div>
@@ -66,5 +64,4 @@
         <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls"/>
     </div>
 </div>
-
-<catan-save-popup #savePopup *ngIf="gameState" [teams]="gameState.gameConfig.teams"></catan-save-popup>
+</game-session-game>

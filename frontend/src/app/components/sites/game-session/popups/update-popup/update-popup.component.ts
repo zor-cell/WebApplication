@@ -1,6 +1,6 @@
 import {Component, input, output, TemplateRef, viewChild} from '@angular/core';
-import {PopupService} from "../../../../services/popup.service";
-import {PopupResultType} from "../../../../dto/all/PopupResultType";
+import {PopupService} from "../../../../../services/popup.service";
+import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 
 @Component({
     selector: 'game-session-update-popup',

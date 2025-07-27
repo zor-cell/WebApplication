@@ -3,8 +3,8 @@ import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {GameConfig} from "../../../dto/sites/catan/game/GameConfig";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {Router} from "@angular/router";
-import {GameSessionClearPopupComponent} from "./clear-popup/clear-popup.component";
-import {GameSessionUpdatePopupComponent} from "./update-popup/update-popup.component";
+import {GameSessionClearPopupComponent} from "./popups/clear-popup/clear-popup.component";
+import {GameSessionUpdatePopupComponent} from "./popups/update-popup/update-popup.component";
 import {GameConfigBase} from "../../../dto/sites/GameConfigBase";
 import {GameStateBase} from "../../../dto/sites/GameStateBase";
 
@@ -33,9 +33,11 @@ import {GameStateBase} from "../../../dto/sites/GameStateBase";
 
         <ng-content></ng-content>
 
-        <game-session-clear-popup #clearPopup (clearSessionEvent)="clearSession()"></game-session-clear-popup>
-        <game-session-update-popup #updatePopup [canUpdate]="isValidConfig()"
-                                   (updateSessionEvent)="updateSession($event)"></game-session-update-popup>
+        <game-session-clear-popup #clearPopup 
+                                  (clearSessionEvent)="clearSession()"/>
+        <game-session-update-popup #updatePopup 
+                                   [canUpdate]="isValidConfig()"
+                                   (updateSessionEvent)="updateSession($event)"/>
     `
 })
 export class GameSessionConfigComponent implements OnInit {

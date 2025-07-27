@@ -44,7 +44,19 @@
 select {
     border: solid 2px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    /*padding-left: 0.7rem;*/
+    padding-left: 0.7rem;
     height: 30px;
-    width: fit-content;
+    width: 125px;
+}
+
+@media (max-width: 900px) {
+    .config-container, .game-container {
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+        justify-items: center;
+    }
+
+    .config-grid-container {
+        width: 100%;
+    }
 }

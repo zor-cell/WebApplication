@@ -1,7 +1,7 @@
 <ng-template #savePopup>
     <form [formGroup]="saveForm" novalidate class="main-flex">
         <div class="teams">
-        <div *ngFor="let team of teams; let i = index" class="player-save">
+        <div *ngFor="let team of teams(); let i = index" class="player-save">
             <div class="input-label">
                 <label>Team</label>
                 <input disabled type="text" class="form-control" [value]="team.name">

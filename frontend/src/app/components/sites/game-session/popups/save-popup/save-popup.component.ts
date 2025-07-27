@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, input, Input, OnInit, output, TemplateRef, viewChild, ViewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
@@ -9,7 +9,7 @@ import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
 
 @Component({
-    selector: 'catan-save-popup',
+    selector: 'game-session-save-popup',
     imports: [
         NgForOf,
         ReactiveFormsModule,
@@ -19,23 +19,25 @@ import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamS
     standalone: true,
     styleUrl: './save-popup.component.css'
 })
-export class CatanSavePopupComponent implements OnInit {
-    @ViewChild('savePopup') saveTemplate!: TemplateRef<any>;
+export class GameSessionSavePopupComponent implements OnInit {
+    saveTemplate = viewChild.required<TemplateRef<any>>('savePopup');
     saveForm!: FormGroup;
 
-    @Input({required: true}) teams!: Team[];
-    imageFile: File | null = null;
-    imageUrl: string | null = null;
+    public teams = input.required<Team[]>();
+    protected imageUrl: string | null = null;
+    private imageFile: File | null = null;
+
+
+    saveSessionEvent = output<{ resultState: ResultState, imageFile: File | null }>();
 
     constructor(private popupService: PopupService,
-                private catanService: CatanService,
                 private fb: FormBuilder) {
     }
 
     ngOnInit() {
         const controls: any = {};
 
-        for (let team of this.teams) {
+        for (let team of this.teams()) {
             controls[team.name] = [null, Validators.required];
         }
 
@@ -45,7 +47,7 @@ export class CatanSavePopupComponent implements OnInit {
     openPopup() {
         this.popupService.createPopup(
             'Save Game Data',
-            this.saveTemplate,
+            this.saveTemplate(),
             this.callback.bind(this),
             () => this.saveForm.valid,
             'Save'
@@ -68,6 +70,7 @@ export class CatanSavePopupComponent implements OnInit {
         } else if (result === PopupResultType.CANCEL) {
             this.saveForm.reset();
         }
+        this.saveForm.reset();
 
         this.imageFile = null;
         if(this.imageUrl) URL.revokeObjectURL(this.imageUrl);
@@ -75,20 +78,16 @@ export class CatanSavePopupComponent implements OnInit {
     }
 
     private saveGame() {
-        const teamState: ResultTeamState[] = this.teams.map(team => ({
+        const teamState: ResultTeamState[] = this.teams().map(team => ({
             team: team,
             score: Number(this.saveForm.value[team.name])
         }));
 
-        const gameState: ResultState = {
+        const resultState: ResultState = {
             teams: teamState
         }
 
-        this.catanService.saveSession(gameState, this.imageFile).subscribe({
-            next: res => {
-                this.saveForm.reset();
-            }
-        });
+        this.saveSessionEvent.emit({resultState: resultState, imageFile: this.imageFile});
     }
 
     private createImageFromBlob(blob: Blob) {
