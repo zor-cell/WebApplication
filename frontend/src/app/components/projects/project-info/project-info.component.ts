@@ -5,7 +5,6 @@ import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
-import {CatanUpdatePopupComponent} from "../../sites/catan/popups/update-popup/update-popup.component";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {AuthService} from "../../../services/all/auth.service";
 
@@ -15,7 +14,6 @@ import {AuthService} from "../../../services/all/auth.service";
         NgIf,
         RouterLink,
         MainHeaderComponent,
-        CatanUpdatePopupComponent,
         ProjectUpdatePopupComponent
     ],
     templateUrl: './project-info.component.html',

@@ -1,6 +1,5 @@
-<game-session-base #base
-                   [sessionService]="catanService"
-                   [projectName]="'catan'"
+<game-session-config [sessionService]="catanService"
+                   [projectName]="projectName"
                    [(gameConfig)]="gameConfig"
                    [isValidConfig]="isValidConfig()"
 >
@@ -85,4 +84,4 @@
         </div>
     </section>
 </div>
-</game-session-base>
+</game-session-config>

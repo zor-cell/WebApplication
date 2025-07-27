@@ -1,4 +1,4 @@
-import {Component, signal, viewChild} from '@angular/core';
+import {Component, inject, signal, viewChild} from '@angular/core';
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -7,7 +7,7 @@ import {CatanService} from "../../../../services/sites/catan.service";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Router} from "@angular/router";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
-import {GameSessionComponent} from "../../game-session/game-session.component";
+import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
 
 @Component({
     selector: 'catan-game-settings',
@@ -17,16 +17,15 @@ import {GameSessionComponent} from "../../game-session/game-session.component";
         FormsModule,
         NgForOf,
         PlayerSelectComponent,
-        GameSessionComponent,
-        GameSessionComponent
+        GameSessionConfigComponent,
+        GameSessionConfigComponent
     ],
     templateUrl: './config.component.html',
     standalone: true,
     styleUrl: './config.component.css'
 })
 export class CatanConfigComponent {
-    private baseComponent = viewChild.required<GameSessionComponent<GameConfig>>('base');
-    gameConfig = signal<GameConfig>({
+    protected gameConfig = signal<GameConfig>({
         teams: [],
         gameMode: GameMode.CITIES_AND_KNIGHTS,
         classicDice: {
@@ -41,10 +40,10 @@ export class CatanConfigComponent {
         },
         maxShipTurns: 7
     });
-    gameModes = Object.values(GameMode);
+    protected readonly projectName = "catan";
+    protected gameModes = Object.values(GameMode);
 
-    constructor(protected catanService: CatanService) {
-    }
+    protected catanService = inject(CatanService);
 
     isValidConfig() {
         if (this.gameConfig().gameMode === GameMode.ONE_VS_ONE) {

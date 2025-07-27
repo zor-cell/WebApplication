@@ -1,35 +1,40 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
 import {GameConfig} from "../../../../dto/sites/qwirkle/game/GameConfig";
+import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
+import {FormsModule} from "@angular/forms";
+import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
+import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
+import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
 
 @Component({
-  selector: 'qwirkle-game-config',
-  imports: [],
-  templateUrl: './config.component.html',
-  standalone: true,
-  styleUrl: './config.component.css'
+    selector: 'qwirkle-game-config',
+    imports: [
+        GameSessionConfigComponent,
+        FormsModule,
+        NgForOf,
+        NgOptimizedImage,
+        PlayerSelectComponent,
+        SliderCheckboxComponent
+    ],
+    templateUrl: './config.component.html',
+    standalone: true,
+    styleUrl: './config.component.css'
 })
-export class QwirkleConfigComponent implements OnInit {
-  private qwirkleService = inject(QwirkleService);
-
-  gameConfig: GameConfig = {
-    teams: [],
-    playingTeam: -1
-  };
-  hasSession: boolean = false;
-
-  ngOnInit() {
-    this.qwirkleService.getSession().subscribe(res => {
-      this.gameConfig = res.gameConfig;
+export class QwirkleConfigComponent {
+    gameConfig = signal<GameConfig>({
+        teams: [],
+        playingTeam: -1
     });
-  }
+    protected readonly projectName = "qwirkle";
 
-  private createSession() {
-    this.qwirkleService.createSession({}).subscribe(res => {
-      //this.gameState = res;
+    protected qwirkleService = inject(QwirkleService);
 
-      //calculate center in next tick
-      //setTimeout(() => this.calculateCenter(), 1);
-    });
-  }
+    isValidConfig() {
+        return true;
+    }
+
+    protected readonly getGameModeName = getGameModeName;
+    protected readonly GameMode = GameMode;
 }

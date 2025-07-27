@@ -6,11 +6,13 @@ import {Globals} from "../../classes/globals";
 import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameDetails} from "../../dto/games/GameDetails";
 import {GameConfig} from "../../dto/sites/catan/game/GameConfig";
+import {GameConfigBase} from "../../dto/sites/GameConfigBase";
+import {GameStateBase} from "../../dto/sites/GameStateBase";
 
 @Injectable({
   providedIn: 'root'
 })
-export abstract class GameSessionService<Config, State> {
+export abstract class GameSessionService<Config extends GameConfigBase, State extends GameStateBase> {
   protected abstract readonly baseUri: string;
 
   protected constructor(protected httpClient: HttpClient, protected globals: Globals) {}

@@ -1,19 +1,17 @@
 import {Component, inject, input, model, OnInit, output, signal, viewChild} from "@angular/core";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
-import {CatanClearPopupComponent} from "../catan/popups/clear-popup/clear-popup.component";
-import {CatanUpdatePopupComponent} from "../catan/popups/update-popup/update-popup.component";
 import {GameConfig} from "../../../dto/sites/catan/game/GameConfig";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {Router} from "@angular/router";
 import {GameSessionClearPopupComponent} from "./clear-popup/clear-popup.component";
 import {GameSessionUpdatePopupComponent} from "./update-popup/update-popup.component";
+import {GameConfigBase} from "../../../dto/sites/GameConfigBase";
+import {GameStateBase} from "../../../dto/sites/GameStateBase";
 
 @Component({
-    selector: 'game-session-base',
+    selector: 'game-session-config',
     imports: [
         MainHeaderComponent,
-        CatanClearPopupComponent,
-        CatanUpdatePopupComponent,
         GameSessionClearPopupComponent,
         GameSessionUpdatePopupComponent
     ],
@@ -40,25 +38,24 @@ import {GameSessionUpdatePopupComponent} from "./update-popup/update-popup.compo
                                    (updateSessionEvent)="updateSession($event)"></game-session-update-popup>
     `
 })
-export class GameSessionComponent<Config extends GameConfig> implements OnInit {
-    private clearPopup = viewChild.required<CatanClearPopupComponent>('clearPopup');
-    private updatePopup = viewChild.required<CatanUpdatePopupComponent>('updatePopup');
+export class GameSessionConfigComponent implements OnInit {
+    private clearPopup = viewChild.required<GameSessionClearPopupComponent>('clearPopup');
+    private updatePopup = viewChild.required<GameSessionUpdatePopupComponent>('updatePopup');
 
-    sessionService = input.required<GameSessionService<Config, any>>();
-    projectName = input.required<string>();
-    isValidConfig = input.required<boolean>();
-    gameConfig = model.required<Config>();
-
+    public sessionService = input.required<GameSessionService<GameConfigBase, GameStateBase>>();
+    public projectName = input.required<string>();
+    public isValidConfig = input.required<boolean>();
+    public gameConfig = model.required<GameConfigBase>();
     protected hasSession = signal<boolean>(false);
-    private originalConfig: Config | null = null;
+
+    //to check for changes on update
+    private originalConfig: GameConfigBase | null = null;
 
     private router = inject(Router);
 
     ngOnInit() {
         this.sessionService().getSession().subscribe(res => {
             this.hasSession.set(true);
-            //TODO fix
-            // @ts-ignore
             this.gameConfig.set(res.gameConfig);
 
             this.originalConfig = structuredClone(this.gameConfig());
@@ -116,7 +113,7 @@ export class GameSessionComponent<Config extends GameConfig> implements OnInit {
         }
     }
 
-    private configsAreEqual(config1: Config, config2: Config): boolean {
+    private configsAreEqual(config1: GameConfigBase, config2: GameConfigBase): boolean {
         return JSON.stringify(config1) === JSON.stringify(config2);
     }
 }
