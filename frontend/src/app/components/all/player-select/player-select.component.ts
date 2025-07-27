@@ -137,9 +137,9 @@ export class PlayerSelectComponent implements OnInit, OnChanges {
 
     updateCurrentPlayer(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
-        const selectedName = selectElement.options[selectElement.selectedIndex].text;
+        const selectedId = selectElement.options[selectElement.selectedIndex].value;
 
-        const found = this.availablePlayers.find(p => p.name === selectedName);
+        const found = this.availablePlayers.find(p => p.id === selectedId);
         if (found) {
             this.currentPlayer = this.copy(found);
         }

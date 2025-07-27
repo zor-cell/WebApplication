@@ -10,6 +10,23 @@
                 <app-player-select [selectedTeams]="gameConfig().teams"
                                    (selectedTeamEvent)="gameConfig().teams = $event"></app-player-select>
             </div>
+            <div class="config-grid-container">
+                <h3 class="config-header">Settings</h3>
+                <div class="flex-container temp">
+                    <label>Solve for: </label>
+                @let empty = gameConfig().teams.length === 0;
+                <select [disabled]="empty" (change)="updatePlayingTeam($event)">
+                    @if(!empty) {
+                        <option *ngFor="let team of gameConfig().teams;let i = index" [value]="i">
+                            {{team.name}}
+                        </option>
+                    } @else {
+                        <option>EMPTY</option>
+                    }
+                </select>
+                </div>
+            </div>
+
         </section>
     </div>
 </game-session-config>

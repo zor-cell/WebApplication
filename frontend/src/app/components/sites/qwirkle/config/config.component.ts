@@ -35,6 +35,13 @@ export class QwirkleConfigComponent {
         return true;
     }
 
+    updatePlayingTeam(event: Event) {
+        const selectElement = event.target as HTMLSelectElement;
+        const selectedValue = selectElement.options[selectElement.selectedIndex].value;
+
+        this.gameConfig().playingTeam = parseInt(selectedValue);
+    }
+
     protected readonly getGameModeName = getGameModeName;
     protected readonly GameMode = GameMode;
 }

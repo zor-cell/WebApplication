@@ -131,5 +131,5 @@
         <qwirkle-image-input></qwirkle-image-input>
     </div>
 
-    <catan-save-popup #savePopup *ngIf="gameState" [teams]="[]"></catan-save-popup>
+    <catan-save-popup #savePopup *ngIf="gameState" [teams]="gameState.gameConfig.teams"></catan-save-popup>
 }
