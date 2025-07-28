@@ -60,12 +60,6 @@ public class QwirkleServiceImpl implements QwirkleService {
             }
         }
 
-        List<BoardTile> b = new ArrayList<>();
-        b.add(new BoardTile(new Position(0, 0), new Tile(Color.PURPLE, Shape.CIRCLE)));
-        b.add(new BoardTile(new Position(-1, 0), new Tile(Color.PURPLE, Shape.STAR8)));
-        b.add(new BoardTile(new Position(-2, 0), new Tile(Color.PURPLE, Shape.CLOVER)));
-        b.add(new BoardTile(new Position(2, -1), new Tile(Color.ORANGE, Shape.STAR8)));
-
         return new GameState(
                 LocalDateTime.now(),
                 config,
@@ -73,7 +67,7 @@ public class QwirkleServiceImpl implements QwirkleService {
                 new ArrayList<>(),
                 new ArrayList<>(),
                 stack,
-                b,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
     }
