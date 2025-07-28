@@ -255,6 +255,7 @@ public class QwirkleUtil {
                     steps++;
                     next = position.stepsInDirection(scoreDir, steps);
                 }
+                steps = 1;
             }
 
             //include placed piece if something was found
