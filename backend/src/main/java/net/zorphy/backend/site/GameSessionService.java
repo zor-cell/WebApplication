@@ -10,4 +10,6 @@ public interface GameSessionService<Config extends GameConfigBase, State extends
     State updateSession(State oldState, Config config);
 
     GameDetails saveSession(State state, ResultState resultState, MultipartFile image);
+
+    State undoMove(State state);
 }

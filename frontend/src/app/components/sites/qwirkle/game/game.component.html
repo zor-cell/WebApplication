@@ -19,7 +19,7 @@
 
             <div class="board-container">
                 <div class="board-actions">
-                    <button class="small-btn">
+                    <button class="small-btn" [disabled]="gameState.moves.length === 0" (click)="undoMove()">
                         <i class="bi bi-arrow-left-square"></i>
                     </button>
                     <button class="small-btn">

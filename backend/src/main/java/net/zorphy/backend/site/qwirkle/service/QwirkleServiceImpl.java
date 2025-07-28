@@ -31,6 +31,12 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/*TODO
+undo for qwirkle and catan
+fixing signals in configs and games
+fix stack in qwirkle
+*/
+
 @Service
 public class QwirkleServiceImpl implements QwirkleService {
     private final GameService gameService;
@@ -65,6 +71,7 @@ public class QwirkleServiceImpl implements QwirkleService {
                 config,
                 0,
                 new ArrayList<>(),
+                new ArrayList<>(),
                 stack,
                 new ArrayList<>(),
                 new ArrayList<>()
@@ -85,6 +92,41 @@ public class QwirkleServiceImpl implements QwirkleService {
                 resultState,
                 image,
                 gameState.gameConfig().teams()
+        );
+    }
+
+    @Override
+    public GameState undoMove(GameState oldState) {
+        List<Move> moves = new ArrayList<>(oldState.moves());
+        List<StackTile> stack = new ArrayList<>(oldState.stack());
+        Map<Position, BoardTile> board = mapFromList(oldState.board());
+
+        if(moves.isEmpty()) {
+            throw new InvalidOperationException("Moves are empty");
+        }
+
+        Move move = moves.removeLast();
+        //remove from board
+        for (int tileIndex = 0; tileIndex < move.tiles().size(); tileIndex++) {
+            Position position = move.position().stepsInDirection(move.direction(), tileIndex);
+
+            board.remove(position);
+        }
+
+        //add to stack
+        for(Tile tile : move.tiles()) {
+            addTileToStack(tile, stack);
+        }
+
+        return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                oldState.currentPlayerTurn(),
+                moves,
+                oldState.hand(),
+                stack,
+                listFromMap(board),
+                getOpenPositions(board)
         );
     }
 
@@ -230,6 +272,7 @@ public class QwirkleServiceImpl implements QwirkleService {
                 oldState.startTime(),
                 oldState.gameConfig(),
                 oldState.currentPlayerTurn(),
+                oldState.moves(),
                 hand,
                 stack,
                 oldState.board(),
@@ -244,7 +287,7 @@ public class QwirkleServiceImpl implements QwirkleService {
         List<StackTile> stack = new ArrayList<>(oldState.stack());
 
         //check if tile is in stack
-        for (var tile : hand) {
+        for (Tile tile : hand) {
             Optional<StackTile> found = stack.stream()
                     .filter(t -> t.tile().equals(tile))
                     .findFirst();
@@ -253,13 +296,14 @@ public class QwirkleServiceImpl implements QwirkleService {
             }
 
             //update count of tile in stack
-            drawTileFromStack(found.get(), stack);
+            addTileToStack(tile, stack);
         }
 
         return new GameState(
                 oldState.startTime(),
                 oldState.gameConfig(),
                 oldState.currentPlayerTurn(),
+                oldState.moves(),
                 new ArrayList<>(),
                 stack,
                 oldState.board(),
@@ -270,6 +314,7 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public GameState makeMove(GameState oldState, Move move, boolean fromStack) {
         int currentPlayerTurn = oldState.currentPlayerTurn() % oldState.gameConfig().teams().size();
+        List<Move> moves = new ArrayList<>(oldState.moves());
         List<Tile> hand = new ArrayList<>(oldState.hand());
         List<StackTile> stack = new ArrayList<>(oldState.stack());
         Map<Position, BoardTile> board = mapFromList(oldState.board());
@@ -321,21 +366,20 @@ public class QwirkleServiceImpl implements QwirkleService {
         for (Tile tile : move.tiles()) {
             if (fromStack) {
                 //remove tiles from stack
-                Optional<StackTile> found = stack.stream()
-                        .filter(t -> t.tile().equals(tile))
-                        .findFirst();
-                found.ifPresent(stackTile -> drawTileFromStack(stackTile, stack));
+                drawTileFromStack(tile, stack);
             } else {
                 //remove tile from hand
                 hand.remove(tile);
             }
         }
 
+        moves.add(move);
 
         return new GameState(
                 oldState.startTime(),
                 oldState.gameConfig(),
                 currentPlayerTurn,
+                moves,
                 hand,
                 stack,
                 listFromMap(board),
@@ -357,8 +401,22 @@ public class QwirkleServiceImpl implements QwirkleService {
 
 
 
-    private static void drawTileFromStack(StackTile stackTile, List<StackTile> stack) {
-        StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() - 1);
+    private static void drawTileFromStack(Tile tile, List<StackTile> stack) {
+        addOrDrawFromStack(tile, stack, -1);
+    }
+
+    private static void addTileToStack(Tile tile, List<StackTile> stack) {
+        addOrDrawFromStack(tile, stack, 1);
+    }
+
+    private static void addOrDrawFromStack(Tile tile, List<StackTile> stack, int increment) {
+        Optional<StackTile> found = stack.stream()
+                .filter(st -> st.tile().equals(tile))
+                .findFirst();
+        if(found.isEmpty()) return;
+
+        StackTile stackTile = found.get();
+        StackTile updatedTile = new StackTile(stackTile.tile(), stackTile.count() + increment);
 
         int index = stack.indexOf(stackTile);
         stack.set(index, updatedTile);

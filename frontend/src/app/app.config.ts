@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({eventCoalescing: true}),
         provideRouter(routes),
         provideHttpClient(withInterceptors([credentialInterceptor, errorInterceptor])),
-        importProvidersFrom(BrowserAnimationsModule, ToastrModule.forRoot()),
+        importProvidersFrom(BrowserAnimationsModule, ToastrModule.forRoot({closeButton: true})),
         provideCharts(withDefaultRegisterables())
     ]
 };

@@ -179,6 +179,14 @@ export class QwirkleGameComponent implements OnInit {
 
 
     //requests
+    protected undoMove() {
+        if(this.gameState.moves.length === 0) return;
+
+        this.qwirkleService.undoMove().subscribe(res => {
+            this.gameState = res;
+        })
+    }
+
     private findBestMoves() {
         this.qwirkleService.getBestMoves().subscribe({
             next: res => {

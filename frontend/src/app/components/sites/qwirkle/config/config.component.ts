@@ -14,15 +14,14 @@ import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameM
         GameSessionConfigComponent,
         FormsModule,
         NgForOf,
-        NgOptimizedImage,
         PlayerSelectComponent,
-        SliderCheckboxComponent
     ],
     templateUrl: './config.component.html',
     standalone: true,
     styleUrl: './config.component.css'
 })
 export class QwirkleConfigComponent {
+    //TODO implement form groups for config inputs
     gameConfig = signal<GameConfig>({
         teams: [],
         playingTeam: -1

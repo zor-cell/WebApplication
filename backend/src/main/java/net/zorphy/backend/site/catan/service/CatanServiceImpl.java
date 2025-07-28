@@ -169,6 +169,11 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
+    public GameState undoMove(GameState gameState) {
+        return null;
+    }
+
+    @Override
     public GameState rollDice(GameState oldState, boolean isAlchemist) {
         int currentTeamTurn = oldState.currentPlayerTurn();
         int currentShipTurn = oldState.currentShipTurn();

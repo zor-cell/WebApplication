@@ -62,6 +62,14 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
         return sessionService.saveSession(getSessionState(session), resultState, image);
     }
 
+    @PostMapping(value = "session/undo")
+    public State undoMove(HttpSession session) {
+        State gameState = sessionService.undoMove(getSessionState(session));
+        setSessionState(session, gameState);
+
+        return gameState;
+    }
+
     public State getSessionState(HttpSession session) {
         State gameState = (State) session.getAttribute(SESSION_KEY);
         if (gameState == null) {

@@ -53,4 +53,8 @@ export abstract class GameSessionService<Config extends GameConfigBase, State ex
           this.globals.handleSuccess('Saved session data');
         }));
   }
+  
+  undoMove() : Observable<State> {
+    return this.httpClient.post<State>(this.baseUri + '/session/undo', {});
+  }
 }
