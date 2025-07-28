@@ -9,7 +9,7 @@ import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.enums.GameMode;
 import net.zorphy.backend.site.catan.dto.game.GameConfig;
 import net.zorphy.backend.site.catan.dto.game.GameState;
-import net.zorphy.backend.site.catan.dto.result.ResultState;
+import net.zorphy.backend.site.all.base.impl.ResultState;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

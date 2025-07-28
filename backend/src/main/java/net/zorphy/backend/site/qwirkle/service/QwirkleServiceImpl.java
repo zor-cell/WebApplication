@@ -3,7 +3,7 @@ package net.zorphy.backend.site.qwirkle.service;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.GameService;
-import net.zorphy.backend.site.catan.dto.result.ResultState;
+import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.qwirkle.dto.*;
 import net.zorphy.backend.site.qwirkle.dto.enums.Color;
@@ -30,12 +30,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-/*TODO
-undo for qwirkle and catan
-fixing signals in configs and games
-fix stack in qwirkle
-*/
 
 @Service
 public class QwirkleServiceImpl implements QwirkleService {

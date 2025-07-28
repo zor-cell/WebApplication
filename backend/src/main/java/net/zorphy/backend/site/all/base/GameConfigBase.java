@@ -1,4 +1,4 @@
-package net.zorphy.backend.site;
+package net.zorphy.backend.site.all.base;
 
 import net.zorphy.backend.main.dto.player.TeamDetails;
 

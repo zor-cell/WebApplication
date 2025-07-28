@@ -1,4 +1,4 @@
-package net.zorphy.backend.site;
+package net.zorphy.backend.site.all.base;
 
 import java.time.LocalDateTime;
 

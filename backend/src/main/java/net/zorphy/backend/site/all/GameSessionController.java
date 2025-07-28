@@ -1,22 +1,25 @@
-package net.zorphy.backend.site;
+package net.zorphy.backend.site.all;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;
+import net.zorphy.backend.site.all.base.GameConfigBase;
+import net.zorphy.backend.site.all.base.GameStateBase;
+import net.zorphy.backend.site.all.base.ResultStateBase;
 import net.zorphy.backend.site.catan.dto.game.GameState;
-import net.zorphy.backend.site.catan.dto.result.ResultState;
+import net.zorphy.backend.site.all.base.impl.ResultState;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase> {
-    private final GameSessionService<Config, State> sessionService;
+public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
+    private final GameSessionService<Config, State, Result> sessionService;
     private final String SESSION_KEY;
 
-    public GameSessionController(GameSessionService<Config, State> sessionService, GameType gameType) {
+    public GameSessionController(GameSessionService<Config, State, Result> sessionService, GameType gameType) {
         this.sessionService = sessionService;
         this.SESSION_KEY = gameType.toString() + "_sessionState";
     }
@@ -57,7 +60,7 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "session/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public GameDetails saveSession(HttpSession session,
-                                @RequestPart("gameState") @Valid ResultState resultState,
+                                @RequestPart("gameState") @Valid Result resultState,
                                 @RequestPart(value = "image", required = false) MultipartFile image) {
         return sessionService.saveSession(getSessionState(session), resultState, image);
     }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import net.zorphy.backend.main.dto.player.TeamDetails;
-import net.zorphy.backend.site.GameConfigBase;
+import net.zorphy.backend.site.all.base.GameConfigBase;
 
 import java.util.List;
 

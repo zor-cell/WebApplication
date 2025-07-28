@@ -28,9 +28,6 @@
             </div>
 
             <div class="ship-container">
-                <div *ngIf="gameState.gameConfig.classicDice.useEvents" class="current-roll-event">
-                    {{ currentRoll?.dicePair?.event }}
-                </div>
                 <div class="current-roll">
                     <div id="current-roll-player">
                         {{ !lastPlayer ? '-' : lastPlayer?.name }}
@@ -51,6 +48,9 @@
                             </div>
                         }
                     </ng-container>
+                </div>
+                <div *ngIf="gameState.gameConfig.classicDice.useEvents" class="current-roll-event">
+                    {{ currentRoll?.dicePair?.event }}
                 </div>
             </div>
         </section>

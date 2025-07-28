@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.catan.dto.result;
+package net.zorphy.backend.site.all.base.impl;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
