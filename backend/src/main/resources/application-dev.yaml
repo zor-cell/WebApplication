@@ -2,4 +2,4 @@ app:
   base-url: http://localhost:8080/api/
 
 file-storage:
-  directory: ../file-storage
+  directory: ./file-storage

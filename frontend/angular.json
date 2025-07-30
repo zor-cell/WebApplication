@@ -30,7 +30,12 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "seo",
+                "output": "."
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -105,5 +110,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
