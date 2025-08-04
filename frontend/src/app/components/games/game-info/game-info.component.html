@@ -1,5 +1,5 @@
 <app-main-header>
-    <button class="btn btn-danger">
+    <button *ngIf="authService.isAdmin()" class="btn btn-danger" (click)="openDeletePopup()">
         <i class="bi bi-trash3"></i>
     </button>
 </app-main-header>
@@ -27,3 +27,5 @@
         <ng-template #content></ng-template>
     </div>
 </div>
+
+<game-delete-popup #deletePopup (deleteGameEvent)="deleteGame()"/>

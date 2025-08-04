@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ComponentRef,
+    inject,
+    OnInit,
+    viewChild,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import {GameService} from "../../../services/game.service";
 import {GameDetails} from "../../../dto/games/GameDetails";
 import {ActivatedRoute} from "@angular/router";
@@ -7,6 +16,8 @@ import {CatanGameInfoComponent} from "../../sites/catan/game-info/game-info.comp
 import {GameType} from "../../../dto/games/GameType";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {DurationPipe} from "../../../pipes/DurationPipe";
+import {AuthService} from "../../../services/all/auth.service";
+import {DeletePopupComponent} from "../delete-popup/delete-popup.component";
 
 @Component({
     standalone: true,
@@ -15,14 +26,18 @@ import {DurationPipe} from "../../../pipes/DurationPipe";
         NgIf,
         MainHeaderComponent,
         DurationPipe,
-        DatePipe
+        DatePipe,
+        DeletePopupComponent
     ],
     templateUrl: './game-info.component.html',
     styleUrl: './game-info.component.css'
 })
 export class GameInfoComponent implements AfterViewInit {
+    protected deletePopup = viewChild.required<DeletePopupComponent>('deletePopup');
     @ViewChild('content', {read: ViewContainerRef}) viewContainerRef!: ViewContainerRef;
     game: GameDetails | null = null;
+
+    protected authService = inject(AuthService);
 
     constructor(private route: ActivatedRoute, private gameService: GameService) {
     }
@@ -32,6 +47,10 @@ export class GameInfoComponent implements AfterViewInit {
         if (id) {
             this.getGame(id);
         }
+    }
+
+    openDeletePopup() {
+        this.deletePopup().openPopup();
     }
 
     private loadGameSpecificComponent() {
@@ -58,6 +77,14 @@ export class GameInfoComponent implements AfterViewInit {
         this.gameService.getGame(id).subscribe(res => {
             this.game = res;
             this.loadGameSpecificComponent();
+        });
+    }
+
+    deleteGame() {
+        if(!this.game?.metadata) return;
+
+        this.gameService.deleteGame(this.game?.metadata.id).subscribe(res => {
+            //TODO redirect to previous page
         });
     }
 }
