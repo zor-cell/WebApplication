@@ -18,6 +18,7 @@ import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {AuthService} from "../../../services/all/auth.service";
 import {DeletePopupComponent} from "../delete-popup/delete-popup.component";
+import {Location} from "@angular/common";
 
 @Component({
     standalone: true,
@@ -38,6 +39,7 @@ export class GameInfoComponent implements AfterViewInit {
     game: GameDetails | null = null;
 
     protected authService = inject(AuthService);
+    protected location = inject(Location);
 
     constructor(private route: ActivatedRoute, private gameService: GameService) {
     }
@@ -84,7 +86,7 @@ export class GameInfoComponent implements AfterViewInit {
         if(!this.game?.metadata) return;
 
         this.gameService.deleteGame(this.game?.metadata.id).subscribe(res => {
-            //TODO redirect to previous page
+            this.location.back();
         });
     }
 }

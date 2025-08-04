@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {GameDetails} from "../dto/games/GameDetails";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {GameMetadata} from "../dto/games/GameMetadata";
 import {GameFilters} from "../dto/games/GameFilters";
 
@@ -37,6 +37,9 @@ export class GameService {
   }
 
   deleteGame(id: string) {
-    return this.httpClient.delete<GameDetails>(this.baseUri + '/' + id);
+    return this.httpClient.delete<GameDetails>(this.baseUri + '/' + id).pipe(
+        tap(() => {
+          this.globals.handleSuccess('Deleted game data');
+        }));
   }
 }
