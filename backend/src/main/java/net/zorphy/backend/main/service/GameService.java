@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.player.TeamDetails;
@@ -12,6 +13,8 @@ import java.util.UUID;
 
 public interface GameService {
     List<GameMetadata> getGames();
+
+    List<GameMetadata> searchGames(GameFilters  gameFilters);
 
     GameDetails getGame(UUID id);
 

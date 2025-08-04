@@ -2,6 +2,7 @@ package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameMetadata;
+import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
@@ -11,6 +12,8 @@ import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
+import net.zorphy.backend.main.specs.GameSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,14 +38,13 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<GameMetadata> getGames() {
-        return gameRepository.findAll()
-                .stream()
-                .map(gameMapper::gameToGameMetadata)
-                .sorted(Comparator
-                        .comparing(GameMetadata::playedAt)
-                        .thenComparing(GameMetadata::duration)
-                )
-                .collect(Collectors.toList());
+        return mapList(gameRepository.findAll());
+    }
+
+    @Override
+    public List<GameMetadata> searchGames(GameFilters gameFilters) {
+        Specification<Game> specs = GameSpecifications.search(gameFilters);
+        return mapList(gameRepository.findAll(specs));
     }
 
     @Override
@@ -77,5 +79,16 @@ public class GameServiceImpl implements GameService {
         );
         Game saved = gameRepository.save(toSave);
         return gameMapper.gameToGameDetails(saved);
+    }
+
+    private List<GameMetadata> mapList(List<Game> list) {
+        return list.
+                stream()
+                .map(gameMapper::gameToGameMetadata)
+                .sorted(Comparator
+                        .comparing(GameMetadata::playedAt)
+                        .thenComparing(GameMetadata::duration)
+                )
+                .collect(Collectors.toList());
     }
 }

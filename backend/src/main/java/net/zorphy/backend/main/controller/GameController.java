@@ -1,12 +1,10 @@
 package net.zorphy.backend.main.controller;
 
 import net.zorphy.backend.main.dto.game.GameDetails;
+import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.service.GameService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +21,11 @@ public class GameController {
     @GetMapping()
     public List<GameMetadata> getGames() {
         return gameService.getGames();
+    }
+
+    @GetMapping("/search")
+    public List<GameMetadata> searchGames(@ModelAttribute GameFilters gameFilters) {
+        return gameService.searchGames(gameFilters);
     }
 
     @GetMapping("/{id}")
