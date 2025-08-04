@@ -57,6 +57,14 @@ public class GameServiceImpl implements GameService {
         return gameMapper.gameToGameDetails(game.get());
     }
 
+    @Override
+    public GameDetails deleteGame(UUID id) {
+        GameDetails gameDetails = getGame(id);
+        gameRepository.deleteById(id);
+
+        return gameDetails;
+    }
+
     public GameDetails saveGame(Duration duration, GameType gameType, Object gameState, Object resultState, MultipartFile image, List<TeamDetails> teams) {
         //get all players in team from db
         Set<Player> players = teams.stream()

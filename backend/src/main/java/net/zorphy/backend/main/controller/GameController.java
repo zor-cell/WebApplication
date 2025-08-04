@@ -4,6 +4,7 @@ import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameMetadata;
 import net.zorphy.backend.main.service.GameService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +32,11 @@ public class GameController {
     @GetMapping("/{id}")
     public GameDetails getGame(@PathVariable UUID id) {
         return gameService.getGame(id);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{id}")
+    public GameDetails deleteGame(@PathVariable UUID id) {
+        return gameService.deleteGame(id);
     }
 }

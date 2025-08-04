@@ -18,5 +18,7 @@ public interface GameService {
 
     GameDetails getGame(UUID id);
 
+    GameDetails deleteGame(UUID id);
+
     GameDetails saveGame(Duration duration, GameType gameType, Object gameState, Object resultState, MultipartFile image, List<TeamDetails> teams);
 }
