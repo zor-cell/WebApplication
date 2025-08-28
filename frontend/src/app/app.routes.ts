@@ -8,6 +8,8 @@ import {QwirkleGameComponent} from "./components/sites/qwirkle/game/game.compone
 import {GameListComponent} from "./components/games/game-list/game-list.component";
 import {GameInfoComponent} from "./components/games/game-info/game-info.component";
 import {QwirkleConfigComponent} from "./components/sites/qwirkle/config/config.component";
+import {JollyGameComponent} from "./components/sites/jolly/game/game.component";
+import {JollyConfigComponent} from "./components/sites/jolly/config/config.component";
 
 export const routes: Routes = [
     //project routing
@@ -30,5 +32,10 @@ export const routes: Routes = [
     //qwirkle routing
     {path: 'projects/qwirkle', redirectTo: 'projects/qwirkle/config', pathMatch: 'full'},
     {path: 'projects/qwirkle/config', component: QwirkleConfigComponent},
-    {path: 'projects/qwirkle/game', component: QwirkleGameComponent}
+    {path: 'projects/qwirkle/game', component: QwirkleGameComponent},
+
+    //jolly routing
+    {path: 'projects/jolly', redirectTo: 'projects/jolly/config', pathMatch: 'full'},
+    {path: 'projects/jolly/config', component: JollyConfigComponent},
+    {path: 'projects/jolly/game', component: JollyGameComponent},
 ];

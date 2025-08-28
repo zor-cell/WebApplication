@@ -1,3 +1,5 @@
 export enum GameType {
-    CATAN = "CATAN"
+    CATAN = "CATAN",
+    QWIRKLE = "QWIRKLE",
+    JOLLY = "JOLLY",
 }

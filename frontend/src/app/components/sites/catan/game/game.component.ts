@@ -50,7 +50,6 @@ export class CatanGameComponent implements OnInit {
             teamName: ''
         };
 
-
         return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];
     }
 
