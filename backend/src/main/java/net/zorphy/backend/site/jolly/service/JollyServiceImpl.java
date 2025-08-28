@@ -4,6 +4,10 @@ import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.GameService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
+import net.zorphy.backend.site.catan.dto.DiceRoll;
+import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
+import net.zorphy.backend.site.jolly.dto.RoundInfo;
+import net.zorphy.backend.site.jolly.dto.RoundResult;
 import net.zorphy.backend.site.jolly.dto.game.GameConfig;
 import net.zorphy.backend.site.jolly.dto.game.GameState;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class JollyServiceImpl implements JollyService {
@@ -54,5 +59,26 @@ public class JollyServiceImpl implements JollyService {
     @Override
     public GameState undoMove(GameState gameState) {
         return null;
+    }
+
+    @Override
+    public GameState saveRound(GameState oldState, List<RoundResult> results) {
+        List<RoundInfo> rounds = new ArrayList<>(oldState.rounds());
+
+        if(!oldState.gameConfig().noRoundLimit() && rounds.size() >= oldState.gameConfig().roundLimit()) {
+            throw new InvalidOperationException("Maximum number of rounds reached");
+        }
+
+        RoundInfo roundInfo = new RoundInfo(
+                LocalDateTime.now(),
+                results
+        );
+        rounds.add(roundInfo);
+
+        return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                rounds
+        );
     }
 }

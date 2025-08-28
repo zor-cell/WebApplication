@@ -6,5 +6,5 @@ import net.zorphy.backend.site.catan.dto.game.GameConfig;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 
 public interface CatanService extends GameSessionService<GameConfig, GameState, ResultState> {
-    GameState rollDice(GameState gameState, boolean isAlchemist);
+    GameState rollDice(GameState oldState, boolean isAlchemist);
 }
