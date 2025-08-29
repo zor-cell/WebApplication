@@ -3,7 +3,33 @@
                      [(gameConfig)]="gameConfig"
                      [isValidConfig]="isValidConfig()"
 >
-    <p>config works!</p>
+    <form [formGroup]="configForm">
+        <div class="main-container">
+            <section class="config-container">
+                <div class="config-grid-container">
+                    <h3 class="config-header">Players</h3>
+                    <app-player-select [selectedTeams]="[]"
+                                       (selectedTeamEvent)="teamsSelection($event)"></app-player-select>
+                </div>
+
+                <div class="config-grid-container">
+                    <h3 class="config-header">Settings</h3>
+
+                    <div class="flex-container temp">
+                        <label>Round Limit</label>
+                        <input type="number" formControlName="roundLimit">
+                    </div>
+                    <div class="flex-container temp">
+                        <label>Unlimited Rounds</label>
+                        <input type="checkbox" formControlName="noRoundLimit">
+                    </div>
+                </div>
+
+            </section>
+
+            <button (click)="test()">Test</button>
+        </div>
+    </form>
 </game-session-config>
 
 

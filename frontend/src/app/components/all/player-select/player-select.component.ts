@@ -26,10 +26,8 @@ import {AuthService} from "../../../services/all/auth.service";
         CdkDrag,
         CdkDropList,
         CdkDragPreview,
-        CdkDropListGroup,
         NgClass,
         ReactiveFormsModule,
-        PopupDialogComponent,
         NewPlayerPopupComponent,
         NewPlayerPopupComponent
     ],
@@ -53,8 +51,7 @@ export class PlayerSelectComponent implements OnInit, OnChanges {
 
     teamHostIndex: number = -1;
 
-    constructor(private globals: Globals,
-                private playerService: PlayerService,
+    constructor(private playerService: PlayerService,
                 public authService: AuthService) {
     }
 

@@ -22,7 +22,7 @@ export class LoginPopupComponent {
 
     @Output() loginEvent = new EventEmitter<void>();
 
-    constructor(private globals: Globals,
+    constructor(
                 private popupService: PopupService,
                 private authService: AuthService,
                 private fb: FormBuilder) {
