@@ -1,12 +1,12 @@
 <div id="settings" class="flex-container gap-2 m-2 p-2">
     <div class="grid-container">
         <p class="m-0">Player {{ "Red" }}</p>
-        <app-slider-checkbox
+        <!--<app-slider-checkbox
                 [isChecked]="localIsAi"
                 [unCheckedText]="'HU'"
                 [checkedText]="'AI'"
                 (checkedEvent)="updateIsAi($event)"
-        />
+        />-->
     </div>
 
     <div *ngIf="localIsAi && localVersion != Version.PERFECT" class="grid-container">

@@ -18,25 +18,17 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 export class SliderCheckboxComponent implements ControlValueAccessor {
     unCheckedText = input('F');
     checkedText = input('T');
-    isChecked = input(false);
-    checkedEvent = output<boolean>();
 
-    protected isCheckedLocal: boolean = false;
+    protected isChecked: boolean = false;
     private onChange: (value: boolean) => void = () => {};
 
-    constructor() {
-        effect(() => {
-            //this.isCheckedLocal = this.isChecked();
-        })
-    }
-
     get label() {
-        const label = this.isCheckedLocal ? this.checkedText() : this.unCheckedText();
+        const label = this.isChecked ? this.checkedText() : this.unCheckedText();
         return '"' + label + '"';
     }
 
     writeValue(value: boolean): void {
-        this.isCheckedLocal = value;
+        this.isChecked = value;
     }
 
     registerOnChange(fn: (value: boolean) => void): void {
@@ -53,9 +45,8 @@ export class SliderCheckboxComponent implements ControlValueAccessor {
 
     updateChecked(event: Event) {
         const checkbox = event.target as HTMLInputElement;
-        this.isCheckedLocal = checkbox.checked;
+        this.isChecked = checkbox.checked;
 
-        this.checkedEvent.emit(this.isCheckedLocal);
-        this.onChange(this.isCheckedLocal);
+        this.onChange(this.isChecked);
     }
 }

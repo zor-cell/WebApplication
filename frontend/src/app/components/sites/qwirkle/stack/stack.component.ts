@@ -37,7 +37,10 @@ export class QwirkleStackComponent {
     });
     private qwirkleService = inject(QwirkleService);
 
-    changeEditMode(editMode: boolean) {
+    changeEditMode(event: Event) {
+        let el = event.target as HTMLInputElement;
+        const editMode = el.checked;
+
         this.resetSelection();
 
         this.editModeChanged.emit(editMode);
