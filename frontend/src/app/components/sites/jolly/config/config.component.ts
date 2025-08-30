@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
 import {JollyService} from "../../../../services/sites/jolly.service";
 import {GameConfig} from "../../../../dto/sites/jolly/game/GameConfig";
@@ -13,6 +13,9 @@ import {
 import {NgForOf} from "@angular/common";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Team} from "../../../../dto/all/Team";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {map} from "rxjs";
+import {GameState} from "../../../../dto/sites/connect4/data";
 
 @Component({
   selector: 'jolly-game-config',
@@ -37,4 +40,15 @@ export class JollyConfigComponent {
     roundLimit: this.fb.control(0),
     noRoundLimit: this.fb.control(true)
   });
+
+  protected gameConfig = toSignal(
+      this.configForm.valueChanges.pipe(
+        map(() => this.configForm.getRawValue() as GameConfig)
+      ), {
+      initialValue: this.configForm.getRawValue() as GameConfig
+  });
+
+  test() {
+    console.log("submit")
+  }
 }

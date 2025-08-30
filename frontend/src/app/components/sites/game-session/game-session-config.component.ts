@@ -1,4 +1,4 @@
-import {Component, inject, input, model, OnInit, output, signal, viewChild} from "@angular/core";
+import {Component, effect, inject, input, model, OnInit, output, signal, viewChild} from "@angular/core";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {Router} from "@angular/router";
@@ -55,13 +55,16 @@ export class GameSessionConfigComponent implements OnInit {
 
     private router = inject(Router);
 
+    private gameConfigEffect = effect(() => {
+        if(this.hasSession() && !this.originalConfig) {
+            this.originalConfig = structuredClone(this.gameConfig());
+        }
+    })
+
     ngOnInit() {
         this.sessionService().getSession().subscribe(res => {
             this.hasSession.set(true);
-            //this.gameConfig.set(res.gameConfig);
             this.gameConfigChanged.emit(res.gameConfig);
-
-            this.originalConfig = structuredClone(this.gameConfig());
         });
     }
 
@@ -75,7 +78,7 @@ export class GameSessionConfigComponent implements OnInit {
 
     continueGame() {
         if (!this.hasSession || this.originalConfig === null) return;
-
+        console.log(this.gameConfig(), this.originalConfig)
         //only show popup if changes to the config have been made
         if (this.configsAreEqual(this.gameConfig(), this.originalConfig)) {
             this.goToGame();

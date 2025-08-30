@@ -1,6 +1,6 @@
 <game-session-config [sessionService]="jollyService"
                      [projectName]="projectName"
-                     [gameConfig]="configForm.getRawValue()"
+                     [gameConfig]="gameConfig()"
                      (gameConfigChanged)="configForm.patchValue($event)"
                      [isValidConfig]="configForm.valid"
 >
@@ -24,7 +24,6 @@
                         <input type="checkbox" formControlName="noRoundLimit">
                     </div>
                 </div>
-
             </section>
         </div>
     </form>
