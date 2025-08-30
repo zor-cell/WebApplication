@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
 import {JollyService} from "../../../../services/sites/jolly.service";
 import {GameConfig} from "../../../../dto/sites/jolly/game/GameConfig";
@@ -40,15 +40,15 @@ export class JollyConfigComponent {
     roundLimit: this.fb.control(0),
     noRoundLimit: this.fb.control(true)
   });
+  protected gameConfig = signal(this.configForm.getRawValue() as GameConfig);
 
-  protected gameConfig = toSignal(
-      this.configForm.valueChanges.pipe(
-        map(() => this.configForm.getRawValue() as GameConfig)
-      ), {
-      initialValue: this.configForm.getRawValue() as GameConfig
+  //set signal when form changes
+  private formSub = this.configForm.valueChanges.subscribe(() => {
+    this.gameConfig.set(this.configForm.getRawValue() as GameConfig);
   });
 
-  test() {
-    console.log("submit")
-  }
+  //update form when signal changes
+  private formEffect = effect(() => {
+    this.configForm.patchValue(this.gameConfig(), {emitEvent: false});
+  });
 }

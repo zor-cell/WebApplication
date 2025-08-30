@@ -1,7 +1,6 @@
 <game-session-config [sessionService]="jollyService"
                      [projectName]="projectName"
-                     [gameConfig]="gameConfig()"
-                     (gameConfigChanged)="configForm.patchValue($event)"
+                     [(gameConfig)]="gameConfig"
                      [isValidConfig]="configForm.valid"
 >
     <form [formGroup]="configForm">
@@ -26,7 +25,7 @@
                 </div>
             </section>
         </div>
-    </form>
+</form>
 </game-session-config>
 
 

@@ -46,8 +46,8 @@ export class GameSessionConfigComponent implements OnInit {
     public sessionService = input.required<GameSessionService<GameConfigBase, GameStateBase>>();
     public projectName = input.required<string>();
     public isValidConfig = input.required<boolean>();
-    public gameConfig = input.required<GameConfigBase>();
-    public gameConfigChanged = output<GameConfigBase>();
+    public gameConfig = model.required<GameConfigBase>();
+    //public gameConfigChanged = output<GameConfigBase>();
     protected hasSession = signal<boolean>(false);
 
     //to check for changes on update
@@ -55,16 +55,12 @@ export class GameSessionConfigComponent implements OnInit {
 
     private router = inject(Router);
 
-    private gameConfigEffect = effect(() => {
-        if(this.hasSession() && !this.originalConfig) {
-            this.originalConfig = structuredClone(this.gameConfig());
-        }
-    })
-
     ngOnInit() {
         this.sessionService().getSession().subscribe(res => {
             this.hasSession.set(true);
-            this.gameConfigChanged.emit(res.gameConfig);
+            this.gameConfig.set(res.gameConfig);
+
+            this.originalConfig = structuredClone(this.gameConfig());
         });
     }
 
@@ -78,7 +74,6 @@ export class GameSessionConfigComponent implements OnInit {
 
     continueGame() {
         if (!this.hasSession || this.originalConfig === null) return;
-        console.log(this.gameConfig(), this.originalConfig)
         //only show popup if changes to the config have been made
         if (this.configsAreEqual(this.gameConfig(), this.originalConfig)) {
             this.goToGame();
