@@ -36,22 +36,23 @@ export class JollyConfigComponent {
         //set signal when form changes
         this.configForm.valueChanges.subscribe(() => {
             this.gameConfig.set(this.configForm.getRawValue() as GameConfig);
+            this.updateDependantControls();
         });
 
         //update form when signal changes
         effect(() => {
             this.configForm.patchValue(this.gameConfig(), {emitEvent: false});
+            this.updateDependantControls();
         });
+    }
 
-        //listen for roundLimit changes
-        this.configForm.controls.noRoundLimit.valueChanges.subscribe(noLimit => {
-            const roundLimitControl = this.configForm.controls.roundLimit;
+    private updateDependantControls() {
+        const roundLimitControl = this.configForm.controls.roundLimit;
 
-            if (noLimit) {
-                roundLimitControl.disable();
-            } else {
-                roundLimitControl.enable();
-            }
-        });
+        if (this.configForm.controls.noRoundLimit.value) {
+            roundLimitControl.disable({emitEvent: false});
+        } else {
+            roundLimitControl.enable({emitEvent: false});
+        }
     }
 }

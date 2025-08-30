@@ -37,27 +37,30 @@ export class QwirkleConfigComponent {
         //set signal when form changes
         this.configForm.valueChanges.subscribe(() => {
             this.gameConfig.set(this.configForm.getRawValue() as GameConfig);
+            this.updateDependantControls();
         });
 
         //update form when signal changes
         effect(() => {
             this.configForm.patchValue(this.gameConfig(), {emitEvent: false});
+            this.updateDependantControls()
         });
+    }
 
-        //listen for team changes
-        this.configForm.controls.teams.valueChanges.subscribe(teams => {
-            const playingControl = this.configForm.controls.playingTeam;
-            if (teams.length === 0) {
-                playingControl.disable();
-                playingControl.setValue(-1);
-            } else {
-                playingControl.enable();
+    private updateDependantControls() {
+        const playingControl = this.configForm.controls.playingTeam;
 
-                // If current value is invalid (-1 or out of bounds), reset to 0
-                if (playingControl.value < 0 || playingControl.value >= teams.length) {
-                    playingControl.setValue(0);
-                }
+        const length = this.configForm.controls.teams.value.length;
+        if (length === 0) {
+            playingControl.disable({emitEvent: false});
+            playingControl.setValue(-1, {emitEvent: false});
+        } else {
+            playingControl.enable({emitEvent: false});
+
+            // If current value is invalid (-1 or out of bounds), reset to 0
+            if (playingControl.value < 0 || playingControl.value >= length) {
+                playingControl.setValue(0, {emitEvent: false});
             }
-        });
+        }
     }
 }
