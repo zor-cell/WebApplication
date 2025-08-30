@@ -1,6 +1,8 @@
 <game-session-game [sessionService]="jollyService"
                    [(gameState)]="gameState"
 >
-    <p>game works!</p>
+    <div *ngIf="gameState" class="main-container">
+    Test
+    </div>
 </game-session-game>
 

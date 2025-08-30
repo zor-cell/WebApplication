@@ -15,7 +15,6 @@ import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-check
         QwirkleTileComponent,
         NgForOf,
         FormsModule,
-        SliderCheckboxComponent
     ],
     templateUrl: './stack.component.html',
     standalone: true,

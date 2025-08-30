@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {GameState} from "../../../../dto/sites/catan/game/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CatanService} from "../../../../services/sites/catan.service";
@@ -32,6 +32,10 @@ export class CatanGameComponent implements OnInit {
     gameState!: GameState;
     showChart: boolean = false;
 
+    protected catanService = inject(CatanService);
+    protected authService = inject(AuthService);
+    private router = inject(Router);
+
     //TODO: undo roll button
 
     get currentRoll(): DiceRoll | null {
@@ -60,19 +64,10 @@ export class CatanGameComponent implements OnInit {
         }
 
         return found;
-
-        /*const index = (this.gameState.currentPlayerTurn - 1 + this.gameState.gameConfig.teams.length) % this.gameState.gameConfig.teams.length;
-        return this.gameState.gameConfig.teams[index];*/
     }
 
     get attackText(): string {
         return 'CHARGE ';
-    }
-
-    constructor(private globals: Globals,
-                protected catanService: CatanService,
-                private router: Router,
-                public authService: AuthService) {
     }
 
     ngOnInit() {
