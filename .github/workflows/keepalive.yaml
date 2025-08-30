@@ -1,0 +1,12 @@
+name: keepalive.yml
+on:
+  schedule:
+    - cron: "0 0 */10 * *"
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: self-hosted
+    steps:
+      - name: Keep runner alive
+        run: echo "Runner is still alive on $(date)
