@@ -1,7 +1,7 @@
-import {Component, inject, signal, viewChild} from '@angular/core';
+import {Component, effect, inject, signal, viewChild} from '@angular/core';
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {FormsModule, NonNullableFormBuilder} from "@angular/forms";
+import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {GameConfig} from "../../../../dto/sites/catan/game/GameConfig";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
@@ -19,7 +19,8 @@ import {Team} from "../../../../dto/all/Team";
         NgForOf,
         PlayerSelectComponent,
         GameSessionConfigComponent,
-        GameSessionConfigComponent
+        GameSessionConfigComponent,
+        ReactiveFormsModule
     ],
     templateUrl: './config.component.html',
     standalone: true,
@@ -44,34 +45,24 @@ export class CatanConfigComponent {
             shuffleThreshold: this.fb.control(5),
             useEvents: this.fb.control(false)
         }),
-        maxShipTurn: this.fb.control(7)
+        maxShipTurns: this.fb.control(7)
     });
 
-    protected gameConfig = signal<GameConfig>({
-        teams: [],
-        gameMode: GameMode.CITIES_AND_KNIGHTS,
-        classicDice: {
-            isBalanced: true,
-            shuffleThreshold: 5,
-            useEvents: false
-        },
-        eventDice: {
-            isBalanced: false,
-            shuffleThreshold: 2,
-            useEvents: false
-        },
-        maxShipTurns: 7
-    });
-    protected gameModes = Object.values(GameMode);
+    protected gameConfig = signal(this.configForm.getRawValue() as GameConfig);
 
-    isValidConfig() {
-        if (this.gameConfig().gameMode === GameMode.ONE_VS_ONE) {
-            return this.gameConfig().teams.length == 2;
-        }
+    constructor() {
+        //set signal when form changes
+        this.configForm.valueChanges.subscribe(() => {
+            this.gameConfig.set(this.configForm.getRawValue() as GameConfig);
+        });
 
-        return this.gameConfig().teams.length >= 2;
+        //update form when signal changes
+        effect(() => {
+            this.configForm.patchValue(this.gameConfig(), {emitEvent: false});
+        });
     }
 
+    protected gameModes = Object.values(GameMode);
     protected readonly GameMode = GameMode;
     protected readonly getGameModeName = getGameModeName;
 }

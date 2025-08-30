@@ -10,25 +10,25 @@
                 <option>EMPTY</option>
             }
         </select>
-        <button [disabled]="!currentPlayer || teams.length >= maxTeams" class="small-btn" (click)="addPlayer()">
+        <button [disabled]="!currentPlayer || selectedTeams.length >= maxTeams" class="small-btn" (click)="addPlayer()">
             Add
         </button>
     </div>
 
 
-    @if (teams.length === 0) {
+    @if (selectedTeams.length === 0) {
         <div>
             <div class="fw-lighter">EMPTY</div>
         </div>
     } @else {
         <div class="list-container">
             <div cdkDropList
-                 [cdkDropListData]="teams"
+                 [cdkDropListData]="selectedTeams"
                  (cdkDropListDropped)="drop($event)"
                  [cdkDropListDisabled]="teamHostIndex >= 0"
                  class="drag-container"
             >
-                <div *ngFor="let team of teams;let i = index" class="drag-element">
+                <div *ngFor="let team of selectedTeams;let i = index" class="drag-element">
                     <button cdkDrag
                             (click)="mergeTeam(i)"
                             [disabled]="teamHostIndex === i"
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="drag-container">
-                <ng-container *ngFor="let _ of [].constructor(teams.length);let i = index">
+                <ng-container *ngFor="let _ of [].constructor(selectedTeams.length);let i = index">
                     <div class="flex-container flex-row gap-2">
                         <div *ngIf="allowTeams" class="drag-element" (click)="makeHost(i)">
                             <i class="bi default-color"

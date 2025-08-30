@@ -20,5 +20,5 @@ spring:
 server:
   servlet:
     session:
-      timeout: 1h
+      timeout: 12h
     context-path: /api

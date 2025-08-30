@@ -1,29 +1,10 @@
-import {
-    Component,
-    EventEmitter,
-    forwardRef,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-    ViewChild
-} from '@angular/core';
+import {Component, forwardRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
-import {Globals} from "../../../classes/globals";
 import {PlayerDetails} from "../../../dto/all/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
-import {
-    CdkDrag,
-    CdkDragDrop,
-    CdkDragPreview,
-    CdkDropList,
-    CdkDropListGroup,
-    moveItemInArray
-} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDragDrop, CdkDragPreview, CdkDropList, moveItemInArray} from "@angular/cdk/drag-drop";
 import {Team} from "../../../dto/all/Team";
-import {PopupDialogComponent} from "../popups/popup-dialog/popup-dialog.component";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 import {AuthService} from "../../../services/all/auth.service";
 
@@ -59,34 +40,35 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     @Input() maxTeams: number = 4;
     @Input() allowTeams: boolean = true;
 
+    selectedTeams: Team[] = [];
     allPlayers: PlayerDetails[] = []
     availablePlayers: PlayerDetails[] = [];
     currentPlayer: PlayerDetails | null = null;
 
     teamHostIndex: number = -1;
 
-    teams: Team[] = [];
     private onChange: (value: Team[]) => void = () => {};
-    private onTouched: () => void = () => {};
 
-    constructor(private playerService: PlayerService,
-                public authService: AuthService) {
-    }
+    private playerService = inject(PlayerService);
+    protected authService = inject(AuthService);
 
     writeValue(value: Team[]): void {
-        this.teams = value.map(team => ({
+        this.selectedTeams = value.map(team => ({
             name: team.name,
-            players: team.players.map(p => ({ ...p }))
+            players: team.players.map(p => ({...p}))
         }));
     }
+
     registerOnChange(fn: (value: Team[]) => void): void {
         this.onChange = fn;
     }
+
     registerOnTouched(fn: () => void): void {
-        this.onTouched = fn;
+        //throw new Error('Method not implemented.');
     }
+
     setDisabledState?(isDisabled: boolean): void {
-        //optional
+        //throw new Error('Method not implemented.');
     }
 
     ngOnInit() {
@@ -97,7 +79,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
         //remove duplicate players from available
         if (changes['selectedTeams'] && this.allPlayers.length > 0) {
             this.availablePlayers = this.availablePlayers
-                .filter(player => !this.teams.some(team => team.players.some(p => p.name === player.name)))
+                .filter(player => !this.selectedTeams.some(team => team.players.some(p => p.name === player.name)))
                 .map(player => this.copy(player));
         }
     }
@@ -106,14 +88,14 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
         if (!this.allowTeams) return;
 
         if (this.teamHostIndex >= 0) {
-            const hostTeam = this.teams[this.teamHostIndex]
-            const memberTeam = this.copy(this.teams[teamIndex]);
+            const hostTeam = this.selectedTeams[this.teamHostIndex]
+            const memberTeam = this.copy(this.selectedTeams[teamIndex]);
 
             //merge team
             hostTeam.name = this.generateTeamName([...hostTeam.players, ...memberTeam.players]);
             hostTeam.players.push(...memberTeam.players);
 
-            this.teams.splice(teamIndex, 1);
+            this.selectedTeams.splice(teamIndex, 1);
 
             this.teamHostIndex = -1;
         }
@@ -121,26 +103,26 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
 
     //drag and drop reordering logic
     drop(event: CdkDragDrop<Team[]>) {
-        moveItemInArray(this.teams, event.previousIndex, event.currentIndex);
+        moveItemInArray(this.selectedTeams, event.previousIndex, event.currentIndex);
 
         //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.teams);
+        this.onChange(this.selectedTeams);
     }
 
     addPlayer() {
-        if (this.teams.length >= this.maxTeams || this.currentPlayer === null) {
+        if (this.selectedTeams.length >= this.maxTeams || this.currentPlayer === null) {
             return;
         }
 
         const playerToAdd = this.copy(this.currentPlayer);
 
         //add to selected teams
-        this.teams.push({
+        this.selectedTeams.push({
             name: playerToAdd.name,
             players: [playerToAdd]
         });
         //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.teams);
+        this.onChange(this.selectedTeams);
 
         //remove from available list
         const index = this.availablePlayers.findIndex(p => p.name === playerToAdd.name);
@@ -158,13 +140,13 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
 
     removePlayer(teamIndex: number) {
         //add back to available
-        const team = this.teams[teamIndex];
+        const team = this.selectedTeams[teamIndex];
         this.availablePlayers.push(...team.players);
 
         //remove from selected
-        this.teams.splice(teamIndex, 1);
+        this.selectedTeams.splice(teamIndex, 1);
         //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.teams);
+        this.onChange(this.selectedTeams);
 
         this.currentPlayer = this.availablePlayers[0];
     }

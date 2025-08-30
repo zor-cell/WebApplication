@@ -1,87 +1,97 @@
 <game-session-config [sessionService]="catanService"
-                   [projectName]="projectName"
-                   [gameConfig]="gameConfig()"
-                   [isValidConfig]="isValidConfig()"
+                     [projectName]="projectName"
+                     [(gameConfig)]="gameConfig"
+                     [isValidConfig]="configForm.valid"
 >
-<div class="main-container">
-    <section class="config-container">
-        <div class="config-grid-container">
-            <h3 class="config-header">Players</h3>
-            <!--<app-player-select [teams]="gameConfig().teams"
-                               (selectedTeamEvent)="gameConfig().teams = $event"></app-player-select>-->
-        </div>
-
-        <div class="config-grid-container config-grid-container-2">
-            <h3 class="config-header">Mode</h3>
-            <div class="select-container">
-                <select [(ngModel)]="gameConfig().gameMode">
-                    <option *ngFor="let mode of gameModes" [ngValue]="mode">{{ getGameModeName(GameMode[mode]) }}</option>
-                </select>
+    <form class="main-container" [formGroup]="configForm">
+        <section class="config-container">
+            <div class="config-grid-container">
+                <h3 class="config-header">Players</h3>
+                <app-player-select formControlName="teams"/>
             </div>
-            <div class="dice-mode-grid">
-                <div class="dice-mode-classic">
-                    <img class="dice-img" ngSrc="../../../../../assets/catan/4.svg" height="22" width="22" alt="">
-                    @if (gameConfig().gameMode === GameMode.CITIES_AND_KNIGHTS) {
-                        <img class="dice-img" ngSrc="../../../../../assets/catan/3_red.svg" height="22" width="22" alt="">
-                    } @else {
-                        <img class="dice-img" ngSrc="../../../../../assets/catan/3.svg" height="22" width="22" alt="">
-                    }
-                </div>
-                <app-slider-checkbox [isChecked]="gameConfig().classicDice.isBalanced" unCheckedText="R" checkedText="B"
-                                     (checkedEvent)="gameConfig().classicDice.isBalanced = $event"></app-slider-checkbox>
 
-                @if (gameConfig().gameMode === GameMode.CITIES_AND_KNIGHTS) {
+            <div class="config-grid-container config-grid-container-2">
+                <h3 class="config-header">Mode</h3>
+                <div class="select-container">
+                    <select formControlName="gameMode">
+                        <option *ngFor="let mode of gameModes" [ngValue]="mode">{{ getGameModeName(GameMode[mode]) }}
+                        </option>
+                    </select>
+                </div>
+                <div class="dice-mode-grid">
                     <div class="dice-mode-classic">
-                        <img class="dice-img" ngSrc="../../../../../assets/catan/b.svg" height="25" width="25" alt="">
+                        <img class="dice-img" ngSrc="../../../../../assets/catan/4.svg" height="22" width="22" alt="">
+                        @if (configForm.controls.gameMode.value === GameMode.CITIES_AND_KNIGHTS) {
+                            <img class="dice-img" ngSrc="../../../../../assets/catan/3_red.svg" height="22" width="22"
+                                 alt="">
+                        } @else {
+                            <img class="dice-img" ngSrc="../../../../../assets/catan/3.svg" height="22" width="22"
+                                 alt="">
+                        }
                     </div>
-                    <app-slider-checkbox [isChecked]="gameConfig().eventDice.isBalanced" unCheckedText="R" checkedText="B"
-                                         (checkedEvent)="gameConfig().eventDice.isBalanced = $event"></app-slider-checkbox>
-                }
+                    <div [formGroup]="configForm.controls.classicDice">
+                        <app-slider-checkbox formControlName="isBalanced" unCheckedText="R"
+                                             checkedText="B"/>
+                    </div>
 
-                <div class="dice-mode-classic">
-                    <img class="dice-img" ngSrc="../../../../../assets/catan/4_e.svg" height="22" width="22" alt="">
-                </div>
-                <app-slider-checkbox [isChecked]="gameConfig().classicDice.useEvents" unCheckedText="F" checkedText="T"
-                                     (checkedEvent)="gameConfig().classicDice.useEvents = $event"></app-slider-checkbox>
-            </div>
-        </div>
-
-        <div class="config-grid-container config-grid-container-2">
-            <h3 class="config-header">Settings</h3>
-            <div></div> <!-- empty div for grid layout -->
-            <div class="dice-settings">
-                @if (gameConfig().classicDice.isBalanced) {
-                    <div class="dice-settings-balance">
-                        <div class="dice-settings-description">Degree of Random:</div>
-                        <div class="dice-settings-options">
-                            <input type="number" min="0" max="35" class="number-input"
-                                   [(ngModel)]="gameConfig().classicDice.shuffleThreshold">
-                            <button class="small-btn">Reshuffle</button>
+                    @if (configForm.controls.gameMode.value === GameMode.CITIES_AND_KNIGHTS) {
+                        <div class="dice-mode-classic">
+                            <img class="dice-img" ngSrc="../../../../../assets/catan/b.svg" height="25" width="25"
+                                 alt="">
                         </div>
-                    </div>
-                } @else {
-                    <div class="dice-settings-description">True Random</div>
-                }
+                        <div [formGroup]="configForm.controls.eventDice">
+                            <app-slider-checkbox formControlName="isBalanced" unCheckedText="R"
+                                                 checkedText="B"/>
+                        </div>
+                    }
 
-                @if (gameConfig().gameMode === GameMode.CITIES_AND_KNIGHTS) {
-                    @if (gameConfig().eventDice.isBalanced) {
+                    <div class="dice-mode-classic">
+                        <img class="dice-img" ngSrc="../../../../../assets/catan/4_e.svg" height="22" width="22" alt="">
+                    </div>
+                    <div [formGroup]="configForm.controls.classicDice">
+                        <app-slider-checkbox formControlName="useEvents" unCheckedText="F"
+                                             checkedText="T"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-grid-container config-grid-container-2">
+                <h3 class="config-header">Settings</h3>
+                <div></div> <!-- empty div for grid layout -->
+                <div class="dice-settings">
+                    @if (configForm.controls.classicDice.controls.isBalanced.value) {
                         <div class="dice-settings-balance">
                             <div class="dice-settings-description">Degree of Random:</div>
-                            <div class="dice-settings-options">
-                                <input type="number" min="0" max="5" class="number-input"
-                                       [(ngModel)]="gameConfig().eventDice.shuffleThreshold">
+                            <div class="dice-settings-options" [formGroup]="configForm.controls.classicDice">
+                                <input type="number" min="0" max="35" class="number-input"
+                                       formControlName="shuffleThreshold">
                                 <button class="small-btn">Reshuffle</button>
                             </div>
                         </div>
                     } @else {
                         <div class="dice-settings-description">True Random</div>
                     }
-                }
 
-                <div class="dice-settings-description">{{ !gameConfig().classicDice.useEvents ? 'No ' : '' }}Card Events
+                    @if (configForm.controls.gameMode.value === GameMode.CITIES_AND_KNIGHTS) {
+                        @if (configForm.controls.eventDice.controls.isBalanced.value) {
+                            <div class="dice-settings-balance">
+                                <div class="dice-settings-description">Degree of Random:</div>
+                                <div class="dice-settings-options" [formGroup]="configForm.controls.eventDice">
+                                    <input type="number" min="0" max="5" class="number-input"
+                                           formControlName="shuffleThreshold">
+                                    <button class="small-btn">Reshuffle</button>
+                                </div>
+                            </div>
+                        } @else {
+                            <div class="dice-settings-description">True Random</div>
+                        }
+                    }
+
+                    <div class="dice-settings-description">{{ !configForm.controls.classicDice.controls.useEvents.value ? 'No ' : '' }}
+                        Card Events
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </form>
 </game-session-config>
