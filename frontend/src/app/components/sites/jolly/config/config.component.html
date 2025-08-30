@@ -3,29 +3,25 @@
                      [(gameConfig)]="gameConfig"
                      [isValidConfig]="configForm.valid"
 >
-    <form [formGroup]="configForm">
-        <div class="main-container">
-            <section class="config-container">
-                <div class="config-grid-container">
-                    <h3 class="config-header">Players</h3>
-                    <app-player-select formControlName="teams"></app-player-select>
-                </div>
+    <form class="main-container" [formGroup]="configForm">
+        <section class="config-container">
+            <div class="config-grid-container">
+                <h3 class="config-header">Players</h3>
+                <app-player-select formControlName="teams"></app-player-select>
+            </div>
 
-                <div class="config-grid-container">
-                    <h3 class="config-header">Settings</h3>
+            <div class="config-grid-container">
+                <h3 class="config-header">Settings</h3>
 
-                    <div class="flex-container temp">
-                        <label>Round Limit</label>
-                        <input type="number" formControlName="roundLimit">
-                    </div>
-                    <div class="flex-container temp">
-                        <label>Unlimited Rounds</label>
-                        <input type="checkbox" formControlName="noRoundLimit">
-                    </div>
+                <div class="flex-container temp">
+                    <label>Round Limit</label>
+                    <input type="number" formControlName="roundLimit">
                 </div>
-            </section>
-        </div>
-</form>
+                <div class="flex-container temp">
+                    <label>Unlimited Rounds</label>
+                    <input type="checkbox" formControlName="noRoundLimit">
+                </div>
+            </div>
+        </section>
+    </form>
 </game-session-config>
-
-

@@ -47,7 +47,6 @@ export class GameSessionConfigComponent implements OnInit {
     public projectName = input.required<string>();
     public isValidConfig = input.required<boolean>();
     public gameConfig = model.required<GameConfigBase>();
-    //public gameConfigChanged = output<GameConfigBase>();
     protected hasSession = signal<boolean>(false);
 
     //to check for changes on update

@@ -1,6 +1,6 @@
-<!--<game-session-config [sessionService]="qwirkleService"
+<game-session-config [sessionService]="qwirkleService"
                      [projectName]="projectName"
-                     [(gameConfig)]="gameConfig1()"
+                     [(gameConfig)]="gameConfig"
                      [isValidConfig]="configForm.valid"
 >
     <div class="main-container" [formGroup]="configForm">
@@ -13,19 +13,19 @@
                 <h3 class="config-header">Settings</h3>
                 <div class="flex-container temp">
                     <label>Solve for: </label>
-                @let empty = gameConfig1().teams.length === 0;
-                <select [disabled]="empty" (change)="updatePlayingTeam($event)">
-                    @if(!empty) {
-                        <option *ngFor="let team of gameConfig1().teams;let i = index" [value]="i">
-                            {{team.name}}
-                        </option>
-                    } @else {
-                        <option>EMPTY</option>
-                    }
-                </select>
+
+                    <select formControlName="playingTeam">
+                        @if(configForm.controls.teams.value.length === 0) {
+                            <option>EMPTY</option>
+                        } @else {
+                            <option *ngFor="let team of configForm.controls.teams.value;let i = index" [value]="i">
+                                {{team.name}}
+                            </option>
+                        }
+                    </select>
                 </div>
             </div>
 
         </section>
     </div>
-</game-session-config>-->
+</game-session-config>
