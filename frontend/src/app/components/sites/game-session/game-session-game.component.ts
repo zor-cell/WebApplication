@@ -25,6 +25,7 @@ import {GameSessionSavePopupComponent} from "./popups/save-popup/save-popup.comp
         <ng-content></ng-content>
         
         <game-session-save-popup #savePopup
+                                 *ngIf="gameState()"
                                  [teams]="gameState().gameConfig.teams"
                                  (saveSessionEvent)="saveSession($event)"
         />
