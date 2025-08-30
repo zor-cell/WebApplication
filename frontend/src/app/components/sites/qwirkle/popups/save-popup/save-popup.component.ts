@@ -2,7 +2,6 @@ import {Component, inject, Input, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
-import {CatanService} from "../../../../../services/sites/catan.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
 import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";

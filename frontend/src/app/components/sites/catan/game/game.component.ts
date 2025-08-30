@@ -1,13 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {CatanConfigComponent} from "../config/config.component";
+import {Component, OnInit} from '@angular/core';
 import {GameState} from "../../../../dto/sites/catan/game/GameState";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {Globals} from "../../../../classes/globals";
 import {CatanDiceRollComponent} from "../dice-roll/dice-roll.component";
 import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
-import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
-import {BaseChartDirective} from "ng2-charts";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";

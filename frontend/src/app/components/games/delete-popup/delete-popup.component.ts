@@ -1,6 +1,5 @@
 import {Component, output, TemplateRef, viewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
 import {PopupService} from "../../../services/popup.service";
 import {PopupResultType} from "../../../dto/all/PopupResultType";
 

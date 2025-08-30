@@ -1,13 +1,10 @@
-import {Component, input, Input, TemplateRef} from '@angular/core';
-import {Location, NgIf, NgTemplateOutlet} from "@angular/common";
-import {RouterLink} from "@angular/router";
-import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
+import {Component, input} from '@angular/core';
+import {Location, NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-main-header',
     imports: [
-        NgIf,
-        RouterLink
+        NgIf
     ],
     templateUrl: './main-header.component.html',
     standalone: true,

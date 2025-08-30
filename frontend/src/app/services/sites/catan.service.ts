@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../../classes/globals";
-import {Observable, tap} from "rxjs";
+import {Observable} from "rxjs";
 import {GameState} from "../../dto/sites/catan/game/GameState";
 import {GameConfig} from "../../dto/sites/catan/game/GameConfig";
-import {GameDetails} from "../../dto/games/GameDetails";
-import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameSessionService} from "./game-session.service";
 
 @Injectable({

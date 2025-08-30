@@ -1,9 +1,8 @@
-import {Component, input, Input, OnInit, output, TemplateRef, viewChild, ViewChild} from '@angular/core';
+import {Component, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
-import {CatanService} from "../../../../../services/sites/catan.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";

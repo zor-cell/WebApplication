@@ -1,16 +1,5 @@
-import {
-    Component,
-    effect,
-    EventEmitter,
-    inject,
-    input,
-    OnChanges,
-    Output,
-    output,
-    signal,
-    SimpleChanges
-} from '@angular/core';
-import {NgForOf, NgIf, NgStyle} from "@angular/common";
+import {Component, effect, inject, input, output} from '@angular/core';
+import {NgForOf, NgStyle} from "@angular/common";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
@@ -22,8 +11,7 @@ import {GameState} from "../../../../dto/sites/qwirkle/game/GameState";
     imports: [
         NgForOf,
         QwirkleTileComponent,
-        NgStyle,
-        NgIf
+        NgStyle
     ],
     templateUrl: './hand.component.html',
     standalone: true,

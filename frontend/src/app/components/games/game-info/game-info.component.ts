@@ -1,24 +1,14 @@
-import {
-    AfterViewInit,
-    Component,
-    ComponentRef,
-    inject,
-    OnInit,
-    viewChild,
-    ViewChild,
-    ViewContainerRef
-} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, inject, viewChild, ViewChild, ViewContainerRef} from '@angular/core';
 import {GameService} from "../../../services/game.service";
 import {GameDetails} from "../../../dto/games/GameDetails";
 import {ActivatedRoute} from "@angular/router";
-import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {DatePipe, Location, NgIf} from "@angular/common";
 import {CatanGameInfoComponent} from "../../sites/catan/game-info/game-info.component";
 import {GameType} from "../../../dto/games/GameType";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {AuthService} from "../../../services/all/auth.service";
 import {DeletePopupComponent} from "../delete-popup/delete-popup.component";
-import {Location} from "@angular/common";
 
 @Component({
     standalone: true,

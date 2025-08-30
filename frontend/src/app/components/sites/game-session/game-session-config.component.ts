@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, model, OnInit, output, signal, viewChild} from "@angular/core";
+import {Component, inject, input, model, OnInit, signal, viewChild} from "@angular/core";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {Router} from "@angular/router";

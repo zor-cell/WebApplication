@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {GameService} from "../../../services/game.service";
-import {GameDetails} from "../../../dto/games/GameDetails";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {GameMetadata} from "../../../dto/games/GameMetadata";
 import {Router} from "@angular/router";
-import {GameType} from "../../../dto/games/GameType";
 import {MainHeaderComponent} from '../../all/main-header/main-header.component';
 
 @Component({

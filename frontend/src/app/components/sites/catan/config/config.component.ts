@@ -1,11 +1,10 @@
-import {Component, effect, inject, signal, viewChild} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {GameConfig} from "../../../../dto/sites/catan/game/GameConfig";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
-import {Router} from "@angular/router";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
 import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
 import {Team} from "../../../../dto/all/Team";

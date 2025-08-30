@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
-import {GameState} from "../../dto/sites/qwirkle/game/GameState";
 import {Globals} from "../../classes/globals";
 import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameDetails} from "../../dto/games/GameDetails";
-import {GameConfig} from "../../dto/sites/catan/game/GameConfig";
 import {GameConfigBase} from "../../dto/sites/GameConfigBase";
 import {GameStateBase} from "../../dto/sites/GameStateBase";
 

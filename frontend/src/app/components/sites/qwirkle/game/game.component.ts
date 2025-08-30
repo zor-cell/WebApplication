@@ -1,11 +1,9 @@
 import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {QwirkleHandComponent} from "../hand/hand.component";
 import {QwirkleStackComponent} from "../stack/stack.component";
-import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
 import {GameState} from "../../../../dto/sites/qwirkle/game/GameState";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
-import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
 import {QwirkleTileComponent} from "../tile/tile.component";
 import {Position} from "../../../../dto/all/Position";
 import {Move} from "../../../../dto/sites/qwirkle/move/Move";
@@ -14,7 +12,6 @@ import {MoveGroup} from "../../../../dto/sites/qwirkle/move/MoveGroup";
 import {PanContainerComponent} from "../../../all/pan-container/pan-container.component";
 import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
 import {ImageInputComponent} from "../image-input/image-input.component";
-import {AuthService} from "../../../../services/all/auth.service";
 import {Router} from "@angular/router";
 import {GameSessionGameComponent} from "../../game-session/game-session-game.component";
 

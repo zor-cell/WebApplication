@@ -1,12 +1,11 @@
 import {Component, ElementRef, Input} from '@angular/core';
-import {NgIf, NgStyle} from "@angular/common";
+import {NgStyle} from "@angular/common";
 import {Position} from "../../../dto/all/Position";
 
 @Component({
     selector: 'app-pan-container',
     imports: [
-        NgStyle,
-        NgIf
+        NgStyle
     ],
     templateUrl: './pan-container.component.html',
     standalone: true,

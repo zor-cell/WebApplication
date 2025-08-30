@@ -1,4 +1,4 @@
-import {Component, EventEmitter, output, Output, TemplateRef, viewChild, ViewChild} from '@angular/core';
+import {Component, output, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 

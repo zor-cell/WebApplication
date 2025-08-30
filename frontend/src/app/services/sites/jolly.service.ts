@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {GameConfig} from "../../dto/sites/jolly/game/GameConfig";
 import {GameState} from "../../dto/sites/jolly/game/GameState";
 import {GameSessionService} from "./game-session.service";

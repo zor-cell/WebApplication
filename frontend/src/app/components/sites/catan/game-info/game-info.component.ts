@@ -2,24 +2,19 @@ import {Component, Input, OnInit} from '@angular/core';
 import {GameMetadata} from "../../../../dto/games/GameMetadata";
 import {GameState} from "../../../../dto/sites/catan/game/GameState";
 import {ResultState} from "../../../../dto/sites/catan/result/ResultState";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
-import {DurationPipe} from "../../../../pipes/DurationPipe";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
-import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
-import {Team} from "../../../../dto/all/Team";
 import {ResultTeamState} from "../../../../dto/sites/catan/result/ResultTeamState";
 
 @Component({
   standalone: true,
   selector: 'catan-game-info',
-  imports: [
-    NgIf,
-    CatanHistogramComponent,
-    NgForOf,
-    DatePipe,
-    DurationPipe
-  ],
+    imports: [
+        NgIf,
+        CatanHistogramComponent,
+        NgForOf
+    ],
   templateUrl: './game-info.component.html',
   styleUrl: './game-info.component.css'
 })

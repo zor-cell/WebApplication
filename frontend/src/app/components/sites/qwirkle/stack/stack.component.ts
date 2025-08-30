@@ -1,7 +1,7 @@
-import {Component, effect, HostListener, inject, input, OnChanges, output, SimpleChanges} from '@angular/core';
+import {Component, effect, inject, input, output} from '@angular/core';
 import {StackTile} from "../../../../dto/sites/qwirkle/tile/StackTile";
 import {QwirkleTileComponent} from "../tile/tile.component";
-import {NgClass, NgForOf} from "@angular/common";
+import {NgForOf} from "@angular/common";
 import {Tile} from "../../../../dto/sites/qwirkle/tile/Tile";
 import {FormsModule} from "@angular/forms";
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
@@ -15,7 +15,6 @@ import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-check
         QwirkleTileComponent,
         NgForOf,
         FormsModule,
-        NgClass,
         SliderCheckboxComponent
     ],
     templateUrl: './stack.component.html',

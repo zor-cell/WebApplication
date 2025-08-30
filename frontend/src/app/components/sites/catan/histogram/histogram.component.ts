@@ -1,14 +1,12 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
-import {NgIf} from "@angular/common";
 import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
 
 @Component({
     selector: 'catan-histogram',
     imports: [
-        BaseChartDirective,
-        NgIf
+        BaseChartDirective
     ],
     templateUrl: './histogram.component.html',
     standalone: true,

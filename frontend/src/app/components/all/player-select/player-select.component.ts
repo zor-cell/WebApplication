@@ -64,11 +64,11 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     registerOnTouched(fn: () => void): void {
-        //throw new Error('Method not implemented.');
+
     }
 
     setDisabledState?(isDisabled: boolean): void {
-        //throw new Error('Method not implemented.');
+
     }
 
     ngOnInit() {
