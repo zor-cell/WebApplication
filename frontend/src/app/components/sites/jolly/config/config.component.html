@@ -1,15 +1,15 @@
 <game-session-config [sessionService]="jollyService"
                      [projectName]="projectName"
-                     [(gameConfig)]="gameConfig"
-                     [isValidConfig]="isValidConfig()"
+                     [gameConfig]="configForm.getRawValue()"
+                     (gameConfigChanged)="configForm.patchValue($event)"
+                     [isValidConfig]="configForm.valid"
 >
     <form [formGroup]="configForm">
         <div class="main-container">
             <section class="config-container">
                 <div class="config-grid-container">
                     <h3 class="config-header">Players</h3>
-                    <app-player-select [selectedTeams]="[]"
-                                       (selectedTeamEvent)="teamsSelection($event)"></app-player-select>
+                    <app-player-select formControlName="teams"></app-player-select>
                 </div>
 
                 <div class="config-grid-container">
@@ -26,8 +26,6 @@
                 </div>
 
             </section>
-
-            <button (click)="test()">Test</button>
         </div>
     </form>
 </game-session-config>

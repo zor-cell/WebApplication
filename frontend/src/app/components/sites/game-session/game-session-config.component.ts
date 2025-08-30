@@ -1,6 +1,5 @@
 import {Component, inject, input, model, OnInit, output, signal, viewChild} from "@angular/core";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
-import {GameConfig} from "../../../dto/sites/catan/game/GameConfig";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {Router} from "@angular/router";
 import {GameSessionClearPopupComponent} from "./popups/clear-popup/clear-popup.component";
@@ -47,7 +46,8 @@ export class GameSessionConfigComponent implements OnInit {
     public sessionService = input.required<GameSessionService<GameConfigBase, GameStateBase>>();
     public projectName = input.required<string>();
     public isValidConfig = input.required<boolean>();
-    public gameConfig = model.required<GameConfigBase>();
+    public gameConfig = input.required<GameConfigBase>();
+    public gameConfigChanged = output<GameConfigBase>();
     protected hasSession = signal<boolean>(false);
 
     //to check for changes on update
@@ -58,7 +58,8 @@ export class GameSessionConfigComponent implements OnInit {
     ngOnInit() {
         this.sessionService().getSession().subscribe(res => {
             this.hasSession.set(true);
-            this.gameConfig.set(res.gameConfig);
+            //this.gameConfig.set(res.gameConfig);
+            this.gameConfigChanged.emit(res.gameConfig);
 
             this.originalConfig = structuredClone(this.gameConfig());
         });

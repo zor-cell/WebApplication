@@ -1,14 +1,14 @@
 <game-session-config [sessionService]="qwirkleService"
                      [projectName]="projectName"
-                     [(gameConfig)]="gameConfig"
+                     [gameConfig]="gameConfig()"
                      [isValidConfig]="isValidConfig()"
 >
     <div class="main-container">
         <section class="config-container">
             <div class="config-grid-container">
                 <h3 class="config-header">Players</h3>
-                <app-player-select [selectedTeams]="gameConfig().teams"
-                                   (selectedTeamEvent)="gameConfig().teams = $event"></app-player-select>
+                <!--<app-player-select [teams]="gameConfig().teams"
+                                   (selectedTeamEvent)="gameConfig().teams = $event"></app-player-select>-->
             </div>
             <div class="config-grid-container">
                 <h3 class="config-header">Settings</h3>
