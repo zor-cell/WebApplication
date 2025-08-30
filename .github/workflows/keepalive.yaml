@@ -1,4 +1,4 @@
-name: keepalive.yml
+name: Keep alive rpi5
 on:
   schedule:
     - cron: "0 0 */10 * *"
@@ -9,4 +9,4 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Keep runner alive
-        run: echo "Runner is still alive on $(date)
+        run: echo "Runner is still alive on $(date)"
