@@ -1,14 +1,43 @@
-<game-session-game [sessionService]="jollyService"
-                   [(gameState)]="gameState"
->
-    <div *ngIf="gameState" class="main-container flex-container">
-        <button class="btn btn-primary" (click)="openRoundPopup()">Add Round <i class="bi bi-plus-circle"></i></button>
-    </div>
-</game-session-game>
+<ng-container *ngIf="gameState() as state">
+    <game-session-game [sessionService]="jollyService"
+                       [gameState]="state"
+    >
+        <div class="main-container flex-container">
+            <section class="flex-container game-container">
+                <button class="btn btn-primary" (click)="openRoundPopup()">
+                    Add Round <i class="bi bi-plus-circle"></i>
+                </button>
 
-<jolly-round-popup #roundPopup
-                   *ngIf="gameState"
-                   [teams]="gameState.gameConfig.teams"
-                   (addRoundEvent)="addRound($event)"
-/>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <!--<th scope="col">Ended</th>-->
+                        <th scope="col" *ngFor="let team of state.gameConfig.teams">{{ team.name }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let roundInfo of state.rounds;let i = index;">
+                        <th scope="row">{{i + 1}}</th>
+                        <!--<td>{{ roundInfo.endTime | date:'MMM d, yyyy HH:mm' }}</td>-->
+                        <td *ngFor="let round of roundInfo.results">{{ round.score }}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="table-light">
+                        <th scope="row">Total</th>
+                        <td *ngFor="let team of state.gameConfig.teams" class="fw-bold">
+                            {{ getTotalScore(team) }}
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </section>
+        </div>
+    </game-session-game>
 
+    <jolly-round-popup #roundPopup
+                       [teams]="state.gameConfig.teams"
+                       (addRoundEvent)="addRound($event)"
+    />
+</ng-container>

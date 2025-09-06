@@ -1,11 +1,12 @@
 import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {
+  AbstractControl,
   Form,
   FormBuilder,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  ReactiveFormsModule,
+  ReactiveFormsModule, ValidatorFn,
   Validators
 } from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
@@ -22,6 +23,7 @@ interface RoundForm {
   hasClosed: FormControl<boolean>;
   outInOne: FormControl<boolean>;
 }
+
 
 @Component({
   selector: 'jolly-round-popup',
@@ -54,13 +56,13 @@ export class RoundPopupComponent implements OnInit {
 
     for (let team of this.teams()) {
       group[team.name] = this.fb.group({
-        score: this.fb.control<number | null>(null),
+        score: this.fb.control<number | null>(null, {validators: Validators.required}),
         hasClosed: this.fb.control<boolean>(false, {nonNullable: true}),
         outInOne: this.fb.control<boolean>(false, {nonNullable: true})
       });
     }
 
-    this.saveForm = this.fb.group(group);
+    this.saveForm = this.fb.group(group, {validators: [this.allScoresValidator, this.exactlyOneClosedValidator]});
 
     //validation
     for(let team of this.teams()) {
@@ -142,4 +144,29 @@ export class RoundPopupComponent implements OnInit {
 
     this.imageUrl = URL.createObjectURL(blob);
   }
+
+  // Make sure all scores are filled in
+  private allScoresValidator: ValidatorFn = (control: AbstractControl) => {
+    const group = control as FormGroup;
+
+    const allValid = Object.values(group.controls).every(ctrl => {
+      const fg = ctrl as FormGroup;
+      return fg.get('score')?.value !== null && fg.get('score')?.value !== '';
+    });
+
+    return allValid ? null : { missingScore: true };
+  };
+
+  // Make sure exactly one hasClosed = true
+  private exactlyOneClosedValidator: ValidatorFn = (control: AbstractControl) => {
+    const group = control as FormGroup;
+
+    const closedCount = Object.values(group.controls).filter(ctrl => {
+      const fg = ctrl as FormGroup;
+      return fg.get('hasClosed')?.value === true;
+    }).length;
+
+    return closedCount === 1 ? null : { invalidClosedCount: true };
+  };
+
 }

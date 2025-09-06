@@ -36,7 +36,7 @@ export class GameSessionGameComponent {
     protected savePopup = viewChild.required<GameSessionSavePopupComponent>('savePopup')
 
     public sessionService = input.required<GameSessionService<GameConfigBase, GameStateBase>>();
-    public gameState = model.required<GameStateBase>();
+    public gameState = input.required<GameStateBase>();
 
     protected authService = inject(AuthService);
 
