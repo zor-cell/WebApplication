@@ -15,6 +15,7 @@ import {GameSessionSavePopupComponent} from "./popups/save-popup/save-popup.comp
         NgIf,
         GameSessionSavePopupComponent
     ],
+    standalone: true,
     template: `
         <app-main-header>
             <button *ngIf="authService.isAdmin()" class="btn btn-primary" (click)="openSavePopup()">
@@ -23,7 +24,7 @@ import {GameSessionSavePopupComponent} from "./popups/save-popup/save-popup.comp
         </app-main-header>
 
         <ng-content></ng-content>
-        
+
         <game-session-save-popup #savePopup
                                  *ngIf="gameState()"
                                  [teams]="gameState().gameConfig.teams"

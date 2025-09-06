@@ -1,0 +1,31 @@
+<ng-template #roundPopup>
+    <form [formGroup]="saveForm" novalidate class="main-flex">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center w-25">Team</th>
+                    <th scope="col" class="text-center w-25">Score</th>
+                    <th scope="col" class="text-center w-25">Closed</th>
+                    <th scope="col" class="text-center w-25">Out In One</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let team of teams(); let i = index" [formGroupName]="team.name">
+                <td><input type="text" disabled class="form-control" [value]="team.name"></td>
+                <td><input type="number" class="form-control" formControlName="score"></td>
+                <td><input type="checkbox" class="form-check" formControlName="hasClosed"></td>
+                <td><input type="checkbox" class="form-check" formControlName="outInOne"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="input-label">
+            <label>Image</label>
+            <input type="file" accept="image/*" capture="environment" class="form-control"
+                   (change)="onFileChanged($event)">
+        </div>
+    </form>
+    <div *ngIf="imageUrl" class="image-container">
+        <img [src]="imageUrl" alt="" width="300" height="300" class="image">
+    </div>
+</ng-template>

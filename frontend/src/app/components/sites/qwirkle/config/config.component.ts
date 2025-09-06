@@ -43,7 +43,7 @@ export class QwirkleConfigComponent {
         //update form when signal changes
         effect(() => {
             this.configForm.patchValue(this.gameConfig(), {emitEvent: false});
-            this.updateDependantControls()
+            this.updateDependantControls();
         });
     }
 

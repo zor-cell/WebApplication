@@ -14,6 +14,7 @@ import {GameStateBase} from "../../../dto/sites/GameStateBase";
         GameSessionClearPopupComponent,
         GameSessionUpdatePopupComponent
     ],
+    standalone: true,
     template: `
         <app-main-header>
             @if (!hasSession()) {
@@ -32,9 +33,9 @@ import {GameStateBase} from "../../../dto/sites/GameStateBase";
 
         <ng-content></ng-content>
 
-        <game-session-clear-popup #clearPopup 
+        <game-session-clear-popup #clearPopup
                                   (clearSessionEvent)="clearSession()"/>
-        <game-session-update-popup #updatePopup 
+        <game-session-update-popup #updatePopup
                                    [canUpdate]="isValidConfig()"
                                    (updateSessionEvent)="updateSession($event)"/>
     `

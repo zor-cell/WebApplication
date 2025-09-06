@@ -1,8 +1,14 @@
 <game-session-game [sessionService]="jollyService"
                    [(gameState)]="gameState"
 >
-    <div *ngIf="gameState" class="main-container">
-    Test
+    <div *ngIf="gameState" class="main-container flex-container">
+        <button class="btn btn-primary" (click)="openRoundPopup()">Add Round <i class="bi bi-plus-circle"></i></button>
     </div>
 </game-session-game>
+
+<jolly-round-popup #roundPopup
+                   *ngIf="gameState"
+                   [teams]="gameState.gameConfig.teams"
+                   (addRoundEvent)="addRound($event)"
+/>
 

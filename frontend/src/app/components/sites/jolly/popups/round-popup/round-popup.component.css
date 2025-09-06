@@ -1,0 +1,51 @@
+td {
+    vertical-align: middle;
+}
+
+td input[type="checkbox"] {
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.teams {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.player-save {
+    display: flex;
+    gap: 3rem;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.input-label {
+    display: flex;
+    gap: 0.5rem;
+
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+.image {
+    object-fit: contain;
+}

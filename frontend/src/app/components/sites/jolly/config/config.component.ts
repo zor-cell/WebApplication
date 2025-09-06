@@ -27,7 +27,7 @@ export class JollyConfigComponent {
 
     protected configForm = this.fb.group({
         teams: this.fb.control<Team[]>([], [minArrayLengthValidator(2)]),
-        roundLimit: this.fb.control({value: 0, disabled: true},[Validators.min(1)]),
+        roundLimit: this.fb.control({value: 5, disabled: true},[Validators.min(1)]),
         noRoundLimit: this.fb.control(true)
     });
     protected gameConfig = signal(this.configForm.getRawValue() as GameConfig);
