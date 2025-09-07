@@ -43,7 +43,7 @@ export class RoundPopupComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   public teams = input.required<Team[]>();
-  public addRoundEvent = output<RoundResult[]>();
+  public addRoundEvent = output<{results: RoundResult[], imageFile: File | null}>();
 
   protected saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
   protected saveForm!: FormGroup<Record<string, FormGroup<RoundForm>>>;
@@ -132,9 +132,7 @@ export class RoundPopupComponent implements OnInit {
       outInOne: formValue[team.name].outInOne
     }));
 
-    this.addRoundEvent.emit(roundResults);
-
-    //TODO send image as well
+    this.addRoundEvent.emit({results: roundResults, imageFile: this.imageFile});
   }
 
   private createImageFromBlob(blob: Blob) {

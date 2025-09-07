@@ -74,7 +74,7 @@ public class GameServiceImpl implements GameService {
                 .collect(Collectors.toSet());
 
         //save image file to file storage
-        String path = fileStorageService.saveFile("games", image);
+        String path = fileStorageService.saveFile(gameType, image);
 
         Game toSave = new Game(
                 LocalDateTime.now(),

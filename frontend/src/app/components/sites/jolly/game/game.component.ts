@@ -75,8 +75,8 @@ export class JollyGameComponent implements OnInit {
     this.roundPopup().openPopup();
   }
 
-  protected addRound(roundResults: RoundResult[]) {
-    this.jollyService.saveRound(roundResults).subscribe(res => {
+  protected addRound(event: {results: RoundResult[], imageFile: File | null}) {
+    this.jollyService.saveRound(event.results, event.imageFile).subscribe(res => {
       this.gameState.set(res);
     });
   }

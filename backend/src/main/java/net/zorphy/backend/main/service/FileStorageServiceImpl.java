@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.config.property.FileStorageProperty;
+import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.FileStorageException;
 import net.zorphy.backend.main.exception.NotFoundException;
 import org.slf4j.Logger;
@@ -63,6 +64,12 @@ public class FileStorageServiceImpl implements FileStorageService {
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
+    }
+
+    @Override
+    public String saveFile(GameType gameType, MultipartFile file) {
+        String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
+        return saveFile(relativePath, file);
     }
 
     private String formatPath(String subDirectory, String filename) {
