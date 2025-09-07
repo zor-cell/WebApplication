@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,7 +78,7 @@ public class GameServiceImpl implements GameService {
         String path = fileStorageService.saveFile(gameType, image);
 
         Game toSave = new Game(
-                LocalDateTime.now(),
+                Instant.now(),
                 duration,
                 gameType,
                 path,

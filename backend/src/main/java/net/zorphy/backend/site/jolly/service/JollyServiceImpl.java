@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class JollyServiceImpl implements JollyService {
     @Override
     public GameState createSession(GameConfig gameConfig) {
         return new GameState(
-                LocalDateTime.now(),
+                Instant.now(),
                 gameConfig,
                 new ArrayList<>()
         );
@@ -50,7 +51,7 @@ public class JollyServiceImpl implements JollyService {
     @Override
     public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
         return gameService.saveGame(
-                Duration.between(gameState.startTime(), LocalDateTime.now()),
+                Duration.between(gameState.startTime(), Instant.now()),
                 GameType.JOLLY,
                 gameState,
                 resultState,

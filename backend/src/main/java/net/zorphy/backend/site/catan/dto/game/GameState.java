@@ -4,11 +4,12 @@ import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.catan.dto.DicePair;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public record GameState(
-        LocalDateTime startTime,
+        Instant startTime,
         GameConfig gameConfig,
         int currentPlayerTurn,
         int currentShipTurn,

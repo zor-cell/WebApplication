@@ -6,6 +6,7 @@ import net.zorphy.backend.main.dto.game.GameType;
 import org.hibernate.annotations.Type;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -18,7 +19,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private LocalDateTime playedAt;
+    private Instant playedAt;
 
     private Duration duration;
 
@@ -46,7 +47,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(LocalDateTime playedAt, Duration duration, GameType gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
+    public Game(Instant playedAt, Duration duration, GameType gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;
         this.duration = duration;
         this.gameType = gameType;
@@ -64,11 +65,11 @@ public class Game {
         this.id = id;
     }
 
-    public LocalDateTime getPlayedAt() {
+    public Instant getPlayedAt() {
         return playedAt;
     }
 
-    public void setPlayedAt(LocalDateTime playedAt) {
+    public void setPlayedAt(Instant playedAt) {
         this.playedAt = playedAt;
     }
 

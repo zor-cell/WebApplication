@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -105,7 +106,7 @@ public class CatanServiceImpl implements CatanService {
         }
 
         return new GameState(
-                LocalDateTime.now(),
+                Instant.now(),
                 gameConfig,
                 0,
                 0,
@@ -159,7 +160,7 @@ public class CatanServiceImpl implements CatanService {
     @Override
     public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
         return gameService.saveGame(
-                Duration.between(gameState.startTime(), LocalDateTime.now()),
+                Duration.between(gameState.startTime(), Instant.now()),
                 GameType.CATAN,
                 gameState,
                 resultState,
