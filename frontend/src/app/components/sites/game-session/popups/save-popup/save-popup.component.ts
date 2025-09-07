@@ -1,11 +1,15 @@
-import {Component, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, effect, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
+
+interface SaveForm {
+    score: FormControl<number | null>;
+}
 
 @Component({
     selector: 'game-session-save-popup',
@@ -19,28 +23,40 @@ import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamS
     styleUrl: './save-popup.component.css'
 })
 export class GameSessionSavePopupComponent implements OnInit {
+    private popupService = inject(PopupService);
+    private fb = inject(FormBuilder);
+
     saveTemplate = viewChild.required<TemplateRef<any>>('savePopup');
-    saveForm!: FormGroup;
+    saveForm!: FormGroup<Record<string, FormGroup<SaveForm>>>;
 
     public teams = input.required<Team[]>();
+    public scores = input<Record<string, number>>();
+    public showFileUpload = input<boolean>(true);
+    public saveSessionEvent = output<{ resultState: ResultState, imageFile: File | null }>();
+
     protected imageUrl: string | null = null;
     private imageFile: File | null = null;
 
-
-    saveSessionEvent = output<{ resultState: ResultState, imageFile: File | null }>();
-
-    constructor(private popupService: PopupService,
-                private fb: FormBuilder) {
-    }
+    constructor() {
+        effect(() => {
+            if (this.scores()) {
+                for (let team of this.teams()) {
+                    this.saveForm.controls[team.name].controls.score.setValue(this.scores()![team.name], {emitEvent: false});
+                }
+            }
+        });
+    };
 
     ngOnInit() {
-        const controls: any = {};
+        const group: Record<string, FormGroup<SaveForm>> = {};
 
-        for (let team of this.teams()) {
-            controls[team.name] = [null, Validators.required];
+        for(let team of this.teams()) {
+            group[team.name] = this.fb.group({
+               score: this.fb.control<number | null>(null, {validators: Validators.required})
+            });
         }
 
-        this.saveForm = this.fb.group(controls);
+        this.saveForm = this.fb.group(group);
     }
 
     openPopup() {
@@ -77,9 +93,11 @@ export class GameSessionSavePopupComponent implements OnInit {
     }
 
     private saveGame() {
+        const formValue = this.saveForm.getRawValue();
+
         const teamState: ResultTeamState[] = this.teams().map(team => ({
             team: team,
-            score: Number(this.saveForm.value[team.name])
+            score: Number(formValue[team.name].score)
         }));
 
         const resultState: ResultState = {

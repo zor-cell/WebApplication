@@ -28,6 +28,8 @@ import {GameSessionSavePopupComponent} from "./popups/save-popup/save-popup.comp
         <game-session-save-popup #savePopup
                                  *ngIf="gameState()"
                                  [teams]="gameState().gameConfig.teams"
+                                 [showFileUpload]="showFileUpload()"
+                                 [scores]="scores()"
                                  (saveSessionEvent)="saveSession($event)"
         />
     `
@@ -37,6 +39,9 @@ export class GameSessionGameComponent {
 
     public sessionService = input.required<GameSessionService<GameConfigBase, GameStateBase>>();
     public gameState = input.required<GameStateBase>();
+
+    public showFileUpload = input<boolean>(true);
+    public scores = input<Record<string, number>>();
 
     protected authService = inject(AuthService);
 

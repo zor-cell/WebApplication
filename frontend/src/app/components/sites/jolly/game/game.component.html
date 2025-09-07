@@ -1,6 +1,8 @@
 <ng-container *ngIf="gameState() as state">
     <game-session-game [sessionService]="jollyService"
                        [gameState]="state"
+                       [showFileUpload]="false"
+                       [scores]="saveScores()"
     >
         <div class="main-container flex-container">
             <section class="flex-container game-container">

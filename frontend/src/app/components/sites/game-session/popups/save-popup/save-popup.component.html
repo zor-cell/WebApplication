@@ -1,19 +1,41 @@
 <ng-template #savePopup>
     <form [formGroup]="saveForm" novalidate class="main-flex">
-        <div class="teams">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col" class="text-center w-50">Team</th>
+                <th scope="col" class="text-center w-50">Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let team of teams(); let i = index" [formGroupName]="team.name">
+                <td><input type="text" readonly class="form-control" [value]="team.name"></td>
+                <td><input type="number" class="form-control" formControlName="score" [readonly]="scores() !== undefined"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--<div class="teams">
             <div *ngFor="let team of teams(); let i = index" class="player-save">
                 <div class="input-label">
                     <label>Team</label>
                     <input disabled type="text" class="form-control" [value]="team.name">
                 </div>
-                <div class="input-label">
-                    <label>Score</label>
-                    <input type="number" class="form-control" [formControlName]="team.name">
-                </div>
+                @if(scores()) {
+                    <div class="input-label">
+                        <label>Score</label>
+                        <input disabled type="number" class="form-control" [value]="scores()![team.name]">
+                    </div>
+                } @else {
+                    <div class="input-label">
+                        <label>Score</label>
+                        <input type="number" class="form-control" [formControlName]="team.name">
+                    </div>
+                }
             </div>
-        </div>
+        </div>-->
 
-        <div class="input-label">
+        <div *ngIf="showFileUpload()" class="input-label">
             <label>Image</label>
             <input type="file" accept="image/*" capture="environment" class="form-control"
                    (change)="onFileChanged($event)">

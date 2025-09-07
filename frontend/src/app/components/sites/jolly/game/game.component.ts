@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal, viewChild, WritableSignal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, viewChild, WritableSignal} from '@angular/core';
 import {JollyService} from "../../../../services/sites/jolly.service";
 import {GameSessionGameComponent} from "../../game-session/game-session-game.component";
 import {GameState} from "../../../../dto/sites/jolly/game/GameState";
@@ -27,12 +27,34 @@ import {Team} from "../../../../dto/all/Team";
   styleUrl: './game.component.css'
 })
 export class JollyGameComponent implements OnInit {
+  private router = inject(Router);
+  protected jollyService = inject(JollyService);
+  protected authService = inject(AuthService);
+
   protected roundPopup = viewChild.required<RoundPopupComponent>("roundPopup");
   protected gameState = signal<GameState | null>(null);
 
-  protected jollyService = inject(JollyService);
-  protected authService = inject(AuthService);
-  private router = inject(Router);
+  protected saveScores = computed<Record<string, number>>(() => {
+    const state = this.gameState();
+    if (!state) return {};
+
+    const scores: Record<string, number> = {};
+
+    // initialize all team scores with 0
+    for (const team of state.gameConfig.teams) {
+      scores[team.name] = 0;
+    }
+
+    // accumulate round results
+    for (const round of state.rounds) {
+      for (const res of round.results) {
+        const teamName = res.team.name;
+        scores[teamName] = (scores[teamName] ?? 0) + (res.score ?? 0);
+      }
+    }
+
+    return scores;
+  });
 
   ngOnInit() {
     this.getSession();
@@ -49,17 +71,17 @@ export class JollyGameComponent implements OnInit {
     });
   }
 
-  openRoundPopup() {
+  protected openRoundPopup() {
     this.roundPopup().openPopup();
   }
 
-  addRound(roundResults: RoundResult[]) {
+  protected addRound(roundResults: RoundResult[]) {
     this.jollyService.saveRound(roundResults).subscribe(res => {
       this.gameState.set(res);
     });
   }
 
-  getTotalScore(team: Team): number {
+  protected getTotalScore(team: Team): number {
     return this.gameState()!.rounds
         .map(r => r.results.find(res => res.team.name === team.name)?.score ?? 0)
         .reduce((a, b) => a + b, 0);
