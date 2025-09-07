@@ -1,10 +1,10 @@
 package net.zorphy.backend.site.jolly.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public record RoundInfo(
-        LocalDateTime endTime,
+        Instant endTime,
         String imageUrl,
         List<RoundResult> results
 ) {

@@ -5,7 +5,9 @@ import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.GameService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
-import net.zorphy.backend.site.qwirkle.dto.*;
+import net.zorphy.backend.site.qwirkle.dto.Position;
+import net.zorphy.backend.site.qwirkle.dto.PositionInfo;
+import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.enums.Color;
 import net.zorphy.backend.site.qwirkle.dto.enums.Shape;
 import net.zorphy.backend.site.qwirkle.dto.game.GameConfig;
@@ -27,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;

@@ -5,7 +5,6 @@ import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.service.GameService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
-import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
 import net.zorphy.backend.site.jolly.dto.RoundResult;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +75,7 @@ public class JollyServiceImpl implements JollyService {
         String path = fileStorageService.saveFile(GameType.JOLLY, image);
 
         RoundInfo roundInfo = new RoundInfo(
-                LocalDateTime.now(),
+                Instant.now(),
                 path,
                 results
         );

@@ -4,7 +4,6 @@ import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.site.all.base.GameConfigBase;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
-import net.zorphy.backend.site.all.base.impl.ResultState;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface GameSessionService<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {

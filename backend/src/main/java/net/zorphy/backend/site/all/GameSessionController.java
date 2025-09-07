@@ -9,7 +9,6 @@ import net.zorphy.backend.site.all.base.GameConfigBase;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
 import net.zorphy.backend.site.catan.dto.game.GameState;
-import net.zorphy.backend.site.all.base.impl.ResultState;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;

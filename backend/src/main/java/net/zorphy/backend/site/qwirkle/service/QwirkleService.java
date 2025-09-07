@@ -2,9 +2,9 @@ package net.zorphy.backend.site.qwirkle.service;
 
 import net.zorphy.backend.site.all.GameSessionService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
+import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.game.GameConfig;
 import net.zorphy.backend.site.qwirkle.dto.game.GameState;
-import net.zorphy.backend.site.qwirkle.dto.SelectionInfo;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.move.MoveGroup;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;

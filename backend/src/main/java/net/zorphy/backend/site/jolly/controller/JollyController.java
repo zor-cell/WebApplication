@@ -9,7 +9,10 @@ import net.zorphy.backend.site.jolly.dto.RoundResult;
 import net.zorphy.backend.site.jolly.dto.game.GameConfig;
 import net.zorphy.backend.site.jolly.dto.game.GameState;
 import net.zorphy.backend.site.jolly.service.JollyService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

@@ -7,7 +7,10 @@ import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.catan.dto.game.GameConfig;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.service.CatanService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/catan")

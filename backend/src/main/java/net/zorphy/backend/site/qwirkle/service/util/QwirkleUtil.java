@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.qwirkle.service.util;
 
-import net.zorphy.backend.site.qwirkle.dto.enums.Direction;
 import net.zorphy.backend.site.qwirkle.dto.Position;
+import net.zorphy.backend.site.qwirkle.dto.enums.Direction;
 import net.zorphy.backend.site.qwirkle.dto.move.Move;
 import net.zorphy.backend.site.qwirkle.dto.tile.BoardTile;
 import net.zorphy.backend.site.qwirkle.dto.tile.Tile;

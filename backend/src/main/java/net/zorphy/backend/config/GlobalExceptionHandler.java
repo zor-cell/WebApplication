@@ -1,6 +1,5 @@
 package net.zorphy.backend.config;
 
-import jakarta.validation.constraints.NotNull;
 import net.zorphy.backend.main.exception.FileStorageException;
 import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.main.exception.NotFoundException;

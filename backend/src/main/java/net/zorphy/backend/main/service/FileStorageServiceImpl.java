@@ -3,7 +3,6 @@ package net.zorphy.backend.main.service;
 import net.zorphy.backend.config.property.FileStorageProperty;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.FileStorageException;
-import net.zorphy.backend.main.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

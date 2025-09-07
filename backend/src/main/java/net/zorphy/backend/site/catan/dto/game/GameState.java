@@ -5,7 +5,6 @@ import net.zorphy.backend.site.catan.dto.DicePair;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record GameState(
