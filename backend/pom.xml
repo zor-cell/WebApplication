@@ -123,9 +123,6 @@
 				<version>2.43.0</version>
 				<configuration>
 					<java>
-						<eclipse>
-							<file>${project.basedir}/config/eclipse-formatter.xml</file>
-						</eclipse>
 						<removeUnusedImports/>
 					</java>
 				</configuration>
