@@ -28,7 +28,7 @@ export class DurationPipe implements PipeTransform {
 
         const mmFromH = (minutes + hours * 60).toString().padStart(2, '0');
 
-        //return `${hh}:${mm}:${ss}`;
-        return `${mmFromH}m ${ss}s`;
+        return `${hh}:${mm}:${ss}`;
+        //return `${mmFromH}m ${ss}s`;
     }
 }
