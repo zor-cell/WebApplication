@@ -50,7 +50,7 @@ export class GameSessionGameComponent {
     constructor() {
         effect(() => {
             this.isSessionSaved();
-        })
+        });
     }
 
     openSavePopup() {
@@ -67,7 +67,8 @@ export class GameSessionGameComponent {
 
     isSessionSaved() {
         this.sessionService().isSessionSaved().subscribe(res => {
-            this.isSaved.set(res);
+            //TODO: enable again just for testing
+            //this.isSaved.set(res);
         });
     }
 }

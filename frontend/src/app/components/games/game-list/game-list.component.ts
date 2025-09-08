@@ -54,6 +54,5 @@ export class GameListComponent {
 
   private updateDateFormat(isSmallScreen: boolean) {
     this.dateFormat = isSmallScreen ? 'dd.MM.yyyy' : 'MMM d, yyyy HH:mm';
-    console.log(this.dateFormat)
   }
 }

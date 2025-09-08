@@ -31,6 +31,11 @@ public class FileStorageServiceImpl implements FileStorageService {
         logger.info("File storage location initialized to: {}", this.fileStorageLocation);
     }
 
+    @Override
+    public String saveFile(GameType gameType, MultipartFile file) {
+        String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
+        return saveFile(relativePath, file);
+    }
 
     @Override
     public String saveFile(String subDirectory, MultipartFile file) {
@@ -41,7 +46,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             //check for invalid characters
             if (originalFilename.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + originalFilename);
+                throw new FileStorageException("Filename contains invalid path sequence " + originalFilename);
             }
 
             //generate unique filename
@@ -61,14 +66,25 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
+            throw new FileStorageException("Could not store file " + originalFilename, ex);
         }
     }
 
     @Override
-    public String saveFile(GameType gameType, MultipartFile file) {
-        String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
-        return saveFile(relativePath, file);
+    public void deleteFile(String relativePath) {
+        if(relativePath == null) {
+            return;
+        }
+
+        try {
+            Path filePath = this.fileStorageLocation.resolve(relativePath).normalize();
+
+            if(Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+        } catch(IOException ex) {
+            throw new FileStorageException("Could not delete file " + relativePath, ex);
+        }
     }
 
     private String formatPath(String subDirectory, String filename) {

@@ -37,16 +37,6 @@ export class GameSessionSavePopupComponent implements OnInit {
     protected imageUrl: string | null = null;
     private imageFile: File | null = null;
 
-    constructor() {
-        effect(() => {
-            if (this.scores()) {
-                for (let team of this.teams()) {
-                    this.saveForm.controls[team.name].controls.score.setValue(this.scores()![team.name], {emitEvent: false});
-                }
-            }
-        });
-    };
-
     ngOnInit() {
         const group: Record<string, FormGroup<SaveForm>> = {};
 
@@ -60,6 +50,13 @@ export class GameSessionSavePopupComponent implements OnInit {
     }
 
     openPopup() {
+        //populate with scores if there are any
+        if (this.scores()) {
+            for (let team of this.teams()) {
+                this.saveForm.controls[team.name].controls.score.setValue(this.scores()![team.name], {emitEvent: false});
+            }
+        }
+
         this.popupService.createPopup(
             'Save Game Data',
             this.saveTemplate(),

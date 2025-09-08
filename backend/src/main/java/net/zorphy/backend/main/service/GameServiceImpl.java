@@ -49,22 +49,21 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDetails getGame(UUID id) {
-        Optional<Game> game = gameRepository.findById(id);
-        if(game.isEmpty()) {
-            throw new NotFoundException("Game with id %s not found".formatted(id));
-        }
-
-        return gameMapper.gameToGameDetails(game.get());
+        return gameMapper.gameToGameDetails(getGameInternal(id));
     }
 
     @Override
     public GameDetails deleteGame(UUID id) {
-        GameDetails gameDetails = getGame(id);
+        Game game = getGameInternal(id);
+        GameDetails gameDetails = gameMapper.gameToGameDetails(game);
+
         gameRepository.deleteById(id);
+        fileStorageService.deleteFile(game.getImageUrl());
 
         return gameDetails;
     }
 
+    @Override
     public GameDetails saveGame(Duration duration, GameType gameType, Object gameState, Object resultState, MultipartFile image, List<TeamDetails> teams) {
         //get all players in team from db
         Set<Player> players = teams.stream()
@@ -87,6 +86,15 @@ public class GameServiceImpl implements GameService {
         );
         Game saved = gameRepository.save(toSave);
         return gameMapper.gameToGameDetails(saved);
+    }
+
+    private Game getGameInternal(UUID id) {
+        Optional<Game> game = gameRepository.findById(id);
+        if(game.isEmpty()) {
+            throw new NotFoundException("Game with id %s not found".formatted(id));
+        }
+
+        return game.get();
     }
 
     private List<GameMetadata> mapList(List<Game> list) {
