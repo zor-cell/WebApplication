@@ -1,4 +1,15 @@
-import {Component, forwardRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+    Component,
+    forwardRef,
+    inject,
+    input,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    viewChild,
+    ViewChild
+} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {PlayerDetails} from "../../../dto/all/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -34,11 +45,13 @@ import {AuthService} from "../../../services/all/auth.service";
     ]
 })
 export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnChanges {
-    @ViewChild('playerPopup') playerPopup!: NewPlayerPopupComponent;
+    private playerService = inject(PlayerService);
+    protected authService = inject(AuthService);
 
-    @Input() minTeams: number = 2;
-    @Input() maxTeams: number = 4;
-    @Input() allowTeams: boolean = true;
+    playerPopup = viewChild.required<NewPlayerPopupComponent>('playerPopup');
+    minTeams = input<number>(2);
+    maxTeams = input<number>(4);
+    allowTeams = input<boolean>(true);
 
     selectedTeams: Team[] = [];
     allPlayers: PlayerDetails[] = []
@@ -48,9 +61,6 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     teamHostIndex: number = -1;
 
     private onChange: (value: Team[]) => void = () => {};
-
-    private playerService = inject(PlayerService);
-    protected authService = inject(AuthService);
 
     writeValue(value: Team[]): void {
         this.selectedTeams = value.map(team => ({
@@ -85,7 +95,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     mergeTeam(teamIndex: number) {
-        if (!this.allowTeams) return;
+        if (!this.allowTeams()) return;
 
         if (this.teamHostIndex >= 0) {
             const hostTeam = this.selectedTeams[this.teamHostIndex]
@@ -110,7 +120,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     addPlayer() {
-        if (this.selectedTeams.length >= this.maxTeams || this.currentPlayer === null) {
+        if (this.selectedTeams.length >= this.maxTeams() || this.currentPlayer === null) {
             return;
         }
 
@@ -162,7 +172,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     makeHost(teamIndex: number) {
-        if (!this.allowTeams) return;
+        if (!this.allowTeams()) return;
 
         if (this.teamHostIndex === teamIndex) {
             this.teamHostIndex = -1;
@@ -180,12 +190,15 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
                 if (this.availablePlayers.length > 0) {
                     this.currentPlayer = this.copy(this.availablePlayers[0]);
                 }
+
+                console.log("loaded players")
+                console.log(this.selectedTeams)
             }
         });
     }
 
     openPlayerPopup() {
-        this.playerPopup.openPopup();
+        this.playerPopup().openPopup();
     }
 
     private generateTeamName(players: PlayerDetails[]): string {
