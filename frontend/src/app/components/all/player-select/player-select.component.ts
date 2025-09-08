@@ -48,21 +48,21 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
     private playerService = inject(PlayerService);
     protected authService = inject(AuthService);
 
-    playerPopup = viewChild.required<NewPlayerPopupComponent>('playerPopup');
-    minTeams = input<number>(2);
-    maxTeams = input<number>(4);
-    allowTeams = input<boolean>(true);
+    public playerPopup = viewChild.required<NewPlayerPopupComponent>('playerPopup');
+    public minTeams = input<number>(2);
+    public maxTeams = input<number>(4);
+    public allowTeams = input<boolean>(true);
 
-    allPlayers = signal<PlayerDetails[]>([]);
-    selectedTeams = signal<Team[]>([]);
-    availablePlayers = computed(() => {
+    public allPlayers = signal<PlayerDetails[]>([]);
+    public selectedTeams = signal<Team[]>([]);
+    public availablePlayers = computed(() => {
         const all = this.allPlayers();
         const taken = this.selectedTeams().flatMap(t => t.players.map(p => p.id));
         return all.filter(p => !taken.includes(p.id)).sort((a,b) => a.name.localeCompare(b.name));
     });
 
-    teamHostIndex = signal<number>(-1);
-    currentPlayer = signal<PlayerDetails | null>(null);
+    public teamHostIndex = signal<number>(-1);
+    public currentPlayer = signal<PlayerDetails | null>(null);
 
     private onChange: (value: Team[]) => void = () => {};
 
@@ -74,22 +74,22 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         });
     }
 
-    writeValue(value: Team[]): void {
+    public writeValue(value: Team[]): void {
         this.selectedTeams.set(value.map(team => ({
             name: team.name,
             players: team.players.map(p => ({...p}))
         })))
     }
 
-    registerOnChange(fn: (value: Team[]) => void): void {
+    public registerOnChange(fn: (value: Team[]) => void): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: () => void): void {
+    public registerOnTouched(fn: () => void): void {
 
     }
 
-    setDisabledState?(isDisabled: boolean): void {
+    public setDisabledState?(isDisabled: boolean): void {
 
     }
 
@@ -97,7 +97,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         this.getPlayers();
     }
 
-    mergeTeam(teamIndex: number) {
+    protected mergeTeam(teamIndex: number) {
         if (!this.allowTeams()) return;
 
         const hostIndex = this.teamHostIndex();
@@ -119,7 +119,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
     }
 
     //drag and drop reordering logic
-    drop(event: CdkDragDrop<Team[]>) {
+    protected drop(event: CdkDragDrop<Team[]>) {
         const teams = [...this.selectedTeams()];
         moveItemInArray(teams, event.previousIndex, event.currentIndex);
 
@@ -127,7 +127,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         this.onChange(this.selectedTeams());
     }
 
-    addPlayer() {
+    protected addPlayer() {
         const player = this.currentPlayer();
         if (this.selectedTeams().length >= this.maxTeams() || player === null) {
             return;
@@ -142,7 +142,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         this.onChange(this.selectedTeams());
     }
 
-    removePlayer(teamIndex: number) {
+    protected removePlayer(teamIndex: number) {
         const teams = [...this.selectedTeams()];
         teams.splice(teamIndex, 1);
 
@@ -150,7 +150,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         this.onChange(this.selectedTeams());
     }
 
-    updateCurrentPlayer(event: Event) {
+    protected updateCurrentPlayer(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
         const selectedId = selectElement.options[selectElement.selectedIndex].value;
 
@@ -160,22 +160,22 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         }
     }
 
-    makeHost(teamIndex: number) {
+    protected makeHost(teamIndex: number) {
         if (!this.allowTeams()) return;
 
         this.teamHostIndex.update(index => index === teamIndex ? -1 : teamIndex);
     }
 
-    getPlayers() {
+    protected openPlayerPopup() {
+        this.playerPopup().openPopup();
+    }
+
+    private getPlayers() {
         this.playerService.getPlayers().subscribe({
             next: res => {
                 this.allPlayers.set(res);
             }
         });
-    }
-
-    openPlayerPopup() {
-        this.playerPopup().openPopup();
     }
 
     private generateTeamName(players: PlayerDetails[]): string {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, inject, output, Output, TemplateRef, viewChild, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
@@ -6,6 +6,7 @@ import {PlayerDetails} from "../../../../dto/all/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
+import {AuthService} from "../../../../services/all/auth.service";
 
 @Component({
     selector: 'app-new-player-popup',
@@ -17,27 +18,26 @@ import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
     styleUrl: './new-player-popup.component.css'
 })
 export class NewPlayerPopupComponent {
-    @ViewChild('playerPopup') playerTemplate!: TemplateRef<any>;
-    playerForm!: FormGroup;
+    private popupService = inject(PopupService);
+    private playerService = inject(PlayerService);
+    private fb = inject(FormBuilder);
 
-    @Output() newPlayerEvent = new EventEmitter<PlayerDetails>();
+    public playerTemplate = viewChild.required<TemplateRef<any>>('playerPopup');
+    public newPlayerEvent = output<PlayerDetails>();
 
-    constructor(private globals: Globals,
-                private popupService: PopupService,
-                private playerService: PlayerService,
-                private fb: FormBuilder) {
-    }
+    protected playerForm!: FormGroup;
 
     ngOnInit() {
+        console.log("init")
         this.playerForm = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(1)]]
         });
     }
 
-    openPopup() {
+    public openPopup() {
         this.popupService.createPopup(
             'Create New Player',
-            this.playerTemplate,
+            this.playerTemplate(),
             this.callback.bind(this),
             () => this.playerForm.valid,
             'Create');

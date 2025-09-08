@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {Location, NgIf} from "@angular/common";
 
 @Component({
@@ -11,12 +11,11 @@ import {Location, NgIf} from "@angular/common";
     styleUrl: './main-header.component.css'
 })
 export class MainHeaderComponent {
-    showBack = input<boolean>(true);
+    private location = inject(Location);
 
-    constructor(private location: Location) {
-    }
+    public showBack = input<boolean>(true);
 
-    routeBack() {
+    protected routeBack() {
       this.location.back();
     }
 }

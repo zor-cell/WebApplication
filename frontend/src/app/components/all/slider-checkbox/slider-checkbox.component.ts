@@ -16,34 +16,34 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
     ]
 })
 export class SliderCheckboxComponent implements ControlValueAccessor {
-    unCheckedText = input('F');
-    checkedText = input('T');
+    public unCheckedText = input('F');
+    public checkedText = input('T');
 
     protected isChecked: boolean = false;
     private onChange: (value: boolean) => void = () => {};
 
-    get label() {
+    protected get label() {
         const label = this.isChecked ? this.checkedText() : this.unCheckedText();
         return '"' + label + '"';
     }
 
-    writeValue(value: boolean): void {
+    public writeValue(value: boolean): void {
         this.isChecked = value;
     }
 
-    registerOnChange(fn: (value: boolean) => void): void {
+    public registerOnChange(fn: (value: boolean) => void): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: any): void {
+    public registerOnTouched(fn: any): void {
         //throw new Error('Method not implemented.');
     }
 
-    setDisabledState?(isDisabled: boolean): void {
+    public setDisabledState?(isDisabled: boolean): void {
         //throw new Error('Method not implemented.');
     }
 
-    updateChecked(event: Event) {
+    protected updateChecked(event: Event) {
         const checkbox = event.target as HTMLInputElement;
         this.isChecked = checkbox.checked;
 

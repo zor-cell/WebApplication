@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef} from '@angular/core';
+import {Component, computed, inject, input, Input, TemplateRef} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, NgTemplateOutlet} from "@angular/common";
@@ -17,32 +17,30 @@ import {PopupResultType} from "../../../../dto/all/PopupResultType";
     styleUrl: './popup-dialog.component.css'
 })
 export class PopupDialogComponent {
-    @Input() title: string = 'Modal';
-    @Input() cancelText: string = 'Cancel';
-    @Input() submitText: string = 'Submit';
-    @Input() discardText: string | null = null;
+    private activeModal = inject(NgbActiveModal);
 
-    @Input({required: true}) bodyTemplate!: TemplateRef<any>;
-    @Input() submitValidator: (() => boolean) | null = null;
+    public bodyTemplate!: TemplateRef<any>;
+    public submitValidator: (() => boolean) | null = null;
+    public title: string = 'Modal';
+    public cancelText: string = 'Cancel';
+    public submitText: string = 'Submit';
+    public discardText: string | null = null;
 
-    constructor(private activeModal: NgbActiveModal) {
-    }
-
-    get valid() {
+    protected get valid(): boolean {
         if (this.submitValidator === null) return true;
 
         return this.submitValidator();
     }
 
-    cancel() {
+    protected cancel() {
         this.activeModal.dismiss(PopupResultType.CANCEL)
     }
 
-    discard() {
+    protected discard() {
         this.activeModal.close(PopupResultType.DISCARD);
     }
 
-    submit() {
+    protected submit() {
         if (this.valid) {
             this.activeModal.close(PopupResultType.SUBMIT);
         }
