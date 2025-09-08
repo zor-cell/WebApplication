@@ -10,7 +10,10 @@
     <tr *ngFor="let roundInfo of gameState().rounds;let i = index;">
         <th scope="row">{{i + 1}}</th>
         <!--<td>{{ roundInfo.endTime | date:'MMM d, yyyy HH:mm' }}</td>-->
-        <td *ngFor="let round of roundInfo.results">{{ round.score }}</td>
+        <td *ngFor="let round of roundInfo.results" class="score-cell">
+            <span [class.closed]="round.hasClosed">{{ round.score }}</span>
+            <span *ngIf="round.outInOne" class="out-in-one">•</span>
+        </td>
     </tr>
     </tbody>
     <tfoot>

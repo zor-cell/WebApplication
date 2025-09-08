@@ -1,5 +1,5 @@
-import {Component, input} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {Component, effect, input} from '@angular/core';
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {state} from "@angular/animations";
 import {GameState} from "../../../../dto/sites/jolly/game/GameState";
 import {Team} from "../../../../dto/all/Team";
@@ -8,13 +8,18 @@ import {Team} from "../../../../dto/all/Team";
   selector: 'jolly-round-table',
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './round-table.component.html',
   styleUrl: './round-table.component.css'
 })
 export class JollyRoundTableComponent {
   public gameState = input.required<GameState>();
+
+  a = effect(() => {
+    console.log(this.gameState().rounds)
+});
 
   protected getTotalScore(team: Team): number {
     return this.gameState()!.rounds

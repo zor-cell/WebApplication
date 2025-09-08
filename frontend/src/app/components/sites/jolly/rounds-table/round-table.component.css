@@ -1,0 +1,13 @@
+.score-cell {
+    position: relative;
+}
+
+.closed {
+    text-decoration: underline;
+}
+
+.out-in-one {
+    position: absolute;
+    top: 20%;
+    line-height: 1;
+}

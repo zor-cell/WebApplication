@@ -5,6 +5,7 @@ import net.zorphy.backend.main.dto.player.TeamDetails;
 public record RoundResult(
         TeamDetails team,
         int score,
-        boolean hasClosed
+        boolean hasClosed,
+        boolean outInOne
 ) {
 }
