@@ -18,8 +18,6 @@ import {Team} from "../../../../dto/all/Team";
     NgIf,
     RoundPopupComponent,
     NgForOf,
-    DatePipe,
-    DurationPipe,
     ReactiveFormsModule
   ],
   templateUrl: './game.component.html',
@@ -79,6 +77,14 @@ export class JollyGameComponent implements OnInit {
     this.jollyService.saveRound(event.results, event.imageFile).subscribe(res => {
       this.gameState.set(res);
     });
+  }
+
+  protected roundLimitReached() {
+    if(this.gameState()!.gameConfig.noRoundLimit) {
+      return false;
+    }
+
+    return this.gameState()!.rounds.length >= this.gameState()!.gameConfig.roundLimit;
   }
 
   protected getTotalScore(team: Team): number {

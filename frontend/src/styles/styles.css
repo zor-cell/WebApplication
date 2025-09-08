@@ -7,6 +7,10 @@ body {
     font-family: Calibri, "Helvetica Neue", sans-serif;
 }
 
+.table {
+    text-align: center;
+}
+
 .main-header {
     padding: 1rem 2rem;
 }

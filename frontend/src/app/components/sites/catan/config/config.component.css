@@ -6,14 +6,6 @@
     gap: 0.4rem;
 }
 
-select {
-    border: solid 2px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-    padding-left: 0.7rem;
-    height: 30px;
-    width: fit-content;
-}
-
 /*container styles*/
 .config-container {
     grid-template-columns: 30fr 30fr 40fr;
@@ -86,26 +78,6 @@ select {
     gap: 0.3rem;
 }
 
-
-.number-input {
-    height: 30px;
-    width: 30px;
-
-    border: 2px solid rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-    color: rgba(0, 0, 0, 0.3);
-
-    text-align: center;
-}
-
-.number-input:hover {
-    border-color: rgba(0, 0, 0, 0.5);
-}
-
-input[type=number]::-webkit-inner-spin-button {
-    display: none;
-}
-
 .config-actions {
     display: flex;
     justify-content: center;
@@ -116,13 +88,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 900px) {
-    .config-container, .game-container {
+    .config-container {
         grid-template-columns: 1fr;
-        grid-auto-flow: row;
-        justify-items: center;
-    }
-
-    .config-grid-container {
-        width: 100%;
     }
 }

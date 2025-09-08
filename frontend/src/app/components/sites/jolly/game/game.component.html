@@ -6,7 +6,7 @@
     >
         <div class="main-container flex-container">
             <section class="flex-container game-container">
-                <button class="btn btn-primary" (click)="openRoundPopup()">
+                <button class="btn btn-primary" [disabled]="roundLimitReached()" (click)="openRoundPopup()">
                     Add Round <i class="bi bi-plus-circle"></i>
                 </button>
 
