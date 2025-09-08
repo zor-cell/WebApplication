@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
 import {NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
@@ -14,5 +14,5 @@ import {RouterLink} from "@angular/router";
     styleUrl: './project-card.component.css'
 })
 export class ProjectCardComponent {
-    @Input({required: true}) project!: ProjectMetadata;
+    public project = input.required<ProjectMetadata>();
 }

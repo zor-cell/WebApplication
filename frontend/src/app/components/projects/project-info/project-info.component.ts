@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, viewChild, ViewChild} from '@angular/core';
 import {ProjectDetails} from "../../../dto/projects/ProjectDetails";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Globals} from "../../../classes/globals";
@@ -21,16 +21,14 @@ import {AuthService} from "../../../services/all/auth.service";
     styleUrl: './project-info.component.css'
 })
 export class ProjectInfoComponent implements OnInit {
-    @ViewChild('updatePopup') updatePopup!: ProjectUpdatePopupComponent;
+    protected authService = inject(AuthService);
+    private projectService = inject(ProjectService);
+    private route = inject(ActivatedRoute);
 
-    projectName: string | null = null;
-    project: ProjectDetails | null = null;
+    public updatePopup = viewChild.required<ProjectUpdatePopupComponent>('updatePopup');
 
-    constructor(private globals: Globals,
-                public authService: AuthService,
-                private projectService: ProjectService,
-                private route: ActivatedRoute) {
-    }
+    protected project: ProjectDetails | null = null;
+    private projectName: string | null = null;
 
     ngOnInit(): void {
         this.route.paramMap.subscribe(params => {
@@ -40,7 +38,11 @@ export class ProjectInfoComponent implements OnInit {
         });
     }
 
-    getProject() {
+    protected openUpdatePopup() {
+        this.updatePopup().openPopup();
+    }
+
+    private getProject() {
         if (this.projectName == null) return;
 
         this.projectService.getProject(this.projectName).subscribe({
@@ -48,9 +50,5 @@ export class ProjectInfoComponent implements OnInit {
                 this.project = res;
             }
         });
-    }
-
-    openUpdatePopup() {
-        this.updatePopup.openPopup();
     }
 }

@@ -1,4 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+    Component,
+    EventEmitter, inject,
+    input,
+    Input,
+    OnInit,
+    output,
+    Output,
+    TemplateRef,
+    viewChild,
+    ViewChild
+} from '@angular/core';
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
@@ -16,38 +27,35 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
     styleUrl: './update-popup.component.css'
 })
 export class ProjectUpdatePopupComponent implements OnInit {
-    @ViewChild('updatePopup') updateTemplate!: TemplateRef<any>;
-    updateForm!: FormGroup;
+    private popupService = inject(PopupService);
+    private projectService = inject(ProjectService);
+    private fb = inject(FormBuilder);
 
-    @Input({required: true}) project!: ProjectDetails;
-    @Input() canUpdate: boolean = true;
+    public updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
+    public project = input.required<ProjectDetails>();
+    public canUpdate = input<boolean>(true);
+    public updatedProjectEvent = output<boolean>();
 
-    @Output() updatedProjectEvent = new EventEmitter<boolean>();
-
-    constructor(private globals: Globals,
-                private popupService: PopupService,
-                private projectService: ProjectService,
-                private fb: FormBuilder) {
-    }
+    protected updateForm!: FormGroup;
 
     ngOnInit() {
         this.updateForm = this.fb.group({
-            name: [this.project.metadata.name, Validators.required],
-            createdAt: [this.project.metadata.createdAt, Validators.required],
-            title: [this.project.metadata.title, Validators.required],
-            description: [this.project.metadata.description, Validators.required],
-            imagePath: [this.project.metadata.imagePath, Validators.required],
-            githubUrl: [this.project.metadata.githubUrl],
-            hasWebsite: [this.project.metadata.hasWebsite],
-            isFavorite: [this.project.metadata.isFavorite],
-            filePath: [this.project.filePath, Validators.required]
+            name: [this.project().metadata.name, Validators.required],
+            createdAt: [this.project().metadata.createdAt, Validators.required],
+            title: [this.project().metadata.title, Validators.required],
+            description: [this.project().metadata.description, Validators.required],
+            imagePath: [this.project().metadata.imagePath, Validators.required],
+            githubUrl: [this.project().metadata.githubUrl],
+            hasWebsite: [this.project().metadata.hasWebsite],
+            isFavorite: [this.project().metadata.isFavorite],
+            filePath: [this.project().filePath, Validators.required]
         });
     }
 
-    openPopup() {
+    public openPopup() {
         this.popupService.createPopup(
             'Update Project Data',
-            this.updateTemplate,
+            this.updateTemplate(),
             this.callback.bind(this),
             () => true, //this.configsAreEqual(this.updateForm.value, this.project)
             'Update',

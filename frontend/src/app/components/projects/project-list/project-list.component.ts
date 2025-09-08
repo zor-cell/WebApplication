@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ProjectService} from "../../../services/project.service";
 import {Globals} from "../../../classes/globals";
 import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
@@ -14,17 +14,15 @@ import {MainHeaderComponent} from '../../all/main-header/main-header.component';
     styleUrl: './project-list.component.css'
 })
 export class ProjectListComponent implements OnInit {
-    projects!: ProjectMetadata[];
+    private projectService = inject(ProjectService);
 
-    constructor(private globals: Globals, private projectService: ProjectService) {
-    }
+    protected projects!: ProjectMetadata[];
 
     ngOnInit(): void {
         this.getProjects();
     }
 
-
-    getProjects() {
+    private getProjects() {
         this.projectService.getProjects().subscribe({
             next: res => {
                 this.projects = res;
