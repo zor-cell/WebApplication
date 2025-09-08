@@ -2,7 +2,6 @@ package net.zorphy.backend.main.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-import net.zorphy.backend.main.dto.game.GameType;
 import org.hibernate.annotations.Type;
 
 import java.time.Duration;
@@ -22,8 +21,7 @@ public class Game {
 
     private Duration duration;
 
-    @Enumerated(EnumType.STRING)
-    private GameType gameType;
+    private String gameType;
 
     private String imageUrl;
 
@@ -46,7 +44,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(Instant playedAt, Duration duration, GameType gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
+    public Game(Instant playedAt, Duration duration, String gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
         this.playedAt = playedAt;
         this.duration = duration;
         this.gameType = gameType;
@@ -80,11 +78,11 @@ public class Game {
         this.duration = duration;
     }
 
-    public GameType getGameType() {
+    public String getGameType() {
         return gameType;
     }
 
-    public void setGameType(GameType gameType) {
+    public void setGameType(String gameType) {
         this.gameType = gameType;
     }
 

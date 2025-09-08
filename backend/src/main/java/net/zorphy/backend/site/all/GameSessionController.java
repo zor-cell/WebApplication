@@ -17,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
     private final GameSessionService<Config, State, Result> sessionService;
     private final String SESSION_KEY;
+    private final String SESSION_SAVE_KEY;
 
     public GameSessionController(GameSessionService<Config, State, Result> sessionService, GameType gameType) {
         this.sessionService = sessionService;
         this.SESSION_KEY = gameType.toString() + "_sessionState";
+        this.SESSION_SAVE_KEY = gameType.toString() + "_sessionSaved";
     }
 
     @GetMapping("session")
@@ -36,6 +38,7 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
 
         State gameState = sessionService.createSession(gameConfig);
         setSessionState(session, gameState);
+        setSessionSaved(session, false);
 
         return gameState;
     }
@@ -54,6 +57,7 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
         getSessionState(session);
 
         session.removeAttribute(SESSION_KEY);
+        session.removeAttribute(SESSION_SAVE_KEY);
     }
 
     @Secured("ROLE_ADMIN")
@@ -61,7 +65,20 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
     public GameDetails saveSession(HttpSession session,
                                 @RequestPart("gameState") @Valid Result resultState,
                                 @RequestPart(value = "image", required = false) MultipartFile image) {
-        return sessionService.saveSession(getSessionState(session), resultState, image);
+        var gameState = getSessionState(session);
+        if(getSessionSaved(session)) {
+            throw new InvalidSessionException("The game state for this session was already saved");
+        }
+
+        GameDetails gameDetails = sessionService.saveSession(gameState, resultState, image);
+        setSessionSaved(session, true);
+
+        return gameDetails;
+    }
+
+    @GetMapping(value = "session/save")
+    public boolean isSessionSaved(HttpSession session) {
+        return getSessionSaved(session);
     }
 
     @PostMapping(value = "session/undo")
@@ -88,5 +105,18 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
     private boolean sessionExists(HttpSession session) {
         GameState gameState = (GameState) session.getAttribute(SESSION_KEY);
         return gameState != null;
+    }
+
+    private boolean getSessionSaved(HttpSession session) {
+        Boolean sessionSaved = (Boolean) session.getAttribute(SESSION_SAVE_KEY);
+        if(sessionSaved == null) {
+            throw new InvalidSessionException("No game state for this session exists");
+        }
+
+        return sessionSaved;
+    }
+
+    private void setSessionSaved(HttpSession session, boolean sessionSaved) {
+        session.setAttribute(SESSION_SAVE_KEY, sessionSaved);
     }
 }

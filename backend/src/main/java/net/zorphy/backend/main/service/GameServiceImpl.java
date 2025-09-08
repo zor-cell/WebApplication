@@ -79,7 +79,7 @@ public class GameServiceImpl implements GameService {
         Game toSave = new Game(
                 Instant.now(),
                 duration,
-                gameType,
+                gameType.name(),
                 path,
                 gameState,
                 resultState,
