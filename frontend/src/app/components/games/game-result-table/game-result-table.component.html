@@ -1,0 +1,30 @@
+<table class="table m-0">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Team</th>
+        <th scope="col">Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let team of paddedTeams();let i = index">
+        @if (team) {
+            <ng-container>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                    {{ team.team.name }}
+                    <i *ngIf="team.score === maxScore()" class="bi bi-trophy-fill winner-icon"></i>
+                </td>
+                <td>{{ team.score }}</td>
+            </ng-container>
+        } @else {
+            <!--empty player -->
+            <ng-container>
+                <th scope="row">{{ i + 1 }}</th>
+                <td></td>
+                <td></td>
+            </ng-container>
+        }
+    </tr>
+    </tbody>
+</table>

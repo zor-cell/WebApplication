@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, input, Input, OnInit} from '@angular/core';
 import {GameMetadata} from "../../../../dto/games/GameMetadata";
 import {GameState} from "../../../../dto/sites/catan/game/GameState";
 import {ResultState} from "../../../../dto/sites/catan/result/ResultState";
@@ -6,48 +6,32 @@ import {NgForOf, NgIf} from "@angular/common";
 import {CatanHistogramComponent} from "../histogram/histogram.component";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
 import {ResultTeamState} from "../../../../dto/sites/catan/result/ResultTeamState";
+import {GameResultTableComponent} from "../../../games/game-result-table/game-result-table.component";
 
 @Component({
   standalone: true,
   selector: 'catan-game-info',
-    imports: [
-        NgIf,
-        CatanHistogramComponent,
-        NgForOf
-    ],
+  imports: [
+    NgIf,
+    CatanHistogramComponent,
+    GameResultTableComponent
+  ],
   templateUrl: './game-info.component.html',
   styleUrl: './game-info.component.css'
 })
 export class CatanGameInfoComponent implements OnInit {
-  @Input({required: true}) metadata?: GameMetadata;
-  @Input({required: true}) gameState?: GameState;
-  @Input({required: true}) resultState?: ResultState;
+  public metadata = input.required<GameMetadata>();
+  public gameState = input.required<GameState>();
+  public resultState = input.required<ResultState>();
 
-  mean: number = 0;
-  variance: number = 0;
-  stdDev: number = 0;
-  skew: number = 0;
-
-  maxScore: number = 0;
-
-  get paddedTeams(): (ResultTeamState | null)[] {
-    if(!this.resultState) return [];
-
-    const maxTeamSize = 4;
-    const padded: (ResultTeamState | null)[] = [...this.resultState.teams];
-    while (padded.length < maxTeamSize) {
-      padded.push(null);
-    }
-    return padded;
-  }
+  protected mean: number = 0;
+  protected variance: number = 0;
+  protected stdDev: number = 0;
+  protected skew: number = 0;
 
   ngOnInit() {
-    if(this.resultState?.teams) {
-      this.maxScore = Math.max(...this.resultState.teams.map(t => t.score));
-    }
-
-    if(this.gameState) {
-      const diceSums = this.gameState.diceRolls.map(roll => roll.dicePair.dice1 + roll.dicePair.dice2);
+    if(this.gameState()) {
+      const diceSums = this.gameState().diceRolls.map(roll => roll.dicePair.dice1 + roll.dicePair.dice2);
 
       const mean = diceSums.reduce((acc, val) => acc + val, 0) / diceSums.length;
       const squaredDiffs = diceSums.map(val => Math.pow(val - mean, 2));

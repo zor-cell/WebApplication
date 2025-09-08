@@ -24,7 +24,16 @@
             </div>
         </div>
 
-        <ng-template #content></ng-template>
+        <!-- dynamically render component -->
+        <ng-container *ngIf="gameInfoComponent as comp">
+            <ng-container *ngComponentOutlet="comp;
+                            inputs: {
+                                metadata: game?.metadata,
+                                gameState: game?.gameState,
+                                resultState: game?.result
+                            }"
+            />
+        </ng-container>
     </div>
 </div>
 
