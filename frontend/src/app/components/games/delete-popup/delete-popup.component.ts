@@ -1,4 +1,4 @@
-import {Component, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, output, TemplateRef, viewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {PopupService} from "../../../services/popup.service";
 import {PopupResultType} from "../../../dto/all/PopupResultType";
@@ -12,14 +12,12 @@ import {PopupResultType} from "../../../dto/all/PopupResultType";
   styleUrl: './delete-popup.component.css'
 })
 export class DeletePopupComponent {
-    deletePopup = viewChild.required<TemplateRef<any>>('deletePopup');
+    private popupService = inject(PopupService);
 
-    deleteGameEvent = output<void>();
+    public deletePopup = viewChild.required<TemplateRef<any>>('deletePopup');
+    public deleteGameEvent = output<void>();
 
-    constructor(private popupService: PopupService) {
-    }
-
-    openPopup() {
+    public openPopup() {
         this.popupService.createPopup(
             'Delete Game',
             this.deletePopup(),

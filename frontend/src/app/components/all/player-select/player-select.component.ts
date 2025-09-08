@@ -170,7 +170,7 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
         this.playerPopup().openPopup();
     }
 
-    private getPlayers() {
+    protected getPlayers() {
         this.playerService.getPlayers().subscribe({
             next: res => {
                 this.allPlayers.set(res);

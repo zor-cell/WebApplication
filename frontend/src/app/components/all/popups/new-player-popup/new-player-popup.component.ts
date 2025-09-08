@@ -1,4 +1,14 @@
-import {Component, EventEmitter, inject, output, Output, TemplateRef, viewChild, ViewChild} from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    inject,
+    OnInit,
+    output,
+    Output,
+    TemplateRef,
+    viewChild,
+    ViewChild
+} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
@@ -17,7 +27,7 @@ import {AuthService} from "../../../../services/all/auth.service";
     standalone: true,
     styleUrl: './new-player-popup.component.css'
 })
-export class NewPlayerPopupComponent {
+export class NewPlayerPopupComponent implements OnInit {
     private popupService = inject(PopupService);
     private playerService = inject(PlayerService);
     private fb = inject(FormBuilder);
@@ -28,7 +38,6 @@ export class NewPlayerPopupComponent {
     protected playerForm!: FormGroup;
 
     ngOnInit() {
-        console.log("init")
         this.playerForm = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(1)]]
         });

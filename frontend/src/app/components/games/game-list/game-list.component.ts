@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {GameService} from "../../../services/game.service";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {DurationPipe} from "../../../pipes/DurationPipe";
@@ -19,13 +19,12 @@ import {MainHeaderComponent} from '../../all/main-header/main-header.component';
   standalone: true,
   styleUrl: './game-list.component.css'
 })
-export class GameListComponent {
-  games!: GameMetadata[];
-  dateFormat = 'MMM d, yyyy HH:mm';
+export class GameListComponent implements OnInit {
+  private router = inject(Router);
+  private gameService = inject(GameService);
 
-
-  constructor(private router: Router, private gameService: GameService) {
-  }
+  protected dateFormat = 'MMM d, yyyy HH:mm';
+  protected games!: GameMetadata[];
 
   ngOnInit(): void {
     this.getProjects();
@@ -39,12 +38,12 @@ export class GameListComponent {
     });
   }
 
-  openGameInfo(id: string) {
+  protected openGameInfo(id: string) {
     this.router.navigate(['/games', id]);
   }
 
 
-  getProjects() {
+  private getProjects() {
     this.gameService.getGames().subscribe({
       next: res => {
         this.games = res;

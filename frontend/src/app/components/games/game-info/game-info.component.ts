@@ -24,15 +24,15 @@ import {DeletePopupComponent} from "../delete-popup/delete-popup.component";
     styleUrl: './game-info.component.css'
 })
 export class GameInfoComponent implements AfterViewInit {
-    protected deletePopup = viewChild.required<DeletePopupComponent>('deletePopup');
-    @ViewChild('content', {read: ViewContainerRef}) viewContainerRef!: ViewContainerRef;
-    game: GameDetails | null = null;
-
     protected authService = inject(AuthService);
     protected location = inject(Location);
+    private route = inject(ActivatedRoute);
+    private gameService = inject(GameService);
 
-    constructor(private route: ActivatedRoute, private gameService: GameService) {
-    }
+    protected deletePopup = viewChild.required<DeletePopupComponent>('deletePopup');
+    @ViewChild('content', {read: ViewContainerRef}) protected viewContainerRef!: ViewContainerRef;
+
+    protected game: GameDetails | null = null;
 
     ngAfterViewInit(): void {
         const id = this.route.snapshot.paramMap.get('id');
@@ -41,8 +41,16 @@ export class GameInfoComponent implements AfterViewInit {
         }
     }
 
-    openDeletePopup() {
+    protected openDeletePopup() {
         this.deletePopup().openPopup();
+    }
+
+    protected deleteGame() {
+        if(!this.game?.metadata) return;
+
+        this.gameService.deleteGame(this.game?.metadata.id).subscribe(res => {
+            this.location.back();
+        });
     }
 
     private loadGameSpecificComponent() {
@@ -69,14 +77,6 @@ export class GameInfoComponent implements AfterViewInit {
         this.gameService.getGame(id).subscribe(res => {
             this.game = res;
             this.loadGameSpecificComponent();
-        });
-    }
-
-    deleteGame() {
-        if(!this.game?.metadata) return;
-
-        this.gameService.deleteGame(this.game?.metadata.id).subscribe(res => {
-            this.location.back();
         });
     }
 }
