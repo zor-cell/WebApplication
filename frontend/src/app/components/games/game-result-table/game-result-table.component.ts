@@ -18,7 +18,7 @@ export class GameResultTableComponent {
     public maxTeamSize = input<number>(4);
 
     protected maxScore = computed(() =>{
-        return Math.max(...this.resultState().teams.map(t => t.score)) ;
+        return Math.max(...this.resultState().teams.map(t => t.score));
     });
 
     protected paddedTeams = computed(() =>{

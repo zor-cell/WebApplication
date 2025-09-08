@@ -9,6 +9,7 @@ import {RoundPopupComponent} from "../popups/round-popup/round-popup.component";
 import {RoundResult} from "../../../../dto/sites/jolly/RoundResult";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Team} from "../../../../dto/all/Team";
+import {JollyRoundTableComponent} from "../rounds-table/round-table.component";
 
 @Component({
   selector: 'jolly-game',
@@ -17,7 +18,8 @@ import {Team} from "../../../../dto/all/Team";
     NgIf,
     RoundPopupComponent,
     NgForOf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    JollyRoundTableComponent
   ],
   templateUrl: './game.component.html',
   standalone: true,
