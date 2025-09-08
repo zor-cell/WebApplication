@@ -1,0 +1,27 @@
+<header>
+    <div style="display: flex; align-items: center;">
+        <img routerLink="/" src="assets/logo.svg" alt="Logo" style="height: 40px; margin-right: 0.5rem;">
+        <!--<span style="font-size: 1.25rem; font-weight: bold;"></span>-->
+    </div>
+
+    <button class="hamburger" (click)="toggleMobileMenu()">
+        @if(mobileMenuOpen) {
+            <i class="bi bi-x-lg"></i>
+        } @else {
+            <i class="bi bi-list"></i>
+        }
+    </button>
+
+    <nav [class.open]="mobileMenuOpen">
+        <a routerLink="/projects">Projects</a>
+        <a routerLink="/games">Games</a>
+        <a>About Me</a>
+        @if (!authService.isAuthenticated()) {
+            <button class="btn btn-primary text-white" (click)="openLoginPopup()">Login</button>
+        } @else {
+            <a>Hello, <b>{{ authService.user!.username }}</b>!</a>
+        }
+    </nav>
+</header>
+
+<app-login-popup #loginPopup (loginEvent)="loggedIn()"></app-login-popup>

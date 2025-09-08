@@ -4,5 +4,7 @@ package net.zorphy.backend.main.dto.game;
 public enum GameType {
     CATAN,
     QWIRKLE,
-    JOLLY
+    JOLLY,
+    RISK,
+    HASHI
 }
