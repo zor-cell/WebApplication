@@ -1,16 +1,4 @@
-import {
-    Component,
-    EventEmitter, inject,
-    input,
-    Input,
-    OnInit,
-    output,
-    Output,
-    TemplateRef,
-    viewChild,
-    ViewChild
-} from '@angular/core';
-import {Globals} from "../../../../classes/globals";
+import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../services/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";

@@ -1,13 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlayerConfig, Version} from "../../../../dto/sites/connect4/data";
-import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'connect4-player-settings',
     imports: [
-        SliderCheckboxComponent,
         NgIf,
         FormsModule
     ],

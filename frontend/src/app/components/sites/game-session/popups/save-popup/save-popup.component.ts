@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";

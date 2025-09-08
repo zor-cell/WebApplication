@@ -7,7 +7,6 @@ import {FormsModule} from "@angular/forms";
 import {QwirkleService} from "../../../../services/sites/qwirkle.service";
 import {GameState} from "../../../../dto/sites/qwirkle/game/GameState";
 import {SelectionInfo} from "../../../../dto/sites/qwirkle/SelectionInfo";
-import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 
 @Component({
     selector: 'qwirkle-stack',

@@ -1,22 +1,18 @@
 import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {
-  AbstractControl,
-  Form,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  ReactiveFormsModule, ValidatorFn,
-  Validators
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    ValidatorFn,
+    Validators
 } from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
 import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
-import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
-import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {RoundResult} from "../../../../../dto/sites/jolly/RoundResult";
-import {DurationPipe} from "../../../../../pipes/DurationPipe";
 
 interface RoundForm {
   score: FormControl<number | null>;
@@ -27,13 +23,11 @@ interface RoundForm {
 
 @Component({
   selector: 'jolly-round-popup',
-  imports: [
-    NgForOf,
-    NgIf,
-    ReactiveFormsModule,
-    DatePipe,
-    DurationPipe
-  ],
+    imports: [
+        NgForOf,
+        NgIf,
+        ReactiveFormsModule
+    ],
   templateUrl: './round-popup.component.html',
   standalone: true,
   styleUrl: './round-popup.component.css'

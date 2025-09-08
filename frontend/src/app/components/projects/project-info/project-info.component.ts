@@ -1,7 +1,6 @@
-import {Component, inject, OnInit, viewChild, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {ProjectDetails} from "../../../dto/projects/ProjectDetails";
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {Globals} from "../../../classes/globals";
 import {ProjectService} from "../../../services/project.service";
 import {NgIf} from "@angular/common";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";

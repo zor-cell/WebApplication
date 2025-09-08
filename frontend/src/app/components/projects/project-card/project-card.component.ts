@@ -1,4 +1,4 @@
-import {Component, input, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
 import {NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";

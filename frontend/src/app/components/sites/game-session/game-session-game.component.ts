@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, model, signal, viewChild} from "@angular/core";
+import {Component, effect, inject, input, signal, viewChild} from "@angular/core";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../../services/all/auth.service";

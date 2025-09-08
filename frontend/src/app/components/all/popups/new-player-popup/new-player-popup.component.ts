@@ -1,22 +1,10 @@
-import {
-    Component,
-    EventEmitter,
-    inject,
-    OnInit,
-    output,
-    Output,
-    TemplateRef,
-    viewChild,
-    ViewChild
-} from '@angular/core';
+import {Component, inject, OnInit, output, TemplateRef, viewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Globals} from "../../../../classes/globals";
 import {PopupService} from "../../../../services/popup.service";
 import {PlayerDetails} from "../../../../dto/all/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
-import {AuthService} from "../../../../services/all/auth.service";
 
 @Component({
     selector: 'app-new-player-popup',

@@ -1,15 +1,4 @@
-import {
-    Component, computed, effect,
-    forwardRef,
-    inject,
-    input,
-    Input,
-    OnChanges,
-    OnInit, signal,
-    SimpleChanges,
-    viewChild,
-    ViewChild
-} from '@angular/core';
+import {Component, computed, effect, forwardRef, inject, input, OnInit, signal, viewChild} from '@angular/core';
 import {PlayerService} from "../../../services/player.service";
 import {PlayerDetails} from "../../../dto/all/PlayerDetails";
 import {NgClass, NgForOf, NgIf} from "@angular/common";

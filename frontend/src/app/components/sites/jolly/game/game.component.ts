@@ -1,13 +1,12 @@
-import {Component, computed, inject, OnInit, signal, viewChild, WritableSignal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {JollyService} from "../../../../services/sites/jolly.service";
 import {GameSessionGameComponent} from "../../game-session/game-session-game.component";
 import {GameState} from "../../../../dto/sites/jolly/game/GameState";
 import {AuthService} from "../../../../services/all/auth.service";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
 import {RoundPopupComponent} from "../popups/round-popup/round-popup.component";
 import {RoundResult} from "../../../../dto/sites/jolly/RoundResult";
-import {DurationPipe} from "../../../../pipes/DurationPipe";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Team} from "../../../../dto/all/Team";
 
