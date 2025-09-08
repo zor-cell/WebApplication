@@ -39,6 +39,8 @@ export class JollyConfigComponent {
         this.configForm.valueChanges.subscribe(() => {
             this.gameConfig.set(this.configForm.getRawValue() as GameConfig);
             this.updateDependantControls();
+
+            console.log("config teams", this.configForm.getRawValue().teams);
         });
 
         //update form when signal changes

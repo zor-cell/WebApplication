@@ -1,11 +1,11 @@
 import {
-    Component,
+    Component, computed, effect,
     forwardRef,
     inject,
     input,
     Input,
     OnChanges,
-    OnInit,
+    OnInit, signal,
     SimpleChanges,
     viewChild,
     ViewChild
@@ -44,7 +44,7 @@ import {AuthService} from "../../../services/all/auth.service";
         }
     ]
 })
-export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
     private playerService = inject(PlayerService);
     protected authService = inject(AuthService);
 
@@ -53,20 +53,32 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
     maxTeams = input<number>(4);
     allowTeams = input<boolean>(true);
 
-    selectedTeams: Team[] = [];
-    allPlayers: PlayerDetails[] = []
-    availablePlayers: PlayerDetails[] = [];
-    currentPlayer: PlayerDetails | null = null;
+    allPlayers = signal<PlayerDetails[]>([]);
+    selectedTeams = signal<Team[]>([]);
+    availablePlayers = computed(() => {
+        const all = this.allPlayers();
+        const taken = this.selectedTeams().flatMap(t => t.players.map(p => p.id));
+        return all.filter(p => !taken.includes(p.id)).sort((a,b) => a.name.localeCompare(b.name));
+    });
 
-    teamHostIndex: number = -1;
+    teamHostIndex = signal<number>(-1);
+    currentPlayer = signal<PlayerDetails | null>(null);
 
     private onChange: (value: Team[]) => void = () => {};
 
+    constructor() {
+        effect(() => {
+            if(this.availablePlayers()) {
+                this.currentPlayer.set(this.availablePlayers()[0]);
+            }
+        });
+    }
+
     writeValue(value: Team[]): void {
-        this.selectedTeams = value.map(team => ({
+        this.selectedTeams.set(value.map(team => ({
             name: team.name,
             players: team.players.map(p => ({...p}))
-        }));
+        })))
     }
 
     registerOnChange(fn: (value: Team[]) => void): void {
@@ -85,114 +97,79 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit, OnCh
         this.getPlayers();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        //remove duplicate players from available
-        if (changes['selectedTeams'] && this.allPlayers.length > 0) {
-            this.availablePlayers = this.availablePlayers
-                .filter(player => !this.selectedTeams.some(team => team.players.some(p => p.name === player.name)))
-                .map(player => this.copy(player));
-        }
-    }
-
     mergeTeam(teamIndex: number) {
         if (!this.allowTeams()) return;
 
-        if (this.teamHostIndex >= 0) {
-            const hostTeam = this.selectedTeams[this.teamHostIndex]
-            const memberTeam = this.copy(this.selectedTeams[teamIndex]);
+        const hostIndex = this.teamHostIndex();
+        if (hostIndex >= 0) {
+            const teams  = this.selectedTeams();
+            const hostTeam = teams[hostIndex]
+            const memberTeam = this.copy(teams[teamIndex]);
 
             //merge team
             hostTeam.name = this.generateTeamName([...hostTeam.players, ...memberTeam.players]);
             hostTeam.players.push(...memberTeam.players);
 
-            this.selectedTeams.splice(teamIndex, 1);
+            this.teamHostIndex.set(-1);
 
-            this.teamHostIndex = -1;
+            teams.splice(teamIndex, 1);
+            this.selectedTeams.set(teams);
+            this.onChange(this.selectedTeams());
         }
     }
 
     //drag and drop reordering logic
     drop(event: CdkDragDrop<Team[]>) {
-        moveItemInArray(this.selectedTeams, event.previousIndex, event.currentIndex);
+        const teams = [...this.selectedTeams()];
+        moveItemInArray(teams, event.previousIndex, event.currentIndex);
 
-        //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.selectedTeams);
+        this.selectedTeams.set(teams);
+        this.onChange(this.selectedTeams());
     }
 
     addPlayer() {
-        if (this.selectedTeams.length >= this.maxTeams() || this.currentPlayer === null) {
+        const player = this.currentPlayer();
+        if (this.selectedTeams().length >= this.maxTeams() || player === null) {
             return;
         }
 
-        const playerToAdd = this.copy(this.currentPlayer);
+        const playerToAdd = this.copy(player);
 
         //add to selected teams
-        this.selectedTeams.push({
-            name: playerToAdd.name,
-            players: [playerToAdd]
-        });
-        //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.selectedTeams);
-
-        //remove from available list
-        const index = this.availablePlayers.findIndex(p => p.name === playerToAdd.name);
-        if (index >= 0) {
-            this.availablePlayers.splice(index, 1);
-        }
-
-        //update current player to next in list
-        if (this.availablePlayers.length > 0) {
-            this.currentPlayer = this.copy(this.availablePlayers[0]);
-        } else {
-            this.currentPlayer = null;
-        }
+        this.selectedTeams.update(teams => {
+            return [...teams, {name: playerToAdd.name, players: [playerToAdd]}]
+        })
+        this.onChange(this.selectedTeams());
     }
 
     removePlayer(teamIndex: number) {
-        //add back to available
-        const team = this.selectedTeams[teamIndex];
-        this.availablePlayers.push(...team.players);
+        const teams = [...this.selectedTeams()];
+        teams.splice(teamIndex, 1);
 
-        //remove from selected
-        this.selectedTeams.splice(teamIndex, 1);
-        //this.selectedTeamEvent.emit(this.selectedTeams);
-        this.onChange(this.selectedTeams);
-
-        this.currentPlayer = this.availablePlayers[0];
+        this.selectedTeams.set(teams);
+        this.onChange(this.selectedTeams());
     }
 
     updateCurrentPlayer(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
         const selectedId = selectElement.options[selectElement.selectedIndex].value;
 
-        const found = this.availablePlayers.find(p => p.id === selectedId);
+        const found = this.availablePlayers().find(p => p.id === selectedId);
         if (found) {
-            this.currentPlayer = this.copy(found);
+            this.currentPlayer.set(this.copy(found))
         }
     }
 
     makeHost(teamIndex: number) {
         if (!this.allowTeams()) return;
 
-        if (this.teamHostIndex === teamIndex) {
-            this.teamHostIndex = -1;
-        } else {
-            this.teamHostIndex = teamIndex;
-        }
+        this.teamHostIndex.update(index => index === teamIndex ? -1 : teamIndex);
     }
 
     getPlayers() {
         this.playerService.getPlayers().subscribe({
             next: res => {
-                this.allPlayers = res;
-                this.availablePlayers = this.allPlayers.map(player => this.copy(player));
-
-                if (this.availablePlayers.length > 0) {
-                    this.currentPlayer = this.copy(this.availablePlayers[0]);
-                }
-
-                console.log("loaded players")
-                console.log(this.selectedTeams)
+                this.allPlayers.set(res);
             }
         });
     }
