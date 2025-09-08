@@ -13,13 +13,13 @@
             <div class="config-grid-container">
                 <h3 class="config-header">Settings</h3>
 
-                <div class="flex-container temp">
-                    <label>Round Limit</label>
-                    <input type="number" formControlName="roundLimit">
+                <div class="round-limit-config">
+                    Round Limit
+                <div class="flex-container round-limit-input">
+                    <input class="number-input" type="number" min="1" formControlName="roundLimit">
+                    <app-slider-checkbox formControlName="noRoundLimit" unCheckedText="L"
+                                         checkedText="UL"/>
                 </div>
-                <div class="flex-container temp">
-                    <label>Unlimited Rounds</label>
-                    <input type="checkbox" formControlName="noRoundLimit">
                 </div>
             </div>
         </section>

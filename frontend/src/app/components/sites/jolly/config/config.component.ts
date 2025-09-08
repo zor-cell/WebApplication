@@ -6,6 +6,7 @@ import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators} fr
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Team} from "../../../../dto/all/Team";
 import {minArrayLengthValidator} from "../../../../classes/validators";
+import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 
 @Component({
     selector: 'jolly-game-config',
@@ -13,7 +14,8 @@ import {minArrayLengthValidator} from "../../../../classes/validators";
         GameSessionConfigComponent,
         FormsModule,
         PlayerSelectComponent,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SliderCheckboxComponent
     ],
     templateUrl: './config.component.html',
     standalone: true,
