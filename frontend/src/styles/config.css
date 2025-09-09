@@ -59,7 +59,18 @@ select {
     text-align: center;
 }
 
-.number-input:hover {
+.number-input-lg {
+    height: 30px;
+    width: 100px;
+
+    border: 2px solid rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    color: rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+}
+
+.number-input:hover, .number-input-lg:hover {
     border-color: rgba(0, 0, 0, 0.5);
 }
 

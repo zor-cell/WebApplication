@@ -17,6 +17,8 @@ export class ProjectListComponent implements OnInit {
 
     protected projects!: ProjectMetadata[];
 
+    //TODO: add project button (with image upload)
+
     ngOnInit(): void {
         this.getProjects();
     }

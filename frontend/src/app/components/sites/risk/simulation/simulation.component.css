@@ -1,0 +1,29 @@
+.config-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+
+    margin: auto;
+}
+
+.config-grid-container {
+    padding: 0 4rem;
+}
+
+.input-main-container {
+    gap: 2rem;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0.5rem;
+
+    align-items: center;
+    justify-items: center;
+}
+
+.input-container {
+    flex-direction: row;
+    gap: 1rem;
+}

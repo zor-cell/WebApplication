@@ -1,6 +1,6 @@
 package net.zorphy.backend.site.risk.dto;
 
-public record MapEntry(
+public record DataEntry(
         int result,
         int count
 ) {

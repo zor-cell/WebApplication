@@ -17,10 +17,6 @@ import {Team} from "../../../../dto/all/Team";
 export class JollyRoundTableComponent {
   public gameState = input.required<GameState>();
 
-  a = effect(() => {
-    console.log(this.gameState().rounds)
-});
-
   protected getTotalScore(team: Team): number {
     return this.gameState()!.rounds
         .map(r => r.results.find(res => res.team.name === team.name)?.score ?? 0)

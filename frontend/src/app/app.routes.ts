@@ -10,6 +10,7 @@ import {GameInfoComponent} from "./components/games/game-info/game-info.componen
 import {QwirkleConfigComponent} from "./components/sites/qwirkle/config/config.component";
 import {JollyGameComponent} from "./components/sites/jolly/game/game.component";
 import {JollyConfigComponent} from "./components/sites/jolly/config/config.component";
+import {RiskSimulationComponent} from "./components/sites/risk/simulation/simulation.component";
 
 export const routes: Routes = [
     //project routing
@@ -38,4 +39,8 @@ export const routes: Routes = [
     {path: 'projects/jolly', redirectTo: 'projects/jolly/config', pathMatch: 'full'},
     {path: 'projects/jolly/config', component: JollyConfigComponent},
     {path: 'projects/jolly/game', component: JollyGameComponent},
+
+    //risk routing
+    {path: 'projects/risk', redirectTo: 'projects/risk/simulation', pathMatch: 'full'},
+    {path: 'projects/risk/simulation', component: RiskSimulationComponent},
 ];

@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.risk.service;
 
-import net.zorphy.backend.site.risk.dto.Settings;
+import net.zorphy.backend.site.risk.dto.SimulationConfig;
 
 public interface RiskService {
-    Object simulate(Settings settings);
+    Object simulate(SimulationConfig simulationConfig);
 }

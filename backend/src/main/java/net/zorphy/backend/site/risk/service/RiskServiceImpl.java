@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.risk.service;
 
-import net.zorphy.backend.site.risk.dto.MapEntry;
-import net.zorphy.backend.site.risk.dto.Settings;
+import net.zorphy.backend.site.risk.dto.DataEntry;
+import net.zorphy.backend.site.risk.dto.SimulationConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,12 +11,12 @@ public class RiskServiceImpl implements RiskService{
     private final Random rand = new Random();
 
     @Override
-    public Object simulate(Settings settings) {
-        Map<Integer, MapEntry> map = new HashMap<>();
+    public Object simulate(SimulationConfig simulationConfig) {
+        Map<Integer, DataEntry> map = new HashMap<>();
 
-        for(int r = 1;r <= settings.runs();r++) {
-            int attackers = settings.attackers();
-            int defenders = settings.defenders();
+        for(int run = 1; run <= simulationConfig.runs(); run++) {
+            int attackers = simulationConfig.attackers();
+            int defenders = simulationConfig.defenders();
             while (attackers > 0 && defenders > 0) {
                 int aDice = getDiceCount(attackers, true);
                 int dDice = getDiceCount(attackers, false);
@@ -40,27 +40,27 @@ public class RiskServiceImpl implements RiskService{
             int result = attackers - defenders;
 
             if(!map.containsKey(result)) {
-                map.put(result, new MapEntry(result, 1));
+                map.put(result, new DataEntry(result, 1));
             } else {
                 int count = map.get(result).count() + 1;
-                map.put(result, new MapEntry(result, count));
+                map.put(result, new DataEntry(result, count));
             }
         }
 
         return listFromMap(map);
     }
 
-    private int getDiceCount(int troups, boolean attacker) {
+    private int getDiceCount(int troops, boolean attacker) {
         if(!attacker) {
-            if(troups >= 2) {
+            if(troops >= 2) {
                 return 2;
-            } else if(troups == 1) {
+            } else if(troops == 1) {
                 return 1;
             }
         } else {
-            if(troups >= 3) return 3;
-            else if(troups == 2) return 2;
-            else if(troups == 1) return 1;
+            if(troops >= 3) return 3;
+            else if(troops == 2) return 2;
+            else if(troops == 1) return 1;
         }
 
         return 0;
@@ -76,7 +76,7 @@ public class RiskServiceImpl implements RiskService{
         return dice;
     }
 
-    private static List<MapEntry> listFromMap(Map<Integer, MapEntry> map) {
+    private static List<DataEntry> listFromMap(Map<Integer, DataEntry> map) {
         return map.values().stream()
                 .toList();
     }

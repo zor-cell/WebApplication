@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.risk.controller;
 
 import jakarta.validation.Valid;
-import net.zorphy.backend.site.risk.dto.Settings;
+import net.zorphy.backend.site.risk.dto.SimulationConfig;
 import net.zorphy.backend.site.risk.service.RiskService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ public class RiskController {
     }
 
     @PostMapping("simulation")
-    public Object simulate(@RequestBody @Valid Settings settings) {
-        return riskService.simulate(settings);
+    public Object simulate(@RequestBody @Valid SimulationConfig simulationConfig) {
+        return riskService.simulate(simulationConfig);
     }
 }
