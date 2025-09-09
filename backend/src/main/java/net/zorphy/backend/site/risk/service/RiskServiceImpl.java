@@ -5,6 +5,7 @@ import net.zorphy.backend.site.risk.dto.SimulationConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RiskServiceImpl implements RiskService{
@@ -12,24 +13,26 @@ public class RiskServiceImpl implements RiskService{
 
     @Override
     public Object simulate(SimulationConfig simulationConfig) {
-        Map<Integer, DataEntry> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
+
+        int[] aRolls = new int[3];
+        int[] dRolls = new int[2];
 
         for(int run = 1; run <= simulationConfig.runs(); run++) {
             int attackers = simulationConfig.attackers();
             int defenders = simulationConfig.defenders();
             while (attackers > 0 && defenders > 0) {
                 int aDice = getDiceCount(attackers, true);
-                int dDice = getDiceCount(attackers, false);
+                int dDice = getDiceCount(defenders, false);
 
-                List<Integer> aRolls = rollDice(aDice);
-                List<Integer> dRolls = rollDice(dDice);
+                rollDice(aRolls, aDice);
+                rollDice(dRolls, dDice);
 
-                int min = Math.min(aRolls.size(), dRolls.size());
-                for (int i = 0; i < min; i++) {
-                    int aRoll = aRolls.get(i);
-                    int dRoll = dRolls.get(i);
-
-                    if (aRoll > dRoll) {
+                int min = Math.min(aDice, dDice);
+                for (int i = 1; i <= min; i++) {
+                    int aRoll = aRolls[aDice - i];
+                    int dRoll = dRolls[dDice - i];
+                    if(aRoll > dRoll) {
                         defenders--;
                     } else {
                         attackers--;
@@ -39,41 +42,30 @@ public class RiskServiceImpl implements RiskService{
 
             int result = attackers - defenders;
 
-            if(!map.containsKey(result)) {
-                map.put(result, new DataEntry(result, 1));
-            } else {
-                int count = map.get(result).count() + 1;
-                map.put(result, new DataEntry(result, count));
-            }
+            map.compute(result, (k, v) -> v == null ? 1 : v + 1);
         }
 
-        return listFromMap(map);
+        //wrap data
+        Map<Integer, DataEntry> data = map.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new DataEntry(e.getKey(), e.getValue())
+                ));
+
+        return listFromMap(data);
     }
 
     private int getDiceCount(int troops, boolean attacker) {
-        if(!attacker) {
-            if(troops >= 2) {
-                return 2;
-            } else if(troops == 1) {
-                return 1;
-            }
-        } else {
-            if(troops >= 3) return 3;
-            else if(troops == 2) return 2;
-            else if(troops == 1) return 1;
-        }
-
-        return 0;
+        return attacker ? Math.min(3, troops) : Math.min(2, troops);
     }
 
-    private List<Integer> rollDice(int count) {
-        List<Integer> dice = new ArrayList<>();
+    private void rollDice(int[] dice, int count) {
         for(int i = 0; i < count; i++) {
             int roll = rand.nextInt(6) + 1;
-            dice.add(roll);
+            dice[i] = roll;
         }
-        dice.sort(Collections.reverseOrder());
-        return dice;
+
+        Arrays.sort(dice, 0, count);
     }
 
     private static List<DataEntry> listFromMap(Map<Integer, DataEntry> map) {
