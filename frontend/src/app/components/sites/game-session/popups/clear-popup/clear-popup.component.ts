@@ -1,4 +1,4 @@
-import {Component, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, output, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 
@@ -10,14 +10,12 @@ import {PopupResultType} from "../../../../../dto/all/PopupResultType";
     styleUrl: './clear-popup.component.css'
 })
 export class GameSessionClearPopupComponent {
-    clearTemplate = viewChild.required<TemplateRef<any>>('clearPopup');
+    private popupService = inject(PopupService);
 
-    clearSessionEvent = output<void>();
+    private clearTemplate = viewChild.required<TemplateRef<any>>('clearPopup');
+    public clearSessionEvent = output<void>();
 
-    constructor(private popupService: PopupService) {
-    }
-
-    openPopup() {
+    public openPopup() {
         this.popupService.createPopup(
             'Clear Game Data',
             this.clearTemplate(),

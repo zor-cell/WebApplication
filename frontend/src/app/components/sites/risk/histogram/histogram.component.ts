@@ -80,14 +80,10 @@ export class RiskHistogramComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.refillChartData();
-  }
-
   private refillChartData() {
     const dataset = {
       type: 'bar',
-      label: 'Test',
+      label: 'Attackers left',
       data: this.labelDataProb()
     };
 
