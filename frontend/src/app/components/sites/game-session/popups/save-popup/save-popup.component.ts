@@ -77,6 +77,7 @@ export class GameSessionSavePopupComponent implements OnInit {
         }
 
         this.saveForm.reset();
+        //TODO: reset file url
     }
 
     private saveGame() {

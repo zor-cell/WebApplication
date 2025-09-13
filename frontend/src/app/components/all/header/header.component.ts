@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
   protected login(user: UserLoginDetails) {
     this.authService.login(user).subscribe({
       next: res => {
-        //window.location.reload();
+        window.location.reload();
       }
     })
   }
