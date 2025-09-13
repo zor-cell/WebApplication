@@ -39,15 +39,16 @@
             </div>
         </div>
 
-        <div>
-            <label>Image Path</label>
-            <div class="row">
-                <div class="col-4">
-                    <input class="form-control" disabled type="text" [value]="imagePathPrefix">
-                </div>
-                <div class="col-8">
-                    <input class="form-control" formControlName="imagePath" type="text">
-                </div>
+
+        <div class="row">
+            <div class="col-4 checkbox-container">
+                <label class="form-check-label">Has Website</label>
+                <input class="form-check-input" formControlName="hasWebsite" type="checkbox">
+            </div>
+
+            <div class="col-4 checkbox-container">
+                <label>Is Favorite</label>
+                <input class="form-check-input" formControlName="isFavorite" type="checkbox">
             </div>
         </div>
 
@@ -63,17 +64,25 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-4 checkbox-container">
-                <label class="form-check-label">Has Website</label>
-                <input class="form-check-input" formControlName="hasWebsite" type="checkbox">
-            </div>
-
-            <div class="col-4 checkbox-container">
-                <label>Is Favorite</label>
-                <input class="form-check-input" formControlName="isFavorite" type="checkbox">
+        @if(project()) {
+        <div>
+            <label>Image Path</label>
+            <div class="row">
+                <div class="col-4">
+                    <input class="form-control" disabled type="text" [value]="imagePathPrefix">
+                </div>
+                <div class="col-8">
+                    <input class="form-control" formControlName="imagePath" type="text">
+                </div>
             </div>
         </div>
-
+        } @else {
+            <div>
+                <app-file-upload (fileChangedEvent)="fileUpload.set($event)"/>
+            </div>
+        }
     </form>
+    <div *ngIf="fileUpload().fileUrl as url" class="image-container">
+        <img [src]="url" alt="" width="300" height="300" class="image">
+    </div>
 </ng-template>

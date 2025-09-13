@@ -41,6 +41,12 @@ export class ProjectInfoComponent implements OnInit {
         this.updatePopup().openPopup();
     }
 
+    protected updateProject(project: ProjectDetails) {
+        this.projectService.updateProject(project).subscribe(res => {
+            this.getProject();
+        });
+    }
+
     private getProject() {
         if (this.projectName == null) return;
 

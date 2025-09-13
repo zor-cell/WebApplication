@@ -1,10 +1,12 @@
-import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../services/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";
 import {ProjectDetails} from "../../../../dto/projects/ProjectDetails";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DatePipe, NgIf} from "@angular/common";
+import {FileUpload} from "../../../../dto/all/FileUpload";
+import {FileUploadComponent} from "../../../all/file-upload/file-upload.component";
 
 type ProjectForm = FormGroup<{
     name: FormControl<string>;
@@ -22,7 +24,9 @@ type ProjectForm = FormGroup<{
     selector: 'project-update-popup',
     imports: [
         ReactiveFormsModule,
-        DatePipe
+        DatePipe,
+        FileUploadComponent,
+        NgIf
     ],
     templateUrl: './update-popup.component.html',
     standalone: true,
@@ -30,16 +34,18 @@ type ProjectForm = FormGroup<{
 })
 export class ProjectUpdatePopupComponent implements OnInit {
     private popupService = inject(PopupService);
-    private projectService = inject(ProjectService);
     private fb = inject(FormBuilder);
 
     private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
     public project = input<ProjectDetails | null>(null);
-    public updatedProjectEvent = output<boolean>();
+    public updateProjectEvent = output<ProjectDetails>();
 
     protected readonly filePathPrefix = 'projects/';
     protected readonly imagePathPrefix = 'images/';
-
+    protected fileUpload = signal<FileUpload>({
+        file: null,
+        fileUrl: null
+    });
     protected projectForm: ProjectForm = this.fb.group({
         name: this.fb.nonNullable.control('', {validators: Validators.required}),
         createdAt: this.fb.nonNullable.control(new Date(), {validators: Validators.required}),
@@ -89,14 +95,8 @@ export class ProjectUpdatePopupComponent implements OnInit {
     }
 
     private callback(result: PopupResultType) {
-        const isUpdate = this.project() != null;
-
         if (result === PopupResultType.SUBMIT) {
-            if (isUpdate) {
-                this.updateProject();
-            } else {
-                this.createProject();
-            }
+            this.updateProject();
         }
         this.projectForm.reset();
     }
@@ -121,28 +121,13 @@ export class ProjectUpdatePopupComponent implements OnInit {
         return project;
     }
 
-    private createProject() {
-        const project = this.formToDetails();
-
-        this.projectService.createProject(project).subscribe(res => {
-            this.updatedProjectEvent.emit(true);
-        });
-    }
-
     private updateProject() {
         const project = this.formToDetails();
-
-        this.projectService.updateProject(project).subscribe(res => {
-            this.updatedProjectEvent.emit(true);
-        });
+        this.updateProjectEvent.emit(project);
     }
 
     //TODO check if no changes were applied for validity
     private configsAreEqual(config1: ProjectDetails, config2: ProjectDetails): boolean {
         return JSON.stringify(config1) === JSON.stringify(config2);
-    }
-
-    private toDateInputValue(date: Date): string {
-        return date.toISOString().split('T')[0]; // "2025-09-13"
     }
 }

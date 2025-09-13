@@ -13,6 +13,14 @@ interface SaveForm {
     score: FormControl<number | null>;
 }
 
+type SaveForm2 = {
+
+}
+
+type TeamForm =  {
+    score: FormControl<number | null>;
+};
+
 @Component({
     selector: 'game-session-save-popup',
     imports: [
