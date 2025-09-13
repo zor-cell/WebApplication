@@ -15,6 +15,8 @@ import {NgForOf, NgIf} from "@angular/common";
 import {RoundResult} from "../../../../../dto/sites/jolly/RoundResult";
 import {FileUpload} from "../../../../../dto/all/FileUpload";
 import {FileUploadComponent} from "../../../../all/file-upload/file-upload.component";
+import {WithFile} from "../../../../../dto/all/WithFile";
+import {round} from "@popperjs/core/lib/utils/math";
 
 interface RoundForm {
   score: FormControl<number | null>;
@@ -39,10 +41,9 @@ export class RoundPopupComponent implements OnInit {
   private popupService = inject(PopupService);
   private fb = inject(FormBuilder);
 
-  public teams = input.required<Team[]>();
-  public addRoundEvent = output<{results: RoundResult[], imageFile: File | null}>();
-
   private saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
+  public teams = input.required<Team[]>();
+  public addRoundEvent = output<WithFile<RoundResult[]>>();
 
   protected saveForm!: FormGroup<Record<string, FormGroup<RoundForm>>>;
   protected fileUpload = signal<FileUpload>({
@@ -117,7 +118,10 @@ export class RoundPopupComponent implements OnInit {
       outInOne: formValue[team.name].outInOne
     }));
 
-    this.addRoundEvent.emit({results: roundResults, imageFile: this.fileUpload().file});
+    this.addRoundEvent.emit({
+      data: roundResults,
+      file: this.fileUpload().file
+    });
   }
 
 

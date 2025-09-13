@@ -7,6 +7,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {DatePipe, NgIf} from "@angular/common";
 import {FileUpload} from "../../../../dto/all/FileUpload";
 import {FileUploadComponent} from "../../../all/file-upload/file-upload.component";
+import {WithFile} from "../../../../dto/all/WithFile";
 
 type ProjectForm = FormGroup<{
     name: FormControl<string>;
@@ -38,7 +39,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
 
     private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
     public project = input<ProjectDetails | null>(null);
-    public updateProjectEvent = output<ProjectDetails>();
+    public updateProjectEvent = output<WithFile<ProjectDetails>>();
 
     protected readonly filePathPrefix = 'projects/';
     protected readonly imagePathPrefix = 'images/';
@@ -123,7 +124,10 @@ export class ProjectUpdatePopupComponent implements OnInit {
 
     private updateProject() {
         const project = this.formToDetails();
-        this.updateProjectEvent.emit(project);
+        this.updateProjectEvent.emit({
+            data: project,
+            file: this.fileUpload().file
+        });
     }
 
     //TODO check if no changes were applied for validity

@@ -8,6 +8,7 @@ import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
 import {FileUpload} from "../../../../../dto/all/FileUpload";
 import {FileUploadComponent} from "../../../../all/file-upload/file-upload.component";
+import {WithFile} from "../../../../../dto/all/WithFile";
 
 interface SaveForm {
     score: FormControl<number | null>;
@@ -41,7 +42,7 @@ export class GameSessionSavePopupComponent implements OnInit {
     public teams = input.required<Team[]>();
     public scores = input<Record<string, number>>();
     public showFileUpload = input<boolean>(true);
-    public saveSessionEvent = output<{ resultState: ResultState, imageFile: File | null }>();
+    public saveSessionEvent = output<WithFile<ResultState>>();
 
     protected saveForm!: FormGroup<Record<string, FormGroup<SaveForm>>>;
     protected fileUpload = signal<FileUpload>({
@@ -100,10 +101,11 @@ export class GameSessionSavePopupComponent implements OnInit {
             score: Number(formValue[team.name].score)
         }));
 
-        const resultState: ResultState = {
-            teams: teamState
-        }
-
-        this.saveSessionEvent.emit({resultState: resultState, imageFile: this.fileUpload().file});
+        this.saveSessionEvent.emit({
+            data: {
+                teams: teamState
+            },
+            file: this.fileUpload().file
+        });
     }
 }

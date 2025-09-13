@@ -6,6 +6,7 @@ import {NgIf} from "@angular/common";
 import {MainHeaderComponent} from "../../all/main-header/main-header.component";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {AuthService} from "../../../services/all/auth.service";
+import {WithFile} from "../../../dto/all/WithFile";
 
 @Component({
     selector: 'project-info',
@@ -41,8 +42,8 @@ export class ProjectInfoComponent implements OnInit {
         this.updatePopup().openPopup();
     }
 
-    protected updateProject(project: ProjectDetails) {
-        this.projectService.updateProject(project).subscribe(res => {
+    protected updateProject(event: WithFile<ProjectDetails>) {
+        this.projectService.updateProject(event.data).subscribe(res => {
             this.getProject();
         });
     }

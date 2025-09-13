@@ -7,6 +7,7 @@ import {GameConfigBase} from "../../../dto/sites/GameConfigBase";
 import {GameSessionService} from "../../../services/sites/game-session.service";
 import {ResultState} from "../../../dto/sites/catan/result/ResultState";
 import {GameSessionSavePopupComponent} from "./popups/save-popup/save-popup.component";
+import {WithFile} from "../../../dto/all/WithFile";
 
 @Component({
     selector: 'game-session-game',
@@ -57,8 +58,8 @@ export class GameSessionGameComponent {
         this.savePopup().openPopup();
     }
 
-    saveSession(event: {resultState: ResultState, imageFile: File | null}) {
-        this.sessionService().saveSession(event.resultState, event.imageFile).subscribe({
+    saveSession(event: WithFile<ResultState>) {
+        this.sessionService().saveSession(event.data, event.file).subscribe({
             next: res => {
                 this.isSessionSaved();
             }

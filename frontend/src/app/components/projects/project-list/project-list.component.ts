@@ -7,6 +7,7 @@ import {MainHeaderComponent} from '../../all/main-header/main-header.component';
 import {AuthService} from "../../../services/all/auth.service";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
 import {ProjectDetails} from "../../../dto/projects/ProjectDetails";
+import {WithFile} from "../../../dto/all/WithFile";
 
 @Component({
     selector: 'project-list',
@@ -31,8 +32,8 @@ export class ProjectListComponent implements OnInit {
         this.createPopup().openPopup();
     }
 
-    protected createProject(project: ProjectDetails) {
-        this.projectService.createProject(project).subscribe(res => {
+    protected createProject(event: WithFile<ProjectDetails>) {
+        this.projectService.createProject(event.data).subscribe(res => {
             this.getProjects();
         });
     }

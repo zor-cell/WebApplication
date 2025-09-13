@@ -10,6 +10,7 @@ import {RoundResult} from "../../../../dto/sites/jolly/RoundResult";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Team} from "../../../../dto/all/Team";
 import {JollyRoundTableComponent} from "../rounds-table/round-table.component";
+import {WithFile} from "../../../../dto/all/WithFile";
 
 @Component({
   selector: 'jolly-game',
@@ -74,8 +75,8 @@ export class JollyGameComponent implements OnInit {
     this.roundPopup().openPopup();
   }
 
-  protected addRound(event: {results: RoundResult[], imageFile: File | null}) {
-    this.jollyService.saveRound(event.results, event.imageFile).subscribe(res => {
+  protected addRound(event: WithFile<RoundResult[]>) {
+    this.jollyService.saveRound(event.data, event.file).subscribe(res => {
       this.gameState.set(res);
     });
   }
