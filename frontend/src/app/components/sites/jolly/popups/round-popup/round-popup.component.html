@@ -19,13 +19,9 @@
             </tbody>
         </table>
 
-        <div class="input-label">
-            <label>Image</label>
-            <input type="file" accept="image/*" capture="environment" class="form-control"
-                   (change)="onFileChanged($event)">
-        </div>
+        <app-file-upload (fileChangedEvent)="fileUpload.set($event)"/>
     </form>
-    <div *ngIf="imageUrl" class="image-container">
-        <img [src]="imageUrl" alt="" width="300" height="300" class="image">
+    <div *ngIf="fileUpload().fileUrl as url" class="image-container">
+        <img [src]="url" alt="" width="300" height="300" class="image">
     </div>
 </ng-template>

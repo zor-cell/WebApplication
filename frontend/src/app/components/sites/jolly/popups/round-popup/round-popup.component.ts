@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild} from '@angular/core';
 import {
     AbstractControl,
     FormBuilder,
@@ -13,6 +13,8 @@ import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {NgForOf, NgIf} from "@angular/common";
 import {RoundResult} from "../../../../../dto/sites/jolly/RoundResult";
+import {FileUpload} from "../../../../../dto/all/FileUpload";
+import {FileUploadComponent} from "../../../../all/file-upload/file-upload.component";
 
 interface RoundForm {
   score: FormControl<number | null>;
@@ -23,11 +25,12 @@ interface RoundForm {
 
 @Component({
   selector: 'jolly-round-popup',
-    imports: [
-        NgForOf,
-        NgIf,
-        ReactiveFormsModule
-    ],
+  imports: [
+    NgForOf,
+    NgIf,
+    ReactiveFormsModule,
+    FileUploadComponent
+  ],
   templateUrl: './round-popup.component.html',
   standalone: true,
   styleUrl: './round-popup.component.css'
@@ -39,11 +42,13 @@ export class RoundPopupComponent implements OnInit {
   public teams = input.required<Team[]>();
   public addRoundEvent = output<{results: RoundResult[], imageFile: File | null}>();
 
-  protected saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
-  protected saveForm!: FormGroup<Record<string, FormGroup<RoundForm>>>;
+  private saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
 
-  protected imageUrl: string | null = null;
-  private imageFile: File | null = null;
+  protected saveForm!: FormGroup<Record<string, FormGroup<RoundForm>>>;
+  protected fileUpload = signal<FileUpload>({
+    file: null,
+    fileUrl: null
+  });
 
   ngOnInit() {
     const group: Record<string, FormGroup<RoundForm>> = {};
@@ -93,16 +98,6 @@ export class RoundPopupComponent implements OnInit {
     );
   }
 
-  protected onFileChanged(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if(!input.files?.length) return;
-
-    if(input.files) {
-      this.imageFile = input.files![0];
-      this.createImageFromBlob(this.imageFile);
-    }
-  }
-
   private callback(result: PopupResultType) {
     if (result === PopupResultType.SUBMIT) {
       this.saveRound();
@@ -110,10 +105,6 @@ export class RoundPopupComponent implements OnInit {
       this.saveForm.reset();
     }
     this.saveForm.reset();
-
-    this.imageFile = null;
-    if(this.imageUrl) URL.revokeObjectURL(this.imageUrl);
-    this.imageUrl = null;
   }
 
   private saveRound() {
@@ -126,16 +117,9 @@ export class RoundPopupComponent implements OnInit {
       outInOne: formValue[team.name].outInOne
     }));
 
-    this.addRoundEvent.emit({results: roundResults, imageFile: this.imageFile});
+    this.addRoundEvent.emit({results: roundResults, imageFile: this.fileUpload().file});
   }
 
-  private createImageFromBlob(blob: Blob) {
-    if(this.imageUrl) {
-      URL.revokeObjectURL(this.imageUrl);
-    }
-
-    this.imageUrl = URL.createObjectURL(blob);
-  }
 
   // Make sure all scores are filled in
   private allScoresValidator: ValidatorFn = (control: AbstractControl) => {
