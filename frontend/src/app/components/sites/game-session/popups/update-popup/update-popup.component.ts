@@ -1,4 +1,4 @@
-import {Component, input, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, input, output, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 
@@ -10,14 +10,13 @@ import {PopupResultType} from "../../../../../dto/all/PopupResultType";
     styleUrl: './update-popup.component.css'
 })
 export class GameSessionUpdatePopupComponent {
-    updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
-    canUpdate = input<boolean>(false);
+    private popupService = inject(PopupService);
 
-    updateSessionEvent = output<boolean>();
+    private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
+    public canUpdate = input<boolean>(false);
+    public updateSessionEvent = output<boolean>();
 
-    constructor(private popupService: PopupService) {}
-
-    openPopup() {
+    public openPopup() {
         this.popupService.createPopup(
             'Update Game Data',
             this.updateTemplate(),

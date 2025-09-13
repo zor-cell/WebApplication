@@ -13,11 +13,6 @@ import {UserLoginDetails} from "../../../../dto/all/UserLoginDetails";
 import {AuthService} from "../../../../services/all/auth.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 
-type LoginForm = FormGroup<{
-   username: FormControl<string>;
-   password: FormControl<string>;
-}>;
-
 @Component({
     selector: 'app-login-popup',
     imports: [
@@ -35,7 +30,7 @@ export class LoginPopupComponent {
     private loginTemplate = viewChild.required<TemplateRef<any>>('loginPopup');
     public loginEvent = output<UserLoginDetails>();
 
-    protected loginForm: LoginForm = this.fb.group({
+    protected loginForm = this.fb.group({
         username: this.fb.control('', Validators.required),
         password: this.fb.control('', Validators.required)
     });

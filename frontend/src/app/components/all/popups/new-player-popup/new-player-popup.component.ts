@@ -13,10 +13,6 @@ import {PlayerService} from "../../../../services/player.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
 
-type PlayerForm = FormGroup<{
-    name: FormControl<string>
-}>;
-
 @Component({
     selector: 'app-new-player-popup',
     imports: [
@@ -33,7 +29,7 @@ export class NewPlayerPopupComponent {
     private playerTemplate = viewChild.required<TemplateRef<any>>('playerPopup');
     public newPlayerEvent = output<PlayerCreate>();
 
-    protected playerForm: PlayerForm = this.fb.group({
+    protected playerForm = this.fb.group({
         name: this.fb.control('', Validators.required),
     });
 

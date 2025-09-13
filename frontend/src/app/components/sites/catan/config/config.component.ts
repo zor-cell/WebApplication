@@ -26,8 +26,6 @@ import {Team} from "../../../../dto/all/Team";
     styleUrl: './config.component.css'
 })
 export class CatanConfigComponent {
-    protected readonly projectName = "catan";
-
     private fb = inject(NonNullableFormBuilder);
     protected catanService = inject(CatanService);
 
@@ -46,6 +44,8 @@ export class CatanConfigComponent {
         }),
         maxShipTurns: this.fb.control(7)
     });
+    protected readonly projectName = "catan";
+
 
     protected gameConfig = signal(this.configForm.getRawValue() as GameConfig);
 

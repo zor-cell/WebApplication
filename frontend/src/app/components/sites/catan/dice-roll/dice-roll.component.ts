@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
 import {NgIf} from "@angular/common";
 import {GameMode} from "../../../../dto/sites/catan/enums/GameMode";
@@ -13,8 +13,8 @@ import {GameMode} from "../../../../dto/sites/catan/enums/GameMode";
     styleUrl: './dice-roll.component.css'
 })
 export class CatanDiceRollComponent {
-    @Input({required: true}) diceRoll!: DiceRoll | null;
-    @Input({required: true}) gameMode!: GameMode;
+    public diceRoll = input.required<DiceRoll | null>();
+    public gameMode = input.required<GameMode>();
 
     protected readonly GameMode = GameMode;
 }

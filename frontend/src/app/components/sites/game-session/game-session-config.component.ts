@@ -64,7 +64,7 @@ export class GameSessionConfigComponent implements OnInit {
         });
     }
 
-    startGame() {
+    protected startGame() {
         if(this.hasSession()) return;
 
         this.sessionService().createSession(this.gameConfig()).subscribe(res => {
@@ -72,7 +72,7 @@ export class GameSessionConfigComponent implements OnInit {
         });
     }
 
-    continueGame() {
+    protected continueGame() {
         if (!this.hasSession || this.originalConfig === null) return;
         //only show popup if changes to the config have been made
         if (this.configsAreEqual(this.gameConfig(), this.originalConfig)) {
@@ -82,15 +82,15 @@ export class GameSessionConfigComponent implements OnInit {
         }
     }
 
-    goToGame() {
+    protected goToGame() {
         this.router.navigate([`projects/${this.projectName()}/game`]);
     }
 
-    openClearPopup() {
+    protected openClearPopup() {
         this.clearPopup().openPopup();
     }
 
-    openUpdatePopup() {
+    protected openUpdatePopup() {
         this.updatePopup().openPopup();
     }
 

@@ -14,14 +14,6 @@ interface SaveForm {
     score: FormControl<number | null>;
 }
 
-type SaveForm2 = {
-
-}
-
-type TeamForm =  {
-    score: FormControl<number | null>;
-};
-
 @Component({
     selector: 'game-session-save-popup',
     imports: [
@@ -62,7 +54,7 @@ export class GameSessionSavePopupComponent implements OnInit {
         this.saveForm = this.fb.group(group);
     }
 
-    openPopup() {
+    public openPopup() {
         //populate with scores if there are any
         if (this.scores()) {
             for (let team of this.teams()) {
@@ -82,15 +74,9 @@ export class GameSessionSavePopupComponent implements OnInit {
     private callback(result: PopupResultType) {
         if (result === PopupResultType.SUBMIT) {
             this.saveGame();
-        } else if (result === PopupResultType.CANCEL) {
-            this.saveForm.reset();
         }
-        this.saveForm.reset();
 
-        //TODO: how to reset file url
-        /*this.imageFile = null;
-        if(this.imageUrl) URL.revokeObjectURL(this.imageUrl);
-        this.imageUrl = null;*/
+        this.saveForm.reset();
     }
 
     private saveGame() {

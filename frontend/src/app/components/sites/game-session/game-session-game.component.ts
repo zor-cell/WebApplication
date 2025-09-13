@@ -54,11 +54,11 @@ export class GameSessionGameComponent {
         });
     }
 
-    openSavePopup() {
+    protected openSavePopup() {
         this.savePopup().openPopup();
     }
 
-    saveSession(event: WithFile<ResultState>) {
+    protected saveSession(event: WithFile<ResultState>) {
         this.sessionService().saveSession(event.data, event.file).subscribe({
             next: res => {
                 this.isSessionSaved();
@@ -66,7 +66,7 @@ export class GameSessionGameComponent {
         });
     }
 
-    isSessionSaved() {
+    protected isSessionSaved() {
         this.sessionService().isSessionSaved().subscribe(res => {
             this.isSaved.set(res);
         });

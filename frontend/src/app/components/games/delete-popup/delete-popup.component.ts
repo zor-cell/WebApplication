@@ -14,7 +14,7 @@ import {PopupResultType} from "../../../dto/all/PopupResultType";
 export class DeletePopupComponent {
     private popupService = inject(PopupService);
 
-    public deletePopup = viewChild.required<TemplateRef<any>>('deletePopup');
+    private deletePopup = viewChild.required<TemplateRef<any>>('deletePopup');
     public deleteGameEvent = output<void>();
 
     public openPopup() {

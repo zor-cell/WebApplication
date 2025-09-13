@@ -14,8 +14,8 @@ import {ChartData, ChartOptions} from "chart.js";
 export class RiskHistogramComponent {
   public dataEntries = input.required<DataEntry[]>();
   public isVisible = input<boolean>(true);
+  private chart = viewChild.required(BaseChartDirective);
 
-  protected chart = viewChild.required(BaseChartDirective);
   protected labels = computed(() => {
     return this.dataEntries().map(d => d.result).sort((a, b) => a - b);
   });

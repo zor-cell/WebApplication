@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    effect,
+    input,
+    Input,
+    OnChanges,
+    SimpleChanges,
+    viewChild,
+    ViewChild
+} from '@angular/core';
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
@@ -12,12 +22,12 @@ import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
     standalone: true,
     styleUrl: './histogram.component.css'
 })
-export class CatanHistogramComponent implements OnChanges, AfterViewInit {
-    @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
-    @Input({required: true}) diceRolls!: DiceRoll[];
-    @Input() isVisible: boolean = false;
+export class CatanHistogramComponent {
+    public diceRolls = input.required<DiceRoll[]>();
+    public isVisible = input<boolean>(true);
+    private chart = viewChild.required(BaseChartDirective);
 
-    chartData: ChartData<any, number[], number> = {
+    protected chartData: ChartData<any, number[], number> = {
         labels: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         datasets: [
             {
@@ -33,7 +43,7 @@ export class CatanHistogramComponent implements OnChanges, AfterViewInit {
             }
         ]
     };
-    chartOptions: ChartOptions = {
+    protected chartOptions: ChartOptions = {
         maintainAspectRatio: false,
         animations: {
             // Define animations for dataset elements during updates
@@ -81,43 +91,37 @@ export class CatanHistogramComponent implements OnChanges, AfterViewInit {
         },
     };
 
-    ngAfterViewInit() {
-        this.refillChartData();
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['diceRolls']) {
-            this.refillChartData();
-        }
-
-        if (changes['isVisible']) {
-            const currentValue = changes['isVisible'].currentValue;
-            if (currentValue === true) {
-                this.refillChartData();
-            }
-        }
+    constructor() {
+        effect(() => {
+           if(this.diceRolls() && this.isVisible()) {
+               this.refillChartData();
+           }
+        });
     }
 
     private refillChartData() {
-        if (!this.chart || !this.isVisible) return;
+        const chart = this.chart();
+        const diceRolls = this.diceRolls();
+
+        if (!chart || !this.isVisible()) return;
 
         //update text
-        if (this.chart.chart && this.chart.chart.options && this.chart.chart.options.plugins && this.chart.chart.options.plugins.title) {
-            this.chart.chart.options.plugins.title.text = `Histogram of ${this.diceRolls.length} Rolls`;
+        if (chart.chart && chart.chart.options && chart.chart.options.plugins && chart.chart.options.plugins.title) {
+            chart.chart.options.plugins.title.text = `Histogram of ${diceRolls.length} Rolls`;
         }
 
 
         //bell curve
-        this.chartData.datasets[0].data = this.generateBellCurveData(this.diceRolls.length);
+        this.chartData.datasets[0].data = this.generateBellCurveData(diceRolls.length);
 
         //team datasets
-        const teams = [...new Set(this.diceRolls.map(d => d.teamName))];
+        const teams = [...new Set(diceRolls.map(d => d.teamName))];
         const teamData: any = {};
 
         teams.forEach(team => {
             teamData[team] = Array(11).fill(0);
         });
-        this.diceRolls.forEach(diceRoll => {
+        diceRolls.forEach(diceRoll => {
             const sum = diceRoll.dicePair.dice1 + diceRoll.dicePair.dice2;
             teamData[diceRoll.teamName][sum - 2]++;
         });
@@ -133,7 +137,7 @@ export class CatanHistogramComponent implements OnChanges, AfterViewInit {
 
         this.chartData.datasets = [this.chartData.datasets[0], ...datasets];
 
-        this.chart.update();
+        chart.update();
     }
 
     private generateBellCurveData(totalRolls: number): number[] {
