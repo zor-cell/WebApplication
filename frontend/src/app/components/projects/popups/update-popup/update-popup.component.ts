@@ -42,7 +42,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
     public updateProjectEvent = output<WithFile<ProjectDetails>>();
 
     protected readonly filePathPrefix = 'projects/';
-    protected readonly imagePathPrefix = 'images/';
+    protected readonly imagePathPrefix = 'projects/';
     protected fileUpload = signal<FileUpload>({
         file: null,
         fileUrl: null
@@ -65,7 +65,14 @@ export class ProjectUpdatePopupComponent implements OnInit {
             const filePath = project.filePath.startsWith(this.filePathPrefix) ? project.filePath.substring(this.filePathPrefix.length) : project.filePath;
 
             const url = project.metadata.imagePath;
-            const imagePath = url?.includes(this.imagePathPrefix) ? url.substring(url.indexOf(this.imagePathPrefix) + this.imagePathPrefix.length) : url;
+            let imagePath = null;
+            if(url && url.length > 0) {
+                if(url.includes("static")) {
+                    imagePath = null;
+                } else {
+                    imagePath = url.includes(this.imagePathPrefix) ? url.substring(url.indexOf(this.imagePathPrefix) + this.imagePathPrefix.length) : url;
+                }
+            }
 
             this.projectForm.patchValue({
                 name: project.metadata.name,
@@ -110,7 +117,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
                 createdAt: value.createdAt,
                 title: value.title,
                 description: value.description,
-                imagePath: this.imagePathPrefix + value.imagePath,
+                imagePath: value.imagePath ? this.imagePathPrefix + value.imagePath : value.imagePath,
                 githubUrl: value.githubUrl,
                 hasWebsite: value.hasWebsite,
                 isFavorite: value.isFavorite
