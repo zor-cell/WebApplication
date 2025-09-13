@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
@@ -6,6 +6,8 @@ import {PopupService} from "../../../../../services/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";
+import {FileUpload} from "../../../../../dto/all/FileUpload";
+import {FileUploadComponent} from "../../../../all/file-upload/file-upload.component";
 
 interface SaveForm {
     score: FormControl<number | null>;
@@ -16,7 +18,8 @@ interface SaveForm {
     imports: [
         NgForOf,
         ReactiveFormsModule,
-        NgIf
+        NgIf,
+        FileUploadComponent
     ],
     templateUrl: './save-popup.component.html',
     standalone: true,
@@ -26,16 +29,17 @@ export class GameSessionSavePopupComponent implements OnInit {
     private popupService = inject(PopupService);
     private fb = inject(FormBuilder);
 
-    saveTemplate = viewChild.required<TemplateRef<any>>('savePopup');
-    saveForm!: FormGroup<Record<string, FormGroup<SaveForm>>>;
-
+    private saveTemplate = viewChild.required<TemplateRef<any>>('savePopup');
     public teams = input.required<Team[]>();
     public scores = input<Record<string, number>>();
     public showFileUpload = input<boolean>(true);
     public saveSessionEvent = output<{ resultState: ResultState, imageFile: File | null }>();
 
-    protected imageUrl: string | null = null;
-    private imageFile: File | null = null;
+    protected saveForm!: FormGroup<Record<string, FormGroup<SaveForm>>>;
+    protected fileUpload = signal<FileUpload>({
+        file: null,
+        fileUrl: null
+    });
 
     ngOnInit() {
         const group: Record<string, FormGroup<SaveForm>> = {};
@@ -66,16 +70,6 @@ export class GameSessionSavePopupComponent implements OnInit {
         );
     }
 
-    onFileChanged(event: Event) {
-        const input = event.target as HTMLInputElement;
-        if(!input.files?.length) return;
-
-        if(input.files) {
-            this.imageFile = input.files![0];
-            this.createImageFromBlob(this.imageFile);
-        }
-    }
-
     private callback(result: PopupResultType) {
         if (result === PopupResultType.SUBMIT) {
             this.saveGame();
@@ -84,9 +78,10 @@ export class GameSessionSavePopupComponent implements OnInit {
         }
         this.saveForm.reset();
 
-        this.imageFile = null;
+        //TODO: how to reset file url
+        /*this.imageFile = null;
         if(this.imageUrl) URL.revokeObjectURL(this.imageUrl);
-        this.imageUrl = null;
+        this.imageUrl = null;*/
     }
 
     private saveGame() {
@@ -101,14 +96,6 @@ export class GameSessionSavePopupComponent implements OnInit {
             teams: teamState
         }
 
-        this.saveSessionEvent.emit({resultState: resultState, imageFile: this.imageFile});
-    }
-
-    private createImageFromBlob(blob: Blob) {
-        if(this.imageUrl) {
-            URL.revokeObjectURL(this.imageUrl);
-        }
-
-        this.imageUrl = URL.createObjectURL(blob);
+        this.saveSessionEvent.emit({resultState: resultState, imageFile: this.fileUpload().file});
     }
 }

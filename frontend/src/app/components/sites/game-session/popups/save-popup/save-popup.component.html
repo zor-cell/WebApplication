@@ -15,33 +15,9 @@
             </tbody>
         </table>
 
-        <!--<div class="teams">
-            <div *ngFor="let team of teams(); let i = index" class="player-save">
-                <div class="input-label">
-                    <label>Team</label>
-                    <input disabled type="text" class="form-control" [value]="team.name">
-                </div>
-                @if(scores()) {
-                    <div class="input-label">
-                        <label>Score</label>
-                        <input disabled type="number" class="form-control" [value]="scores()![team.name]">
-                    </div>
-                } @else {
-                    <div class="input-label">
-                        <label>Score</label>
-                        <input type="number" class="form-control" [formControlName]="team.name">
-                    </div>
-                }
-            </div>
-        </div>-->
-
-        <div *ngIf="showFileUpload()" class="input-label">
-            <label>Image</label>
-            <input type="file" accept="image/*" capture="environment" class="form-control"
-                   (change)="onFileChanged($event)">
-        </div>
+        <app-file-upload (fileChangedEvent)="fileUpload.set($event)"/>
     </form>
-    <div *ngIf="imageUrl" class="image-container">
-        <img [src]="imageUrl" alt="" width="300" height="300" class="image">
+    <div *ngIf="fileUpload().fileUrl as url" class="image-container">
+        <img [src]="url" alt="" width="300" height="300" class="image">
     </div>
 </ng-template>
