@@ -7,6 +7,7 @@ import net.zorphy.backend.main.entity.Project;
 import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.ProjectMapper;
 import net.zorphy.backend.main.repository.ProjectRepository;
+import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -75,5 +76,36 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project updated = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(updated);
+    }
+
+    @Override
+    public ProjectDetails createProject(ProjectDetails projectDetails, String baseUrl) {
+        ProjectMetadata metadata = projectDetails.metadata();
+
+        if (projectRepository.findByName(metadata.name()) != null) {
+            throw new InvalidOperationException("Project with name %s already exists".formatted(metadata.name()));
+        }
+
+        Project project = new Project();
+        project.setName(metadata.name());
+        project.setCreatedAt(metadata.createdAt());
+        project.setTitle(metadata.title());
+        project.setDescription(metadata.description());
+        project.setGithubUrl(metadata.githubUrl());
+        project.setHasWebsite(metadata.hasWebsite());
+        project.setIsFavorite(metadata.isFavorite());
+        project.setFilePath(projectDetails.filePath());
+
+        //remove host from image path before update
+        if (metadata.imagePath() != null) {
+            URI uri = URI.create(metadata.imagePath());
+            String path = uri.getPath();
+            project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
+        } else {
+            project.setImagePath(null);
+        }
+
+        Project created = projectRepository.save(project);
+        return projectMapper.projectToProjectDetails(created);
     }
 }

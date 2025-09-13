@@ -1,17 +1,13 @@
 .form-container {
+    display: flex;
+    flex-direction: column;
+
     gap: 0.5rem;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-}
-
-.stretch {
-    grid-column: span 2;
+.checkbox-container {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .area {

@@ -3,12 +3,26 @@ import {PopupService} from "../../../../services/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";
 import {ProjectDetails} from "../../../../dto/projects/ProjectDetails";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {DatePipe, NgIf} from "@angular/common";
+
+type ProjectForm = FormGroup<{
+    name: FormControl<string>;
+    createdAt: FormControl<Date>;
+    title: FormControl<string>;
+    description: FormControl<string>;
+    imagePath: FormControl<string | null>;
+    githubUrl: FormControl<string | null>;
+    hasWebsite: FormControl<boolean>;
+    isFavorite: FormControl<boolean>;
+    filePath: FormControl<string>;
+}>;
 
 @Component({
     selector: 'project-update-popup',
     imports: [
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DatePipe
     ],
     templateUrl: './update-popup.component.html',
     standalone: true,
@@ -19,68 +33,107 @@ export class ProjectUpdatePopupComponent implements OnInit {
     private projectService = inject(ProjectService);
     private fb = inject(FormBuilder);
 
-    public updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
-    public project = input.required<ProjectDetails>();
-    public canUpdate = input<boolean>(true);
+    private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
+    public project = input<ProjectDetails | null>(null);
     public updatedProjectEvent = output<boolean>();
 
-    protected updateForm!: FormGroup;
+    protected projectForm: ProjectForm = this.fb.group({
+        name: this.fb.nonNullable.control('', {validators: Validators.required}),
+        createdAt: this.fb.nonNullable.control(new Date(), {validators: Validators.required}),
+        title: this.fb.nonNullable.control('', {validators: Validators.required}),
+        description: this.fb.nonNullable.control('', {validators: Validators.required}),
+        imagePath: this.fb.control<string | null>(null),
+        githubUrl: this.fb.control<string | null>(null),
+        hasWebsite: this.fb.nonNullable.control(false, {validators: Validators.required}),
+        isFavorite: this.fb.nonNullable.control(false, {validators: Validators.required}),
+        filePath: this.fb.nonNullable.control('', {validators: Validators.required}),
+    });
 
     ngOnInit() {
-        this.updateForm = this.fb.group({
-            name: [this.project().metadata.name, Validators.required],
-            createdAt: [this.project().metadata.createdAt, Validators.required],
-            title: [this.project().metadata.title, Validators.required],
-            description: [this.project().metadata.description, Validators.required],
-            imagePath: [this.project().metadata.imagePath, Validators.required],
-            githubUrl: [this.project().metadata.githubUrl],
-            hasWebsite: [this.project().metadata.hasWebsite],
-            isFavorite: [this.project().metadata.isFavorite],
-            filePath: [this.project().filePath, Validators.required]
-        });
+        const project = this.project();
+        if (project != null) {
+            this.projectForm.patchValue({
+                name: project.metadata.name,
+                createdAt: project.metadata.createdAt,
+                title: project.metadata.title,
+                description: project.metadata.description,
+                imagePath: project.metadata.imagePath,
+                githubUrl: project.metadata.githubUrl,
+                hasWebsite: project.metadata.hasWebsite,
+                isFavorite: project.metadata.isFavorite,
+                filePath: project.filePath
+            });
+        }
+
+        this.projectForm.controls.createdAt.disable();
     }
 
     public openPopup() {
+        const isUpdate = this.project() != null;
+
         this.popupService.createPopup(
-            'Update Project Data',
+            isUpdate ? 'Update Project' : 'Create Project',
             this.updateTemplate(),
             this.callback.bind(this),
-            () => true, //this.configsAreEqual(this.updateForm.value, this.project)
-            'Update',
+            () => this.projectForm.valid, //this.configsAreEqual(this.updateForm.value, this.project)
+            isUpdate ? 'Update' : 'Create',
         );
     }
 
     private callback(result: PopupResultType) {
+        const isUpdate = this.project() != null;
+
         if (result === PopupResultType.SUBMIT) {
-            this.updateProject();
+            if (isUpdate) {
+                this.updateProject();
+            } else {
+                this.createProject();
+            }
         }
+        this.projectForm.reset();
+    }
+
+    private formToDetails() {
+        const value = this.projectForm.getRawValue();
+        const project: ProjectDetails = {
+            metadata: {
+                name: value.name,
+                createdAt: value.createdAt,
+                title: value.title,
+                description: value.description,
+                imagePath: value.imagePath,
+                githubUrl: value.githubUrl,
+                hasWebsite: value.hasWebsite,
+                isFavorite: value.isFavorite
+            },
+            content: '',
+            filePath: value.filePath
+        };
+
+        return project;
+    }
+
+    private createProject() {
+        const project = this.formToDetails();
+
+        this.projectService.createProject(project).subscribe(res => {
+            this.updatedProjectEvent.emit(true);
+        });
     }
 
     private updateProject() {
-        const formValue = this.updateForm.value;
-        const project: ProjectDetails = {
-            metadata: {
-                name: formValue.name,
-                createdAt: formValue.createdAt,
-                title: formValue.title,
-                description: formValue.description,
-                imagePath: formValue.imagePath,
-                githubUrl: formValue.githubUrl,
-                hasWebsite: formValue.hasWebsite,
-                isFavorite: formValue.isFavorite
-            },
-            content: '',
-            filePath: formValue.filePath
-        };
+        const project = this.formToDetails();
 
-        this.projectService.updateProject(project).subscribe({
-            next: res => {
-                this.updatedProjectEvent.emit(true);
-            }
+        this.projectService.updateProject(project).subscribe(res => {
+            this.updatedProjectEvent.emit(true);
         });
     }
 
     private configsAreEqual(config1: ProjectDetails, config2: ProjectDetails): boolean {
         return JSON.stringify(config1) === JSON.stringify(config2);
+    }
+
+    private toDateInputValue(date: Date): string {
+        return date.toISOString().split('T')[0]; // "2025-09-13"
     }
 }

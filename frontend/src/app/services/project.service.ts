@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Globals} from "../classes/globals";
 import {Observable, tap} from "rxjs";
@@ -9,11 +9,10 @@ import {ProjectDetails} from "../dto/projects/ProjectDetails";
     providedIn: 'root'
 })
 export class ProjectService {
-    private readonly baseUri: string;
+    private httpClient = inject(HttpClient);
+    private globals = inject(Globals);
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
-        this.baseUri = this.globals.backendUri + '/projects';
-    }
+    private readonly baseUri = this.globals.backendUri + '/projects';
 
     getProjects(): Observable<ProjectMetadata[]> {
         return this.httpClient.get<ProjectMetadata[]>(this.baseUri);
@@ -24,9 +23,18 @@ export class ProjectService {
     }
 
     updateProject(project: ProjectDetails) {
-        return this.httpClient.put<ProjectDetails>(`${this.baseUri}/update`, project).pipe(
+        return this.httpClient.put<ProjectDetails>(this.baseUri, project).pipe(
             tap(() => {
-                this.globals.handleSuccess('Updated project data');
-            }));
+                this.globals.handleSuccess('Updated project');
+            })
+        );
+    }
+
+    createProject(project: ProjectDetails) {
+        return this.httpClient.post<ProjectDetails>(this.baseUri, project).pipe(
+            tap(() => {
+                this.globals.handleSuccess('Created project');
+            })
+        );
     }
 }

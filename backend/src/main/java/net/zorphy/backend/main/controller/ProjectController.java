@@ -38,9 +38,16 @@ public class ProjectController {
         return projectService.getProject(name, getBaseUrlFromRequest(request));
     }
 
+
     @Secured("ROLE_ADMIN")
-    @PutMapping("/update")
-    public ProjectDetails updateProject(@Valid @RequestBody ProjectDetails projectUpdate, HttpServletRequest request) {
-        return projectService.updateProject(projectUpdate, getBaseUrlFromRequest(request));
+    @PostMapping
+    public ProjectDetails createProject(@Valid @RequestBody ProjectDetails projectDetails, HttpServletRequest request) {
+        return projectService.createProject(projectDetails, getBaseUrlFromRequest(request));
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PutMapping()
+    public ProjectDetails updateProject(@Valid @RequestBody ProjectDetails projectDetails, HttpServletRequest request) {
+        return projectService.updateProject(projectDetails, getBaseUrlFromRequest(request));
     }
 }

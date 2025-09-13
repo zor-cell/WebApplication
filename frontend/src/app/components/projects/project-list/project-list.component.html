@@ -8,5 +8,5 @@
     <project-card *ngFor="let project of projects" [project]="project"></project-card>
 </div>
 
-<project-create-popup #createPopup
+<project-update-popup #createPopup
         (createProjectEvent)="createProject()"/>

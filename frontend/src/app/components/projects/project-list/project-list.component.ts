@@ -10,7 +10,7 @@ import {ProjectCreatePopupComponent} from "../popups/create-popup/create-popup.c
 
 @Component({
     selector: 'project-list',
-    imports: [NgForOf, ProjectCardComponent, MainHeaderComponent, NgIf, ProjectCreatePopupComponent],
+    imports: [NgForOf, ProjectCardComponent, MainHeaderComponent, NgIf, ProjectUpdatePopupComponent],
     templateUrl: './project-list.component.html',
     standalone: true,
     styleUrl: './project-list.component.css'
@@ -19,7 +19,7 @@ export class ProjectListComponent implements OnInit {
     private projectService = inject(ProjectService);
     protected authService = inject(AuthService);
 
-    private createPopup = viewChild.required<ProjectCreatePopupComponent>('createPopup');
+    private createPopup = viewChild.required<ProjectUpdatePopupComponent>('createPopup');
 
     protected projects!: ProjectMetadata[];
 

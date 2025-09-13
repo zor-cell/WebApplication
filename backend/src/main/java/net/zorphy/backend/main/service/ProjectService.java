@@ -11,4 +11,6 @@ public interface ProjectService {
     ProjectDetails getProject(String name, String baseUrl);
 
     ProjectDetails updateProject(ProjectDetails projectUpdate, String baseUrl);
+
+    ProjectDetails createProject(ProjectDetails projectCreate, String baseUrl);
 }
