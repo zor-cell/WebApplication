@@ -62,4 +62,5 @@
     }
 </div>
 
-<app-new-player-popup #playerPopup (newPlayerEvent)="getPlayers()"></app-new-player-popup>
+<app-new-player-popup #playerPopup
+                      (newPlayerEvent)="createPlayer($event)"/>

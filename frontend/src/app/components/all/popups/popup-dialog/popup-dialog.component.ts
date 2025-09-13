@@ -1,4 +1,4 @@
-import {Component, inject, TemplateRef} from '@angular/core';
+import {Component, computed, inject, input, signal, TemplateRef} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, NgTemplateOutlet} from "@angular/common";
@@ -19,17 +19,16 @@ import {PopupResultType} from "../../../../dto/all/PopupResultType";
 export class PopupDialogComponent {
     private activeModal = inject(NgbActiveModal);
 
-    public bodyTemplate!: TemplateRef<any>;
-    public submitValidator: (() => boolean) | null = null;
-    public title: string = 'Modal';
-    public cancelText: string = 'Cancel';
-    public submitText: string = 'Submit';
-    public discardText: string | null = null;
+    public bodyTemplate = signal<TemplateRef<any> | null>(null);
+    public submitValidator = signal<(() => boolean) | null>(null);
+    public title = signal('Modal');
+    public cancelText = signal('Cancel');
+    public submitText = signal('Submit');
+    public discardText = signal<string | null>(null);
 
-    protected get valid(): boolean {
-        if (this.submitValidator === null) return true;
-
-        return this.submitValidator();
+    protected get valid() {
+        const validator = this.submitValidator();
+        return validator === null ? true : validator();
     }
 
     protected cancel() {

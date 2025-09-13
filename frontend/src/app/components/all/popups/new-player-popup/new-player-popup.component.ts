@@ -1,10 +1,21 @@
 import {Component, inject, OnInit, output, TemplateRef, viewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    NonNullableFormBuilder,
+    ReactiveFormsModule,
+    Validators
+} from "@angular/forms";
 import {PopupService} from "../../../../services/popup.service";
 import {PlayerDetails} from "../../../../dto/all/PlayerDetails";
 import {PlayerService} from "../../../../services/player.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
+
+type PlayerForm = FormGroup<{
+    name: FormControl<string>
+}>;
 
 @Component({
     selector: 'app-new-player-popup',
@@ -15,21 +26,16 @@ import {PlayerCreate} from "../../../../dto/all/PlayerCreate";
     standalone: true,
     styleUrl: './new-player-popup.component.css'
 })
-export class NewPlayerPopupComponent implements OnInit {
+export class NewPlayerPopupComponent {
     private popupService = inject(PopupService);
-    private playerService = inject(PlayerService);
-    private fb = inject(FormBuilder);
+    private fb = inject(NonNullableFormBuilder);
 
-    public playerTemplate = viewChild.required<TemplateRef<any>>('playerPopup');
-    public newPlayerEvent = output<PlayerDetails>();
+    private playerTemplate = viewChild.required<TemplateRef<any>>('playerPopup');
+    public newPlayerEvent = output<PlayerCreate>();
 
-    protected playerForm!: FormGroup;
-
-    ngOnInit() {
-        this.playerForm = this.fb.group({
-            name: ['', [Validators.required, Validators.minLength(1)]]
-        });
-    }
+    protected playerForm: PlayerForm = this.fb.group({
+        name: this.fb.control('', Validators.required),
+    });
 
     public openPopup() {
         this.popupService.createPopup(
@@ -42,22 +48,10 @@ export class NewPlayerPopupComponent implements OnInit {
 
     private callback(result: PopupResultType) {
         if (result === PopupResultType.SUBMIT) {
-            this.savePlayer();
-        } else if (result === PopupResultType.CANCEL) {
-            this.playerForm.reset();
+            const player = this.playerForm.getRawValue() as PlayerCreate;
+            this.newPlayerEvent.emit(player);
         }
-    }
 
-    private savePlayer() {
-        const player: PlayerCreate = {
-            name: this.playerForm.value.name
-        };
-
-        this.playerService.savePlayer(player).subscribe({
-            next: res => {
-                this.newPlayerEvent.emit(res);
-                this.playerForm.reset();
-            }
-        })
+        this.playerForm.reset();
     }
 }

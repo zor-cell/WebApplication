@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, inject, input, Input} from '@angular/core';
 import {NgStyle} from "@angular/common";
 import {Position} from "../../../dto/all/Position";
 
@@ -12,13 +12,15 @@ import {Position} from "../../../dto/all/Position";
     styleUrl: './pan-container.component.css'
 })
 export class PanContainerComponent {
-    @Input() canPan: boolean = true;
-    @Input() canZoom: boolean = true;
-    @Input() canRotate: boolean = true;
-    @Input() centerPosition: Position = {
+    public elementRef = inject(ElementRef);
+
+    public canPan = input<boolean>(true);
+    public canZoom = input<boolean>(true);
+    public canRotate = input<boolean>(true);
+    public centerPosition = input<Position>({
         x: 0,
         y: 0
-    };
+    })
 
     private isPanning = false;
     private panOffset: Position = {
@@ -37,19 +39,16 @@ export class PanContainerComponent {
 
     private rotation: number = 0;
 
-    constructor(public elementRef: ElementRef) {
-    }
-
     get transformStyle() {
         return {
-            transform: `translate(${this.centerPosition.x + this.panOffset.x}px, ${this.centerPosition.y + this.panOffset.y}px)
+            transform: `translate(${this.centerPosition().x + this.panOffset.x}px, ${this.centerPosition().y + this.panOffset.y}px)
         scale(${this.zoomScale})
         rotate(${this.rotation}deg)`,
             transformOrigin: `0 0`
         };
     }
 
-    resetOffset() {
+    protected resetOffset() {
         this.panOffset = {
             x: 0,
             y: 0
@@ -58,17 +57,17 @@ export class PanContainerComponent {
         this.rotation = 0;
     }
 
-    rotate() {
+    protected rotate() {
         this.rotation = (this.rotation + 90) % 360;
     }
 
-    startPan(event: MouseEvent | TouchEvent) {
+    protected startPan(event: MouseEvent | TouchEvent) {
         this.isPanning = true;
 
         this.lastMousePosition = this.getEventPos(event);
     }
 
-    touchStart(event: TouchEvent) {
+    protected touchStart(event: TouchEvent) {
         if (event.touches.length === 1) {
             this.startPan(event);
         } else if (event.touches.length === 2) {
@@ -77,7 +76,7 @@ export class PanContainerComponent {
         }
     }
 
-    touchMove(event: TouchEvent) {
+    protected touchMove(event: TouchEvent) {
         if(event.touches.length === 1) {
             this.pan(event);
         } else if(event.touches.length === 2) {
@@ -85,8 +84,8 @@ export class PanContainerComponent {
         }
     }
 
-    pan(event: MouseEvent | TouchEvent) {
-        if (!this.isPanning || !this.canPan) return;
+    protected pan(event: MouseEvent | TouchEvent) {
+        if (!this.isPanning || !this.canPan()) return;
         event.preventDefault();
 
         const eventPos: Position = this.getEventPos(event);
@@ -102,12 +101,12 @@ export class PanContainerComponent {
         };
     }
 
-    endPan() {
+    protected endPan() {
         this.isPanning = false;
     }
 
-    scroll(event: WheelEvent) {
-        if (!this.canZoom) return;
+    protected scroll(event: WheelEvent) {
+        if (!this.canZoom()) return;
         event.preventDefault();
 
         const delta = -event.deltaY;
@@ -116,8 +115,8 @@ export class PanContainerComponent {
 
     }
 
-    pinch(event: TouchEvent) {
-        if (!this.canZoom || event.touches.length !== 2) return;
+    protected pinch(event: TouchEvent) {
+        if (!this.canZoom() || event.touches.length !== 2) return;
         event.preventDefault();
 
         const currentDistance = this.getPinchDistance(event);

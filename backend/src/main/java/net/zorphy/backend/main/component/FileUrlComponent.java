@@ -13,13 +13,14 @@ public class FileUrlComponent {
     }
 
     private String resolveUrl(String prefix, String filePath) {
-        //redirect empty images to placeholder
-        if (filePath == null) {
-            filePath = prefix.isEmpty() ? "files/static/empty.svg" : "static/empty.svg";
-        }
-
         String baseUrl = baseUrlProperty.getBaseUrl();
-        String fullPath = prefix.isEmpty() ? filePath : prefix + "/" + filePath;
+        String fullPath;
+        if (filePath == null) {
+            //redirect empty images to placeholder
+            fullPath = "files/static/empty.svg";
+        } else {
+            fullPath = prefix.isEmpty() ? filePath : prefix + "/" + filePath;
+        }
 
         // Normalize slashes
         if (baseUrl.endsWith("/") && fullPath.startsWith("/")) {

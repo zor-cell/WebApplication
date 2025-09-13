@@ -2,6 +2,7 @@ import {Component, HostListener, inject, OnInit, viewChild} from '@angular/core'
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../../services/all/auth.service";
 import {LoginPopupComponent} from "../popups/login-popup/login-popup.component";
+import {UserLoginDetails} from "../../../dto/all/UserLoginDetails";
 
 @Component({
   selector: 'app-header',
@@ -16,13 +17,13 @@ import {LoginPopupComponent} from "../popups/login-popup/login-popup.component";
 export class HeaderComponent implements OnInit {
   protected authService = inject(AuthService);
 
-  public loginPopup = viewChild.required<LoginPopupComponent>('loginPopup');
+  private loginPopup = viewChild.required<LoginPopupComponent>('loginPopup');
 
   protected mobileMenuOpen = false;
 
   // Close menu when clicking outside
   @HostListener('document:click', ['$event'])
-  handleOutsideClick(event: MouseEvent) {
+  private handleOutsideClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     const header = document.querySelector('header');
     if (this.mobileMenuOpen && header && !header.contains(target)) {
@@ -48,7 +49,11 @@ export class HeaderComponent implements OnInit {
     this.loginPopup().openPopup();
   }
 
-  protected loggedIn() {
-    window.location.reload();
+  protected login(user: UserLoginDetails) {
+    this.authService.login(user).subscribe({
+      next: res => {
+        //window.location.reload();
+      }
+    })
   }
 }

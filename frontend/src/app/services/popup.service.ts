@@ -1,4 +1,4 @@
-import {Injectable, TemplateRef} from '@angular/core';
+import {inject, Injectable, TemplateRef} from '@angular/core';
 import {PopupDialogComponent} from "../components/all/popups/popup-dialog/popup-dialog.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PopupResultType} from "../dto/all/PopupResultType";
@@ -7,11 +7,9 @@ import {PopupResultType} from "../dto/all/PopupResultType";
     providedIn: 'root'
 })
 export class PopupService {
+    private modalService = inject(NgbModal);
 
-    constructor(private modalService: NgbModal) {
-    }
-
-    createPopup(title: string,
+    public createPopup(title: string,
                 bodyTemplate: TemplateRef<any>,
                 callback: (success: PopupResultType) => void,
                 submitValidator?: () => boolean,
@@ -21,14 +19,14 @@ export class PopupService {
         const modalRef = this.modalService.open(PopupDialogComponent);
 
         //set popup inputs
-        modalRef.componentInstance.title = title;
+        modalRef.componentInstance.title.set(title);
 
-        if (submitText) modalRef.componentInstance.submitText = submitText;
-        if (discardText) modalRef.componentInstance.discardText = discardText;
-        if (cancelText) modalRef.componentInstance.cancelText = cancelText;
+        if (submitText) modalRef.componentInstance.submitText.set(submitText);
+        if (discardText) modalRef.componentInstance.discardText.set(discardText);
+        if (cancelText) modalRef.componentInstance.cancelText.set(cancelText);
 
-        if (submitValidator) modalRef.componentInstance.submitValidator = submitValidator;
-        modalRef.componentInstance.bodyTemplate = bodyTemplate;
+        if (submitValidator) modalRef.componentInstance.submitValidator.set(submitValidator);
+        modalRef.componentInstance.bodyTemplate.set(bodyTemplate);
 
         modalRef.result.then(
             (res) => {

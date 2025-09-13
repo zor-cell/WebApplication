@@ -7,6 +7,7 @@ import {CdkDrag, CdkDragDrop, CdkDragPreview, CdkDropList, moveItemInArray} from
 import {Team} from "../../../dto/all/Team";
 import {NewPlayerPopupComponent} from "../popups/new-player-popup/new-player-popup.component";
 import {AuthService} from "../../../services/all/auth.service";
+import {PlayerCreate} from "../../../dto/all/PlayerCreate";
 
 @Component({
     selector: 'app-player-select',
@@ -157,6 +158,12 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
 
     protected openPlayerPopup() {
         this.playerPopup().openPopup();
+    }
+
+    protected createPlayer(player: PlayerCreate) {
+        this.playerService.savePlayer(player).subscribe(res => {
+            this.getPlayers();
+        });
     }
 
     protected getPlayers() {
