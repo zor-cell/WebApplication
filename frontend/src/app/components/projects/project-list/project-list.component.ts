@@ -6,7 +6,6 @@ import {ProjectCardComponent} from "../project-card/project-card.component";
 import {MainHeaderComponent} from '../../all/main-header/main-header.component';
 import {AuthService} from "../../../services/all/auth.service";
 import {ProjectUpdatePopupComponent} from "../popups/update-popup/update-popup.component";
-import {ProjectCreatePopupComponent} from "../popups/create-popup/create-popup.component";
 
 @Component({
     selector: 'project-list',
@@ -29,10 +28,6 @@ export class ProjectListComponent implements OnInit {
 
     protected openCreatePopup() {
         this.createPopup().openPopup();
-    }
-
-    protected createProject(): void {
-
     }
 
     private getProjects() {

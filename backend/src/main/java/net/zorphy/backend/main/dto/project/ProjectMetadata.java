@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 public record ProjectMetadata(
         @NotBlank
         String name,
 
         @NotNull
-        LocalDate createdAt,
+        Instant createdAt,
 
         @NotBlank
         String title,

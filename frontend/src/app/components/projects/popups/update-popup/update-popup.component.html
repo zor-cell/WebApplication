@@ -43,7 +43,7 @@
             <label>Image Path</label>
             <div class="row">
                 <div class="col-4">
-                    <input class="form-control" disabled type="text" value="images/">
+                    <input class="form-control" disabled type="text" [value]="imagePathPrefix">
                 </div>
                 <div class="col-8">
                     <input class="form-control" formControlName="imagePath" type="text">
@@ -55,7 +55,7 @@
             <label>File Path</label>
             <div class="row">
                 <div class="col-4">
-                    <input class="form-control" disabled type="text" value="projects/">
+                    <input class="form-control" disabled type="text" [value]="filePathPrefix">
                 </div>
                 <div class="col-8">
                     <input class="form-control" formControlName="filePath" type="text">

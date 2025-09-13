@@ -9,7 +9,7 @@
             <i [class]="'favorite-icon bi ' + (project().isFavorite ? 'bi-star-fill' : 'bi-star')"></i>
         </div>
         <div class="project-card-meta">
-            <span class="tag">{{ project().createdAt }}</span>
+            <span class="tag">{{ project().createdAt |  date:'yyyy-MM-dd' }}</span>
         </div>
         <p class="project-card-description">{{ project().description }}</p>
         <div class="project-card-buttons">

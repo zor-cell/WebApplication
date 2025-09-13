@@ -1,13 +1,14 @@
 import {Component, input} from '@angular/core';
 import {ProjectMetadata} from "../../../dto/projects/ProjectMetadata";
-import {NgIf} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'project-card',
     imports: [
         NgIf,
-        RouterLink
+        RouterLink,
+        DatePipe
     ],
     templateUrl: './project-card.component.html',
     standalone: true,

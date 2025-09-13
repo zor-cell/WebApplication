@@ -57,6 +57,8 @@ public class GameServiceImpl implements GameService {
         Game game = getGameInternal(id);
         GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
+        //TODO: in jolly images are saved in gameState -> also should be deleted
+
         gameRepository.deleteById(id);
         fileStorageService.deleteFile(game.getImageUrl());
 

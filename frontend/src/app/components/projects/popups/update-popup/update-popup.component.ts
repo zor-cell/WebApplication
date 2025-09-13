@@ -37,6 +37,9 @@ export class ProjectUpdatePopupComponent implements OnInit {
     public project = input<ProjectDetails | null>(null);
     public updatedProjectEvent = output<boolean>();
 
+    protected readonly filePathPrefix = 'projects/';
+    protected readonly imagePathPrefix = 'images/';
+
     protected projectForm: ProjectForm = this.fb.group({
         name: this.fb.nonNullable.control('', {validators: Validators.required}),
         createdAt: this.fb.nonNullable.control(new Date(), {validators: Validators.required}),
@@ -52,16 +55,21 @@ export class ProjectUpdatePopupComponent implements OnInit {
     ngOnInit() {
         const project = this.project();
         if (project != null) {
+            const filePath = project.filePath.startsWith(this.filePathPrefix) ? project.filePath.substring(this.filePathPrefix.length) : project.filePath;
+
+            const url = project.metadata.imagePath;
+            const imagePath = url?.includes(this.imagePathPrefix) ? url.substring(url.indexOf(this.imagePathPrefix) + this.imagePathPrefix.length) : url;
+
             this.projectForm.patchValue({
                 name: project.metadata.name,
                 createdAt: project.metadata.createdAt,
                 title: project.metadata.title,
                 description: project.metadata.description,
-                imagePath: project.metadata.imagePath,
+                imagePath: imagePath,
                 githubUrl: project.metadata.githubUrl,
                 hasWebsite: project.metadata.hasWebsite,
                 isFavorite: project.metadata.isFavorite,
-                filePath: project.filePath
+                filePath: filePath
             });
         }
 
@@ -101,13 +109,13 @@ export class ProjectUpdatePopupComponent implements OnInit {
                 createdAt: value.createdAt,
                 title: value.title,
                 description: value.description,
-                imagePath: value.imagePath,
+                imagePath: this.imagePathPrefix + value.imagePath,
                 githubUrl: value.githubUrl,
                 hasWebsite: value.hasWebsite,
                 isFavorite: value.isFavorite
             },
             content: '',
-            filePath: value.filePath
+            filePath: this.filePathPrefix + value.filePath
         };
 
         return project;
@@ -129,6 +137,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
         });
     }
 
+    //TODO check if no changes were applied for validity
     private configsAreEqual(config1: ProjectDetails, config2: ProjectDetails): boolean {
         return JSON.stringify(config1) === JSON.stringify(config2);
     }

@@ -16,4 +16,7 @@ public abstract class ProjectMapper {
     @Mapping(source = "project", target = "metadata")
     @Mapping(source = "filePath", target = "content", qualifiedByName = "readHtmlFromMarkdown")
     public abstract ProjectDetails projectToProjectDetails(Project project);
+
+    @Mapping(source = "metadata", target = ".")
+    public abstract Project projectDetailsToProject(ProjectDetails projectDetails);
 }

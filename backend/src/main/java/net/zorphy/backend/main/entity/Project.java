@@ -2,7 +2,7 @@ package net.zorphy.backend.main.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,9 +12,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String name;
-    private LocalDate createdAt;
 
+    @Column(unique = true, nullable = false)
+    private String name;
+    private Instant createdAt;
     private String title;
     private String description;
     private String filePath;
@@ -47,11 +48,11 @@ public class Project {
         this.name = name;
     }
 
-    public LocalDate getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

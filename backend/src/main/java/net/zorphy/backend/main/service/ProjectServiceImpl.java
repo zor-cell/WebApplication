@@ -10,9 +10,10 @@ import net.zorphy.backend.main.repository.ProjectRepository;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,23 +57,9 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NotFoundException("Project with name %s not found".formatted(metadata.name()));
         }
 
-        project.setName(metadata.name());
-        project.setCreatedAt(metadata.createdAt());
-        project.setTitle(metadata.title());
-        project.setDescription(metadata.description());
-        project.setGithubUrl(metadata.githubUrl());
-        project.setHasWebsite(metadata.hasWebsite());
-        project.setIsFavorite(metadata.isFavorite());
-        project.setFilePath(projectDetails.filePath());
-
-        //remove host from image path before update
-        if (metadata.imagePath() != null) {
-            URI uri = URI.create(metadata.imagePath());
-            String path = uri.getPath();
-            project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
-        } else {
-            project.setImagePath(null);
-        }
+        UUID id = project.getId();
+        project = projectMapper.projectDetailsToProject(projectDetails);
+        project.setId(id);
 
         Project updated = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(updated);
@@ -86,26 +73,12 @@ public class ProjectServiceImpl implements ProjectService {
             throw new InvalidOperationException("Project with name %s already exists".formatted(metadata.name()));
         }
 
-        Project project = new Project();
-        project.setName(metadata.name());
-        project.setCreatedAt(metadata.createdAt());
-        project.setTitle(metadata.title());
-        project.setDescription(metadata.description());
-        project.setGithubUrl(metadata.githubUrl());
-        project.setHasWebsite(metadata.hasWebsite());
-        project.setIsFavorite(metadata.isFavorite());
-        project.setFilePath(projectDetails.filePath());
-
-        //remove host from image path before update
-        if (metadata.imagePath() != null) {
-            URI uri = URI.create(metadata.imagePath());
-            String path = uri.getPath();
-            project.setImagePath(path.startsWith("/") ? path.substring(1) : path);
-        } else {
-            project.setImagePath(null);
-        }
+        Project project = projectMapper.projectDetailsToProject(projectDetails);
+        project.setCreatedAt(Instant.now());
 
         Project created = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(created);
     }
+
+
 }
