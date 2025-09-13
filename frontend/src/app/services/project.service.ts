@@ -30,8 +30,14 @@ export class ProjectService {
         );
     }
 
-    createProject(project: ProjectDetails) {
-        return this.httpClient.post<ProjectDetails>(this.baseUri, project).pipe(
+    createProject(project: ProjectDetails, imageFile: File | null = null) {
+        const formData = new FormData();
+        formData.append('project', new Blob([JSON.stringify(project)], { type: 'application/json' }));
+        if (imageFile) {
+            formData.append('image', imageFile, imageFile.name);
+        }
+
+        return this.httpClient.post<ProjectDetails>(this.baseUri, formData).pipe(
             tap(() => {
                 this.globals.handleSuccess('Created project');
             })

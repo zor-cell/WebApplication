@@ -33,7 +33,7 @@ export class ProjectListComponent implements OnInit {
     }
 
     protected createProject(event: WithFile<ProjectDetails>) {
-        this.projectService.createProject(event.data).subscribe(res => {
+        this.projectService.createProject(event.data, event.file).subscribe(res => {
             this.getProjects();
         });
     }

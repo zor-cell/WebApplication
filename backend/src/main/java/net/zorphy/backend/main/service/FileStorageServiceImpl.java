@@ -33,6 +33,8 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public String saveFile(GameType gameType, MultipartFile file) {
+        if(file == null) return null;
+
         String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
         return saveFile(relativePath, file);
     }

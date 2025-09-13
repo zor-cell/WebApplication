@@ -19,7 +19,7 @@ The main reason for the game simulation was the idea of fairer dice rolls.
 since the roll of dice follows a clear probability distribution, which is not always
 realized in practice.
 
-<img alt="distribution" src="../static/images/projects/catan_histogram.png" width="808" height="360"/>
+<img alt="distribution" src="images/catan_histogram.png" width="808" height="360"/>
 
 One would expect for the 7 to occur more often than the 2 when two dice are rolled together.
 The dice balancing is used to make the dice rolls follow the distribution more closely, so the game is less luck based.

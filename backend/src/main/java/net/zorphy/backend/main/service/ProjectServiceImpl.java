@@ -1,6 +1,5 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.component.FileReaderComponent;
 import net.zorphy.backend.main.dto.project.ProjectDetails;
 import net.zorphy.backend.main.dto.project.ProjectMetadata;
 import net.zorphy.backend.main.entity.Project;
@@ -9,6 +8,7 @@ import net.zorphy.backend.main.mapper.ProjectMapper;
 import net.zorphy.backend.main.repository.ProjectRepository;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final FileStorageService fileStorageService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, FileReaderComponent fileReaderComponent) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, FileStorageService fileStorageService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -66,15 +68,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDetails createProject(ProjectDetails projectDetails, String baseUrl) {
+    public ProjectDetails createProject(ProjectDetails projectDetails, MultipartFile image, String baseUrl) {
         ProjectMetadata metadata = projectDetails.metadata();
 
         if (projectRepository.findByName(metadata.name()) != null) {
             throw new InvalidOperationException("Project with name %s already exists".formatted(metadata.name()));
         }
 
+        String path = fileStorageService.saveFile("projects", image);
+
         Project project = projectMapper.projectDetailsToProject(projectDetails);
         project.setCreatedAt(Instant.now());
+        project.setImagePath(path);
 
         Project created = projectRepository.save(project);
         return projectMapper.projectToProjectDetails(created);

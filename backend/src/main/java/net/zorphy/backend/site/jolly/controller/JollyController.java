@@ -9,6 +9,7 @@ import net.zorphy.backend.site.jolly.dto.RoundResult;
 import net.zorphy.backend.site.jolly.dto.game.GameConfig;
 import net.zorphy.backend.site.jolly.dto.game.GameState;
 import net.zorphy.backend.site.jolly.service.JollyService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -27,7 +28,7 @@ public class JollyController extends GameSessionController<GameConfig, GameState
         this.jollyService = jollyService;
     }
 
-    @PostMapping("round")
+    @PostMapping(value = "round", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public GameState saveRound(HttpSession session,
                                @RequestPart("results") @Valid List<RoundResult> results,
                                @RequestPart(value = "image", required = false) MultipartFile image) {

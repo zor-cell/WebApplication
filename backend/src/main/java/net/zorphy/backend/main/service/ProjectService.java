@@ -2,6 +2,7 @@ package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.main.dto.project.ProjectDetails;
 import net.zorphy.backend.main.dto.project.ProjectMetadata;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ProjectService {
 
     ProjectDetails getProject(String name, String baseUrl);
 
-    ProjectDetails updateProject(ProjectDetails projectUpdate, String baseUrl);
+    ProjectDetails updateProject(ProjectDetails project, String baseUrl);
 
-    ProjectDetails createProject(ProjectDetails projectCreate, String baseUrl);
+    ProjectDetails createProject(ProjectDetails project, MultipartFile image, String baseUrl);
 }
