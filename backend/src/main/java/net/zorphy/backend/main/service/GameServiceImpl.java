@@ -1,5 +1,8 @@
 package net.zorphy.backend.main.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameMetadata;
@@ -15,6 +18,8 @@ import net.zorphy.backend.main.repository.PlayerRepository;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
+import net.zorphy.backend.site.jolly.dto.RoundInfo;
+import net.zorphy.backend.site.jolly.dto.game.GameState;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,16 +64,16 @@ public class GameServiceImpl implements GameService {
         Game game = getGameInternal(id);
         GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
-        //TODO fix this
-        //jolly game state saves images in rounds, they should be deleted if game is deleted
         if(gameDetails.metadata().gameType() == GameType.JOLLY) {
-            var a = gameDetails.gameState();
-        }
-        /*if(gameDetails.gameState() instanceof GameState gameState) {
+            //jolly game state saves images in rounds, they should be deleted if game is deleted
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            GameState gameState = mapper.convertValue(gameDetails.gameState(), GameState.class);
             for(RoundInfo round : gameState.rounds()) {
                 fileStorageService.deleteFile(round.imageUrl());
             }
-        }*/
+        }
 
         gameRepository.deleteById(id);
         fileStorageService.deleteFile(game.getImageUrl());

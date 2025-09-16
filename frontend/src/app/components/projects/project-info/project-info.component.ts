@@ -25,7 +25,7 @@ export class ProjectInfoComponent implements OnInit {
     private projectService = inject(ProjectService);
     private route = inject(ActivatedRoute);
 
-    public updatePopup = viewChild.required<ProjectUpdatePopupComponent>('updatePopup');
+    private updatePopup = viewChild.required<ProjectUpdatePopupComponent>('updatePopup');
 
     protected project: ProjectDetails | null = null;
     private projectName: string | null = null;
