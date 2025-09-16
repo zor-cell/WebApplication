@@ -5,7 +5,7 @@ import {GameConfig} from "../../../../dto/sites/jolly/game/GameConfig";
 import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Team} from "../../../../dto/all/Team";
-import {minArrayLengthValidator} from "../../../../classes/validators";
+import {CustomValidators} from "../../../../classes/validators";
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 
 @Component({
@@ -28,8 +28,8 @@ export class JollyConfigComponent {
     protected jollyService = inject(JollyService);
 
     protected configForm = this.fb.group({
-        teams: this.fb.control<Team[]>([], [minArrayLengthValidator(2)]),
-        roundLimit: this.fb.control({value: 5, disabled: true},[Validators.min(1)]),
+        teams: this.fb.control<Team[]>([], [CustomValidators.minArrayLength(2)]),
+        roundLimit: this.fb.control({value: 5, disabled: true}, [Validators.min(1)]),
         noRoundLimit: this.fb.control(true)
     });
     protected gameConfig = signal(this.configForm.getRawValue() as GameConfig);

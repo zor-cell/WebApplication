@@ -6,6 +6,7 @@ import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule} from "@angular
 import {NgForOf} from "@angular/common";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {Team} from "../../../../dto/all/Team";
+import {CustomValidators} from "../../../../classes/validators";
 
 @Component({
     selector: 'qwirkle-game-config',
@@ -27,7 +28,7 @@ export class QwirkleConfigComponent {
     protected qwirkleService = inject(QwirkleService);
 
     protected configForm = this.fb.group({
-        teams: this.fb.control<Team[]>([]),
+        teams: this.fb.control<Team[]>([], [CustomValidators.minArrayLength(1)]),
         playingTeam: this.fb.control({value: -1, disabled: true})
     });
 

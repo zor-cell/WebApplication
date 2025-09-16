@@ -1,13 +1,14 @@
 import {Component, effect, inject, signal} from '@angular/core';
 import {SliderCheckboxComponent} from "../../../all/slider-checkbox/slider-checkbox.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {GameConfig} from "../../../../dto/sites/catan/game/GameConfig";
 import {CatanService} from "../../../../services/sites/catan.service";
 import {PlayerSelectComponent} from "../../../all/player-select/player-select.component";
 import {GameMode, getGameModeName} from "../../../../dto/sites/catan/enums/GameMode";
 import {GameSessionConfigComponent} from "../../game-session/game-session-config.component";
 import {Team} from "../../../../dto/all/Team";
+import {CustomValidators} from "../../../../classes/validators";
 
 @Component({
     selector: 'catan-game-settings',
@@ -30,7 +31,7 @@ export class CatanConfigComponent {
     protected catanService = inject(CatanService);
 
     protected configForm = this.fb.group({
-        teams: this.fb.control<Team[]>([]),
+        teams: this.fb.control<Team[]>([], [CustomValidators.minArrayLength(2)]),
         gameMode: this.fb.control<GameMode>(GameMode.CITIES_AND_KNIGHTS),
         classicDice: this.fb.group({
             isBalanced: this.fb.control(true),

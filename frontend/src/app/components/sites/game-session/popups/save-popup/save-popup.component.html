@@ -1,5 +1,5 @@
-<ng-template #savePopup>
-    <form [formGroup]="saveForm" novalidate class="main-flex">
+<ng-template #savePopup let-formId="formId">
+    <form [formGroup]="saveForm" [id]="formId" novalidate class="main-flex">
         <table class="table">
             <thead>
             <tr>

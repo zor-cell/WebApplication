@@ -4,7 +4,6 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, NgTemplateOutlet} from "@angular/common";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 
-
 @Component({
     selector: 'app-popup-dialog',
     imports: [
@@ -19,6 +18,7 @@ import {PopupResultType} from "../../../../dto/all/PopupResultType";
 export class PopupDialogComponent {
     private activeModal = inject(NgbActiveModal);
 
+    public formId = signal<string | null>(null);
     public bodyTemplate = signal<TemplateRef<any> | null>(null);
     public submitValidator = signal<(() => boolean) | null>(null);
     public title = signal('Modal');

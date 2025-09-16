@@ -19,6 +19,7 @@ export class PopupService {
         const modalRef = this.modalService.open(PopupDialogComponent);
 
         //set popup inputs
+        modalRef.componentInstance.formId.set(`form-${crypto.randomUUID()}`);
         modalRef.componentInstance.title.set(title);
 
         if (submitText) modalRef.componentInstance.submitText.set(submitText);
