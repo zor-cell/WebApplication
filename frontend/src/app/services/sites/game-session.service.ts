@@ -41,7 +41,7 @@ export abstract class GameSessionService<Config extends GameConfigBase, State ex
   
   saveSession(resultState: ResultState, imageFile: File | null = null): Observable<GameDetails> {
     const formData = new FormData();
-    formData.append('gameState', new Blob([JSON.stringify(resultState)], { type: 'application/json' }));
+    formData.append('resultState', new Blob([JSON.stringify(resultState)], { type: 'application/json' }));
     if (imageFile) {
       formData.append('image', imageFile, imageFile.name);
     }

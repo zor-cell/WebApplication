@@ -13,6 +13,8 @@ import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
 import net.zorphy.backend.main.specs.GameSpecifications;
+import net.zorphy.backend.site.all.base.GameStateBase;
+import net.zorphy.backend.site.all.base.ResultStateBase;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,7 +59,16 @@ public class GameServiceImpl implements GameService {
         Game game = getGameInternal(id);
         GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
-        //TODO: in jolly images are saved in gameState -> also should be deleted
+        //TODO fix this
+        //jolly game state saves images in rounds, they should be deleted if game is deleted
+        if(gameDetails.metadata().gameType() == GameType.JOLLY) {
+            var a = gameDetails.gameState();
+        }
+        /*if(gameDetails.gameState() instanceof GameState gameState) {
+            for(RoundInfo round : gameState.rounds()) {
+                fileStorageService.deleteFile(round.imageUrl());
+            }
+        }*/
 
         gameRepository.deleteById(id);
         fileStorageService.deleteFile(game.getImageUrl());
@@ -66,7 +77,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDetails saveGame(Duration duration, GameType gameType, Object gameState, Object resultState, MultipartFile image, List<TeamDetails> teams) {
+    public GameDetails saveGame(GameType gameType, GameStateBase gameState, ResultStateBase resultState, MultipartFile image, List<TeamDetails> teams) {
         //get all players in team from db
         Set<Player> players = teams.stream()
                 .flatMap(team -> team.players().stream())
@@ -78,8 +89,8 @@ public class GameServiceImpl implements GameService {
         String path = fileStorageService.saveFile(gameType, image);
 
         Game toSave = new Game(
-                Instant.now(),
-                duration,
+                gameState.startTime(),
+                Duration.between(gameState.startTime(), Instant.now()),
                 gameType.name(),
                 path,
                 gameState,

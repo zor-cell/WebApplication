@@ -14,7 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
+public class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
     private final GameSessionService<Config, State, Result> sessionService;
     private final String SESSION_KEY;
     private final String SESSION_SAVE_KEY;
@@ -63,7 +63,7 @@ public abstract class GameSessionController<Config extends GameConfigBase, State
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "session/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public GameDetails saveSession(HttpSession session,
-                                @RequestPart("gameState") @Valid Result resultState,
+                                @RequestPart("resultState") @Valid Result resultState,
                                 @RequestPart(value = "image", required = false) MultipartFile image) {
         var gameState = getSessionState(session);
         if(getSessionSaved(session)) {

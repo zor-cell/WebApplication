@@ -27,7 +27,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
@@ -82,7 +81,6 @@ public class QwirkleServiceImpl implements QwirkleService {
     @Override
     public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
         return gameService.saveGame(
-                Duration.between(gameState.startTime(), Instant.now()),
                 GameType.QWIRKLE,
                 gameState,
                 resultState,

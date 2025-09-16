@@ -13,7 +13,6 @@ import net.zorphy.backend.site.catan.dto.game.GameState;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
@@ -159,7 +158,6 @@ public class CatanServiceImpl implements CatanService {
     @Override
     public GameDetails saveSession(GameState gameState, ResultState resultState, MultipartFile image) {
         return gameService.saveGame(
-                Duration.between(gameState.startTime(), Instant.now()),
                 GameType.CATAN,
                 gameState,
                 resultState,
