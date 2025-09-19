@@ -1,6 +1,6 @@
 <form [formGroup]="searchForm" class="search-form" (ngSubmit)="submit()">
     <div class="search-input-group" >
-        <div class="input-group justify-content-end">
+        <div class="input-group">
             <button class="btn btn-primary search-button" type="submit">
                 <i class="bi bi-search"></i>
             </button>
@@ -47,7 +47,9 @@
         <div class="row">
             <div class="col-12">
                 <label>Game Type</label>
-                <input class="form-control" formControlName="gameType" type="text">
+                <select class="form-select" formControlName="gameType">
+                    <option *ngFor="let type of gameTypes" [value]="type">{{ type }}</option>
+                </select>
             </div>
         </div>
         <div class="row justify-content-between mt-4">

@@ -24,8 +24,8 @@
     border-bottom-left-radius: 0;
 }
 
-.search-input-group input {
-    max-width: 400px;
+.form-select {
+    height: 38px;
 }
 
 ::ng-deep .wide-popover {

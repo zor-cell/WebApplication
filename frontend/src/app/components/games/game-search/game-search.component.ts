@@ -5,12 +5,14 @@ import {GameFilters} from "../../../dto/games/GameFilters";
 import {Options} from "@popperjs/core";
 import {GameType} from "../../../dto/games/GameType";
 import {DurationPipe} from "../../../pipes/DurationPipe";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'game-search',
   imports: [
     NgbPopover,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgForOf
   ],
   templateUrl: './game-search.component.html',
   standalone: true,
@@ -35,10 +37,10 @@ export class GameSearchComponent {
     return options;
   };
   protected isPopoverOpen: boolean = false;
+  protected gameTypes = Object.values(GameType);
 
   protected popOverOpen() {
     this.isPopoverOpen = true;
-
   }
 
   protected popOverClose() {
