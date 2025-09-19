@@ -6,5 +6,5 @@ export interface GameFilters {
     dateTo: string | null,
     minDuration: string | null,
     maxDuration: string | null,
-    gameType: GameType | null
+    gameTypes: GameType[] | null
 }

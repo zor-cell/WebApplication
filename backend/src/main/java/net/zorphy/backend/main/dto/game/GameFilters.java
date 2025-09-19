@@ -2,6 +2,7 @@ package net.zorphy.backend.main.dto.game;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 
 public record GameFilters(
         String text,
@@ -9,6 +10,6 @@ public record GameFilters(
         Instant dateTo,
         Duration minDuration,
         Duration maxDuration,
-        String gameType
+        List<GameType> gameTypes
 ) {
 }

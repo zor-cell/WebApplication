@@ -47,8 +47,8 @@
         <div class="row">
             <div class="col-12">
                 <label>Game Type</label>
-                <select class="form-select" formControlName="gameType">
-                    <option *ngFor="let type of gameTypes" [value]="type">{{ type }}</option>
+                <select class="form-select" formControlName="gameTypes" multiple>
+                    <option *ngFor="let type of allGameTypes" [value]="type">{{ type }}</option>
                 </select>
             </div>
         </div>

@@ -29,7 +29,7 @@ export class GameSearchComponent {
     dateTo: this.fb.control<Date | null>(null),
     minDuration: this.fb.control<string | null>(null),
     maxDuration: this.fb.control<string | null>(null),
-    gameType: this.fb.control<GameType | null>(null),
+    gameTypes: this.fb.control<GameType[] | null>(null),
   });
   protected popperOptions = (options: Partial<Options>) => {
     options.placement = 'bottom-end';
@@ -37,7 +37,7 @@ export class GameSearchComponent {
     return options;
   };
   protected isPopoverOpen: boolean = false;
-  protected gameTypes = Object.values(GameType);
+  protected allGameTypes = Object.values(GameType);
 
   protected popOverOpen() {
     this.isPopoverOpen = true;

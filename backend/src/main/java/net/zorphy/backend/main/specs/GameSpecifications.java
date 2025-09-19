@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import net.zorphy.backend.main.dto.game.GameFilters;
+import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.entity.Game_;
 import org.springframework.data.jpa.domain.Specification;
@@ -55,10 +56,14 @@ public class GameSpecifications {
             }
 
             //game type
-            if(gameFilters.gameType() != null) {
+            if(gameFilters.gameTypes() != null && !gameFilters.gameTypes().isEmpty()) {
                 Path<String> gameType = root.get(Game_.gameType);
-                Predicate p = cb.like(cb.lower(gameType), "%" + gameFilters.gameType().toLowerCase() + "%");
-                predicates.add(p);
+                Predicate all = cb.or();
+                for(GameType filterGameType : gameFilters.gameTypes()) {
+                    Predicate cur = cb.like(cb.lower(gameType), "%" + filterGameType.toString().toLowerCase() + "%");
+                    all = cb.or(cur, all);
+                }
+                predicates.add(all);
             }
 
             //text
