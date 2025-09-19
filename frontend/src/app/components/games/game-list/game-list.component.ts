@@ -8,6 +8,7 @@ import {MainHeaderComponent} from '../../all/main-header/main-header.component';
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {GameSearchComponent} from "../game-search/game-search.component";
 import {GameFilters} from "../../../dto/games/GameFilters";
+import {AuthService} from "../../../services/all/auth.service";
 
 @Component({
   selector: 'game-list',
@@ -27,6 +28,7 @@ import {GameFilters} from "../../../dto/games/GameFilters";
 export class GameListComponent implements OnInit {
   private router = inject(Router);
   private gameService = inject(GameService);
+  protected authService = inject(AuthService);
 
   protected dateFormat = 'MMM d, yyyy HH:mm';
   protected games = signal<GameMetadata[]>([]);
