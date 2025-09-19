@@ -1,17 +1,25 @@
-<form class="search-form">
-    <form [formGroup]="searchForm" class="search-input">
-        <input class="form-control" formControlName="text" type="text">
-        <button class="btn btn-primary"
+<form [formGroup]="searchForm" class="search-form" (ngSubmit)="submit()">
+    <div class="search-input-group" >
+        <div class="input-group justify-content-end">
+            <button class="btn btn-primary search-button" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+            <input class="form-control search-input" formControlName="text" type="text" placeholder="Search...">
+        </div>
+        <button class="btn btn-secondary filter-button"
                 popoverClass="wide-popover"
                 popoverTitle="Filters"
                 [ngbPopover]="searchFilters"
                 [popperOptions]="popperOptions"
                 [autoClose]="'outside'"
+                (shown)="popOverOpen()"
+                (hidden)="popOverClose()"
+                [class.active]="isPopoverOpen"
                 type="button"
         >
-            <i class="bi bi-filter"></i>
+            <i class="bi bi-funnel"></i>
         </button>
-    </form>
+    </div>
 </form>
 
 <ng-template #searchFilters>
@@ -42,9 +50,16 @@
                 <input class="form-control" formControlName="gameType" type="text">
             </div>
         </div>
-        <div class="row justify-content-end">
+        <div class="row justify-content-between mt-4">
             <div class="col-auto">
-                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-outline-danger" type="button" (click)="clear()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
         </div>
     </form>

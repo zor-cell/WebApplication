@@ -30,10 +30,26 @@ export class GameSearchComponent {
     gameType: this.fb.control<GameType | null>(null),
   });
   protected popperOptions = (options: Partial<Options>) => {
-    options.placement = 'bottom';
+    options.placement = 'bottom-end';
 
     return options;
   };
+  protected isPopoverOpen: boolean = false;
+
+  protected popOverOpen() {
+    this.isPopoverOpen = true;
+
+  }
+
+  protected popOverClose() {
+    this.isPopoverOpen = false;
+  }
+
+  protected clear() {
+    this.searchForm.reset({
+      text: this.searchForm.controls.text.value
+    });
+  }
 
   protected submit() {
     const filters = this.searchForm.getRawValue() as GameFilters;
