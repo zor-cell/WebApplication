@@ -4,14 +4,23 @@
     align-items: center;
     flex-direction: column;
 
-    gap:2rem;
+    gap: 2rem;
 }
 
 .row-actions {
     display: flex;
+    justify-content: center;
+
     gap: 0.2rem;
 }
 
 .table tbody tr td, .table tbody tr th {
     vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+    th:nth-child(4), td:nth-child(4), /* Duration */
+    th:nth-child(5), td:nth-child(5) { /* Players */
+        display: none;
+    }
 }

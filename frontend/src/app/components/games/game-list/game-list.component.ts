@@ -30,6 +30,7 @@ export class GameListComponent implements OnInit {
 
   protected dateFormat = 'MMM d, yyyy HH:mm';
   protected games = signal<GameMetadata[]>([]);
+  protected isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
     this.getGames();
@@ -53,13 +54,17 @@ export class GameListComponent implements OnInit {
 
 
   private getGames() {
+    this.isLoading.set(true);
     this.gameService.getGames().subscribe(res => {
-        this.games.set(res);
+      this.isLoading.set(false);
+      this.games.set(res);
     });
   }
 
   private searchGames(filters: GameFilters) {
+    this.isLoading.set(true);
     this.gameService.searchGames(filters).subscribe(res => {
+      this.isLoading.set(false);
       this.games.set(res);
     });
   }

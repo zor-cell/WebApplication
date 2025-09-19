@@ -5,7 +5,7 @@
     </button>
 </app-main-header>
 
-<div *ngIf="games() as gameList" class="main-container games-container">
+<div class="main-container games-container">
     <table class="table">
         <thead>
         <tr>
@@ -18,22 +18,32 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let game of gameList;let i = index">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ game.gameType }}</td>
-            <td>{{ game.playedAt |  date:dateFormat }}</td>
-            <td>{{ game.duration |  duration }}</td>
-            <td>{{ game.players.length }}</td>
-            <td class="row-actions">
-                <button class="btn btn-sm btn-primary" (click)="openGameInfo(game.id)">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <button class="btn btn-sm btn-warning">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
-            </td>
-        </tr>
+            @if (isLoading()) {
+                <tr>
+                    <td colspan="6" class="text-center border-bottom-0">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </td>
+                </tr>
+            } @else {
+                <tr *ngFor="let game of games();let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ game.gameType }}</td>
+                    <td>{{ game.playedAt |  date:dateFormat }}</td>
+                    <td>{{ game.duration |  duration }}</td>
+                    <td>{{ game.players.length }}</td>
+                    <td class="row-actions">
+                        <button class="btn btn-sm btn-primary" (click)="openGameInfo(game.id)">
+                            <i class="bi bi-info-circle"></i>
+                        </button>
+                        <button class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-    <div *ngIf="gameList.length === 0">No saved games available</div>
+    <div *ngIf="games().length === 0">No games found</div>
 </div>
