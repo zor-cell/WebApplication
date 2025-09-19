@@ -1,6 +1,6 @@
 <form class="search-form">
-    <div class="search-input">
-        <input type="text" class="form-control">
+    <form [formGroup]="searchForm" class="search-input">
+        <input class="form-control" formControlName="text" type="text">
         <button class="btn btn-primary"
                 popoverClass="wide-popover"
                 popoverTitle="Filters"
@@ -11,7 +11,7 @@
         >
             <i class="bi bi-filter"></i>
         </button>
-    </div>
+    </form>
 </form>
 
 <ng-template #searchFilters>

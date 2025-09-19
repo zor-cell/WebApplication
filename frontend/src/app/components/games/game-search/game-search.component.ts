@@ -22,6 +22,7 @@ export class GameSearchComponent {
   public changeFiltersEvent = output<GameFilters>();
 
   protected searchForm = this.fb.group({
+    text: this.fb.control<string | null>(null),
     dateFrom: this.fb.control<Date | null>(null),
     dateTo: this.fb.control<Date | null>(null),
     minDuration: this.fb.control<string | null>(null),

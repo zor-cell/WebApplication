@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 public record GameFilters(
+        String text,
         Instant dateFrom,
         Instant dateTo,
         Duration minDuration,

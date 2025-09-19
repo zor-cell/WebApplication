@@ -54,11 +54,44 @@ public class GameSpecifications {
                 predicates.add(durationPredicate);
             }
 
-            //gametype
+            //game type
             if(gameFilters.gameType() != null) {
                 Path<String> gameType = root.get(Game_.gameType);
                 Predicate p = cb.like(cb.lower(gameType), "%" + gameFilters.gameType().toLowerCase() + "%");
                 predicates.add(p);
+            }
+
+            //text
+            if(gameFilters.text() != null && !gameFilters.text().isEmpty()) {
+                //search game type
+                Path<String> gameType = root.get(Game_.gameType);
+                Predicate gameTypePredicate = cb.like(cb.lower(gameType), "%" + gameFilters.text().toLowerCase() + "%");
+
+                //jsonb query to recursively check all properties values with regex
+                String searchText = gameFilters.text().replace("\"", "\\\"");
+                String jsonQuery = "$.** ? (@ like_regex \"" + searchText + "\" flag \"i\")";
+
+                //search game state
+                Predicate gameStatePredicate = cb.isTrue(cb.function(
+                        "jsonb_path_exists",
+                        Boolean.class,
+                        root.get(Game_.gameState),
+                        cb.literal(jsonQuery)
+                ));
+
+                //search result state
+                Predicate resultStatePredicate = cb.isTrue(cb.function(
+                        "jsonb_path_exists",
+                        Boolean.class,
+                        root.get(Game_.result),
+                        cb.literal(jsonQuery)
+                ));
+
+                predicates.add(cb.or(
+                        gameTypePredicate,
+                        gameStatePredicate,
+                        resultStatePredicate
+                ));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
