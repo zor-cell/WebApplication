@@ -1,10 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {GameService} from "../../../services/game.service";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {GameMetadata} from "../../../dto/games/GameMetadata";
 import {Router} from "@angular/router";
 import {MainHeaderComponent} from '../../all/main-header/main-header.component';
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {GameSearchComponent} from "../game-search/game-search.component";
+import {GameFilters} from "../../../dto/games/GameFilters";
 
 @Component({
   selector: 'game-list',
@@ -13,7 +16,9 @@ import {MainHeaderComponent} from '../../all/main-header/main-header.component';
     DatePipe,
     DurationPipe,
     NgIf,
-    MainHeaderComponent
+    MainHeaderComponent,
+    NgbPopover,
+    GameSearchComponent
   ],
   templateUrl: './game-list.component.html',
   standalone: true,
@@ -24,10 +29,10 @@ export class GameListComponent implements OnInit {
   private gameService = inject(GameService);
 
   protected dateFormat = 'MMM d, yyyy HH:mm';
-  protected games!: GameMetadata[];
+  protected games = signal<GameMetadata[]>([]);
 
   ngOnInit(): void {
-    this.getProjects();
+    this.getGames();
 
     //adjust date format
     const mql = window.matchMedia('(max-width: 600px)');
@@ -42,12 +47,20 @@ export class GameListComponent implements OnInit {
     this.router.navigate(['/games', id]);
   }
 
+  protected searchFiltersChanged(filters: GameFilters) {
+    this.searchGames(filters);
+  }
 
-  private getProjects() {
-    this.gameService.getGames().subscribe({
-      next: res => {
-        this.games = res;
-      }
+
+  private getGames() {
+    this.gameService.getGames().subscribe(res => {
+        this.games.set(res);
+    });
+  }
+
+  private searchGames(filters: GameFilters) {
+    this.gameService.searchGames(filters).subscribe(res => {
+      this.games.set(res);
     });
   }
 

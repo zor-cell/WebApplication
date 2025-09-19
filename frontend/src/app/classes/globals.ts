@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {HttpContext} from "@angular/common/http";
 import {SILENT_ERROR_HANDLER} from "./interceptors";
@@ -7,10 +7,8 @@ import {SILENT_ERROR_HANDLER} from "./interceptors";
     providedIn: 'root'
 })
 export class Globals {
-    readonly backendUri: string = this.getBackendUrl();
-
-    constructor(private toastr: ToastrService) {
-    }
+    private toastr = inject(ToastrService);
+    public readonly backendUri: string = this.getBackendUrl();
 
     private getBackendUrl(): string {
         if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080
@@ -20,11 +18,11 @@ export class Globals {
         }
     }
 
-    get silentErrorContext(): HttpContext {
+    public get silentErrorContext(): HttpContext {
         return new HttpContext().set(SILENT_ERROR_HANDLER, true);
     }
 
-    handleError(error: any): void {
+    public handleError(error: any): void {
       const e = error instanceof Object ? error.error : error;
       const message = e instanceof ProgressEvent ? error.message : e;
         const status: number = error.status;
@@ -32,7 +30,7 @@ export class Globals {
         this.toastr.error(message, 'ERROR ' + status);
     }
 
-    handleSuccess(message: string) {
+    public handleSuccess(message: string) {
         this.toastr.success(message);
     }
 }

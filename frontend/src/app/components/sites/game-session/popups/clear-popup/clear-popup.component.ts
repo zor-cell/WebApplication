@@ -1,5 +1,5 @@
 import {Component, inject, output, TemplateRef, viewChild} from '@angular/core';
-import {PopupService} from "../../../../../services/popup.service";
+import {PopupService} from "../../../../../services/all/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 
 @Component({

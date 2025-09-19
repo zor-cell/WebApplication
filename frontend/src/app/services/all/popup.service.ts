@@ -1,7 +1,7 @@
 import {inject, Injectable, TemplateRef} from '@angular/core';
-import {PopupDialogComponent} from "../components/all/popups/popup-dialog/popup-dialog.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {PopupResultType} from "../dto/all/PopupResultType";
+import {PopupDialogComponent} from "../../components/all/popups/popup-dialog/popup-dialog.component";
+import {NgbModal, NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {PopupResultType} from "../../dto/all/PopupResultType";
 
 @Injectable({
     providedIn: 'root'

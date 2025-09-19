@@ -1,0 +1,51 @@
+<form class="search-form">
+    <div class="search-input">
+        <input type="text" class="form-control">
+        <button class="btn btn-primary"
+                popoverClass="wide-popover"
+                popoverTitle="Filters"
+                [ngbPopover]="searchFilters"
+                [popperOptions]="popperOptions"
+                [autoClose]="'outside'"
+                type="button"
+        >
+            <i class="bi bi-filter"></i>
+        </button>
+    </div>
+</form>
+
+<ng-template #searchFilters>
+    <form [formGroup]="searchForm" class="form-container" (ngSubmit)="submit()">
+        <div class="row">
+            <div class="col-6">
+                <label>From</label>
+                <input class="form-control" formControlName="dateFrom" type="date">
+            </div>
+            <div class="col-6">
+                <label>To</label>
+                <input class="form-control" formControlName="dateTo" type="date">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>Min Duration</label>
+                <input class="form-control" formControlName="minDuration" type="time" step="1">
+            </div>
+            <div class="col-6">
+                <label>Max Duration</label>
+                <input class="form-control" formControlName="maxDuration" type="time" step="1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <label>Game Type</label>
+                <input class="form-control" formControlName="gameType" type="text">
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</ng-template>

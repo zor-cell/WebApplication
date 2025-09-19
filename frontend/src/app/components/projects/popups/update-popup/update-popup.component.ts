@@ -1,5 +1,5 @@
 import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild} from '@angular/core';
-import {PopupService} from "../../../../services/popup.service";
+import {PopupService} from "../../../../services/all/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
 import {ProjectService} from "../../../../services/project.service";
 import {ProjectDetails} from "../../../../dto/projects/ProjectDetails";

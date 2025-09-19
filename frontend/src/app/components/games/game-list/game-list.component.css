@@ -7,21 +7,6 @@
     gap:2rem;
 }
 
-.search-form {
-  width: 75%;
-}
-
-.search-input {
-  display: flex;
-  justify-content: center;
-
-  gap: 0.5rem;
-}
-
-.search-input input {
-  max-width: 400px;
-}
-
 .row-actions {
     display: flex;
     gap: 0.2rem;

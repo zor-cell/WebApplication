@@ -2,7 +2,7 @@ import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
-import {PopupService} from "../../../../../services/popup.service";
+import {PopupService} from "../../../../../services/all/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {ResultState} from "../../../../../dto/sites/catan/result/ResultState";
 import {ResultTeamState} from "../../../../../dto/sites/catan/result/ResultTeamState";

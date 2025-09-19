@@ -1,7 +1,9 @@
+import {GameType} from "./GameType";
+
 export interface GameFilters {
-    dateFrom: Date | null,
-    dateTo: Date | null,
+    dateFrom: string | null,
+    dateTo: string | null,
     minDuration: string | null,
     maxDuration: string | null,
-    gameType: string | null
+    gameType: GameType | null
 }

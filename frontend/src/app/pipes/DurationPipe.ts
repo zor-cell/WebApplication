@@ -31,4 +31,11 @@ export class DurationPipe implements PipeTransform {
         return `${hh}:${mm}:${ss}`;
         //return `${mmFromH}m ${ss}s`;
     }
+
+    public static toIsoFormat(duration: string | null) {
+        if(!duration) return null;
+
+        const [h, m] = duration.split(':').map(Number);
+        return `PT${h ? h + 'H' : ''}${m ? m + 'M' : ''}`;
+    }
 }

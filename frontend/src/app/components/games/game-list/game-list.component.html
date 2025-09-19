@@ -1,17 +1,8 @@
 <app-main-header>
-  <ng-container ngProjectAs="middle">
-  <form class="search-form">
-    <div class="search-input">
-      <input type="text" class="form-control">
-      <button class="btn btn-primary">
-        <i class="bi bi-filter"></i>
-      </button>
-    </div>
-  </form>
-  </ng-container>
+    <game-search class="w-100" ngProjectAs="middle" (changeFiltersEvent)="searchFiltersChanged($event)"/>
 </app-main-header>
 
-<div *ngIf=games class="main-container games-container">
+<div *ngIf="games() as gameList" class="main-container games-container">
     <table class="table">
         <thead>
         <tr>
@@ -24,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let game of games;let i = index">
+        <tr *ngFor="let game of gameList;let i = index">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ game.gameType }}</td>
             <td>{{ game.playedAt |  date:dateFormat }}</td>
@@ -41,5 +32,5 @@
         </tr>
         </tbody>
     </table>
-    <div *ngIf="games.length === 0">No saved games available</div>
+    <div *ngIf="gameList.length === 0">No saved games available</div>
 </div>

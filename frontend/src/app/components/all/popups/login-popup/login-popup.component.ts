@@ -8,7 +8,7 @@ import {
     ReactiveFormsModule,
     Validators
 } from "@angular/forms";
-import {PopupService} from "../../../../services/popup.service";
+import {PopupService} from "../../../../services/all/popup.service";
 import {UserLoginDetails} from "../../../../dto/all/UserLoginDetails";
 import {AuthService} from "../../../../services/all/auth.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";

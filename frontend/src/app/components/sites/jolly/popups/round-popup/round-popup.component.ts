@@ -9,7 +9,7 @@ import {
     Validators
 } from "@angular/forms";
 import {Team} from "../../../../../dto/all/Team";
-import {PopupService} from "../../../../../services/popup.service";
+import {PopupService} from "../../../../../services/all/popup.service";
 import {PopupResultType} from "../../../../../dto/all/PopupResultType";
 import {NgForOf, NgIf} from "@angular/common";
 import {RoundResult} from "../../../../../dto/sites/jolly/RoundResult";
