@@ -11,6 +11,7 @@ import {QwirkleConfigComponent} from "./components/sites/qwirkle/config/config.c
 import {JollyGameComponent} from "./components/sites/jolly/game/game.component";
 import {JollyConfigComponent} from "./components/sites/jolly/config/config.component";
 import {RiskSimulationComponent} from "./components/sites/risk/simulation/simulation.component";
+import {GameStatsComponent} from "./components/games/stats/game-stats/game-stats.component";
 
 export const routes: Routes = [
     //project routing
@@ -20,6 +21,7 @@ export const routes: Routes = [
 
     //game routing
     {path: 'games', component: GameListComponent},
+    {path: 'games/stats', component: GameStatsComponent},
     {path: 'games/:id', component: GameInfoComponent},
 
     //connect4 routing

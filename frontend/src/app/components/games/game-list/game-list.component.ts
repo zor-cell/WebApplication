@@ -50,6 +50,10 @@ export class GameListComponent implements OnInit {
     this.router.navigate(['/games', id]);
   }
 
+  protected openGameStats() {
+    this.router.navigate(['/games/stats']);
+  }
+
   protected searchFiltersChanged(filters: GameFilters) {
     this.searchGames(filters);
   }

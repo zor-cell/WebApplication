@@ -1,6 +1,6 @@
 <app-main-header>
     <game-search class="w-100" ngProjectAs="middle" (changeFiltersEvent)="searchFiltersChanged($event)"/>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" (click)="openGameStats()">
         <i class="bi bi-graph-up"></i>
     </button>
 </app-main-header>
