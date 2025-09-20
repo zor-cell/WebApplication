@@ -1,12 +1,15 @@
 package net.zorphy.backend.main.specs;
 
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.entity.Game_;
+import net.zorphy.backend.main.entity.Player;
+import net.zorphy.backend.main.entity.Player_;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.Instant;
@@ -64,6 +67,13 @@ public class GameSpecifications {
                     all = cb.or(cur, all);
                 }
                 predicates.add(all);
+            }
+
+            //players
+            if(gameFilters.players() != null && !gameFilters.players().isEmpty()) {
+                Join<Game, Player> playerJoin = root.join(Game_.players);
+
+                predicates.add(playerJoin.get(Player_.id).in(gameFilters.players()));
             }
 
             //text

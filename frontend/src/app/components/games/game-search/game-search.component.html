@@ -52,6 +52,14 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <label>Players</label>
+                <select class="form-select" formControlName="players" multiple>
+                    <option *ngFor="let player of players()" [value]="player.id">{{ player.name }}</option>
+                </select>
+            </div>
+        </div>
         <div class="row justify-content-between mt-4">
             <div class="col-auto">
                 <button class="btn btn-outline-danger" type="button" (click)="clear()">

@@ -1,4 +1,4 @@
-import {Component, inject, output} from '@angular/core';
+import {Component, inject, OnInit, output, signal} from '@angular/core';
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {GameFilters} from "../../../dto/games/GameFilters";
@@ -6,6 +6,8 @@ import {Options} from "@popperjs/core";
 import {GameType} from "../../../dto/games/GameType";
 import {DurationPipe} from "../../../pipes/DurationPipe";
 import {NgForOf} from "@angular/common";
+import {PlayerService} from "../../../services/player.service";
+import {PlayerDetails} from "../../../dto/all/PlayerDetails";
 
 @Component({
   selector: 'game-search',
@@ -18,11 +20,13 @@ import {NgForOf} from "@angular/common";
   standalone: true,
   styleUrl: './game-search.component.css'
 })
-export class GameSearchComponent {
+export class GameSearchComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private playerService = inject(PlayerService);
 
   public changeFiltersEvent = output<GameFilters>();
 
+  protected players = signal<PlayerDetails[]>([]);
   protected searchForm = this.fb.group({
     text: this.fb.control<string | null>(null),
     dateFrom: this.fb.control<Date | null>(null),
@@ -30,6 +34,7 @@ export class GameSearchComponent {
     minDuration: this.fb.control<string | null>(null),
     maxDuration: this.fb.control<string | null>(null),
     gameTypes: this.fb.control<GameType[] | null>(null),
+    players: this.fb.control<string[] | null>(null)
   });
   protected popperOptions = (options: Partial<Options>) => {
     options.placement = 'bottom-end';
@@ -38,6 +43,10 @@ export class GameSearchComponent {
   };
   protected isPopoverOpen: boolean = false;
   protected allGameTypes = Object.values(GameType);
+
+  ngOnInit() {
+    this.getPlayers();
+  }
 
   protected popOverOpen() {
     this.isPopoverOpen = true;
@@ -63,5 +72,11 @@ export class GameSearchComponent {
     filters.maxDuration = filters.maxDuration ? DurationPipe.toIsoFormat(filters.maxDuration) : null;
 
     this.changeFiltersEvent.emit(filters);
+  }
+
+  private getPlayers() {
+    this.playerService.getPlayers().subscribe(res => {
+      this.players.set(res);
+    })
   }
 }

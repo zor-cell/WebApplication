@@ -1,4 +1,5 @@
 import {GameType} from "./GameType";
+import {PlayerDetails} from "../all/PlayerDetails";
 
 export interface GameFilters {
     text: string | null;
@@ -6,5 +7,6 @@ export interface GameFilters {
     dateTo: string | null,
     minDuration: string | null,
     maxDuration: string | null,
-    gameTypes: GameType[] | null
+    gameTypes: GameType[] | null,
+    players: string[] | null
 }
