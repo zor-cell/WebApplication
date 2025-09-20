@@ -1,1 +1,47 @@
-<p>game-stats works!</p>
+<app-main-header>
+    <game-search class="w-100" ngProjectAs="middle" (changeFiltersEvent)="searchFiltersChanged($event)"/>
+</app-main-header>
+
+<div class="main-container">
+    <div class="card w-50" *ngFor="let stats of gameStats()">
+        <div class="card-header">
+            Stats for Philippe - CATAN
+        </div>
+        <div class="card-body meta">
+            <div class="meta-entry">
+                <div class="meta-label">Win Rate</div>
+                <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
+            </div>
+
+            <div>
+                <div class="meta-entry">
+                    <div class="meta-label">Avg Score</div>
+                    <div>{{ stats.avgScore.toFixed(2) }}</div>
+                </div>
+                <div class="meta-entry">
+                    <div class="meta-label">Max Score</div>
+                    <div>{{ stats.maxScore }}</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="meta-entry">
+                    <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
+                    <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
+                </div>
+                <div class="meta-entry">
+                    <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
+                    <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
+                </div>
+                <div class="meta-entry">
+                    <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
+                    <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
+                </div>
+                <div class="meta-entry">
+                    <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span></div>
+                    <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
