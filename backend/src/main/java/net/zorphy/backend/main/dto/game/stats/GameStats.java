@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.dto.game;
+package net.zorphy.backend.main.dto.game.stats;
 
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 
@@ -12,6 +12,7 @@ public record GameStats(
         PlayerDetails victim,
         PlayerDetails rival,
         PlayerDetails companion,
-        float startPosCor
+        float startPosCor,
+        GameSpecificStats gameSpecific
 ) {
 }

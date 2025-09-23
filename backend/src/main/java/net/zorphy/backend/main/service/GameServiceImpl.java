@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.zorphy.backend.main.dto.game.*;
+import net.zorphy.backend.main.dto.game.stats.GameStats;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
@@ -33,12 +34,18 @@ public class GameServiceImpl implements GameService {
     private final PlayerRepository playerRepository;
     private final GameMapper gameMapper;
     private final FileStorageService fileStorageService;
+    private final GameStatsUtil gameStatsUtil;
 
-    public GameServiceImpl(GameRepository gameRepository, PlayerRepository playerRepository, GameMapper gameMapper, FileStorageService fileStorageService) {
+    public GameServiceImpl(GameRepository gameRepository,
+                           PlayerRepository playerRepository,
+                           GameMapper gameMapper,
+                           FileStorageService fileStorageService,
+                           GameStatsUtil gameStatsUtil) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
         this.gameMapper = gameMapper;
         this.fileStorageService = fileStorageService;
+        this.gameStatsUtil = gameStatsUtil;
     }
 
     @Override
@@ -70,7 +77,7 @@ public class GameServiceImpl implements GameService {
                 Specification<Game> specs = GameSpecifications.search(playerFilters);
                 List<Game> games = gameRepository.findAll(specs);
 
-                GameStats stats = GameStatsUtil.computeStats(playerId, games);
+                GameStats stats = gameStatsUtil.computeStats(playerId, games);
                 gameStats.add(stats);
             }
         }

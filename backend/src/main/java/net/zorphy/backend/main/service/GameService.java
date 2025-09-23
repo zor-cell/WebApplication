@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.main.dto.game.*;
+import net.zorphy.backend.main.dto.game.stats.GameStats;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
