@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.service;
+package net.zorphy.backend.main.service.game;
 
 import net.zorphy.backend.main.dto.game.*;
 import net.zorphy.backend.main.dto.game.stats.GameStats;

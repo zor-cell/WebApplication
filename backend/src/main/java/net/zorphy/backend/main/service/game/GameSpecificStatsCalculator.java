@@ -1,6 +1,7 @@
-package net.zorphy.backend.main.dto.game.stats;
+package net.zorphy.backend.main.service.game;
 
 import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
 import net.zorphy.backend.main.entity.Game;
 
 import java.util.List;

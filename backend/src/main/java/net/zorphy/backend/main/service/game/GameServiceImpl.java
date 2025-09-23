@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.service;
+package net.zorphy.backend.main.service.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -13,7 +13,7 @@ import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
-import net.zorphy.backend.main.service.util.GameStatsUtil;
+import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
@@ -35,17 +35,23 @@ public class GameServiceImpl implements GameService {
     private final GameMapper gameMapper;
     private final FileStorageService fileStorageService;
     private final GameStatsUtil gameStatsUtil;
+    private final Map<GameType, GameSpecificDelete> gameDeleteMap = new HashMap<>();
 
     public GameServiceImpl(GameRepository gameRepository,
                            PlayerRepository playerRepository,
                            GameMapper gameMapper,
                            FileStorageService fileStorageService,
-                           GameStatsUtil gameStatsUtil) {
+                           GameStatsUtil gameStatsUtil,
+                           List<GameSpecificDelete> gameDeleteList) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
         this.gameMapper = gameMapper;
         this.fileStorageService = fileStorageService;
         this.gameStatsUtil = gameStatsUtil;
+
+        for(var gameDelete : gameDeleteList) {
+            gameDeleteMap.put(gameDelete.supportedType(), gameDelete);
+        }
     }
 
     @Override
@@ -95,15 +101,10 @@ public class GameServiceImpl implements GameService {
         Game game = getGameInternal(id);
         GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
-        if (gameDetails.metadata().gameType() == GameType.JOLLY) {
-            //jolly game state saves images in rounds, they should be deleted if game is deleted
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            GameState gameState = mapper.convertValue(gameDetails.gameState(), GameState.class);
-            for (RoundInfo round : gameState.rounds()) {
-                fileStorageService.deleteFile(round.imageUrl());
-            }
+        //do game specific actions before delete
+        GameSpecificDelete specificDelete = gameDeleteMap.get(gameDetails.metadata().gameType());
+        if(specificDelete != null) {
+            specificDelete.beforeDelete(gameDetails);
         }
 
         gameRepository.deleteById(id);

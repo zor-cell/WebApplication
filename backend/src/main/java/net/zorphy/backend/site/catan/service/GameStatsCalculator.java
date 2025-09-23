@@ -2,7 +2,7 @@ package net.zorphy.backend.site.catan.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.game.stats.GameSpecificStatsCalculator;
+import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.dto.game.GameStats;

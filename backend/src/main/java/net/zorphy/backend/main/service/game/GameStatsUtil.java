@@ -1,9 +1,8 @@
-package net.zorphy.backend.main.service.util;
+package net.zorphy.backend.main.service.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
-import net.zorphy.backend.main.dto.game.stats.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.dto.game.stats.GameStats;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Game;

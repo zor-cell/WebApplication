@@ -3,7 +3,7 @@ package net.zorphy.backend.site.jolly.service;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.FileStorageService;
-import net.zorphy.backend.main.service.GameService;
+import net.zorphy.backend.main.service.game.GameService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
