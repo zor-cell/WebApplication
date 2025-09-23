@@ -3,6 +3,7 @@ package net.zorphy.backend.main.controller;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameMetadata;
+import net.zorphy.backend.main.dto.game.GameStats;
 import net.zorphy.backend.main.service.GameService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,11 @@ public class GameController {
     @GetMapping("/search")
     public List<GameMetadata> searchGames(@ModelAttribute GameFilters gameFilters) {
         return gameService.searchGames(gameFilters);
+    }
+
+    @GetMapping("/stats")
+    public List<GameStats> getStats(@ModelAttribute GameFilters gameFilters) {
+        return gameService.getStats(gameFilters);
     }
 
     @GetMapping("/{id}")

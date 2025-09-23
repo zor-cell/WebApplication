@@ -1,6 +1,8 @@
 import {PlayerDetails} from "../all/PlayerDetails";
 
 export interface GameStats {
+    player: PlayerDetails;
+    gamesPlayed: number;
     winRate: number;
     avgScore: number;
     maxScore: number;

@@ -1,16 +1,22 @@
 <app-main-header>
-    <game-search class="w-100" ngProjectAs="middle" (changeFiltersEvent)="searchFiltersChanged($event)"/>
+    <game-search class="w-100" ngProjectAs="middle" [showMultiGameTypes]="false" (changeFiltersEvent)="searchFiltersChanged($event)"/>
 </app-main-header>
 
 <div class="main-container">
-    <div class="card w-50" *ngFor="let stats of gameStats()">
+    <div class="card w-50" *ngFor="let stats of gameStats();let i = index">
         <div class="card-header">
-            Stats for Philippe - CATAN
+            Stats for {{ stats.player?.name }} - CATAN
         </div>
         <div class="card-body meta">
-            <div class="meta-entry">
-                <div class="meta-label">Win Rate</div>
-                <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
+            <div>
+                <div class="meta-entry">
+                    <div class="meta-label">Games Played</div>
+                    <div>{{ stats.gamesPlayed }}</div>
+                </div>
+                <div class="meta-entry">
+                    <div class="meta-label">Win Rate</div>
+                    <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
+                </div>
             </div>
 
             <div>
@@ -43,5 +49,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div *ngIf="gameStats().length === 0">
+        No games found
     </div>
 </div>

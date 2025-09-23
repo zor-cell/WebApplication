@@ -18,7 +18,6 @@ import {AuthService} from "../../../services/all/auth.service";
     DurationPipe,
     NgIf,
     MainHeaderComponent,
-    NgbPopover,
     GameSearchComponent
   ],
   templateUrl: './game-list.component.html',

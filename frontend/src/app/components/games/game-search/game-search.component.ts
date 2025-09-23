@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {GameFilters} from "../../../dto/games/GameFilters";
@@ -24,6 +24,7 @@ export class GameSearchComponent implements OnInit {
   private fb = inject(FormBuilder);
   private playerService = inject(PlayerService);
 
+  public showMultiGameTypes = input<boolean>(true);
   public changeFiltersEvent = output<GameFilters>();
 
   protected players = signal<PlayerDetails[]>([]);
@@ -62,7 +63,7 @@ export class GameSearchComponent implements OnInit {
     });
   }
 
-  protected submit() {
+  protected submit(popover: NgbPopover | null = null) {
     const filters = this.searchForm.getRawValue() as GameFilters;
 
     //apply ISO standards
@@ -72,6 +73,10 @@ export class GameSearchComponent implements OnInit {
     filters.maxDuration = filters.maxDuration ? DurationPipe.toIsoFormat(filters.maxDuration) : null;
 
     this.changeFiltersEvent.emit(filters);
+
+    if(popover) {
+      popover.close();
+    }
   }
 
   private getPlayers() {

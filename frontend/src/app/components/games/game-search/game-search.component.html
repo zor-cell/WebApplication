@@ -7,6 +7,7 @@
             <input class="form-control search-input" formControlName="text" type="text" placeholder="Search...">
         </div>
         <button class="btn btn-secondary filter-button"
+                #searchPopover="ngbPopover"
                 popoverClass="wide-popover"
                 popoverTitle="Filters"
                 [ngbPopover]="searchFilters"
@@ -23,7 +24,7 @@
 </form>
 
 <ng-template #searchFilters>
-    <form [formGroup]="searchForm" class="form-container" (ngSubmit)="submit()">
+    <form [formGroup]="searchForm" class="form-container" (ngSubmit)="submit(searchPopover)">
         <div class="row">
             <div class="col-6">
                 <label>From</label>
@@ -47,7 +48,7 @@
         <div class="row">
             <div class="col-12">
                 <label>Game Types</label>
-                <select class="form-select" formControlName="gameTypes" multiple>
+                <select class="form-select" formControlName="gameTypes" [multiple]="showMultiGameTypes()">
                     <option *ngFor="let type of allGameTypes" [value]="type">{{ type }}</option>
                 </select>
             </div>

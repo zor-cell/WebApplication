@@ -3,10 +3,7 @@ package net.zorphy.backend.main.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import net.zorphy.backend.main.dto.game.GameDetails;
-import net.zorphy.backend.main.dto.game.GameFilters;
-import net.zorphy.backend.main.dto.game.GameMetadata;
-import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.dto.game.*;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
@@ -15,6 +12,7 @@ import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.GameMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
+import net.zorphy.backend.main.service.util.GameStatsUtil;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
@@ -55,6 +53,32 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<GameStats> getStats(GameFilters gameFilters) {
+        List<GameStats> gameStats = new ArrayList<>();
+
+        if (gameFilters.players() != null) {
+            for (UUID playerId : gameFilters.players()) {
+                GameFilters playerFilters = new GameFilters(
+                        gameFilters.text(),
+                        gameFilters.dateFrom(),
+                        gameFilters.dateTo(),
+                        gameFilters.minDuration(),
+                        gameFilters.maxDuration(),
+                        gameFilters.gameTypes(),
+                        List.of(playerId)
+                );
+                Specification<Game> specs = GameSpecifications.search(playerFilters);
+                List<Game> games = gameRepository.findAll(specs);
+
+                GameStats stats = GameStatsUtil.computeStats(playerId, games);
+                gameStats.add(stats);
+            }
+        }
+
+        return gameStats;
+    }
+
+    @Override
     public GameDetails getGame(UUID id) {
         return gameMapper.gameToGameDetails(getGameInternal(id));
     }
@@ -64,13 +88,13 @@ public class GameServiceImpl implements GameService {
         Game game = getGameInternal(id);
         GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
-        if(gameDetails.metadata().gameType() == GameType.JOLLY) {
+        if (gameDetails.metadata().gameType() == GameType.JOLLY) {
             //jolly game state saves images in rounds, they should be deleted if game is deleted
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             GameState gameState = mapper.convertValue(gameDetails.gameState(), GameState.class);
-            for(RoundInfo round : gameState.rounds()) {
+            for (RoundInfo round : gameState.rounds()) {
                 fileStorageService.deleteFile(round.imageUrl());
             }
         }
@@ -108,7 +132,7 @@ public class GameServiceImpl implements GameService {
 
     private Game getGameInternal(UUID id) {
         Optional<Game> game = gameRepository.findById(id);
-        if(game.isEmpty()) {
+        if (game.isEmpty()) {
             throw new NotFoundException("Game with id %s not found".formatted(id));
         }
 
