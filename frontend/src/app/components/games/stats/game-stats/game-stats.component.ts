@@ -1,4 +1,4 @@
-import {Component, inject, signal, Type} from '@angular/core';
+import {Component, inject, signal, Type, viewChild} from '@angular/core';
 import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
 import {GameSearchComponent} from "../../game-search/game-search.component";
 import {GameFilters} from "../../../../dto/games/GameFilters";
@@ -9,6 +9,8 @@ import {GameType} from "../../../../dto/games/GameType";
 import {CatanGameInfoComponent} from "../../../sites/catan/game-info/game-info.component";
 import {JollyGameInfoComponent} from "../../../sites/jolly/game-info/game-info.component";
 import {CatanGameStatsComponent} from "../../../sites/catan/game-stats/game-stats.component";
+import {BaseChartDirective} from "ng2-charts";
+import {ChartData, ChartOptions} from "chart.js";
 
 @Component({
   selector: 'game-stats',
@@ -17,7 +19,8 @@ import {CatanGameStatsComponent} from "../../../sites/catan/game-stats/game-stat
     GameSearchComponent,
     NgForOf,
     NgIf,
-    NgComponentOutlet
+    NgComponentOutlet,
+    BaseChartDirective
   ],
   templateUrl: './game-stats.component.html',
   styleUrl: './game-stats.component.css'
@@ -27,6 +30,7 @@ export class GameStatsComponent {
   
   protected gameStats = signal<GameStats[]>([]);
   protected gameFilters = signal<GameFilters | null>(null);
+  private chart = viewChild.required(BaseChartDirective);
 
   private componentMap: Partial<Record<GameType, Type<any>>> = {
     [GameType.CATAN]: CatanGameStatsComponent
@@ -48,5 +52,85 @@ export class GameStatsComponent {
     this.gameService.getStats(filters).subscribe(res => {
       this.gameStats.set(res);
     })
+  }
+
+  protected chartData: ChartData<any, number[], number> = {
+    labels: [],
+    datasets: [
+      {
+        type: 'line',
+        label: 'Correlation Starting Position - Winning',
+        data: [],
+        tension: 0.4,             // smooth curve
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,               // optional: fill under the curve
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2
+      }
+    ]
+  };
+  protected chartOptions: ChartOptions = {
+    maintainAspectRatio: false,
+    animations: {
+      // Define animations for dataset elements during updates
+      x: {
+        duration: 500,
+        easing: 'easeOutQuart'
+      },
+      y: {
+        duration: 500,
+        easing: 'easeOutQuart'
+      },
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Histogram of Dice Rolls',
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
+      },
+      legend: {
+        labels: {
+          filter: item => item.text !== 'Bell Curve'
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        stacked: true,
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            if (Number.isInteger(value)) {
+              return value.toString();
+            }
+            return '';
+          },
+          stepSize: 1
+        },
+      }
+    },
+  };
+
+
+  protected refillChartData(stats: GameStats) {
+    const chart = this.chart();
+
+    if (!chart) return;
+
+    //bell curve
+    this.chartData.labels = stats.startPosCorrelation.map(p => p.dimension + 1);
+    this.chartData.datasets[0].data = stats.startPosCorrelation.map(p => p.correlation);
+
+    this.chartData.datasets = [this.chartData.datasets[0]];
+
+    chart.update();
   }
 }

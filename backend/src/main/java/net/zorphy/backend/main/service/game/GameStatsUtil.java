@@ -90,6 +90,7 @@ public class GameStatsUtil {
 
                 int playerStartPosition = result.teams().indexOf(playerTeam);
 
+                //correlation data
                 startingPositionToWins.add(new GameStatsCorrelation<>(
                         playerStartPosition,
                         playerIsWinner ? 1.0 : 0.0
@@ -111,6 +112,7 @@ public class GameStatsUtil {
         //player has played most with teammate
         PlayerDetails companion = getExtremePlayer(teammateMap, info -> info.gamesPlayed, true);
 
+        //compute correlations
         Map<Integer, Double> correlationByPosition = new HashMap<>();
         int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
         for (int pos = 0; pos < numPositions; pos++) {

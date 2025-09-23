@@ -15,7 +15,6 @@ public record GameStats(
         PlayerDetails rival,
         PlayerDetails companion,
         List<GameStatsCorrelation<Integer>> startPosCorrelation,
-        //List<> winsOverTime,
         GameSpecificStats gameSpecific
 ) {
 }

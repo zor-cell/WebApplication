@@ -1,5 +1,6 @@
 <app-main-header>
-    <game-search class="w-100" ngProjectAs="middle" [showMultiGameTypes]="false" (changeFiltersEvent)="searchFiltersChanged($event)"/>
+    <game-search class="w-100" ngProjectAs="middle" [showMultiGameTypes]="false"
+                 (changeFiltersEvent)="searchFiltersChanged($event)"/>
 </app-main-header>
 
 <div class="main-container">
@@ -48,6 +49,15 @@
                     <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
                 </div>
             </div>
+
+            <!--<section class="histogram-container">
+                <canvas baseChart
+                        [type]="'bar'"
+                        [data]="chartData"
+                        [options]="chartOptions">
+                </canvas>
+            </section>
+            <button (click)="refillChartData(stats)">Test</button>-->
 
             <!-- dynamically render game specific stats -->
             <ng-container *ngIf="gameStatsComponent as comp">

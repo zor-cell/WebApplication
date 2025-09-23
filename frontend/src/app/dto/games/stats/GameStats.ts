@@ -1,5 +1,6 @@
 import {PlayerDetails} from "../../all/PlayerDetails";
 import {ChartData} from "./ChartData";
+import {GameStatsCorrelation} from "./GameStatsCorrelation";
 
 export interface GameStats {
     player: PlayerDetails;
@@ -11,7 +12,7 @@ export interface GameStats {
     victim: PlayerDetails | null; //best win rate
     rival: PlayerDetails | null; //most played opponent
     companion: PlayerDetails | null; //most played teammate
-    startPosCorrelation: number[];
+    startPosCorrelation: GameStatsCorrelation<number>[];
     winsOverTime: ChartData<Date, boolean>;
     gameSpecific: any;
 }
