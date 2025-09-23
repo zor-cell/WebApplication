@@ -2,7 +2,7 @@ import {Component, inject, signal} from '@angular/core';
 import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
 import {GameSearchComponent} from "../../game-search/game-search.component";
 import {GameFilters} from "../../../../dto/games/GameFilters";
-import {GameStats} from "../../../../dto/games/GameStats";
+import {GameStats} from "../../../../dto/games/stats/GameStats";
 import {NgForOf, NgIf} from "@angular/common";
 import {GameService} from "../../../../services/game.service";
 

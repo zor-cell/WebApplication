@@ -5,7 +5,7 @@ import {GameDetails} from "../dto/games/GameDetails";
 import {Observable, tap} from "rxjs";
 import {GameMetadata} from "../dto/games/GameMetadata";
 import {GameFilters} from "../dto/games/GameFilters";
-import {GameStats} from "../dto/games/GameStats";
+import {GameStats} from "../dto/games/stats/GameStats";
 
 @Injectable({
   providedIn: 'root'

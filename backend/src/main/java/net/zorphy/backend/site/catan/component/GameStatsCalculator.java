@@ -1,6 +1,8 @@
-package net.zorphy.backend.site.catan.components;
+package net.zorphy.backend.site.catan.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.game.stats.ChartData;
 import net.zorphy.backend.main.dto.game.stats.ChartDataEntry;
@@ -17,7 +19,11 @@ import java.util.*;
 
 @Component
 public class GameStatsCalculator implements GameSpecificStatsCalculator {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+
+    public GameStatsCalculator(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public GameType supportedType() {
