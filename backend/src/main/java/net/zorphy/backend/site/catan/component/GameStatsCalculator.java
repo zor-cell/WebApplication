@@ -1,11 +1,8 @@
 package net.zorphy.backend.site.catan.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.game.stats.ChartData;
-import net.zorphy.backend.main.dto.game.stats.ChartDataEntry;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
@@ -21,8 +18,8 @@ import java.util.*;
 public class GameStatsCalculator implements GameSpecificStatsCalculator {
     private final ObjectMapper objectMapper;
 
-    public GameStatsCalculator(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public GameStatsCalculator(CustomObjectMapperComponent customObjectMapper) {
+        this.objectMapper = customObjectMapper.create();
     }
 
     @Override
@@ -32,7 +29,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
     @Override
     public GameStats compute(PlayerDetails currentPlayer, List<Game> games) {
-        Map<Integer, Integer> chartDataMap = new HashMap<>();
+        List<DiceRoll> diceRolls = new ArrayList<>();
 
         for(Game game : games) {
             try {
@@ -46,22 +43,20 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 for(DiceRoll diceRoll : gameState.diceRolls()) {
                     if(!diceRoll.teamName().equals(playerTeam.name())) continue;
 
-                    int sum = diceRoll.dicePair().sum();
-                    chartDataMap.compute(sum, (k, v) -> v == null ? 1 : v + 1);
+                    //dice rolls should all be under player name
+                    diceRolls.add(new DiceRoll(
+                            diceRoll.dicePair(),
+                            diceRoll.diceEvent(),
+                            currentPlayer.name()
+                    ));
                 }
             } catch(IllegalArgumentException e) {
                 //continue if object mapping to game state failed
             }
         }
 
-        ChartData<Integer, Integer> chartData = new ChartData<>(
-                chartDataMap.entrySet().stream().map(entry -> new ChartDataEntry<>(
-                        entry.getKey(),
-                        entry.getValue()
-                )).toList()
-        );
         return new GameStats(
-                chartData
+                diceRolls
         );
     }
 }

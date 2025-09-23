@@ -1,6 +1,5 @@
-import {ChartData} from "../../../games/stats/ChartData";
-import {GameSpecificStats} from "../../../games/stats/GameSpecificStats";
+import {DiceRoll} from "../DiceRoll";
 
-export interface GameStats extends GameSpecificStats {
-    diceRolls: ChartData<number, number>
+export interface GameStats {
+    diceRolls: DiceRoll[]
 }

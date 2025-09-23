@@ -49,6 +49,7 @@
             <div class="col-12">
                 <label>Game Types</label>
                 <select class="form-select" formControlName="gameTypes" [multiple]="showMultiGameTypes()">
+                    <option *ngIf="!showMultiGameTypes()" value="">-- Select a game type --</option>
                     <option *ngFor="let type of allGameTypes" [value]="type">{{ type }}</option>
                 </select>
             </div>

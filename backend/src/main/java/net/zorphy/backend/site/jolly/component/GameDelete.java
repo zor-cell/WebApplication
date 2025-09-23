@@ -1,8 +1,7 @@
 package net.zorphy.backend.site.jolly.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.FileStorageService;
@@ -16,9 +15,9 @@ public class GameDelete implements GameSpecificDelete {
     private final ObjectMapper objectMapper;
     private final FileStorageService fileStorageService;
 
-    public GameDelete(FileStorageService fileStorageService, ObjectMapper objectMapper) {
+    public GameDelete(FileStorageService fileStorageService, CustomObjectMapperComponent customObjectMapper) {
         this.fileStorageService = fileStorageService;
-        this.objectMapper = objectMapper;
+        this.objectMapper = customObjectMapper.create();
     }
 
     @Override

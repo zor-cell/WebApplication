@@ -22,7 +22,7 @@ import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
     standalone: true,
     styleUrl: './histogram.component.css'
 })
-export class CatanHistogramComponent {
+export class CatanHistogramComponent implements AfterViewInit {
     public diceRolls = input.required<DiceRoll[]>();
     public isVisible = input<boolean>(true);
     private chart = viewChild.required(BaseChartDirective);
@@ -97,6 +97,10 @@ export class CatanHistogramComponent {
                this.refillChartData();
            }
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.refillChartData();
     }
 
     private refillChartData() {

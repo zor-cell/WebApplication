@@ -2,17 +2,16 @@ package net.zorphy.backend.main.service.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.game.stats.ChartData;
-import net.zorphy.backend.main.dto.game.stats.ChartDataEntry;
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
 import net.zorphy.backend.main.dto.game.stats.GameStats;
+import net.zorphy.backend.main.dto.game.stats.GameStatsCorrelation;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.all.base.impl.ResultTeamState;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.function.ToDoubleFunction;
 
@@ -34,14 +33,13 @@ public class GameStatsUtil {
         Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
         Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
 
+        List<GameStatsCorrelation<Integer>> startingPositionToWins = new ArrayList<>();
+
         PlayerDetails currentPlayer = null;
         int gamesPlayed = 0;
         int gamesWon = 0;
         int totalScore = 0;
         int maxScore = 0;
-        ChartData<Instant, Boolean> chartData = new ChartData<>(
-                new ArrayList<>()
-        );
 
         for (Game game : games) {
             try {
@@ -89,9 +87,12 @@ public class GameStatsUtil {
                 gamesPlayed++;
                 if (playerIsWinner) gamesWon++;
 
-                chartData.entries().add(new ChartDataEntry<>(
-                        game.getPlayedAt(),
-                        playerIsWinner
+
+                int playerStartPosition = result.teams().indexOf(playerTeam);
+
+                startingPositionToWins.add(new GameStatsCorrelation<>(
+                        playerStartPosition,
+                        playerIsWinner ? 1.0 : 0.0
                 ));
             } catch(IllegalArgumentException e) {
                 //continue if object mapping to result failed
@@ -110,6 +111,23 @@ public class GameStatsUtil {
         //player has played most with teammate
         PlayerDetails companion = getExtremePlayer(teammateMap, info -> info.gamesPlayed, true);
 
+        Map<Integer, Double> correlationByPosition = new HashMap<>();
+        int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
+        for (int pos = 0; pos < numPositions; pos++) {
+            // create binary vector for this position
+            int finalPos = pos;
+            double[] x = startingPositionToWins.stream()
+                    .mapToDouble(p -> p.dimension() == finalPos ? 1.0 : 0.0)
+                    .toArray();
+            double[] y = startingPositionToWins.stream()
+                    .mapToDouble(GameStatsCorrelation::correlation).toArray();
+
+            PearsonsCorrelation cor = new PearsonsCorrelation();
+            double r = cor.correlation(x, y);
+
+            correlationByPosition.put(pos, r);
+        }
+
         //game specific stats
         GameSpecificStatsCalculator calc = statsCalculatorMap.get(GameType.CATAN);
         GameSpecificStats gameSpecificStats = null;
@@ -127,10 +145,13 @@ public class GameStatsUtil {
                 victim,
                 rival,
                 companion,
-                0.8f,
-                chartData,
+                correlationByPosition.entrySet().stream().map(entry -> new GameStatsCorrelation<Integer>(entry.getKey(), entry.getValue())).toList(),
                 gameSpecificStats
         );
+    }
+
+    private void computeCorrelation(UUID playerId, ResultState result) {
+
     }
 
     private static void updatePlayerMap(Map<PlayerDetails, PlayerInfo> map, PlayerDetails player, boolean isWinner) {

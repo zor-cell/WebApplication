@@ -2,7 +2,7 @@ package net.zorphy.backend.main.dto.game.stats;
 
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 
-import java.time.Instant;
+import java.util.List;
 
 public record GameStats(
         PlayerDetails player,
@@ -14,8 +14,8 @@ public record GameStats(
         PlayerDetails victim,
         PlayerDetails rival,
         PlayerDetails companion,
-        float startPosCor,
-        ChartData<Instant, Boolean> winsOverTime,
+        List<GameStatsCorrelation<Integer>> startPosCorrelation,
+        //List<> winsOverTime,
         GameSpecificStats gameSpecific
 ) {
 }

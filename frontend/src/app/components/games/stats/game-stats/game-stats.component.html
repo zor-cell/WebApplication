@@ -48,6 +48,15 @@
                     <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
                 </div>
             </div>
+
+            <!-- dynamically render game specific stats -->
+            <ng-container *ngIf="gameStatsComponent as comp">
+                <ng-container *ngComponentOutlet="comp;
+                            inputs: {
+                                stats: stats.gameSpecific
+                            }"
+                />
+            </ng-container>
         </div>
     </div>
     <div *ngIf="gameStats().length === 0">
