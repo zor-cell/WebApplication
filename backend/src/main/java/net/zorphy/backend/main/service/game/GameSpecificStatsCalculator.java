@@ -2,13 +2,13 @@ package net.zorphy.backend.main.service.game;
 
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
+import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Game;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface GameSpecificStatsCalculator {
     GameType supportedType();
 
-    GameSpecificStats compute(UUID playerId, List<Game> games);
+    GameSpecificStats compute(PlayerDetails currentPlayer, List<Game> games);
 }

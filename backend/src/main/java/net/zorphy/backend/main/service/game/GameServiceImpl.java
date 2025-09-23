@@ -1,8 +1,5 @@
 package net.zorphy.backend.main.service.game;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.zorphy.backend.main.dto.game.*;
 import net.zorphy.backend.main.dto.game.stats.GameStats;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
@@ -17,8 +14,6 @@ import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
-import net.zorphy.backend.site.jolly.dto.RoundInfo;
-import net.zorphy.backend.site.jolly.dto.game.GameState;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

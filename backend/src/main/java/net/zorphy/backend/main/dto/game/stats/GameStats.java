@@ -2,6 +2,8 @@ package net.zorphy.backend.main.dto.game.stats;
 
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 
+import java.time.Instant;
+
 public record GameStats(
         PlayerDetails player,
         int gamesPlayed,
@@ -13,6 +15,7 @@ public record GameStats(
         PlayerDetails rival,
         PlayerDetails companion,
         float startPosCor,
+        ChartData<Instant, Boolean> winsOverTime,
         GameSpecificStats gameSpecific
 ) {
 }

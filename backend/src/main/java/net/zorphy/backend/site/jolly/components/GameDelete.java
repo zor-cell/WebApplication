@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.jolly.service;
+package net.zorphy.backend.site.jolly.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

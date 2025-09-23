@@ -2,6 +2,8 @@ package net.zorphy.backend.main.service.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.dto.game.stats.ChartData;
+import net.zorphy.backend.main.dto.game.stats.ChartDataEntry;
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
 import net.zorphy.backend.main.dto.game.stats.GameStats;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
@@ -10,6 +12,7 @@ import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.all.base.impl.ResultTeamState;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.function.ToDoubleFunction;
 
@@ -28,13 +31,17 @@ public class GameStatsUtil {
      * Computes the game stats for a given {@code playerId} and given {@code games}.
      */
     public GameStats computeStats(UUID playerId, List<Game> games) {
+        Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
+        Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
+
         PlayerDetails currentPlayer = null;
         int gamesPlayed = 0;
         int gamesWon = 0;
         int totalScore = 0;
         int maxScore = 0;
-        Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
-        Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
+        ChartData<Instant, Boolean> chartData = new ChartData<>(
+                new ArrayList<>()
+        );
 
         for (Game game : games) {
             try {
@@ -81,6 +88,11 @@ public class GameStatsUtil {
 
                 gamesPlayed++;
                 if (playerIsWinner) gamesWon++;
+
+                chartData.entries().add(new ChartDataEntry<>(
+                        game.getPlayedAt(),
+                        playerIsWinner
+                ));
             } catch(IllegalArgumentException e) {
                 //continue if object mapping to result failed
             }
@@ -102,7 +114,7 @@ public class GameStatsUtil {
         GameSpecificStatsCalculator calc = statsCalculatorMap.get(GameType.CATAN);
         GameSpecificStats gameSpecificStats = null;
         if(calc != null) {
-            gameSpecificStats = calc.compute(playerId, games);
+            gameSpecificStats = calc.compute(currentPlayer, games);
         }
 
         return new GameStats(
@@ -116,6 +128,7 @@ public class GameStatsUtil {
                 rival,
                 companion,
                 0.8f,
+                chartData,
                 gameSpecificStats
         );
     }
