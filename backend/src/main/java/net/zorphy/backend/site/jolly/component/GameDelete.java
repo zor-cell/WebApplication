@@ -33,7 +33,7 @@ public class GameDelete implements GameSpecificDelete {
             for (RoundInfo round : gameState.rounds()) {
                 fileStorageService.deleteFile(round.imageUrl());
             }
-        } catch(IllegalArgumentException e) {
+        } catch(Exception e) {
             //mapping failed
         }
     }
