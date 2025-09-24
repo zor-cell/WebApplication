@@ -50,7 +50,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                             currentPlayer.name()
                     ));
                 }
-            } catch(IllegalArgumentException e) {
+            } catch(Exception e) {
                 //continue if object mapping to game state failed
             }
         }
