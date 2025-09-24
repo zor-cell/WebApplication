@@ -95,7 +95,7 @@ public class GameStatsUtil {
                         playerStartPosition,
                         playerIsWinner ? 1.0 : 0.0
                 ));
-            } catch(IllegalArgumentException e) {
+            } catch(Exception e) {
                 //continue if object mapping to result failed
             }
         }
