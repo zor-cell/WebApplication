@@ -7,8 +7,8 @@ import java.util.List;
 public record GameStats(
         PlayerDetails player,
         int gamesPlayed,
-        float winRate,
-        float avgScore,
+        double winRate,
+        double avgScore,
         int maxScore,
         PlayerDetails nemesis,
         PlayerDetails victim,

@@ -69,8 +69,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 gameCount++;
                 totalLuckMetrics += computeLuckMetric(gameState, currentPlayer, playerTeam);
             } catch(Exception e) {
-                int i = 0;
                 //continue if object mapping to game state failed
+                int i = 0;
             }
         }
 

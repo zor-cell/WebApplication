@@ -11,6 +11,7 @@ import {JollyGameInfoComponent} from "../../../sites/jolly/game-info/game-info.c
 import {CatanGameStatsComponent} from "../../../sites/catan/game-stats/game-stats.component";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartData, ChartOptions} from "chart.js";
+import {JollyGameStatsComponent} from "../../../sites/jolly/game-stats/game-stats.component";
 
 @Component({
   selector: 'game-stats',
@@ -19,8 +20,7 @@ import {ChartData, ChartOptions} from "chart.js";
     GameSearchComponent,
     NgForOf,
     NgIf,
-    NgComponentOutlet,
-    BaseChartDirective
+    NgComponentOutlet
   ],
   templateUrl: './game-stats.component.html',
   styleUrl: './game-stats.component.css'
@@ -33,7 +33,8 @@ export class GameStatsComponent {
   private chart = viewChild.required(BaseChartDirective);
 
   private componentMap: Partial<Record<GameType, Type<any>>> = {
-    [GameType.CATAN]: CatanGameStatsComponent
+    [GameType.CATAN]: CatanGameStatsComponent,
+    [GameType.JOLLY]: JollyGameStatsComponent
   };
 
   protected get gameStatsComponent() {

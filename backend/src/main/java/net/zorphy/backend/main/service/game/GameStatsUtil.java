@@ -134,8 +134,8 @@ public class GameStatsUtil {
         }
 
         //game specific stats
-        GameSpecificStatsCalculator calc = statsCalculatorMap.get(GameType.CATAN);
         GameSpecificStats gameSpecificStats = null;
+        GameSpecificStatsCalculator calc = statsCalculatorMap.get(GameType.CATAN);
         if(calc != null) {
             gameSpecificStats = calc.compute(currentPlayer, games);
         }
@@ -153,6 +153,18 @@ public class GameStatsUtil {
                 correlationByPosition.entrySet().stream().map(entry -> new GameStatsCorrelation<Integer>(entry.getKey(), entry.getValue())).toList(),
                 gameSpecificStats
         );
+    }
+
+    /**
+     * Computes the fraction {@code num} / {@code den}.
+     * If {@code den} is 0, 0 is returned.
+     */
+    public static double computeFraction(int num, int den) {
+        if(den == 0) {
+            return 0;
+        }
+
+        return (double) num / den;
     }
 
     private void computeCorrelation(UUID playerId, ResultState result) {
@@ -182,14 +194,6 @@ public class GameStatsUtil {
                 .min(Comparator.comparingDouble(entry -> metric.applyAsDouble(entry.getValue())))
                 .map(Map.Entry::getKey)
                 .orElse(null);
-    }
-
-    private static float computeFraction(int num, int den) {
-        if(den == 0) {
-            return 0;
-        }
-
-        return (float) num / den;
     }
 
     private static class PlayerInfo {
