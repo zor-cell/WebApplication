@@ -1,1 +1,24 @@
-<p>game-stats works!</p>
+<div class="meta">
+    <div>
+        <div class="meta-entry">
+            <div class="meta-label">Rounds Played</div>
+            <div>{{ stats().roundsPlayed }}</div>
+        </div>
+        <div class="meta-entry">
+            <div class="meta-label">Average Round Score</div>
+            <div>{{ stats().avgRoundScore.toFixed(2) }}</div>
+        </div>
+        <div class="meta-entry">
+            <div class="meta-label">Max Round Score</div>
+            <div>{{ stats().maxRoundScore }}</div>
+        </div>
+        <div class="meta-entry">
+            <div class="meta-label">Closed rate</div>
+            <div>{{ (stats().closedRate * 100).toFixed(2) }}%</div>
+        </div>
+        <div class="meta-entry">
+            <div class="meta-label">Out In One Rate</div>
+            <div>{{ (stats().outInOneRate * 100).toFixed(2) }}%</div>
+        </div>
+    </div>
+</div>

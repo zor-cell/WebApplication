@@ -29,7 +29,7 @@ public class GameStatsUtil {
     /**
      * Computes the game stats for a given {@code playerId} and given {@code games}.
      */
-    public GameStats computeStats(UUID playerId, List<Game> games) {
+    public GameStats computeStats(UUID playerId, GameType gameType, List<Game> games) {
         Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
         Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
 
@@ -135,7 +135,7 @@ public class GameStatsUtil {
 
         //game specific stats
         GameSpecificStats gameSpecificStats = null;
-        GameSpecificStatsCalculator calc = statsCalculatorMap.get(GameType.CATAN);
+        GameSpecificStatsCalculator calc = statsCalculatorMap.get(gameType);
         if(calc != null) {
             gameSpecificStats = calc.compute(currentPlayer, games);
         }

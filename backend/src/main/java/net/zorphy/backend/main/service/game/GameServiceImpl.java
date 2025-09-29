@@ -78,7 +78,7 @@ public class GameServiceImpl implements GameService {
                 Specification<Game> specs = GameSpecifications.search(playerFilters);
                 List<Game> games = gameRepository.findAll(specs);
 
-                GameStats stats = gameStatsUtil.computeStats(playerId, games);
+                GameStats stats = gameStatsUtil.computeStats(playerId, playerFilters.gameTypes().getFirst(), games);
                 gameStats.add(stats);
             }
         }
