@@ -1,4 +1,4 @@
-import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, InjectionToken, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -13,7 +13,10 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({eventCoalescing: true}),
         provideRouter(routes),
         provideHttpClient(withInterceptors([credentialInterceptor, errorInterceptor])),
-        importProvidersFrom(BrowserAnimationsModule, ToastrModule.forRoot({closeButton: true})),
+        importProvidersFrom(
+            BrowserAnimationsModule,
+            ToastrModule.forRoot({closeButton: true})
+        ),
         provideCharts(withDefaultRegisterables())
     ]
 };

@@ -6,12 +6,11 @@ import {GameStats} from "../../../../dto/games/stats/GameStats";
 import {NgComponentOutlet, NgForOf, NgIf} from "@angular/common";
 import {GameService} from "../../../../services/game.service";
 import {GameType} from "../../../../dto/games/GameType";
-import {CatanGameInfoComponent} from "../../../sites/catan/game-info/game-info.component";
-import {JollyGameInfoComponent} from "../../../sites/jolly/game-info/game-info.component";
 import {CatanGameStatsComponent} from "../../../sites/catan/game-stats/game-stats.component";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartData, ChartOptions} from "chart.js";
 import {JollyGameStatsComponent} from "../../../sites/jolly/game-stats/game-stats.component";
+import {GameComponentRegistryService} from "../../../../services/all/game-component-registry.service";
 
 @Component({
   selector: 'game-stats',
@@ -27,21 +26,18 @@ import {JollyGameStatsComponent} from "../../../sites/jolly/game-stats/game-stat
 })
 export class GameStatsComponent {
   private gameService = inject(GameService);
-  
+  private componentRegistryService = inject(GameComponentRegistryService);
+
   protected gameStats = signal<GameStats[]>([]);
   protected gameFilters = signal<GameFilters | null>(null);
   private chart = viewChild.required(BaseChartDirective);
-
-  private componentMap: Partial<Record<GameType, Type<any>>> = {
-    [GameType.CATAN]: CatanGameStatsComponent,
-    [GameType.JOLLY]: JollyGameStatsComponent
-  };
 
   protected get gameStatsComponent() {
     const gameTypes = this.gameFilters()?.gameTypes;
     if(!gameTypes || gameTypes.length !== 1) return null;
 
-    return this.componentMap[gameTypes[0]];
+    const gameType = gameTypes[0];
+    return this.componentRegistryService.getStatsComponent(gameType);
   }
 
   protected searchFiltersChanged(filters: GameFilters) {

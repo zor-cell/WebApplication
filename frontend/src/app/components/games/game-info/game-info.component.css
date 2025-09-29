@@ -28,19 +28,10 @@
     object-fit: contain;
 }
 
-.meta {
-    width: 100%;
-    max-width: 400px;
-    padding: 0 1rem;
-}
 
 .meta-item {
     display: flex;
     justify-content: space-between;
-}
-
-.meta-label {
-    font-weight: bold;
 }
 
 @media(max-width: 992px) {

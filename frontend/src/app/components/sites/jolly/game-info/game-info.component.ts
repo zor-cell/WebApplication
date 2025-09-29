@@ -5,6 +5,7 @@ import {ResultState} from "../../../../dto/sites/catan/result/ResultState";
 import {GameResultTableComponent} from "../../../games/game-result-table/game-result-table.component";
 import {NgIf} from "@angular/common";
 import {JollyRoundTableComponent} from "../rounds-table/round-table.component";
+import {GameType} from "../../../../dto/games/GameType";
 
 @Component({
   selector: 'jolly-game-info',

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
+@Component("CatanGameStatsCalculator")
 public class GameStatsCalculator implements GameSpecificStatsCalculator {
     private final ObjectMapper objectMapper;
 

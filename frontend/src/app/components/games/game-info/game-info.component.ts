@@ -21,6 +21,7 @@ import {DeletePopupComponent} from "../delete-popup/delete-popup.component";
 import {JollyGameComponent} from "../../sites/jolly/game/game.component";
 import {JollyGameInfoComponent} from "../../sites/jolly/game-info/game-info.component";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {GameComponentRegistryService} from "../../../services/all/game-component-registry.service";
 
 @Component({
     standalone: true,
@@ -42,17 +43,14 @@ export class GameInfoComponent implements AfterViewInit {
     protected location = inject(Location);
     private route = inject(ActivatedRoute);
     private gameService = inject(GameService);
+    private componentRegistry = inject(GameComponentRegistryService);
 
     protected deletePopup = viewChild.required<DeletePopupComponent>('deletePopup');
 
     protected game: GameDetails | null = null;
-    private componentMap: Partial<Record<GameType, Type<any>>> = {
-        [GameType.CATAN]: CatanGameInfoComponent,
-        [GameType.JOLLY]: JollyGameInfoComponent
-    };
 
     get gameInfoComponent() {
-        return this.game ? this.componentMap[this.game.metadata.gameType] : null;
+        return this.game ? this.componentRegistry.getInfoComponent(this.game.metadata.gameType) : null;
     }
 
     ngAfterViewInit(): void {

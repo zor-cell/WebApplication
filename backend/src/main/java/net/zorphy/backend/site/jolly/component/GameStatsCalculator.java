@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Component("JollyGameStatsCalculator")
 public class GameStatsCalculator implements GameSpecificStatsCalculator {
     private final ObjectMapper objectMapper;
 
