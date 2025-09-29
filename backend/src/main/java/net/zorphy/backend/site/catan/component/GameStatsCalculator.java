@@ -10,6 +10,7 @@ import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.dto.game.GameStats;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -30,8 +31,9 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     @Override
     public GameStats compute(PlayerDetails currentPlayer, List<Game> games) {
         List<DiceRoll> diceRolls = new ArrayList<>();
-
         int gameCount = 0;
+        double totalLuckMetrics = 0;
+
         for(Game game : games) {
             try {
                 GameState gameState = objectMapper.convertValue(game.getGameState(), GameState.class);
@@ -63,7 +65,9 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                             currentPlayer.name()
                     ));
                 }
+
                 gameCount++;
+                totalLuckMetrics += computeLuckMetric(gameState, currentPlayer, playerTeam);
             } catch(Exception e) {
                 int i = 0;
                 //continue if object mapping to game state failed
@@ -72,7 +76,57 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
         return new GameStats(
                 gameCount,
+                gameCount > 0 ? totalLuckMetrics / gameCount : 0,
                 diceRolls
         );
+    }
+
+    private double computeLuckMetric(GameState gameState, PlayerDetails currentPlayer, TeamDetails playerTeam) {
+        List<DiceRoll> diceRolls = gameState.diceRolls();
+
+        if(gameState.diceRolls().isEmpty()) return 0;
+
+        int playerSevenCount = 0;
+        int totalSevenCount = 0;
+        DescriptiveStatistics playerStats = new DescriptiveStatistics();
+        DescriptiveStatistics totalStats = new DescriptiveStatistics();
+
+        for(DiceRoll diceRoll : diceRolls) {
+            int sum = diceRoll.dicePair().sum();
+
+            //add player stats
+            if(playerTeam.name().equals(diceRoll.teamName())) {
+                if(sum == 7) {
+                    playerSevenCount++;
+                }
+                playerStats.addValue(sum);
+            }
+
+            //add total stats
+            if(sum == 7) {
+                totalSevenCount++;
+            }
+            totalStats.addValue(sum);
+        }
+
+        double R = (double) playerSevenCount / totalSevenCount; //TODO amount of players also important
+
+        double playerVariance = playerStats.getVariance();
+        double playerStdDev = playerStats.getStandardDeviation();
+
+        double totalVariance = totalStats.getVariance();
+        double totalStdDev = totalStats.getStandardDeviation();
+
+        double V_player = Math.min(1.0, playerVariance / (playerVariance + playerStdDev * 2));
+        double V_total = Math.min(1.0, totalVariance / (totalVariance + totalStdDev * 2));
+
+
+        //weights
+        final double w_v = 0.4;
+        final double w_r = 0.6;
+
+        double luckRaw = w_v * V_player + w_r * R;
+
+        return 10 * luckRaw;
     }
 }
