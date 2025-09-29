@@ -68,10 +68,14 @@ export class GameListComponent implements OnInit {
 
   private searchGames(filters: GameFilters) {
     this.isLoading.set(true);
-    this.gameService.searchGames(filters).subscribe(res => {
-      this.isLoading.set(false);
-      this.games.set(res);
-    });
+    this.gameService.searchGames(filters).subscribe({
+      next: res => {
+          this.isLoading.set(false);
+          this.games.set(res);
+        },
+      error: err => {
+        this.isLoading.set(false);
+      }});
   }
 
   private updateDateFormat(isSmallScreen: boolean) {

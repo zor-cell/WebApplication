@@ -7,6 +7,7 @@ import java.util.List;
 
 
 public record GameStats(
+        int gameCount,
         List<DiceRoll> diceRolls
 ) implements GameSpecificStats {
 }

@@ -25,6 +25,7 @@ import {DiceRoll} from "../../../../dto/sites/catan/DiceRoll";
 export class CatanHistogramComponent implements AfterViewInit {
     public diceRolls = input.required<DiceRoll[]>();
     public isVisible = input<boolean>(true);
+    public showExactProbability = input<boolean>(false);
     private chart = viewChild.required(BaseChartDirective);
 
     protected chartData: ChartData<any, number[], number> = {
@@ -39,7 +40,19 @@ export class CatanHistogramComponent implements AfterViewInit {
                 backgroundColor: 'rgba(255, 0, 0, 0.6)',
                 borderColor: 'rgba(255, 0, 0, 0.6)',
                 borderWidth: 2,
-                order: 1
+                order: 1,
+                yAxisID: 'yLine'
+            },
+            {
+                type: 'line',
+                label: 'Exact Probabilities',
+                data: [], // compute below
+                tension: 0,
+                pointRadius: 0,
+                borderColor: 'rgba(200, 200, 200, 0.8)',
+                borderWidth: 2,
+                order: 1,
+                yAxisID: 'yLine'
             }
         ]
     };
@@ -67,7 +80,7 @@ export class CatanHistogramComponent implements AfterViewInit {
             },
             legend: {
                 labels: {
-                    filter: item => item.text !== 'Bell Curve'
+                    filter: item => item.text !== 'Bell Curve' && item.text !== 'Exact Probabilities'
                 }
             }
         },
@@ -87,6 +100,11 @@ export class CatanHistogramComponent implements AfterViewInit {
                     },
                     stepSize: 1
                 },
+            },
+            yLine: {
+                stacked: false,
+                beginAtZero: true,
+                display: false
             }
         },
     };
@@ -117,6 +135,9 @@ export class CatanHistogramComponent implements AfterViewInit {
 
         //bell curve
         this.chartData.datasets[0].data = this.generateBellCurveData(diceRolls.length);
+        if(this.showExactProbability()) {
+            this.chartData.datasets[1].data = this.generateExactProbabilities(diceRolls.length);
+        }
 
         //team datasets
         const teams = [...new Set(diceRolls.map(d => d.teamName))];
@@ -139,7 +160,10 @@ export class CatanHistogramComponent implements AfterViewInit {
             order: 2
         }));
 
-        this.chartData.datasets = [this.chartData.datasets[0], ...datasets];
+        this.chartData.datasets = [
+            this.chartData.datasets[0],
+            this.chartData.datasets[1],
+            ...datasets];
 
         chart.update();
     }

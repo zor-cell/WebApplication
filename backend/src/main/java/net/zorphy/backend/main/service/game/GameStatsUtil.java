@@ -114,20 +114,23 @@ public class GameStatsUtil {
 
         //compute correlations
         Map<Integer, Double> correlationByPosition = new HashMap<>();
-        int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
-        for (int pos = 0; pos < numPositions; pos++) {
-            // create binary vector for this position
-            int finalPos = pos;
-            double[] x = startingPositionToWins.stream()
-                    .mapToDouble(p -> p.dimension() == finalPos ? 1.0 : 0.0)
-                    .toArray();
-            double[] y = startingPositionToWins.stream()
-                    .mapToDouble(GameStatsCorrelation::correlation).toArray();
+        //at least 2 entries needed for correlation
+        if(startingPositionToWins.size() >= 2) {
+            int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
+            for (int pos = 0; pos < numPositions; pos++) {
+                // create binary vector for this position
+                int finalPos = pos;
+                double[] x = startingPositionToWins.stream()
+                        .mapToDouble(p -> p.dimension() == finalPos ? 1.0 : 0.0)
+                        .toArray();
+                double[] y = startingPositionToWins.stream()
+                        .mapToDouble(GameStatsCorrelation::correlation).toArray();
 
-            PearsonsCorrelation cor = new PearsonsCorrelation();
-            double r = cor.correlation(x, y);
+                PearsonsCorrelation cor = new PearsonsCorrelation();
+                double r = cor.correlation(x, y);
 
-            correlationByPosition.put(pos, r);
+                correlationByPosition.put(pos, r);
+            }
         }
 
         //game specific stats

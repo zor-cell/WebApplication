@@ -31,13 +31,26 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     public GameStats compute(PlayerDetails currentPlayer, List<Game> games) {
         List<DiceRoll> diceRolls = new ArrayList<>();
 
+        int gameCount = 0;
         for(Game game : games) {
             try {
                 GameState gameState = objectMapper.convertValue(game.getGameState(), GameState.class);
 
                 TeamDetails playerTeam = gameState.gameConfig().teams().stream()
-                        .filter(t -> t.players().contains(currentPlayer))
+                        .filter(t -> t.players()
+                                .stream()
+                                .anyMatch(player -> currentPlayer.id().equals(player.id())))
                         .findFirst().orElse(null);
+
+                //compatibility for early games where no player id was saved
+                if(playerTeam == null) {
+                    playerTeam = gameState.gameConfig().teams().stream()
+                            .filter(t -> t.players()
+                                    .stream()
+                                    .anyMatch(player -> player.name().equals(currentPlayer.name())))
+                            .findFirst()
+                            .orElse(null);
+                }
                 assert playerTeam != null;
 
                 for(DiceRoll diceRoll : gameState.diceRolls()) {
@@ -50,12 +63,15 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                             currentPlayer.name()
                     ));
                 }
+                gameCount++;
             } catch(Exception e) {
+                int i = 0;
                 //continue if object mapping to game state failed
             }
         }
 
         return new GameStats(
+                gameCount,
                 diceRolls
         );
     }
