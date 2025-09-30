@@ -14,6 +14,7 @@ import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
+import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,24 +65,30 @@ public class GameServiceImpl implements GameService {
     public List<GameStats> getStats(GameFilters gameFilters) {
         List<GameStats> gameStats = new ArrayList<>();
 
-        if (gameFilters.players() != null) {
-            for (UUID playerId : gameFilters.players()) {
-                GameFilters playerFilters = new GameFilters(
-                        gameFilters.text(),
-                        gameFilters.dateFrom(),
-                        gameFilters.dateTo(),
-                        gameFilters.minDuration(),
-                        gameFilters.maxDuration(),
-                        gameFilters.gameTypes(),
-                        List.of(playerId)
-                );
-                Specification<Game> specs = GameSpecifications.search(playerFilters);
-                List<Game> games = gameRepository.findAll(specs);
-
-                GameStats stats = gameStatsUtil.computeStats(playerId, playerFilters.gameTypes().getFirst(), games);
-                gameStats.add(stats);
-            }
+        if(gameFilters.players() == null) {
+            throw new InvalidOperationException("At least one player has to be selected");
         }
+        if(gameFilters.gameTypes() == null || gameFilters.gameTypes().size() != 1) {
+            throw new InvalidOperationException("Exactly one game type has to be selected");
+        }
+
+        for (UUID playerId : gameFilters.players()) {
+            GameFilters playerFilters = new GameFilters(
+                    gameFilters.text(),
+                    gameFilters.dateFrom(),
+                    gameFilters.dateTo(),
+                    gameFilters.minDuration(),
+                    gameFilters.maxDuration(),
+                    gameFilters.gameTypes(),
+                    List.of(playerId)
+            );
+            Specification<Game> specs = GameSpecifications.search(playerFilters);
+            List<Game> games = gameRepository.findAll(specs);
+
+            GameStats stats = gameStatsUtil.computeStats(playerId, playerFilters.gameTypes().getFirst(), games);
+            gameStats.add(stats);
+        }
+
 
         return gameStats;
     }
