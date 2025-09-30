@@ -114,13 +114,6 @@ public class GameStatsUtil {
         //player has played most with teammate
         PlayerDetails companion = getExtremePlayer(teammateMap, info -> info.gamesPlayed, true);
 
-        //compute correlations
-        Map<Integer, Double> correlationByPosition = new HashMap<>();
-        if(startingPositionToScore.size() >= 2) {
-            double[] x = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::x).toArray();
-            double[] y = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::y).toArray();
-        }
-
         //game specific stats
         GameSpecificStats gameSpecificStats = null;
         GameSpecificStatsCalculator calc = statsCalculatorMap.get(gameType);
