@@ -1,6 +1,6 @@
 import {PlayerDetails} from "../../all/PlayerDetails";
 import {ChartData} from "./ChartData";
-import {GameStatsCorrelation} from "./GameStatsCorrelation";
+import {CorrelationResult} from "./CorrelationResult";
 
 export interface GameStats {
     player: PlayerDetails;
@@ -8,11 +8,11 @@ export interface GameStats {
     winRate: number;
     avgScore: number;
     maxScore: number;
-    nemesis: PlayerDetails | null; //worst win rate
-    victim: PlayerDetails | null; //best win rate
-    rival: PlayerDetails | null; //most played opponent
-    companion: PlayerDetails | null; //most played teammate
-    startPosCorrelation: GameStatsCorrelation<number>[];
+    nemesis: PlayerDetails | null;
+    victim: PlayerDetails | null;
+    rival: PlayerDetails | null;
+    companion: PlayerDetails | null;
+    startPosToScore: CorrelationResult;
     winsOverTime: ChartData<Date, boolean>;
     gameSpecific: any;
 }

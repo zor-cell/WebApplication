@@ -50,14 +50,11 @@
                 </div>
             </div>
 
-            <!--<section class="histogram-container">
-                <canvas baseChart
-                        [type]="'bar'"
-                        [data]="chartData"
-                        [options]="chartOptions">
-                </canvas>
-            </section>
-            <button (click)="refillChartData(stats)">Test</button>-->
+            <game-correlation-chart [correlationData]="stats.startPosToScore"
+                                    title='Starting Position - Score'
+                                    titleX='Starting Position'
+                                    titleY='Score'
+            />
 
             <!-- dynamically render game specific stats -->
             <ng-container *ngIf="gameStatsComponent as comp">

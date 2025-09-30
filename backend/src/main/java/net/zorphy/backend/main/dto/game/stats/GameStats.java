@@ -2,7 +2,6 @@ package net.zorphy.backend.main.dto.game.stats;
 
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 
-import java.util.List;
 
 public record GameStats(
         PlayerDetails player,
@@ -14,7 +13,7 @@ public record GameStats(
         PlayerDetails victim,
         PlayerDetails rival,
         PlayerDetails companion,
-        List<GameStatsCorrelation<Integer>> startPosCorrelation,
+        CorrelationResult startPosToScore,
         GameSpecificStats gameSpecific
 ) {
 }

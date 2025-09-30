@@ -2,14 +2,13 @@ package net.zorphy.backend.main.service.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
-import net.zorphy.backend.main.dto.game.stats.GameStats;
-import net.zorphy.backend.main.dto.game.stats.GameStatsCorrelation;
+import net.zorphy.backend.main.dto.game.stats.*;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.all.base.impl.ResultTeamState;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -34,6 +33,7 @@ public class GameStatsUtil {
         Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
 
         List<GameStatsCorrelation<Integer>> startingPositionToWins = new ArrayList<>();
+        List<CorrelationDataPoint> startingPositionToScore = new ArrayList<>();
 
         PlayerDetails currentPlayer = null;
         int gamesPlayed = 0;
@@ -91,9 +91,10 @@ public class GameStatsUtil {
                 int playerStartPosition = result.teams().indexOf(playerTeam);
 
                 //correlation data
-                startingPositionToWins.add(new GameStatsCorrelation<>(
-                        playerStartPosition,
-                        playerIsWinner ? 1.0 : 0.0
+                startingPositionToScore.add(new CorrelationDataPoint(
+                   playerStartPosition,
+                   curScore,
+                   playerIsWinner
                 ));
             } catch(Exception e) {
                 //continue if object mapping to result failed
@@ -114,8 +115,12 @@ public class GameStatsUtil {
 
         //compute correlations
         Map<Integer, Double> correlationByPosition = new HashMap<>();
+        if(startingPositionToScore.size() >= 2) {
+            double[] x = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::x).toArray();
+            double[] y = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::y).toArray();
+        }
         //at least 2 entries needed for correlation
-        if(startingPositionToWins.size() >= 2) {
+        /*if(startingPositionToWins.size() >= 2) {
             int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
             for (int pos = 0; pos < numPositions; pos++) {
                 // create binary vector for this position
@@ -131,7 +136,7 @@ public class GameStatsUtil {
 
                 correlationByPosition.put(pos, r);
             }
-        }
+        }*/
 
         //game specific stats
         GameSpecificStats gameSpecificStats = null;
@@ -150,7 +155,7 @@ public class GameStatsUtil {
                 victim,
                 rival,
                 companion,
-                correlationByPosition.entrySet().stream().map(entry -> new GameStatsCorrelation<Integer>(entry.getKey(), entry.getValue())).toList(),
+                computeCorrelation(startingPositionToScore),
                 gameSpecificStats
         );
     }
@@ -165,6 +170,38 @@ public class GameStatsUtil {
         }
 
         return (double) num / den;
+    }
+
+    /**
+     * Compute the correlation data for the given {@code points}.
+     */
+    public static CorrelationResult computeCorrelation(List<CorrelationDataPoint> points) {
+        if(points.size() < 2) {
+            return new CorrelationResult(
+              0,
+              0,
+              0,
+              List.of()
+            );
+        }
+
+        double[] x = points.stream().mapToDouble(CorrelationDataPoint::x).toArray();
+        double[] y = points.stream().mapToDouble(CorrelationDataPoint::y).toArray();
+
+        //correlation
+        PearsonsCorrelation cor = new PearsonsCorrelation();
+        double coefficient = cor.correlation(x, y);
+
+        // simple regression
+        SimpleRegression regression = new SimpleRegression();
+        for (CorrelationDataPoint point : points) {
+            regression.addData(point.x(), point.y());
+        }
+
+        double slope = regression.getSlope();
+        double intercept = regression.getIntercept();
+
+        return new CorrelationResult(coefficient, slope, intercept, points);
     }
 
     private void computeCorrelation(UUID playerId, ResultState result) {
