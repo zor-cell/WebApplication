@@ -4,80 +4,86 @@
 </app-main-header>
 
 <div class="main-container">
-    <div class="card w-100" *ngFor="let stats of gameStats();let i = index">
-        <div class="card-header">
-            Stats for {{ stats.player?.name }} - CATAN
-        </div>
-        <div class="card-body stats-body">
+    @if (gameStats().length > 0 && gameType()) {
+        <div class="card w-100" *ngFor="let stats of gameStats();let i = index">
+            <div class="card-header">
+                Stats for {{ stats.player?.name }} - {{ gameType() }}
+            </div>
+            <div class="card-body stats-body">
 
-            <div>
-                <div class="stats-header">Default Stats</div>
-                <div class="meta">
-                    <div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Games Played</div>
-                            <div>{{ stats.gamesPlayed }}</div>
+                <div>
+                    <div class="stats-header">Default Stats</div>
+                    <div class="meta">
+                        <div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Games Played</div>
+                                <div>{{ stats.gamesPlayed }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Win Rate</div>
+                                <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
+                            </div>
                         </div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Win Rate</div>
-                            <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
-                        </div>
-                    </div>
 
-                    <div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Avg Score</div>
-                            <div>{{ stats.avgScore.toFixed(2) }}</div>
+                        <div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Avg Score</div>
+                                <div>{{ stats.avgScore.toFixed(2) }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Max Score</div>
+                                <div>{{ stats.maxScore }}</div>
+                            </div>
                         </div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Max Score</div>
-                            <div>{{ stats.maxScore }}</div>
-                        </div>
-                    </div>
 
-                    <div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
-                            <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
-                        </div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
-                            <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
-                        </div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
-                            <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
-                        </div>
-                        <div class="meta-entry">
-                            <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span></div>
-                            <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
+                        <div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
+                                <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
+                                <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
+                                <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span>
+                                </div>
+                                <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- dynamically render game specific stats -->
-            <div>
-                <div class="stats-header">Game Specific Stats</div>
-                <ng-container *ngIf="gameStatsComponent as comp">
-                    <ng-container *ngComponentOutlet="comp;
+                <!-- dynamically render game specific stats -->
+                <div>
+                    <div class="stats-header">Game Specific Stats</div>
+                    <ng-container *ngIf="gameStatsComponent() as comp">
+                        <ng-container *ngComponentOutlet="comp;
                             inputs: {
                                 stats: stats.gameSpecific
                             }"
-                    />
-                </ng-container>
-            </div>
+                        />
+                    </ng-container>
+                </div>
 
-            <!-- show correlation charts -->
-            <div>
-                <div class="stats-header">Correlation Stats</div>
-                <div *ngFor="let correlation of stats.correlations">
-                    <game-correlation-chart [correlationData]="correlation"/>
+                <!-- show correlation charts -->
+                <div>
+                    <div class="stats-header">Correlation Stats</div>
+                    <div class="correlations">
+                        <div *ngFor="let correlation of stats.correlations">
+                            <game-correlation-chart [correlationData]="correlation"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div *ngIf="gameStats().length === 0">
-        No games found
-    </div>
+    } @else {
+        <b class="flex-container text-center">
+            Select a game type and at least one player for some game stats
+        </b>
+    }
 </div>

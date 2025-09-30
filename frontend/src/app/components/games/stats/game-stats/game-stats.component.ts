@@ -1,4 +1,4 @@
-import {Component, inject, signal, viewChild} from '@angular/core';
+import {Component, computed, inject, signal, viewChild} from '@angular/core';
 import {MainHeaderComponent} from "../../../all/main-header/main-header.component";
 import {GameSearchComponent} from "../../game-search/game-search.component";
 import {GameFilters} from "../../../../dto/games/GameFilters";
@@ -30,13 +30,21 @@ export class GameStatsComponent {
     protected gameStats = signal<GameStats[]>([]);
     protected gameFilters = signal<GameFilters | null>(null);
 
-    protected get gameStatsComponent() {
-        const gameTypes = this.gameFilters()?.gameTypes;
-        if (!gameTypes || gameTypes.length !== 1) return null;
+    protected gameType = computed(() => {
+       const gameTypes = this.gameFilters()?.gameTypes;
+       if(!gameTypes || gameTypes.length != 1) {
+           return null;
+       }
 
-        const gameType = gameTypes[0];
+       return gameTypes[0];
+    });
+
+    protected gameStatsComponent = computed(() => {
+        const gameType = this.gameType();
+        if(!gameType) return null;
+
         return this.componentRegistryService.getStatsComponent(gameType);
-    }
+    });
 
     protected searchFiltersChanged(filters: GameFilters) {
         this.gameFilters.set(filters);
