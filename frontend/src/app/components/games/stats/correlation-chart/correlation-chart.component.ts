@@ -13,10 +13,7 @@ import {CorrelationResult} from "../../../../dto/games/stats/CorrelationResult";
 })
 export class CorrelationChartComponent {
     public correlationData = input.required<CorrelationResult>();
-    public title = input<string>('Correlation');
-    public subtitle = input<string>('');
-    public titleX = input<string>('');
-    public titleY = input<string>('');
+
     private colorLost = 'rgba(31, 119, 180, 0.8)';
     private colorWon = 'rgba(255, 127, 14, 0.8)';
     private colorLine = 'rgba(255, 0, 0, 0.8)'
@@ -35,8 +32,8 @@ export class CorrelationChartComponent {
         ];
 
         //dynamic point radius for clusters
-        const minRadius = 3;
-        const maxRadius = 10;
+        const minRadius = 4;
+        const maxRadius = 12;
         const pointCounts = data.points.reduce((acc, p) => {
             const key = `${p.x},${p.y}`;
             acc[key] = (acc[key] || 0) + 1;
@@ -59,7 +56,6 @@ export class CorrelationChartComponent {
             datasets: [
                 {
                     type: 'scatter',
-                    label: 'Starting Position - Score',
                     data: dataPoints,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     pointRadius: dataPoints.map(p => p.pointRadius),
@@ -98,17 +94,9 @@ export class CorrelationChartComponent {
             plugins: {
                 title: {
                     display: true,
-                    text: this.title(),
+                    text: this.correlationData().metadata.title,
                     font: {
                         size: 18,
-                        weight: 'bold',
-                    },
-                },
-                subtitle: {
-                    display: true,
-                    text: this.subtitle(),
-                    font: {
-                        size: 16,
                         weight: 'bold',
                     },
                 },
@@ -123,17 +111,17 @@ export class CorrelationChartComponent {
                 x: {
                     title: {
                         display: true,
-                        text: this.titleX(),
+                        text: this.correlationData().metadata.xAxisTitle,
                         font: {
                             size: 16,
                         }
                     },
-                    type: 'category'
+                    type: this.correlationData().metadata.xAxisType
                 },
                 y: {
                     title: {
                         display: true,
-                        text: this.titleY(),
+                        text: this.correlationData().metadata.yAxisTitle,
                         font: {
                             size: 16,
                         }

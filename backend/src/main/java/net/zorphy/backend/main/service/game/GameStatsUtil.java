@@ -20,7 +20,7 @@ public class GameStatsUtil {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public GameStatsUtil(List<GameSpecificStatsCalculator> calculators) {
-        for(var calc : calculators) {
+        for (var calc : calculators) {
             statsCalculatorMap.put(calc.supportedType(), calc);
         }
     }
@@ -32,7 +32,8 @@ public class GameStatsUtil {
         Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
         Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
 
-        List<GameStatsCorrelation<Integer>> startingPositionToWins = new ArrayList<>();
+        //correlation data
+        List<CorrelationResult> correlations = new ArrayList<>();
         List<CorrelationDataPoint> startingPositionToScore = new ArrayList<>();
 
         PlayerDetails currentPlayer = null;
@@ -45,22 +46,15 @@ public class GameStatsUtil {
             try {
                 ResultState result = objectMapper.convertValue(game.getResult(), ResultState.class);
 
-                ResultTeamState playerTeam = result.teams().stream()
-                        .filter(team -> team.team().players().stream().anyMatch(p -> p.id().equals(playerId)))
-                        .findFirst()
-                        .orElse(null);
-                assert playerTeam != null;
-
+                //get player team data
+                ResultTeamState playerTeam = getResultTeam(result, playerId);
                 currentPlayer = playerTeam.team().players().stream()
                         .filter(p -> playerId.equals(p.id()))
                         .findFirst().orElse(currentPlayer);
                 assert currentPlayer != null;
 
-                ResultTeamState winnerTeam = result.teams().stream()
-                        .max(Comparator.comparingInt(ResultTeamState::score))
-                        .orElse(null);
-                assert winnerTeam != null;
-
+                //get winner team data
+                ResultTeamState winnerTeam = getWinnerTeam(result);
                 boolean playerIsWinner = winnerTeam.team().players().stream()
                         .anyMatch(p -> playerId.equals(p.id()));
 
@@ -93,11 +87,11 @@ public class GameStatsUtil {
 
                 //correlation data
                 startingPositionToScore.add(new CorrelationDataPoint(
-                   playerStartPosition + 1,
-                   curScore,
-                   playerIsWinner
+                        playerStartPosition + 1,
+                        curScore,
+                        playerIsWinner
                 ));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 //continue if object mapping to result failed
             }
         }
@@ -114,11 +108,20 @@ public class GameStatsUtil {
         //player has played most with teammate
         PlayerDetails companion = getExtremePlayer(teammateMap, info -> info.gamesPlayed, true);
 
+        //correlation data
+        var startPosCorrelation = computeCorrelation(startingPositionToScore, new CorrelationMetadata(
+                "Starting Position - Score",
+                "Starting Position",
+                "Score",
+                CorrelationAxisType.CATEGORY
+        ));
+        correlations.add(startPosCorrelation);
+
         //game specific stats
         GameSpecificStats gameSpecificStats = null;
         GameSpecificStatsCalculator calc = statsCalculatorMap.get(gameType);
-        if(calc != null) {
-            gameSpecificStats = calc.compute(currentPlayer, games);
+        if (calc != null) {
+            gameSpecificStats = calc.compute(currentPlayer, games, correlations);
         }
 
         return new GameStats(
@@ -131,7 +134,7 @@ public class GameStatsUtil {
                 victim,
                 rival,
                 companion,
-                computeCorrelation(startingPositionToScore),
+                correlations,
                 gameSpecificStats
         );
     }
@@ -140,24 +143,50 @@ public class GameStatsUtil {
      * Computes the fraction {@code num} / {@code den}.
      * If {@code den} is 0, 0 is returned.
      */
-    public static double computeFraction(int num, int den) {
-        if(den == 0) {
+    public static double computeFraction(double num, double den) {
+        if (den == 0) {
             return 0;
         }
 
-        return (double) num / den;
+        return num / den;
+    }
+
+    /**
+     * Get the team of the player given with {@code playerId} from the given {@code result}
+     */
+    public static ResultTeamState getResultTeam(ResultState result, UUID playerId) {
+        ResultTeamState playerTeam = result.teams().stream()
+                .filter(team -> team.team().players().stream().anyMatch(p -> playerId.equals(p.id())))
+                .findFirst()
+                .orElse(null);
+        assert playerTeam != null;
+
+        return playerTeam;
+    }
+
+    /**
+     * Get the winning team of a given {@code result}
+     */
+    public static ResultTeamState getWinnerTeam(ResultState result) {
+        ResultTeamState winnerTeam = result.teams().stream()
+                .max(Comparator.comparingInt(ResultTeamState::score))
+                .orElse(null);
+        assert winnerTeam != null;
+
+        return winnerTeam;
     }
 
     /**
      * Compute the correlation data for the given {@code points}.
      */
-    public static CorrelationResult computeCorrelation(List<CorrelationDataPoint> points) {
-        if(points.size() < 2) {
+    public static CorrelationResult computeCorrelation(List<CorrelationDataPoint> points, CorrelationMetadata metadata) {
+        if (points.size() < 2) {
             return new CorrelationResult(
-              0,
-              0,
-              0,
-              List.of()
+                    metadata,
+                    0,
+                    0,
+                    0,
+                    List.of()
             );
         }
 
@@ -177,17 +206,18 @@ public class GameStatsUtil {
         double slope = regression.getSlope();
         double intercept = regression.getIntercept();
 
-        return new CorrelationResult(coefficient, slope, intercept, points);
-    }
-
-    private void computeCorrelation(UUID playerId, ResultState result) {
-
+        return new CorrelationResult(
+                metadata,
+                coefficient,
+                slope,
+                intercept,
+                points);
     }
 
     private static void updatePlayerMap(Map<PlayerDetails, PlayerInfo> map, PlayerDetails player, boolean isWinner) {
         int increment = isWinner ? 1 : 0;
         map.compute(player, (p, info) -> {
-            if(info == null) {
+            if (info == null) {
                 return new PlayerInfo(1, increment);
             }
 

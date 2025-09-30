@@ -5,10 +5,9 @@ import {GameFilters} from "../../../../dto/games/GameFilters";
 import {GameStats} from "../../../../dto/games/stats/GameStats";
 import {NgComponentOutlet, NgForOf, NgIf} from "@angular/common";
 import {GameService} from "../../../../services/game.service";
-import {BaseChartDirective} from "ng2-charts";
-import {ChartData, ChartOptions} from "chart.js";
 import {GameComponentRegistryService} from "../../../../services/all/game-component-registry.service";
 import {CorrelationChartComponent} from "../correlation-chart/correlation-chart.component";
+import {BaseChartDirective} from "ng2-charts";
 
 @Component({
     selector: 'game-stats',
@@ -18,7 +17,6 @@ import {CorrelationChartComponent} from "../correlation-chart/correlation-chart.
         NgForOf,
         NgIf,
         NgComponentOutlet,
-        BaseChartDirective,
         CorrelationChartComponent,
         CorrelationChartComponent
     ],
@@ -31,7 +29,6 @@ export class GameStatsComponent {
 
     protected gameStats = signal<GameStats[]>([]);
     protected gameFilters = signal<GameFilters | null>(null);
-    private chart = viewChild.required(BaseChartDirective);
 
     protected get gameStatsComponent() {
         const gameTypes = this.gameFilters()?.gameTypes;

@@ -3,6 +3,7 @@ package net.zorphy.backend.site.jolly.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.dto.game.stats.CorrelationResult;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
@@ -29,7 +30,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     }
 
     @Override
-    public GameStats compute(PlayerDetails currentPlayer, List<Game> games) {
+    public GameStats compute(PlayerDetails currentPlayer, List<Game> games, List<CorrelationResult> correlations) {
         int roundsPlayed = 0;
         int totalScores = 0;
         int maxScore = 0;

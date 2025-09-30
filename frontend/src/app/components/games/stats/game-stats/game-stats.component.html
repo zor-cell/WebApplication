@@ -8,63 +8,73 @@
         <div class="card-header">
             Stats for {{ stats.player?.name }} - CATAN
         </div>
-        <div class="card-body meta">
-            <div>
-                <div class="meta-entry">
-                    <div class="meta-label">Games Played</div>
-                    <div>{{ stats.gamesPlayed }}</div>
-                </div>
-                <div class="meta-entry">
-                    <div class="meta-label">Win Rate</div>
-                    <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
-                </div>
-            </div>
+        <div class="card-body stats-body">
 
             <div>
-                <div class="meta-entry">
-                    <div class="meta-label">Avg Score</div>
-                    <div>{{ stats.avgScore.toFixed(2) }}</div>
-                </div>
-                <div class="meta-entry">
-                    <div class="meta-label">Max Score</div>
-                    <div>{{ stats.maxScore }}</div>
+                <div class="stats-header">Default Stats</div>
+                <div class="meta">
+                    <div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Games Played</div>
+                            <div>{{ stats.gamesPlayed }}</div>
+                        </div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Win Rate</div>
+                            <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Avg Score</div>
+                            <div>{{ stats.avgScore.toFixed(2) }}</div>
+                        </div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Max Score</div>
+                            <div>{{ stats.maxScore }}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
+                            <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
+                        </div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
+                            <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
+                        </div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
+                            <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
+                        </div>
+                        <div class="meta-entry">
+                            <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span></div>
+                            <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div>
-                <div class="meta-entry">
-                    <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
-                    <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
-                </div>
-                <div class="meta-entry">
-                    <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
-                    <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
-                </div>
-                <div class="meta-entry">
-                    <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
-                    <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
-                </div>
-                <div class="meta-entry">
-                    <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span></div>
-                    <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
-                </div>
-            </div>
-
-            <!-- show correlation charts -->
-            <game-correlation-chart [correlationData]="stats.startPosToScore"
-                                    title='Starting Position - Score'
-                                    titleX='Starting Position'
-                                    titleY='Score'
-            />
 
             <!-- dynamically render game specific stats -->
-            <ng-container *ngIf="gameStatsComponent as comp">
-                <ng-container *ngComponentOutlet="comp;
+            <div>
+                <div class="stats-header">Game Specific Stats</div>
+                <ng-container *ngIf="gameStatsComponent as comp">
+                    <ng-container *ngComponentOutlet="comp;
                             inputs: {
                                 stats: stats.gameSpecific
                             }"
-                />
-            </ng-container>
+                    />
+                </ng-container>
+            </div>
+
+            <!-- show correlation charts -->
+            <div>
+                <div class="stats-header">Correlation Stats</div>
+                <div *ngFor="let correlation of stats.correlations">
+                    <game-correlation-chart [correlationData]="correlation"/>
+                </div>
+            </div>
         </div>
     </div>
     <div *ngIf="gameStats().length === 0">

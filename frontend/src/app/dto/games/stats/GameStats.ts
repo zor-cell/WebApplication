@@ -12,7 +12,6 @@ export interface GameStats {
     victim: PlayerDetails | null;
     rival: PlayerDetails | null;
     companion: PlayerDetails | null;
-    startPosToScore: CorrelationResult;
-    winsOverTime: ChartData<Date, boolean>;
+    correlations: CorrelationResult[];
     gameSpecific: any;
 }

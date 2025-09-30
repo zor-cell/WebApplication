@@ -3,17 +3,25 @@ package net.zorphy.backend.site.catan.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.dto.game.stats.CorrelationAxisType;
+import net.zorphy.backend.main.dto.game.stats.CorrelationDataPoint;
+import net.zorphy.backend.main.dto.game.stats.CorrelationMetadata;
+import net.zorphy.backend.main.dto.game.stats.CorrelationResult;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
-import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.entity.Game;
+import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
+import net.zorphy.backend.main.service.game.GameStatsUtil;
+import net.zorphy.backend.site.all.base.impl.ResultState;
+import net.zorphy.backend.site.all.base.impl.ResultTeamState;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.dto.game.GameStats;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component("CatanGameStatsCalculator")
 public class GameStatsCalculator implements GameSpecificStatsCalculator {
@@ -29,14 +37,22 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     }
 
     @Override
-    public GameStats compute(PlayerDetails currentPlayer, List<Game> games) {
+    public GameStats compute(PlayerDetails currentPlayer, List<Game> games, List<CorrelationResult> correlations) {
+        List<CorrelationDataPoint> robberToScore = new ArrayList<>();
+
         List<DiceRoll> diceRolls = new ArrayList<>();
         int gameCount = 0;
         double totalLuckMetrics = 0;
 
-        for(Game game : games) {
+        for (Game game : games) {
             try {
                 GameState gameState = objectMapper.convertValue(game.getGameState(), GameState.class);
+                ResultState result = objectMapper.convertValue(game.getResult(), ResultState.class);
+
+                ResultTeamState resultPlayerTeam = GameStatsUtil.getResultTeam(result, currentPlayer.id());
+                ResultTeamState winnerTeam = GameStatsUtil.getWinnerTeam(result);
+                boolean playerIsWinner = winnerTeam.team().players().stream()
+                        .anyMatch(p -> currentPlayer.id().equals(p.id()));
 
                 TeamDetails playerTeam = gameState.gameConfig().teams().stream()
                         .filter(t -> t.players()
@@ -44,8 +60,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                                 .anyMatch(player -> currentPlayer.id().equals(player.id())))
                         .findFirst().orElse(null);
 
-                //compatibility for early games where no player id was saved
-                if(playerTeam == null) {
+                //compatibility for early games where no player id was saved --> TODO: cleanup data
+                if (playerTeam == null) {
                     playerTeam = gameState.gameConfig().teams().stream()
                             .filter(t -> t.players()
                                     .stream()
@@ -55,8 +71,9 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 }
                 assert playerTeam != null;
 
-                for(DiceRoll diceRoll : gameState.diceRolls()) {
-                    if(!diceRoll.teamName().equals(playerTeam.name())) continue;
+                int numberOfSevens = 0;
+                for (DiceRoll diceRoll : gameState.diceRolls()) {
+                    if (!diceRoll.teamName().equals(playerTeam.name())) continue;
 
                     //dice rolls should all be under player name
                     diceRolls.add(new DiceRoll(
@@ -64,19 +81,38 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                             diceRoll.diceEvent(),
                             currentPlayer.name()
                     ));
+
+                    if (diceRoll.dicePair().sum() == 7) {
+                        numberOfSevens++;
+                    }
                 }
+                double relativeSevens = GameStatsUtil.computeFraction(numberOfSevens, diceRolls.size());
+                robberToScore.add(new CorrelationDataPoint(
+                        relativeSevens * 100,
+                        resultPlayerTeam.score(),
+                        playerIsWinner
+                ));
 
                 gameCount++;
                 totalLuckMetrics += computeLuckMetric(gameState, currentPlayer, playerTeam);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 //continue if object mapping to game state failed
                 int i = 0;
             }
         }
 
+        //compute correlation
+        var robberToScoreCorrelation = GameStatsUtil.computeCorrelation(robberToScore, new CorrelationMetadata(
+                "Robbers - Score",
+                "Robbers [%]",
+                "Score",
+                CorrelationAxisType.LINEAR
+        ));
+        correlations.add(robberToScoreCorrelation);
+
         return new GameStats(
                 gameCount,
-                gameCount > 0 ? totalLuckMetrics / gameCount : 0,
+                GameStatsUtil.computeFraction(totalLuckMetrics, gameCount),
                 diceRolls
         );
     }
@@ -84,26 +120,26 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     private double computeLuckMetric(GameState gameState, PlayerDetails currentPlayer, TeamDetails playerTeam) {
         List<DiceRoll> diceRolls = gameState.diceRolls();
 
-        if(gameState.diceRolls().isEmpty()) return 0;
+        if (gameState.diceRolls().isEmpty()) return 0;
 
         int playerSevenCount = 0;
         int totalSevenCount = 0;
         DescriptiveStatistics playerStats = new DescriptiveStatistics();
         DescriptiveStatistics totalStats = new DescriptiveStatistics();
 
-        for(DiceRoll diceRoll : diceRolls) {
+        for (DiceRoll diceRoll : diceRolls) {
             int sum = diceRoll.dicePair().sum();
 
             //add player stats
-            if(playerTeam.name().equals(diceRoll.teamName())) {
-                if(sum == 7) {
+            if (playerTeam.name().equals(diceRoll.teamName())) {
+                if (sum == 7) {
                     playerSevenCount++;
                 }
                 playerStats.addValue(sum);
             }
 
             //add total stats
-            if(sum == 7) {
+            if (sum == 7) {
                 totalSevenCount++;
             }
             totalStats.addValue(sum);

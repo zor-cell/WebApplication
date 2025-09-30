@@ -1,3 +1,14 @@
+.stats-body {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.5rem;
+}
+
+.stats-header {
+    font-size: 1.2rem;
+}
+
 .meta {
     display: flex;
     justify-content: space-between;
