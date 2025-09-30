@@ -43,8 +43,7 @@ export class CorrelationChartComponent {
             return acc;
         }, {} as Record<string, number>);
 
-        const labels = [...new Set(data.points.map(p => p.x))]
-            .sort((a, b) => a - b);
+        const labels = [...new Set(xValues)].sort((a, b) => a - b);
         const dataPoints = data.points.map(p => {
             const count = pointCounts[`${p.x},${p.y}`];
             return {
@@ -65,6 +64,7 @@ export class CorrelationChartComponent {
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     pointRadius: dataPoints.map(p => p.pointRadius),
                     pointBackgroundColor: dataPoints.map(p => p.backgroundColor),
+                    order: 1
                 },
                 {
                     type: 'line',
@@ -74,7 +74,8 @@ export class CorrelationChartComponent {
                     backgroundColor: this.colorLine,
                     borderWidth: 2,
                     fill: false,
-                    pointRadius: 0
+                    pointRadius: 0,
+                    order: 2
                 }
             ]
         };

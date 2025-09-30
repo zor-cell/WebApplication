@@ -52,8 +52,9 @@ public class GameStatsUtil {
                 assert playerTeam != null;
 
                 currentPlayer = playerTeam.team().players().stream()
-                        .filter(p -> p.id().equals(playerId))
+                        .filter(p -> playerId.equals(p.id()))
                         .findFirst().orElse(currentPlayer);
+                assert currentPlayer != null;
 
                 ResultTeamState winnerTeam = result.teams().stream()
                         .max(Comparator.comparingInt(ResultTeamState::score))
@@ -61,7 +62,7 @@ public class GameStatsUtil {
                 assert winnerTeam != null;
 
                 boolean playerIsWinner = winnerTeam.team().players().stream()
-                        .anyMatch(p -> p.id().equals(playerId));
+                        .anyMatch(p -> playerId.equals(p.id()));
 
                 //update teammates
                 for (PlayerDetails teammate : playerTeam.team().players()) {
@@ -92,7 +93,7 @@ public class GameStatsUtil {
 
                 //correlation data
                 startingPositionToScore.add(new CorrelationDataPoint(
-                   playerStartPosition,
+                   playerStartPosition + 1,
                    curScore,
                    playerIsWinner
                 ));
@@ -119,24 +120,6 @@ public class GameStatsUtil {
             double[] x = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::x).toArray();
             double[] y = startingPositionToScore.stream().mapToDouble(CorrelationDataPoint::y).toArray();
         }
-        //at least 2 entries needed for correlation
-        /*if(startingPositionToWins.size() >= 2) {
-            int numPositions = startingPositionToWins.stream().mapToInt(GameStatsCorrelation::dimension).max().orElse(0) + 1;
-            for (int pos = 0; pos < numPositions; pos++) {
-                // create binary vector for this position
-                int finalPos = pos;
-                double[] x = startingPositionToWins.stream()
-                        .mapToDouble(p -> p.dimension() == finalPos ? 1.0 : 0.0)
-                        .toArray();
-                double[] y = startingPositionToWins.stream()
-                        .mapToDouble(GameStatsCorrelation::correlation).toArray();
-
-                PearsonsCorrelation cor = new PearsonsCorrelation();
-                double r = cor.correlation(x, y);
-
-                correlationByPosition.put(pos, r);
-            }
-        }*/
 
         //game specific stats
         GameSpecificStats gameSpecificStats = null;
