@@ -8,17 +8,19 @@
     <div *ngIf=game class="header">{{ game.metadata.gameType }} GAME INFO</div>
     <div class="info-container">
         <div *ngIf=game class="default-info">
-            <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
+            <div [lightbox]="0" [gallery]="galleryName">
+                <img [src]="game.metadata.imageUrl" class="highlighted-container game-image" alt="uploaded-image">
+            </div>
 
             <div class="meta game-image">
                 <div class="meta-item">
                     <div class="meta-label">Date</div>
-                    <div>{{ game.metadata.playedAt | date:'MMM d, yyyy HH:mm'}}</div>
+                    <div>{{ game.metadata.playedAt | date:'MMM d, yyyy HH:mm' }}</div>
                     <!--<input type="datetime-local" [value]="game.metadata.playedAt | date:'yyyy-MM-ddTHH:mm'">-->
                 </div>
                 <div class="meta-item">
                     <div class="meta-label">Duration</div>
-                    <div>{{game.metadata.duration | duration}}</div>
+                    <div>{{ game.metadata.duration | duration }}</div>
                     <!--<input type="time" step="1" class="form-control-sm" [value]="game.metadata.duration">-->
                 </div>
             </div>

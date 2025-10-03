@@ -10,14 +10,14 @@ import net.zorphy.backend.site.jolly.dto.RoundInfo;
 import net.zorphy.backend.site.jolly.dto.game.GameState;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("JollyGameDelete")
 public class GameDelete implements GameSpecificDelete {
     private final ObjectMapper objectMapper;
     private final FileStorageService fileStorageService;
 
     public GameDelete(FileStorageService fileStorageService, CustomObjectMapperComponent customObjectMapper) {
         this.fileStorageService = fileStorageService;
-        this.objectMapper = customObjectMapper.create();
+        this.objectMapper = customObjectMapper.getMapper();
     }
 
     @Override

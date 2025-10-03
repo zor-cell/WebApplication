@@ -18,7 +18,6 @@ import {WithFile} from "../../../../dto/all/WithFile";
     GameSessionGameComponent,
     NgIf,
     RoundPopupComponent,
-    NgForOf,
     ReactiveFormsModule,
     JollyRoundTableComponent
   ],

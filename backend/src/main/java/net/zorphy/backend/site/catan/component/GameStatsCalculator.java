@@ -28,7 +28,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
     private final ObjectMapper objectMapper;
 
     public GameStatsCalculator(CustomObjectMapperComponent customObjectMapper) {
-        this.objectMapper = customObjectMapper.create();
+        this.objectMapper = customObjectMapper.getMapper();
     }
 
     @Override

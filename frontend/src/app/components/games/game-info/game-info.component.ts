@@ -22,6 +22,8 @@ import {JollyGameComponent} from "../../sites/jolly/game/game.component";
 import {JollyGameInfoComponent} from "../../sites/jolly/game-info/game-info.component";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {GameComponentRegistryService} from "../../../services/all/game-component-registry.service";
+import {LightboxDirective} from "ng-gallery/lightbox";
+import {Gallery, GalleryItem, ImageItem} from "ng-gallery";
 
 @Component({
     standalone: true,
@@ -32,8 +34,8 @@ import {GameComponentRegistryService} from "../../../services/all/game-component
         DurationPipe,
         DatePipe,
         DeletePopupComponent,
-        NgTemplateOutlet,
-        NgComponentOutlet
+        NgComponentOutlet,
+        LightboxDirective
     ],
     templateUrl: './game-info.component.html',
     styleUrl: './game-info.component.css'
@@ -44,10 +46,12 @@ export class GameInfoComponent implements AfterViewInit {
     private route = inject(ActivatedRoute);
     private gameService = inject(GameService);
     private componentRegistry = inject(GameComponentRegistryService);
+    private gallery = inject(Gallery);
 
     protected deletePopup = viewChild.required<DeletePopupComponent>('deletePopup');
 
     protected game: GameDetails | null = null;
+    protected readonly galleryName = 'gameInfoGallery';
 
     get gameInfoComponent() {
         return this.game ? this.componentRegistry.getInfoComponent(this.game.metadata.gameType) : null;
@@ -75,6 +79,13 @@ export class GameInfoComponent implements AfterViewInit {
     private getGame(id: string) {
         this.gameService.getGame(id).subscribe(res => {
             this.game = res;
+
+            //load into gallery
+            const galleryRef = this.gallery.ref(this.galleryName);
+            galleryRef.load([new ImageItem({
+                src: this.game.metadata.imageUrl,
+                thumb: this.game.metadata.imageUrl
+            })]);
         });
     }
 }

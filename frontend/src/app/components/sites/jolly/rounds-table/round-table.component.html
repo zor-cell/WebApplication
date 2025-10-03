@@ -4,6 +4,7 @@
         <th scope="col">#</th>
         <!--<th scope="col">Ended</th>-->
         <th scope="col" *ngFor="let team of gameState().gameConfig.teams">{{ team.name }}</th>
+        <th scope="col" *ngIf="showImages()">Image</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +15,11 @@
             <span [class.closed]="round.hasClosed">{{ round.score }}</span>
             <span *ngIf="round.outInOne" class="out-in-one">•</span>
         </td>
+        <td *ngIf="showImages()">
+            <div [lightbox]="i" [gallery]="galleryName">
+                <img [ngSrc]="roundInfo.imageUrl" width="20" height="20" alt="">
+            </div>
+        </td>
     </tr>
     </tbody>
     <tfoot>
@@ -22,6 +28,7 @@
         <td *ngFor="let team of gameState().gameConfig.teams" class="fw-bold">
             {{ getTotalScore(team) }}
         </td>
+        <td *ngIf="showImages()"></td>
     </tr>
     </tfoot>
 </table>

@@ -40,7 +40,7 @@ export class CatanConfigComponent {
         }),
         eventDice: this.fb.group({
             isBalanced: this.fb.control(true),
-            shuffleThreshold: this.fb.control(5),
+            shuffleThreshold: this.fb.control(2),
             useEvents: this.fb.control(false)
         }),
         maxShipTurns: this.fb.control(7)

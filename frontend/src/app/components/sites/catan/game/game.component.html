@@ -30,7 +30,7 @@
             <div class="ship-container">
                 <div class="current-roll">
                     <div id="current-roll-player">
-                        {{ !lastPlayer ? '-' : lastPlayer?.name }}
+                        {{ lastPlayer ? lastPlayer!.name : '-' }}
                     </div>
                     <b class="spacer">
                         |

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomObjectMapperComponent {
-    public ObjectMapper create() {
+    public ObjectMapper getMapper() {
         ObjectMapper mapper = new ObjectMapper();
 
         JavaTimeModule module = new JavaTimeModule();

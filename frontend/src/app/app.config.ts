@@ -7,6 +7,27 @@ import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
 import {credentialInterceptor, errorInterceptor} from "./classes/interceptors";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
+import {LIGHTBOX_CONFIG, LightboxConfig} from "ng-gallery/lightbox";
+import {GALLERY_CONFIG, GalleryConfig} from "ng-gallery";
+
+const galleryProvider = {
+    provide: GALLERY_CONFIG,
+    useValue: {
+        thumbPosition: 'bottom',
+        imageSize: 'contain',
+        wheelZoom: true,
+        pan: true
+    } as GalleryConfig
+};
+
+const lightBoxProvider = {
+    provide: LIGHTBOX_CONFIG,
+    useValue: {
+        keyboardShortcuts: false,
+        exitAnimationTime: 500
+    } as LightboxConfig
+};
+
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -17,6 +38,8 @@ export const appConfig: ApplicationConfig = {
             BrowserAnimationsModule,
             ToastrModule.forRoot({closeButton: true})
         ),
-        provideCharts(withDefaultRegisterables())
+        provideCharts(withDefaultRegisterables()),
+        galleryProvider,
+        lightBoxProvider
     ]
 };
