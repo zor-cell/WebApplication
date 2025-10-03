@@ -82,6 +82,9 @@ export class GameInfoComponent implements AfterViewInit {
 
             //load into gallery
             const galleryRef = this.gallery.ref(this.galleryName);
+            galleryRef.setConfig({
+                thumbs: false
+            });
             galleryRef.load([new ImageItem({
                 src: this.game.metadata.imageUrl,
                 thumb: this.game.metadata.imageUrl

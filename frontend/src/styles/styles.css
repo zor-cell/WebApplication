@@ -99,3 +99,12 @@ body {
         padding: 1rem;
     }
 }
+
+/** ng-gallery styles **/
+.g-slider {
+    background-color: #fff !important;
+}
+
+.g-image-item  {
+    background-color: #e0e0e0 !important;
+}

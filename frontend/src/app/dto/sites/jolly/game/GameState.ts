@@ -3,7 +3,6 @@ import {GameConfig} from "./GameConfig";
 import {RoundInfo} from "../RoundInfo";
 
 export interface GameState extends GameStateBase {
-    startTime: string,
     gameConfig: GameConfig,
     rounds: RoundInfo[]
 }
