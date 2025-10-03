@@ -11,28 +11,16 @@ import {FileUpload} from "../../../dto/all/FileUpload";
 export class FileUploadComponent {
   public fileChangedEvent = output<FileUpload>();
 
-  private fileUpload: FileUpload = {
-    file: null,
-    fileUrl: null
-  };
+  private fileUpload = new FileUpload();
 
   protected onFileChanged(event: Event) {
     const input = event.target as HTMLInputElement;
     if(!input.files?.length) return;
 
     if(input.files) {
-      this.fileUpload.file = input.files[0];
-      this.createImageFromBlob(this.fileUpload.file);
+      this.fileUpload.setFile(input.files[0]);
 
       this.fileChangedEvent.emit(this.fileUpload);
     }
-  }
-
-  private createImageFromBlob(blob: Blob) {
-    if(this.fileUpload.fileUrl) {
-      URL.revokeObjectURL(this.fileUpload.fileUrl);
-    }
-
-    this.fileUpload.fileUrl = URL.createObjectURL(blob);
   }
 }

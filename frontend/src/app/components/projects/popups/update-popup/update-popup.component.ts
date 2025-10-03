@@ -1,7 +1,6 @@
 import {Component, inject, input, OnInit, output, signal, TemplateRef, viewChild} from '@angular/core';
 import {PopupService} from "../../../../services/all/popup.service";
 import {PopupResultType} from "../../../../dto/all/PopupResultType";
-import {ProjectService} from "../../../../services/project.service";
 import {ProjectDetails} from "../../../../dto/projects/ProjectDetails";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DatePipe, NgIf} from "@angular/common";
@@ -43,10 +42,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
 
     protected readonly filePathPrefix = 'projects/';
     protected readonly imagePathPrefix = 'projects/';
-    protected fileUpload = signal<FileUpload>({
-        file: null,
-        fileUrl: null
-    });
+    protected fileUpload = signal<FileUpload>(new FileUpload());
     protected projectForm: ProjectForm = this.fb.group({
         name: this.fb.nonNullable.control('', {validators: Validators.required}),
         createdAt: this.fb.nonNullable.control(new Date(), {validators: Validators.required}),
@@ -133,7 +129,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
         const project = this.formToDetails();
         this.updateProjectEvent.emit({
             data: project,
-            file: this.fileUpload().file
+            file: this.fileUpload().getAndRevokeFile()
         });
     }
 

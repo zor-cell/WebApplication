@@ -21,7 +21,7 @@
 
         <app-file-upload (fileChangedEvent)="fileUpload.set($event)"/>
     </form>
-    <div *ngIf="fileUpload().fileUrl as url" class="image-container">
+    <div *ngIf="fileUpload().getFileUrl() as url" class="image-container">
         <img [src]="url" alt="" width="300" height="300" class="image">
     </div>
 </ng-template>

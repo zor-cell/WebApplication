@@ -13,8 +13,8 @@
     </button>
 
     <nav [class.open]="mobileMenuOpen">
-        <a routerLink="/projects">Projects</a>
-        <a routerLink="/games">Games</a>
+        <a routerLink="/projects" (click)="closeMobileMenu()">Projects</a>
+        <a routerLink="/games" (click)="closeMobileMenu()">Games</a>
         <a>About Me</a>
         @if (!authService.isAuthenticated()) {
             <button class="btn btn-primary text-white" (click)="openLoginPopup()">Login</button>

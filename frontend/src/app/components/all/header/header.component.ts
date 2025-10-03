@@ -45,6 +45,10 @@ export class HeaderComponent implements OnInit {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
+  protected closeMobileMenu() {
+    this.mobileMenuOpen = false;
+  }
+
   protected openLoginPopup() {
     this.loginPopup().openPopup();
   }

@@ -37,10 +37,7 @@ export class GameSessionSavePopupComponent implements OnInit {
     public saveSessionEvent = output<WithFile<ResultState>>();
 
     protected saveForm!: FormGroup<Record<string, FormGroup<SaveForm>>>;
-    protected fileUpload = signal<FileUpload>({
-        file: null,
-        fileUrl: null
-    });
+    protected fileUpload = signal<FileUpload>(new FileUpload());
 
     ngOnInit() {
         const group: Record<string, FormGroup<SaveForm>> = {};
@@ -77,10 +74,7 @@ export class GameSessionSavePopupComponent implements OnInit {
         }
 
         this.saveForm.reset();
-        this.fileUpload.set({
-            file: null,
-            fileUrl: null
-        });
+        this.fileUpload().revokeFile();
     }
 
     private saveGame() {
@@ -95,7 +89,7 @@ export class GameSessionSavePopupComponent implements OnInit {
             data: {
                 teams: teamState
             },
-            file: this.fileUpload().file
+            file: this.fileUpload().getAndRevokeFile()
         });
     }
 }
