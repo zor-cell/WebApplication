@@ -20,7 +20,7 @@ public abstract class GameMapper {
 
     @Named("mapGameState")
     protected Object mapGameState(Game game) {
-        var gameMapper = gameMapperList.stream()
+        GameSpecificMapper gameMapper = gameMapperList.stream()
                 .filter(m -> m.supportedType().equals(GameType.valueOf(game.getGameType())))
                 .findFirst()
                 .orElse(null);

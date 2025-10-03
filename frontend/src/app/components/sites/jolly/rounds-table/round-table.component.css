@@ -11,3 +11,7 @@
     top: 20%;
     line-height: 1;
 }
+
+.table {
+    table-layout: fixed;
+}

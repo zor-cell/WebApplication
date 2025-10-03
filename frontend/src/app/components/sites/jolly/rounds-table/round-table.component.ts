@@ -1,11 +1,10 @@
 import {Component, effect, inject, input, OnInit} from '@angular/core';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {state} from "@angular/animations";
+import {DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {GameState} from "../../../../dto/sites/jolly/game/GameState";
 import {Team} from "../../../../dto/all/Team";
 import {LightboxDirective} from "ng-gallery/lightbox";
 import {Gallery, ImageItem} from "ng-gallery";
-import {round} from "@popperjs/core/lib/utils/math";
+import {DurationPipe} from "../../../../pipes/DurationPipe";
 
 @Component({
   selector: 'jolly-round-table',
@@ -13,7 +12,7 @@ import {round} from "@popperjs/core/lib/utils/math";
     NgForOf,
     NgIf,
     LightboxDirective,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
   templateUrl: './round-table.component.html',
   styleUrl: './round-table.component.css'
@@ -27,15 +26,35 @@ export class JollyRoundTableComponent implements OnInit {
 
   ngOnInit() {
     const roundImages = this.gameState().rounds.map(round => new ImageItem({
-      src: round.imageUrl
+      src: round.imageUrl,
+      thumb: round.imageUrl
     }));
 
     const galleryRef = this.gallery.ref(this.galleryName);
     galleryRef.load(roundImages);
   }
 
+  protected getDuration(index: number) {
+    if(index < 0 || index >= this.gameState().rounds.length) return 0;
+
+    const curRound = this.gameState().rounds[index];
+    const curTime = new Date(curRound.endTime);
+
+    let prevTime;
+    if(index == 0) {
+      prevTime = new Date(this.gameState().startTime);
+    } else {
+      const prevRound = this.gameState().rounds[index - 1];
+      prevTime = new Date(prevRound.endTime);
+    }
+
+    const durationMs = curTime.getTime() - prevTime.getTime();
+    const durationS = Math.floor(durationMs / 1000);
+    return DurationPipe.fromSeconds(durationS);
+  }
+
   protected getTotalScore(team: Team): number {
-    return this.gameState()!.rounds
+    return this.gameState().rounds
         .map(r => r.results.find(res => res.team.name === team.name)?.score ?? 0)
         .reduce((a, b) => a + b, 0);
   }

@@ -26,10 +26,9 @@ export class DurationPipe implements PipeTransform {
         const mm = minutes.toString().padStart(2, '0');
         const ss = seconds.toString().padStart(2, '0');
 
-        const mmFromH = (minutes + hours * 60).toString().padStart(2, '0');
+        //const mmFromH = (minutes + hours * 60).toString().padStart(2, '0');
 
         return `${hh}:${mm}:${ss}`;
-        //return `${mmFromH}m ${ss}s`;
     }
 
     public static toIsoFormat(duration: string | null) {
@@ -37,5 +36,14 @@ export class DurationPipe implements PipeTransform {
 
         const [h, m] = duration.split(':').map(Number);
         return `PT${h ? h + 'H' : ''}${m ? m + 'M' : ''}`;
+    }
+
+    public static fromSeconds(seconds: number) {
+        const minutes = Math.floor(seconds / 60);
+
+        const mm = minutes.toString().padStart(2, '0');
+        const ss = (seconds % 60).toString().padStart(2, '0');
+
+        return `${mm}:${ss}`;
     }
 }

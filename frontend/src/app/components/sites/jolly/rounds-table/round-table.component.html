@@ -2,22 +2,22 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <!--<th scope="col">Ended</th>-->
         <th scope="col" *ngFor="let team of gameState().gameConfig.teams">{{ team.name }}</th>
+        <th scope="col">Duration</th>
         <th scope="col" *ngIf="showImages()">Image</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let roundInfo of gameState().rounds;let i = index;">
-        <th scope="row">{{i + 1}}</th>
-        <!--<td>{{ roundInfo.endTime | date:'MMM d, yyyy HH:mm' }}</td>-->
+        <th scope="row">{{ i + 1 }}</th>
         <td *ngFor="let round of roundInfo.results" class="score-cell">
             <span [class.closed]="round.hasClosed">{{ round.score }}</span>
             <span *ngIf="round.outInOne" class="out-in-one">•</span>
         </td>
+        <td>{{ getDuration(i) }}</td>
         <td *ngIf="showImages()">
             <div [lightbox]="i" [gallery]="galleryName">
-                <img [ngSrc]="roundInfo.imageUrl" width="20" height="20" alt="">
+                <img [ngSrc]="roundInfo.imageUrl" width="20" height="20" alt="" loading="lazy">
             </div>
         </td>
     </tr>
@@ -29,6 +29,7 @@
             {{ getTotalScore(team) }}
         </td>
         <td *ngIf="showImages()"></td>
+        <td></td>
     </tr>
     </tfoot>
 </table>
