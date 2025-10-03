@@ -45,7 +45,7 @@ public class GameServiceImpl implements GameService {
         this.fileStorageService = fileStorageService;
         this.gameStatsUtil = gameStatsUtil;
 
-        for(var gameDelete : gameDeleteList) {
+        for(GameSpecificDelete gameDelete : gameDeleteList) {
             gameDeleteMap.put(gameDelete.supportedType(), gameDelete);
         }
     }

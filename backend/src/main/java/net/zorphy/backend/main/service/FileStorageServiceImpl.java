@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,7 +33,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         this.fileStorageLocation = Paths.get(fileStorageProperty.getDirectory()).toAbsolutePath().normalize();
         Files.createDirectories(this.fileStorageLocation);
 
-        logger.info("File storage location initialized to: {}", this.fileStorageLocation);
+        logger.debug("File storage location initialized to: {}", this.fileStorageLocation);
     }
 
     @Override
@@ -51,20 +56,14 @@ public class FileStorageServiceImpl implements FileStorageService {
                 throw new FileStorageException("Filename contains invalid path sequence " + originalFilename);
             }
 
-            //generate unique filename
-            String fileExtension = "";
-            int dotIndex = originalFilename.lastIndexOf('.');
-            if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
-                fileExtension = originalFilename.substring(dotIndex);
-            }
-            String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + fileExtension;
-
-            //write to target location
+            //get target directory
             Path subLocation = this.fileStorageLocation.resolve(subDirectory);
             Files.createDirectories(subLocation);
 
-            Path targetLocation = subLocation.resolve(uniqueFilename);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            //save file in .webp format
+            String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + ".webp";
+            Path targetPath = subLocation.resolve(uniqueFilename);
+            this.writeWebP(file, targetPath.toFile(), 0.2f);
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
@@ -95,4 +94,29 @@ public class FileStorageServiceImpl implements FileStorageService {
 
         return subDirectory + "/" + filename;
     }
+
+    private void writeWebP(MultipartFile file, File outputFile, float quality) throws IOException {
+        BufferedImage image = ImageIO.read(file.getInputStream());
+
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("webp");
+        if (!writers.hasNext()) {
+            throw new IOException("No WebP ImageWriter found");
+        }
+        ImageWriter writer = writers.next();
+
+        ImageWriteParam writeParam = writer.getDefaultWriteParam();
+        if (writeParam.canWriteCompressed()) {
+            writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            writeParam.setCompressionType("Lossy");
+            writeParam.setCompressionQuality(quality);
+        }
+
+        try (ImageOutputStream ios = ImageIO.createImageOutputStream(outputFile)) {
+            writer.setOutput(ios);
+            writer.write(null, new IIOImage(image, null, null), writeParam);
+        } finally {
+            writer.dispose();
+        }
+    }
+
 }
