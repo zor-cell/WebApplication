@@ -44,8 +44,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         return saveFile(relativePath, file);
     }
 
-    @Override
-    public String saveFile(String subDirectory, MultipartFile file) {
+    public String saveFileToWebp(String subDirectory, MultipartFile file) {
         if (file == null) return null;
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -64,6 +63,40 @@ public class FileStorageServiceImpl implements FileStorageService {
             String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + ".webp";
             Path targetPath = subLocation.resolve(uniqueFilename);
             this.writeWebP(file, targetPath.toFile(), 0.2f);
+
+            return formatPath(subDirectory, uniqueFilename);
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + originalFilename, ex);
+        }
+    }
+
+    @Override
+    public String saveFile(String subDirectory, MultipartFile file) {
+        if (file == null) return null;
+
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+
+        try {
+            //check for invalid characters
+            if (originalFilename.contains("..")) {
+                throw new FileStorageException("Filename contains invalid path sequence " + originalFilename);
+            }
+
+            //generate unique filename
+            String fileExtension = "";
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
+                fileExtension = originalFilename.substring(dotIndex);
+            }
+
+            //get target directory
+            Path subLocation = this.fileStorageLocation.resolve(subDirectory);
+            Files.createDirectories(subLocation);
+
+            //save original file
+            String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + fileExtension;
+            Path targetLocation = subLocation.resolve(uniqueFilename);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
