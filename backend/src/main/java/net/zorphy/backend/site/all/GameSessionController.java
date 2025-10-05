@@ -8,7 +8,6 @@ import net.zorphy.backend.main.exception.InvalidSessionException;
 import net.zorphy.backend.site.all.base.GameConfigBase;
 import net.zorphy.backend.site.all.base.GameStateBase;
 import net.zorphy.backend.site.all.base.ResultStateBase;
-import net.zorphy.backend.site.catan.dto.game.GameState;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -103,7 +102,7 @@ public class GameSessionController<Config extends GameConfigBase, State extends 
     }
 
     private boolean sessionExists(HttpSession session) {
-        GameState gameState = (GameState) session.getAttribute(SESSION_KEY);
+        State gameState = (State) session.getAttribute(SESSION_KEY);
         return gameState != null;
     }
 
