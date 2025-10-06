@@ -34,7 +34,7 @@ export class JollyRoundTableComponent implements OnInit {
     galleryRef.load(roundImages);
   }
 
-  protected getDuration(index: number) {
+  private getDurationInSeconds(index: number) {
     if(index < 0 || index >= this.gameState().rounds.length) return 0;
 
     const curRound = this.gameState().rounds[index];
@@ -49,8 +49,20 @@ export class JollyRoundTableComponent implements OnInit {
     }
 
     const durationMs = curTime.getTime() - prevTime.getTime();
-    const durationS = Math.floor(durationMs / 1000);
-    return DurationPipe.fromSeconds(durationS);
+    return Math.floor(durationMs / 1000);
+  }
+
+  protected getDuration(index: number) {
+    const seconds = this.getDurationInSeconds(index)
+    return DurationPipe.fromSeconds(seconds);
+  }
+
+  protected getTotalDuration() {
+    const total = this.gameState().rounds
+      .map((_, i) => this.getDurationInSeconds(i))
+      .reduce((a, b) => a + b, 0);
+
+    return DurationPipe.fromSeconds(total);
   }
 
   protected getTotalScore(team: Team): number {

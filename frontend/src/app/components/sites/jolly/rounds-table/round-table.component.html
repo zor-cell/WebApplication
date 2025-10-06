@@ -23,13 +23,13 @@
     </tr>
     </tbody>
     <tfoot>
-    <tr class="table-light">
+    <tr class="table-light fw-bold">
         <th scope="row">Total</th>
-        <td *ngFor="let team of gameState().gameConfig.teams" class="fw-bold">
+        <td *ngFor="let team of gameState().gameConfig.teams">
             {{ getTotalScore(team) }}
         </td>
-        <td *ngIf="showImages()"></td>
-        <td></td>
+        <td>{{ getTotalDuration() }}</td>
+        <td *ngIf="showImages()">-</td>
     </tr>
     </tfoot>
 </table>
