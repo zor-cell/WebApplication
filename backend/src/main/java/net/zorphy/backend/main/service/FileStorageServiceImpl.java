@@ -47,7 +47,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     private byte[] encodeWebp(MultipartFile file, int quality) throws IOException {
-        Mat image = Imgcodecs.imdecode(new MatOfByte(file.getBytes()), Imgcodecs.IMREAD_UNCHANGED);
+        Mat image = Imgcodecs.imdecode(new MatOfByte(file.getBytes()), Imgcodecs.IMREAD_ANYCOLOR);
 
         MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_WEBP_QUALITY, quality);
         MatOfByte output = new MatOfByte();
