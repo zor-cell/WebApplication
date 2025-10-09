@@ -2,7 +2,7 @@ package net.zorphy.backend.site.jolly.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import net.zorphy.backend.main.dto.FileStorageFile;
+import net.zorphy.backend.main.dto.file.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;

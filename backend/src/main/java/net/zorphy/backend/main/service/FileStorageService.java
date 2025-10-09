@@ -1,6 +1,6 @@
 package net.zorphy.backend.main.service;
 
-import net.zorphy.backend.main.dto.FileStorageFile;
+import net.zorphy.backend.main.dto.file.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameType;
 import org.springframework.web.multipart.MultipartFile;
 

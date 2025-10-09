@@ -1,7 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.config.property.FileStorageProperty;
-import net.zorphy.backend.main.dto.FileStorageFile;
+import net.zorphy.backend.main.dto.file.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.FileStorageException;
 import nu.pattern.OpenCV;
