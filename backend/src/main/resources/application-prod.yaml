@@ -3,3 +3,4 @@ app:
 
 file-storage:
   directory: /app/file-storage
+  compression-rate: 20

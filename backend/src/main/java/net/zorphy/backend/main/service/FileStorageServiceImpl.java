@@ -26,10 +26,13 @@ public class FileStorageServiceImpl implements FileStorageService {
     private static final Logger logger = LoggerFactory.getLogger(FileStorageServiceImpl.class);
 
     private final Path fileStorageLocation;
+    private final int compressionRate;
 
     public FileStorageServiceImpl(FileStorageProperty fileStorageProperty) throws IOException {
         this.fileStorageLocation = Paths.get(fileStorageProperty.getDirectory()).toAbsolutePath().normalize();
         Files.createDirectories(this.fileStorageLocation);
+
+        this.compressionRate = fileStorageProperty.getCompressionRate();
 
         logger.debug("File storage location initialized to: {}", this.fileStorageLocation);
 
@@ -154,7 +157,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + ".webp";
             Path targetPath = subLocation.resolve(uniqueFilename);
 
-            byte[] encoded = encodeWebp(file.bytes(), 20);
+            byte[] encoded = encodeWebp(file.bytes());
 
             Files.write(targetPath, encoded);
 
@@ -164,16 +167,16 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-    private byte[] encodeWebp(byte[] file, int quality) throws IOException {
+    private byte[] encodeWebp(byte[] file) throws IOException {
         Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_ANYCOLOR);
 
-        MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_WEBP_QUALITY, quality);
+        MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_WEBP_QUALITY, compressionRate);
         MatOfByte output = new MatOfByte();
 
         if (Imgcodecs.imencode(".webp", image, output, params)) {
             return output.toArray();
         } else {
-            throw new IOException("Failed to encode image as WebP with quality " + quality);
+            throw new IOException("Failed to encode image as WebP with quality " + compressionRate);
         }
     }
 }
