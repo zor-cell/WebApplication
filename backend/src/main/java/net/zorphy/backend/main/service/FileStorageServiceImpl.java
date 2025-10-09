@@ -1,6 +1,7 @@
 package net.zorphy.backend.main.service;
 
 import net.zorphy.backend.config.property.FileStorageProperty;
+import net.zorphy.backend.main.dto.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.FileStorageException;
 import nu.pattern.OpenCV;
@@ -14,20 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -46,31 +36,76 @@ public class FileStorageServiceImpl implements FileStorageService {
         OpenCV.loadLocally();
     }
 
-    private byte[] encodeWebp(MultipartFile file, int quality) throws IOException {
-        Mat image = Imgcodecs.imdecode(new MatOfByte(file.getBytes()), Imgcodecs.IMREAD_ANYCOLOR);
-
-        MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_WEBP_QUALITY, quality);
-        MatOfByte output = new MatOfByte();
-
-        if (Imgcodecs.imencode(".webp", image, output, params)) {
-            return output.toArray();
-        } else {
-            throw new IOException("Failed to encode image as WebP with quality " + quality);
-        }
-    }
-
     @Override
     public String saveFile(GameType gameType, MultipartFile file) {
         if (file == null) return null;
 
-        String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
-        return saveFile(relativePath, file);
+        try {
+            return this.saveFile(gameType, new FileStorageFile(file.getOriginalFilename(), file.getBytes()));
+        } catch(IOException ex) {
+            return null;
+        }
     }
 
-    private String saveFileToOriginal(String subDirectory, MultipartFile file) {
+    @Override
+    public String saveFile(String subDirectory, MultipartFile file) {
         if (file == null) return null;
 
-        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        try {
+            return this.saveFile(subDirectory, new FileStorageFile(file.getOriginalFilename(), file.getBytes()));
+        } catch(IOException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public String saveFile(GameType gameType, FileStorageFile file) {
+        if (file == null) return null;
+
+        String relativePath = "games/%s".formatted(gameType.toString().toLowerCase());
+        return this.saveFile(relativePath, file);
+    }
+
+    @Override
+    public String saveFile(String subDirectory, FileStorageFile file) {
+        if (file == null) return null;
+
+        try {
+            return this.saveFileToWebp(subDirectory, file);
+        } catch (Exception ex) {
+            logger.info("Could not save bytes to webp", ex);
+            return this.saveFileToOriginal(subDirectory, file);
+        }
+    }
+
+    @Override
+    public void deleteFile(String relativePath) {
+        if (relativePath == null) {
+            return;
+        }
+
+        try {
+            Path filePath = this.fileStorageLocation.resolve(relativePath).normalize();
+
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not delete bytes " + relativePath, ex);
+        }
+    }
+
+    private String formatPath(String subDirectory, String filename) {
+        subDirectory = subDirectory.replaceAll("^/+|/+$", ""); // remove leading/trailing slashes
+        filename = filename.replaceAll("^/+", ""); // remove leading slashes
+
+        return subDirectory + "/" + filename;
+    }
+
+    private String saveFileToOriginal(String subDirectory, FileStorageFile file) {
+        if (file == null) return null;
+
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.fileName()));
 
         try {
             //check for invalid characters
@@ -89,21 +124,21 @@ public class FileStorageServiceImpl implements FileStorageService {
             Path subLocation = this.fileStorageLocation.resolve(subDirectory);
             Files.createDirectories(subLocation);
 
-            //save original file
+            //save original bytes
             String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + fileExtension;
             Path targetLocation = subLocation.resolve(uniqueFilename);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.write(targetLocation, file.bytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + originalFilename, ex);
+            throw new FileStorageException("Could not store bytes " + originalFilename, ex);
         }
     }
 
-    private String saveFileToWebp(String subDirectory, MultipartFile file) {
+    private String saveFileToWebp(String subDirectory, FileStorageFile file) {
         if (file == null) return null;
 
-        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.fileName()));
 
         try {
             //check for invalid characters
@@ -115,76 +150,30 @@ public class FileStorageServiceImpl implements FileStorageService {
             Path subLocation = this.fileStorageLocation.resolve(subDirectory);
             Files.createDirectories(subLocation);
 
-            //save file in .webp format
+            //save bytes in .webp format
             String uniqueFilename = LocalDate.now() + "_" + UUID.randomUUID() + ".webp";
             Path targetPath = subLocation.resolve(uniqueFilename);
 
-            byte[] encoded = encodeWebp(file, 20);
+            byte[] encoded = encodeWebp(file.bytes(), 20);
 
             Files.write(targetPath, encoded);
 
             return formatPath(subDirectory, uniqueFilename);
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + originalFilename, ex);
+            throw new FileStorageException("Could not store bytes " + originalFilename, ex);
         }
     }
 
-    @Override
-    public String saveFile(String subDirectory, MultipartFile file) {
-        try {
-            return this.saveFileToWebp(subDirectory, file);
-        } catch (Exception ex) {
-            logger.info("Could not save file to webp", ex);
-            return this.saveFileToOriginal(subDirectory, file);
+    private byte[] encodeWebp(byte[] file, int quality) throws IOException {
+        Mat image = Imgcodecs.imdecode(new MatOfByte(file), Imgcodecs.IMREAD_ANYCOLOR);
+
+        MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_WEBP_QUALITY, quality);
+        MatOfByte output = new MatOfByte();
+
+        if (Imgcodecs.imencode(".webp", image, output, params)) {
+            return output.toArray();
+        } else {
+            throw new IOException("Failed to encode image as WebP with quality " + quality);
         }
     }
-
-    @Override
-    public void deleteFile(String relativePath) {
-        if (relativePath == null) {
-            return;
-        }
-
-        try {
-            Path filePath = this.fileStorageLocation.resolve(relativePath).normalize();
-
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-            }
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not delete file " + relativePath, ex);
-        }
-    }
-
-    private String formatPath(String subDirectory, String filename) {
-        subDirectory = subDirectory.replaceAll("^/+|/+$", ""); // remove leading/trailing slashes
-        filename = filename.replaceAll("^/+", ""); // remove leading slashes
-
-        return subDirectory + "/" + filename;
-    }
-
-    private void writeWebP(MultipartFile file, File outputFile, float quality) throws IOException {
-        BufferedImage image = ImageIO.read(file.getInputStream());
-
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("webp");
-        if (!writers.hasNext()) {
-            throw new IOException("No WebP ImageWriter found");
-        }
-        ImageWriter writer = writers.next();
-
-        ImageWriteParam writeParam = writer.getDefaultWriteParam();
-        if (writeParam.canWriteCompressed()) {
-            writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            writeParam.setCompressionType("Lossy");
-            writeParam.setCompressionQuality(quality);
-        }
-
-        try (ImageOutputStream ios = ImageIO.createImageOutputStream(outputFile)) {
-            writer.setOutput(ios);
-            writer.write(null, new IIOImage(image, null, null), writeParam);
-        } finally {
-            writer.dispose();
-        }
-    }
-
 }

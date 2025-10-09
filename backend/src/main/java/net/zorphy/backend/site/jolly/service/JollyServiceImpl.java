@@ -1,5 +1,6 @@
 package net.zorphy.backend.site.jolly.service;
 
+import net.zorphy.backend.main.dto.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.FileStorageService;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class JollyServiceImpl implements JollyService {
@@ -62,22 +65,45 @@ public class JollyServiceImpl implements JollyService {
     }
 
     @Override
-    public GameState saveRound(GameState oldState, List<RoundResult> results, MultipartFile image) {
+    public GameState saveRound(GameState oldState, List<RoundResult> results, UUID imageIdentifier) {
         List<RoundInfo> rounds = new ArrayList<>(oldState.rounds());
 
         if(!oldState.gameConfig().noRoundLimit() && rounds.size() >= oldState.gameConfig().roundLimit()) {
             throw new InvalidOperationException("Maximum number of rounds reached");
         }
 
-        //save image file to file storage
-        String path = fileStorageService.saveFile(GameType.JOLLY, image);
-
         RoundInfo roundInfo = new RoundInfo(
                 Instant.now(),
-                path,
+                imageIdentifier.toString(),
                 results
         );
         rounds.add(roundInfo);
+
+        return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                rounds
+        );
+    }
+
+    @Override
+    public GameState saveRoundImages(GameState oldState, Map<UUID, FileStorageFile> images) {
+        List<RoundInfo> rounds = new ArrayList<>(oldState.rounds());
+
+        for(RoundInfo round : oldState.rounds()) {
+            //save round images to bytes storage
+            String imageUrl = null;
+            if (round.imageUrl() != null) {
+                FileStorageFile image = images.get(UUID.fromString(round.imageUrl()));
+                imageUrl = fileStorageService.saveFile(GameType.JOLLY, image);
+            }
+
+            rounds.add(new RoundInfo(
+               round.endTime(),
+               imageUrl,
+               round.results()
+            ));
+        }
 
         return new GameState(
                 oldState.startTime(),

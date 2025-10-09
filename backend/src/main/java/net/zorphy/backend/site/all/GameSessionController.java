@@ -13,10 +13,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
+public abstract class GameSessionController<Config extends GameConfigBase, State extends GameStateBase, Result extends ResultStateBase> {
     private final GameSessionService<Config, State, Result> sessionService;
-    private final String SESSION_KEY;
-    private final String SESSION_SAVE_KEY;
+    protected final String SESSION_KEY;
+    protected final String SESSION_SAVE_KEY;
 
     public GameSessionController(GameSessionService<Config, State, Result> sessionService, GameType gameType) {
         this.sessionService = sessionService;
@@ -88,7 +88,7 @@ public class GameSessionController<Config extends GameConfigBase, State extends 
         return gameState;
     }
 
-    public State getSessionState(HttpSession session) {
+    protected State getSessionState(HttpSession session) {
         State gameState = (State) session.getAttribute(SESSION_KEY);
         if (gameState == null) {
             throw new InvalidSessionException("No game state for this session exists");
@@ -97,16 +97,16 @@ public class GameSessionController<Config extends GameConfigBase, State extends 
         return gameState;
     }
 
-    public void setSessionState(HttpSession session, State state) {
+    protected void setSessionState(HttpSession session, State state) {
         session.setAttribute(SESSION_KEY, state);
     }
 
-    private boolean sessionExists(HttpSession session) {
+    protected boolean sessionExists(HttpSession session) {
         State gameState = (State) session.getAttribute(SESSION_KEY);
         return gameState != null;
     }
 
-    private boolean getSessionSaved(HttpSession session) {
+    protected boolean getSessionSaved(HttpSession session) {
         Boolean sessionSaved = (Boolean) session.getAttribute(SESSION_SAVE_KEY);
         if(sessionSaved == null) {
             throw new InvalidSessionException("No game state for this session exists");
@@ -115,7 +115,7 @@ public class GameSessionController<Config extends GameConfigBase, State extends 
         return sessionSaved;
     }
 
-    private void setSessionSaved(HttpSession session, boolean sessionSaved) {
+    protected void setSessionSaved(HttpSession session, boolean sessionSaved) {
         session.setAttribute(SESSION_SAVE_KEY, sessionSaved);
     }
 }
