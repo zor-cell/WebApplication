@@ -60,11 +60,6 @@ public class JollyServiceImpl implements JollyService {
     }
 
     @Override
-    public GameState undoMove(GameState gameState) {
-        return null;
-    }
-
-    @Override
     public GameState saveRound(GameState oldState, List<RoundResult> results, UUID imageIdentifier) {
         List<RoundInfo> rounds = new ArrayList<>(oldState.rounds());
 

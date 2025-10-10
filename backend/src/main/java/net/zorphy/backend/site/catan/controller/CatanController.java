@@ -30,4 +30,12 @@ public class CatanController extends GameSessionSaveController<GameConfig, GameS
 
         return gameState;
     }
+
+    @PostMapping("undo")
+    public GameState undoRoll(HttpSession session) {
+        GameState gameState = catanService.undoRoll(getSessionState(session));
+        setSessionState(session, gameState);
+
+        return gameState;
+    }
 }

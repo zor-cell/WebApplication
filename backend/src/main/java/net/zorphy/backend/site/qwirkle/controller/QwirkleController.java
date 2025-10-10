@@ -29,6 +29,14 @@ public class QwirkleController extends GameSessionSaveController<GameConfig, Gam
         this.qwirkleService = qwirkleService;
     }
 
+    @PostMapping("undo")
+    public GameState undoRoll(HttpSession session) {
+        GameState gameState = qwirkleService.undoMove(getSessionState(session));
+        setSessionState(session, gameState);
+
+        return gameState;
+    }
+
     @GetMapping("solve")
     public List<MoveGroup> getBestMoves(HttpSession session, @RequestParam(value = "maxMoves", defaultValue = "1") int maxMoves) {
         return qwirkleService.getBestMoves(getSessionState(session), maxMoves);

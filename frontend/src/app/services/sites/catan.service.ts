@@ -25,4 +25,8 @@ export class CatanService extends GameSessionService<GameConfig, GameState> {
                 }
             });
     }
+
+    undoRoll(): Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/undo', {});
+    }
 }

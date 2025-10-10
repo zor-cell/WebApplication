@@ -7,4 +7,6 @@ import net.zorphy.backend.site.catan.dto.game.GameState;
 
 public interface CatanService extends GameSessionSaveService<GameConfig, GameState, ResultState> {
     GameState rollDice(GameState oldState, boolean isAlchemist);
+
+    GameState undoRoll(GameState oldState);
 }

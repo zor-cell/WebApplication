@@ -167,7 +167,7 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameState undoMove(GameState gameState) {
+    public GameState undoRoll(GameState gameState) {
         return null;
     }
 

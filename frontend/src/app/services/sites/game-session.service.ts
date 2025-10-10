@@ -55,8 +55,4 @@ export abstract class GameSessionService<Config extends GameConfigBase, State ex
   isSessionSaved(): Observable<boolean> {
     return this.httpClient.get<boolean>(this.baseUri + '/session/save');
   }
-  
-  undoMove() : Observable<State> {
-    return this.httpClient.post<State>(this.baseUri + '/session/undo', {});
-  }
 }

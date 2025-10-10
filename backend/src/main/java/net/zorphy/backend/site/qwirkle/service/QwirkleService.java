@@ -37,5 +37,7 @@ public interface QwirkleService extends GameSessionSaveService<GameConfig, GameS
      */
     GameState makeMove(GameState gameState, Move move, boolean fromStack);
 
+    GameState undoMove(GameState gameState);
+
     byte[] uploadImage(byte[] file);
 }

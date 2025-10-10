@@ -53,14 +53,6 @@ public abstract class GameSessionBaseController<Config extends GameConfigBase, S
         session.removeAttribute(SESSION_KEY);
     }
 
-    @PostMapping(value = "session/undo")
-    public State undoMove(HttpSession session) {
-        State gameState = sessionBaseService.undoMove(getSessionState(session));
-        setSessionState(session, gameState);
-
-        return gameState;
-    }
-
     protected State getSessionState(HttpSession session) {
         State gameState = (State) session.getAttribute(SESSION_KEY);
         if (gameState == null) {

@@ -9,6 +9,7 @@ import {MoveGroup} from "../../dto/sites/qwirkle/move/MoveGroup";
 import {SelectionInfo} from "../../dto/sites/qwirkle/SelectionInfo";
 import {GameSessionService} from "./game-session.service";
 import {GameConfig} from "../../dto/sites/qwirkle/game/GameConfig";
+import {State} from "@popperjs/core";
 
 @Injectable({
     providedIn: 'root'
@@ -49,6 +50,10 @@ export class QwirkleService extends GameSessionService<GameConfig, GameState> {
                 fromStack: fromStack
             }
         });
+    }
+
+    undoMove() : Observable<GameState> {
+        return this.httpClient.post<GameState>(this.baseUri + '/undo', {});
     }
 
     uploadImage(image: File): Observable<Blob> {
