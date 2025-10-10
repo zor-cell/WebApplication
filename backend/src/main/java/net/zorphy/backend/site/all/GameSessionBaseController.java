@@ -33,6 +33,7 @@ public abstract class GameSessionBaseController<Config extends GameConfigBase, S
 
         State gameState = sessionBaseService.createSession(gameConfig);
         setSessionState(session, gameState);
+        onAfterCreate(session);
 
         return gameState;
     }
@@ -50,9 +51,17 @@ public abstract class GameSessionBaseController<Config extends GameConfigBase, S
         //check for valid session
         getSessionState(session);
 
+        onBeforeClear(session);
         session.removeAttribute(SESSION_KEY);
     }
 
+    protected void onBeforeClear(HttpSession session) {};
+    protected void onAfterCreate(HttpSession session) {};
+
+    /**
+     * Gets the game state from the current session
+     * @throws InvalidSessionException if no game state exists in the session
+     */
     protected State getSessionState(HttpSession session) {
         State gameState = (State) session.getAttribute(SESSION_KEY);
         if (gameState == null) {
@@ -66,7 +75,7 @@ public abstract class GameSessionBaseController<Config extends GameConfigBase, S
         session.setAttribute(SESSION_KEY, state);
     }
 
-    protected boolean sessionExists(HttpSession session) {
+    private boolean sessionExists(HttpSession session) {
         try {
             getSessionState(session);
             return true;

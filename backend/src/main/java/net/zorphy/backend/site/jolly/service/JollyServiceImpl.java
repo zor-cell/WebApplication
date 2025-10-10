@@ -69,7 +69,7 @@ public class JollyServiceImpl implements JollyService {
 
         RoundInfo roundInfo = new RoundInfo(
                 Instant.now(),
-                imageIdentifier.toString(),
+                imageIdentifier != null ? imageIdentifier.toString() : null,
                 results
         );
         rounds.add(roundInfo);

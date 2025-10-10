@@ -66,8 +66,11 @@ public class JollyController extends GameSessionSaveController<GameConfig, GameS
         gameState = jollyService.saveRoundImages(gameState, getSessionImages(session));
         GameDetails gameDetails = jollyService.saveSession(gameState, resultState, image);
 
+        var images = getSessionImages(session);
+        if(images != null) {
+            images.clear();
+        }
         setSessionSaved(session, true);
-        getSessionImages(session).clear();
 
         return gameDetails;
     }

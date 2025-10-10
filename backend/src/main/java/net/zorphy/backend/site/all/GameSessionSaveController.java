@@ -31,19 +31,12 @@ public abstract class GameSessionSaveController<Config extends GameConfigBase, S
     }
 
     @Override
-    @PostMapping("session")
-    public State createSession(HttpSession session, @Valid @RequestBody Config gameConfig) {
-        State gameState = super.createSession(session, gameConfig);
-
+    protected void onAfterCreate(HttpSession session) {
         setSessionSaved(session, false);
-        return gameState;
     }
 
     @Override
-    @DeleteMapping("session")
-    public void clear(HttpSession session) {
-        super.clear(session);
-
+    protected void onBeforeClear(HttpSession session) {
         session.removeAttribute(SESSION_SAVE_KEY);
     }
 

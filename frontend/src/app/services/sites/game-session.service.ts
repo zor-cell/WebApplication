@@ -1,18 +1,21 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {Globals} from "../../classes/globals";
 import {ResultState} from "../../dto/sites/catan/result/ResultState";
 import {GameDetails} from "../../dto/games/GameDetails";
 import {GameConfigBase} from "../../dto/sites/GameConfigBase";
 import {GameStateBase} from "../../dto/sites/GameStateBase";
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root'
 })
 export abstract class GameSessionService<Config extends GameConfigBase, State extends GameStateBase> {
   protected abstract readonly baseUri: string;
+  private toastr = inject(ToastrService);
 
+  //constructor necessary for base classes
   protected constructor(protected httpClient: HttpClient, protected globals: Globals) {}
 
   getSession(): Observable<State> {
@@ -46,10 +49,16 @@ export abstract class GameSessionService<Config extends GameConfigBase, State ex
       formData.append('image', imageFile, imageFile.name);
     }
 
+    const loadingToast = this.toastr.info('Saving session...', '', { disableTimeOut: true });
     return this.httpClient.post<GameDetails>(this.baseUri + '/session/save', formData).pipe(
         tap(() => {
-          this.globals.handleSuccess('Saved session data');
-        }));
+            this.toastr.remove(loadingToast.toastId);
+            this.globals.handleSuccess('Saved session data');
+        }),
+        finalize(() => {
+            this.toastr.remove(loadingToast.toastId);
+        })
+    );
   }
 
   isSessionSaved(): Observable<boolean> {
