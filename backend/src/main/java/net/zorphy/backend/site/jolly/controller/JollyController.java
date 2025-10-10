@@ -6,7 +6,7 @@ import net.zorphy.backend.main.dto.file.FileStorageFile;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;
-import net.zorphy.backend.site.all.GameSessionController;
+import net.zorphy.backend.site.all.GameSessionSaveController;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.jolly.dto.RoundResult;
 import net.zorphy.backend.site.jolly.dto.game.GameConfig;
@@ -22,7 +22,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/jolly")
-public class JollyController extends GameSessionController<GameConfig, GameState, ResultState> {
+public class JollyController extends GameSessionSaveController<GameConfig, GameState, ResultState> {
     private final JollyService jollyService;
     private final String SESSION_IMAGES;
 
@@ -37,6 +37,7 @@ public class JollyController extends GameSessionController<GameConfig, GameState
     public GameState saveRound(HttpSession session,
                                @RequestPart("results") @Valid List<RoundResult> results,
                                @RequestPart(value = "image", required = false) MultipartFile image) {
+        //add round image to session storage
         UUID id;
         try {
             id = addSessionImage(session, image);
@@ -61,6 +62,7 @@ public class JollyController extends GameSessionController<GameConfig, GameState
             throw new InvalidSessionException("The game state for this session was already saved");
         }
 
+        //save round images from session before saving game
         gameState = jollyService.saveRoundImages(gameState, getSessionImages(session));
         GameDetails gameDetails = jollyService.saveSession(gameState, resultState, image);
 

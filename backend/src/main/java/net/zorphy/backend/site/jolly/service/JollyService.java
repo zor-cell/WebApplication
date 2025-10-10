@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.jolly.service;
 
 import net.zorphy.backend.main.dto.file.FileStorageFile;
-import net.zorphy.backend.site.all.GameSessionService;
+import net.zorphy.backend.site.all.GameSessionSaveService;
 import net.zorphy.backend.site.all.base.impl.ResultState;
 import net.zorphy.backend.site.jolly.dto.RoundResult;
 import net.zorphy.backend.site.jolly.dto.game.GameConfig;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface JollyService extends GameSessionService<GameConfig, GameState, ResultState> {
+public interface JollyService extends GameSessionSaveService<GameConfig, GameState, ResultState> {
     /**
      * Adds a jolly round to the {@code oldState} and returns the modified state.
      * In the round a temporary {@code imageIdentifier} is save as the image url, so the bytes is
