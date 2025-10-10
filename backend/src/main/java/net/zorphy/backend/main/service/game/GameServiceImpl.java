@@ -101,16 +101,17 @@ public class GameServiceImpl implements GameService {
     @Override
     public GameDetails deleteGame(UUID id) {
         Game game = getGameInternal(id);
-        GameDetails gameDetails = gameMapper.gameToGameDetails(game);
 
         //do game specific actions before delete
-        GameSpecificDelete specificDelete = gameDeleteMap.get(gameDetails.metadata().gameType());
+        GameSpecificDelete specificDelete = gameDeleteMap.get(GameType.valueOf(game.getGameType()));
         if(specificDelete != null) {
-            specificDelete.beforeDelete(gameDetails);
+            specificDelete.beforeDelete(game);
         }
 
-        gameRepository.deleteById(id);
+        GameDetails gameDetails = gameMapper.gameToGameDetails(game);
+
         fileStorageService.deleteFile(game.getImageUrl());
+        gameRepository.deleteById(id);
 
         return gameDetails;
     }

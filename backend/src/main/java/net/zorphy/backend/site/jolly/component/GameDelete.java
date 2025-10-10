@@ -2,8 +2,8 @@ package net.zorphy.backend.site.jolly.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
-import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
+import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.service.game.GameSpecificDelete;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
@@ -26,10 +26,10 @@ public class GameDelete implements GameSpecificDelete {
     }
 
     @Override
-    public void beforeDelete(GameDetails gameDetails) {
+    public void beforeDelete(Game game) {
         //delete image files saved in rounds
         try {
-            GameState gameState = objectMapper.convertValue(gameDetails.gameState(), GameState.class);
+            GameState gameState = objectMapper.convertValue(game.getGameState(), GameState.class);
             for (RoundInfo round : gameState.rounds()) {
                 fileStorageService.deleteFile(round.imageUrl());
             }
