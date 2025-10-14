@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     image: postgres
     container_name: postgres_container
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
     depends_on:
-      - db
+      - postgres
       - redis
     volumes:
       - /srv/file-storage:/app/file-storage
