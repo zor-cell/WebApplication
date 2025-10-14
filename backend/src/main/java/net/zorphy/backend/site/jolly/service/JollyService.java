@@ -23,5 +23,5 @@ public interface JollyService extends GameSessionSaveService<GameConfig, GameSta
      * Resolves the temporary image identifiers from round saving with their corresponding
      * image from {@code images}
      */
-    GameState saveRoundImages(GameState oldState, Map<UUID, FileStorageFile> images);
+    GameState saveRoundImages(GameState oldState, Map<String, FileStorageFile> images);
 }

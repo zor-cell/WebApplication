@@ -66,10 +66,7 @@ public class JollyController extends GameSessionSaveController<GameConfig, GameS
         gameState = jollyService.saveRoundImages(gameState, getSessionImages(session));
         GameDetails gameDetails = jollyService.saveSession(gameState, resultState, image);
 
-        var images = getSessionImages(session);
-        if(images != null) {
-            images.clear();
-        }
+        session.removeAttribute(SESSION_IMAGES);
         setSessionSaved(session, true);
 
         return gameDetails;
@@ -87,8 +84,8 @@ public class JollyController extends GameSessionSaveController<GameConfig, GameS
     }
 
 
-    private Map<UUID, FileStorageFile> getSessionImages(HttpSession session) {
-        return (Map<UUID, FileStorageFile>) session.getAttribute(SESSION_IMAGES);
+    private Map<String, FileStorageFile> getSessionImages(HttpSession session) {
+        return (Map<String, FileStorageFile>) session.getAttribute(SESSION_IMAGES);
     }
 
     private UUID addSessionImage(HttpSession session, MultipartFile image) throws IOException {
@@ -97,13 +94,13 @@ public class JollyController extends GameSessionSaveController<GameConfig, GameS
         }
 
         //add image to temporary storage
-        Map<UUID, FileStorageFile> images = getSessionImages(session);
+        Map<String, FileStorageFile> images = getSessionImages(session);
         if(images == null) {
             images = new HashMap<>();
         }
 
         UUID id = UUID.randomUUID();
-        images.put(id, new FileStorageFile(
+        images.put(id.toString(), new FileStorageFile(
                 image.getOriginalFilename(),
                 image.getBytes())
         );

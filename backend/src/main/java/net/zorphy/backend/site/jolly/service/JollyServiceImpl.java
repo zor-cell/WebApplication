@@ -82,14 +82,14 @@ public class JollyServiceImpl implements JollyService {
     }
 
     @Override
-    public GameState saveRoundImages(GameState oldState, Map<UUID, FileStorageFile> images) {
+    public GameState saveRoundImages(GameState oldState, Map<String, FileStorageFile> images) {
         List<RoundInfo> rounds = new ArrayList<>();
 
         for(RoundInfo round : oldState.rounds()) {
             //save round images to file storage
             String imageUrl = null;
             if (round.imageUrl() != null) {
-                FileStorageFile image = images.get(UUID.fromString(round.imageUrl()));
+                FileStorageFile image = images.get(round.imageUrl());
                 imageUrl = fileStorageService.saveFile(GameType.JOLLY, image);
             }
 
