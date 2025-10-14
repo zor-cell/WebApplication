@@ -37,7 +37,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
     private fb = inject(FormBuilder);
 
     private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
-    public project = input.required<ProjectDetails>();
+    public project = input<ProjectDetails | null>(null);
     public updateProjectEvent = output<WithFile<ProjectDetails>>();
 
     protected readonly filePathPrefix = 'projects/';
