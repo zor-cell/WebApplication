@@ -24,4 +24,6 @@ server:
   servlet:
     session:
       timeout: 12h
+      cookie:
+        max-age: 12h
     context-path: /api

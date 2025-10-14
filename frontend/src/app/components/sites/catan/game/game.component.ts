@@ -35,8 +35,6 @@ export class CatanGameComponent implements OnInit {
     protected authService = inject(AuthService);
     private router = inject(Router);
 
-    //TODO: undo roll button
-
     get currentRoll(): DiceRoll | null {
         if (!this.gameState) return null;
 
@@ -73,15 +71,19 @@ export class CatanGameComponent implements OnInit {
         this.getSession();
     }
 
-    rollDice(isAlchemist = false) {
-        this.catanService.rollDice(isAlchemist).subscribe({
-            next: res => {
+    protected rollDice(isAlchemist = false) {
+        this.catanService.rollDice(isAlchemist).subscribe(res => {
                 this.gameState = res;
-            }
         });
     }
 
-    toggleChart() {
+    protected undoRoll() {
+        this.catanService.undoRoll().subscribe(res => {
+            this.gameState = res;
+        });
+    }
+
+    protected toggleChart() {
         this.showChart = !this.showChart;
     }
 

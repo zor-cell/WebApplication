@@ -51,6 +51,7 @@ The services can then be reached on these ports:
 * Backend - http://localhost:8020
 * Frontend - http://localhost:8021
 * Database - http://localhost:8022
+* Session Storage - http://localhost:8023
 
 ### Option 2: Manual setup
 If you prefer to run each service locally without Docker, you'll need to install all required dependencies and run each component separately.
@@ -77,13 +78,14 @@ If you prefer to run each service locally without Docker, you'll need to install
   
   Run in root directory:
   ```bash
-  docker compose up -d --build db
+  docker compose up -d --build postgres redis
   ```
 
 This will run all services locally. The services can then be reached on these ports:
 * Backend - http://localhost:8080
 * Frontend - http://localhost:4200
 * Database - http://localhost:8022
+* Session Storage - http://localhost:8023
 
 ## Deployment
 The web application is automatically deployed by a CI/CD pipeline with a GitHub runner. The application is deployed to the host server with Docker Compose to manage all the different services.

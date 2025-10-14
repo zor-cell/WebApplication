@@ -27,32 +27,37 @@
                 </button>
             </div>
 
-            <div class="ship-container">
-                <div class="current-roll">
-                    <div id="current-roll-player">
-                        {{ lastPlayer ? lastPlayer!.name : '-' }}
+            <div class="ship-actions">
+                <div class="ship-container">
+                    <div class="current-roll">
+                        <div id="current-roll-player">
+                            {{ lastPlayer ? lastPlayer!.name : '-' }}
+                        </div>
+                        <b class="spacer">
+                            |
+                        </b>
+                        <catan-dice-roll class="flex-container" [gameMode]="gameState.gameConfig.gameMode"
+                                         [diceRoll]="currentRoll"/>
                     </div>
-                    <b class="spacer">
-                        |
-                    </b>
-                    <catan-dice-roll class="flex-container" [gameMode]="gameState.gameConfig.gameMode"
-                                     [diceRoll]="currentRoll"/>
+                    <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="ship-display">
+                        <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
+                            @if (i === gameState.currentShipTurn) {
+                                <img class="ship-tile-current" src="../../../../../assets/catan/e_2b.svg" alt="">
+                            } @else {
+                                <div [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last attack' : 'ship-tile attack'">
+                                    {{ gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1 ? attackText[i] : '' }}
+                                </div>
+                            }
+                        </ng-container>
+                    </div>
+                    <div *ngIf="gameState.gameConfig.classicDice.useEvents" class="current-roll-event">
+                        {{ currentRoll?.dicePair?.event }}
+                    </div>
+
                 </div>
-                <div *ngIf="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS" class="ship-display">
-                    <ng-container *ngFor="let _ of [].constructor(gameState.gameConfig.maxShipTurns); let i = index">
-                        @if (i === gameState.currentShipTurn) {
-                            <img class="ship-tile-current" src="../../../../../assets/catan/e_2b.svg" alt="">
-                        } @else {
-                            <div [ngClass]="i === gameState.gameConfig.maxShipTurns - 1 ? 'ship-tile-last attack' : 'ship-tile attack'">
-                                {{ gameState.currentShipTurn === gameState.gameConfig.maxShipTurns - 1 ? attackText[i] : '' }}
-                            </div>
-                        }
-                    </ng-container>
-                </div>
-                <div *ngIf="gameState.gameConfig.classicDice.useEvents" class="current-roll-event">
-                    {{ currentRoll?.dicePair?.event }}
-                </div>
+                <button class="small-btn" id="undo-button" (click)="undoRoll()" [disabled]="gameState.diceRolls.length === 0">Undo</button>
             </div>
+
         </section>
 
         <div class="game-actions">

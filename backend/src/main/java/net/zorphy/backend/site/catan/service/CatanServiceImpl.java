@@ -10,6 +10,7 @@ import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.enums.GameMode;
 import net.zorphy.backend.site.catan.dto.game.GameConfig;
 import net.zorphy.backend.site.catan.dto.game.GameState;
+import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -167,8 +168,61 @@ public class CatanServiceImpl implements CatanService {
     }
 
     @Override
-    public GameState undoRoll(GameState gameState) {
-        return null;
+    public GameState undoRoll(GameState oldState) {
+        int currentTeamTurn = oldState.currentPlayerTurn();
+        int currentShipTurn = oldState.currentShipTurn();
+        List<DicePair> classicCards = oldState.classicCards() == null ? null : new ArrayList<>(oldState.classicCards());
+        List<Character> eventCards = oldState.eventCards() == null ? null : new ArrayList<>(oldState.eventCards());
+        List<DiceRoll> diceRolls = new ArrayList<>(oldState.diceRolls());
+
+        if(diceRolls.isEmpty()) {
+            throw new InvalidOperationException("At least one dice roll is required");
+        }
+
+        DiceRoll last = diceRolls.removeLast();
+        if(classicCards != null) {
+            //readd dice if deck isnt full and it wasnt alchemist
+            if(classicCards.size() < 36 && last.dicePair().sum() > 0) {
+                classicCards.add(last.dicePair());
+            }
+            Collections.shuffle(classicCards);
+        }
+        if(eventCards != null) {
+            if(eventCards.size() < 6) {
+                eventCards.add(last.diceEvent());
+            }
+            Collections.shuffle(eventCards);
+
+            int shipBack = 0;
+            //undo ship turn if it occurred
+            if(last.diceEvent().equals('e')) {
+                shipBack++;
+
+                //ship is automatically moved after charge, so we have to move one more if we are at the start
+                if(currentShipTurn == 1) {
+                    shipBack++;
+                }
+            } else {
+                //ship is automatically moved after charge, so we have to move one more
+                if(currentShipTurn == 0) {
+                    shipBack++;
+                }
+            }
+
+            currentShipTurn = (currentShipTurn - shipBack + oldState.gameConfig().maxShipTurns()) % oldState.gameConfig().maxShipTurns();
+        }
+
+        currentTeamTurn = (currentTeamTurn - 1 + oldState.gameConfig().teams().size()) % oldState.gameConfig().teams().size();
+
+        return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                currentTeamTurn,
+                currentShipTurn,
+                classicCards,
+                eventCards,
+                diceRolls
+        );
     }
 
     @Override

@@ -115,6 +115,17 @@
 
 
 /*Ship column*/
+.ship-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+#undo-button {
+    font-weight: normal;
+}
+
 .ship-container {
     display: flex;
     flex-direction: column;
