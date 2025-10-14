@@ -248,4 +248,8 @@
         gap: 3rem;
         max-width: 400px;
     }
+
+    .ship-actions {
+        flex-direction: column;
+    }
 }
