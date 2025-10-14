@@ -16,7 +16,11 @@ jobs:
       run: |
         echo "${{secrets.ENV_FILE}}" > .env
 
-    - name: Build and run Docker containers with compose
-      run: |
-        docker compose build
-        docker compose up -d backend frontend
+    - name: Build containers with docker compose
+      run: docker compose build
+
+    - name: Run docker containers
+      run: docker compose up -d backend frontend
+
+    - name: Clean up dangling docker images
+      run: docker image prune -f
