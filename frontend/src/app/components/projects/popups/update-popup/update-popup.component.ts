@@ -37,7 +37,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
     private fb = inject(FormBuilder);
 
     private updateTemplate = viewChild.required<TemplateRef<any>>('updatePopup');
-    public project = input<ProjectDetails | null>(null);
+    public project = input.required<ProjectDetails>();
     public updateProjectEvent = output<WithFile<ProjectDetails>>();
 
     protected readonly filePathPrefix = 'projects/';
@@ -83,6 +83,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
             });
         }
 
+        //TODO: shouldnt really be disabled
         this.projectForm.controls.createdAt.disable();
     }
 
@@ -93,7 +94,7 @@ export class ProjectUpdatePopupComponent implements OnInit {
             isUpdate ? 'Update Project' : 'Create Project',
             this.updateTemplate(),
             this.callback.bind(this),
-            () => this.projectForm.valid, //this.configsAreEqual(this.updateForm.value, this.project)
+            () => this.projectForm.valid && !this.configsAreEqual(),
             isUpdate ? 'Update' : 'Create',
         );
     }
@@ -133,8 +134,16 @@ export class ProjectUpdatePopupComponent implements OnInit {
         });
     }
 
-    //TODO check if no changes were applied for validity
-    private configsAreEqual(config1: ProjectDetails, config2: ProjectDetails): boolean {
-        return JSON.stringify(config1) === JSON.stringify(config2);
+    //TODO: update on equal configs, not so easy
+    private configsAreEqual(): boolean {
+        //compare without content
+        /*const { content: _pContent, ...project } = this.project();
+        const { content: _fContent, ...form } = this.formToDetails();
+
+        console.log(JSON.stringify(project))
+        console.log(JSON.stringify(form))
+
+        return JSON.stringify(project) === JSON.stringify(form);*/
+        return true;
     }
 }
