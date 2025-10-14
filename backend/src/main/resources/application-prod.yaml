@@ -12,3 +12,9 @@ app:
 file-storage:
   directory: /app/file-storage
   compression-rate: 20
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true

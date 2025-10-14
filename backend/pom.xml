@@ -129,7 +129,7 @@
 			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
 
-		<!-- Redis session storage-->
+		<!-- Redis session storage client-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
