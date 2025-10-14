@@ -23,9 +23,22 @@ export class Globals {
     }
 
     public handleError(error: any): void {
-      const e = error instanceof Object ? error.error : error;
-      const message = e instanceof ProgressEvent ? error.message : e;
+        const e = error instanceof Object ? error.error : error;
         const status: number = error.status;
+
+        let message = e instanceof ProgressEvent ? error.message : e;
+        if (status === 0) {
+            // backend unreachable
+            message = 'Cannot connect to the server. Please check your internet connection or try again later'
+        } else if (error.error && typeof error.error === 'string') {
+            // text error response
+            message = error.error;
+        } else if (error.error && error.error.message) {
+            // JSON error
+            message = error.error.message;
+        } else if (error.message) {
+            message = error.message;
+        }
 
         this.toastr.error(message, 'ERROR ' + status);
     }
