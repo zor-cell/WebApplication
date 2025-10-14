@@ -23,7 +23,7 @@ spring:
       port: ${REDIS_PORT}
   session:
     redis:
-      namespace: spring:session
+      namespace: zorphy
 
 server:
   servlet:

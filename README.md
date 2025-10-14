@@ -22,6 +22,9 @@ The project exposes three main services at the moment:
 
   The database is a [PostgreSQL](https://www.postgresql.org/) database.
 
+* **Redis Session**
+
+  The session data is stored in an in-memory [Redis](https://redis.io/) database.
 
 ## Setup
 There are 2 ways to set up the project: using Docker (recommended) or running each service manually.
