@@ -6,7 +6,7 @@ WORKDIR /backend
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-#rebuild files
+# rebuild source code
 COPY src ./src
 RUN mvn clean package -DskipTests
 

@@ -17,6 +17,13 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+  session:
+    redis:
+      namespace: spring:session
 
 server:
   servlet:
