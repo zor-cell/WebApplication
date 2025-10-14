@@ -2,7 +2,7 @@
     position: sticky;
     top: 72px;
 
-    z-index: 100;
+    z-index: 99;
 
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(200, 200, 200, 0.05);

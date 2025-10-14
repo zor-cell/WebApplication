@@ -42,6 +42,7 @@ nav a {
 /* Mobile responsive */
 @media (max-width: 768px) {
     nav {
+        z-index: 100;
         display: none;
         flex-direction: column;
         gap: 0.5rem;
