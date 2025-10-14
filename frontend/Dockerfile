@@ -2,12 +2,15 @@ FROM node:alpine as build
 
 WORKDIR /frontend
 
-COPY . .
-
+# copy dependencies
+COPY package.json package-lock.json ./
 RUN npm install
+
+# copy source code
+COPY . .
 RUN npm run build
 
-FROM nginx:latest
+FROM nginx:alpine
 
 COPY --from=build /frontend/dist/frontend/browser /usr/share/nginx/html
 COPY default.conf /etc/nginx/conf.d/default.conf
