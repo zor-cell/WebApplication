@@ -1,3 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:8022/${POSTGRES_DB}
+  data:
+    redis:
+      host: localhost
+      port: 8023
+
 app:
   base-url: http://localhost:8080/api/
 
