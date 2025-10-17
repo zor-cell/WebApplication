@@ -6,14 +6,14 @@
 
     <div>
         <game-stats-meta label="Min Round Score" [data]="stats().minRoundScore"/>
-        <game-stats-meta label="Avg Round Score" [data]="stats().avgRoundScore.toFixed(2)"/>
         <game-stats-meta label="Max Round Score" [data]="stats().maxRoundScore"/>
+        <game-stats-meta label="Avg Round Score" [data]="stats().avgRoundScore.toFixed(2)"/>
     </div>
 
     <div>
         <game-stats-meta label="Min Round Duration" [data]="stats().minRoundDuration" [formatted]="stats().minRoundDuration.value | duration"/>
-        <game-stats-meta label="Avg Round Duration" [data]="stats().avgRoundDuration | duration"/>
         <game-stats-meta label="Max Round Duration" [data]="stats().maxRoundDuration" [formatted]="stats().maxRoundDuration.value | duration"/>
+        <game-stats-meta label="Avg Round Duration" [data]="stats().avgRoundDuration | duration"/>
     </div>
 
     <div>

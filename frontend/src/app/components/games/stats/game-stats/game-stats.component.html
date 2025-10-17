@@ -21,22 +21,21 @@
 
                         <div>
                             <game-stats-meta label="Min Score" [data]="stats.minScore"/>
-                            <game-stats-meta label="Avg Score" [data]="stats.avgScore.toFixed(2)"/>
                             <game-stats-meta label="Max Score" [data]="stats.maxScore"/>
+                            <game-stats-meta label="Avg Score" [data]="stats.avgScore.toFixed(2)"/>
                         </div>
 
                         <div>
                             <game-stats-meta label="Min Duration" [data]="stats.minDuration" [formatted]="stats.minDuration.value | duration"/>
-                            <game-stats-meta label="Avg Duration" [data]="stats.avgDuration | duration"/>
                             <game-stats-meta label="Max Duration" [data]="stats.maxScore" [formatted]="stats.maxDuration.value | duration"/>
+                            <game-stats-meta label="Avg Duration" [data]="stats.avgDuration | duration"/>
                         </div>
-
 
                         <div>
                             <game-stats-meta label="Nemesis" subLabel="(Worst win rate)" [data]="stats.nemesis?.name"/>
-                            <game-stats-meta label="Victim" subLabel="(Worst win rate)" [data]="stats.victim?.name"/>
-                            <game-stats-meta label="Rival" subLabel="(Worst win rate)" [data]="stats.rival?.name"/>
-                            <game-stats-meta label="Companion" subLabel="(Worst win rate)" [data]="stats.companion?.name"/>
+                            <game-stats-meta label="Victim" subLabel="(Best win rate)" [data]="stats.victim?.name"/>
+                            <game-stats-meta label="Rival" subLabel="(Most played against)" [data]="stats.rival?.name"/>
+                            <game-stats-meta label="Companion" subLabel="(Most played with)" [data]="stats.companion?.name"/>
                         </div>
                     </div>
                 </div>
