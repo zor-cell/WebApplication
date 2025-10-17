@@ -26,7 +26,9 @@ export class DurationPipe implements PipeTransform {
         const mm = minutes.toString().padStart(2, '0');
         const ss = seconds.toString().padStart(2, '0');
 
-        //const mmFromH = (minutes + hours * 60).toString().padStart(2, '0');
+        if(hours == 0) {
+            return `${mm}:${ss}`
+        }
 
         return `${hh}:${mm}:${ss}`;
     }

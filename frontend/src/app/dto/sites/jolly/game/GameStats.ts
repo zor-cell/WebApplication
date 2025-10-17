@@ -1,7 +1,14 @@
+import {LinkedGameStats} from "../../../games/stats/LinkedGameStats";
+
 export interface GameStats {
     roundsPlayed: number,
+    roundWinRate: number,
+    minRoundScore: LinkedGameStats<number>,
     avgRoundScore: number,
-    maxRoundScore: number,
+    maxRoundScore: LinkedGameStats<number>,
+    minRoundDuration: LinkedGameStats<string>,
+    avgRoundDuration: string,
+    maxRoundDuration: LinkedGameStats<string>,
     outInOneRate: number,
     closedRate: number
 }

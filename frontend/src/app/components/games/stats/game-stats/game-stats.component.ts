@@ -7,7 +7,8 @@ import {NgComponentOutlet, NgForOf, NgIf} from "@angular/common";
 import {GameService} from "../../../../services/game.service";
 import {GameComponentRegistryService} from "../../../../services/all/game-component-registry.service";
 import {CorrelationChartComponent} from "../correlation-chart/correlation-chart.component";
-import {BaseChartDirective} from "ng2-charts";
+import {DurationPipe} from "../../../../pipes/DurationPipe";
+import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'game-stats',
@@ -18,7 +19,9 @@ import {BaseChartDirective} from "ng2-charts";
         NgIf,
         NgComponentOutlet,
         CorrelationChartComponent,
-        CorrelationChartComponent
+        CorrelationChartComponent,
+        DurationPipe,
+        RouterLink
     ],
     templateUrl: './game-stats.component.html',
     styleUrl: './game-stats.component.css'

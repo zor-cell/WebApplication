@@ -88,9 +88,4 @@ export class JollyGameComponent implements OnInit {
     return this.gameState()!.rounds.length >= this.gameState()!.gameConfig.roundLimit;
   }
 
-  protected getTotalScore(team: Team): number {
-    return this.gameState()!.rounds
-        .map(r => r.results.find(res => res.team.name === team.name)?.score ?? 0)
-        .reduce((a, b) => a + b, 0);
-  }
 }

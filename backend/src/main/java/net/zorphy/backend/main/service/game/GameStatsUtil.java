@@ -11,6 +11,7 @@ import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.function.ToDoubleFunction;
 
@@ -39,8 +40,26 @@ public class GameStatsUtil {
         PlayerDetails currentPlayer = null;
         int gamesPlayed = 0;
         int gamesWon = 0;
+
         int totalScore = 0;
-        int maxScore = 0;
+        LinkedGameStats<Integer> minScore = new LinkedGameStats<>(
+                null,
+                Integer.MAX_VALUE
+        );
+        LinkedGameStats<Integer> maxScore = new LinkedGameStats<>(
+                null,
+                Integer.MIN_VALUE
+        );
+
+        long totalDuration = 0;
+        LinkedGameStats<Duration> minDuration = new LinkedGameStats<>(
+                null,
+                Duration.ofSeconds(Long.MAX_VALUE)
+        );
+        LinkedGameStats<Duration> maxDuration = new LinkedGameStats<>(
+                null,
+                Duration.ZERO
+        );
 
         for (Game game : games) {
             try {
@@ -75,9 +94,37 @@ public class GameStatsUtil {
                 }
 
                 //player specific stats
+                //min + max + avg score
                 int curScore = playerTeam.score();
+                if(curScore < minScore.value()) {
+                    minScore = new LinkedGameStats<>(
+                            game.getId(),
+                            curScore
+                    );
+                }
+                if(curScore > maxScore.value()) {
+                    maxScore = new LinkedGameStats<>(
+                            game.getId(),
+                            curScore
+                    );
+                }
                 totalScore += curScore;
-                maxScore = Math.max(maxScore, curScore);
+
+                //min + max + avg duration
+                Duration curDuration = game.getDuration();
+                if(curDuration.compareTo(minDuration.value()) < 0) {
+                    minDuration = new LinkedGameStats<>(
+                            game.getId(),
+                            curDuration
+                    );
+                }
+                if(curDuration.compareTo(maxDuration.value()) > 0) {
+                    maxDuration = new LinkedGameStats<>(
+                            game.getId(),
+                            curDuration
+                    );
+                }
+                totalDuration += curDuration.getSeconds();
 
                 gamesPlayed++;
                 if (playerIsWinner) gamesWon++;
@@ -128,8 +175,12 @@ public class GameStatsUtil {
                 currentPlayer,
                 gamesPlayed,
                 computeFraction(gamesWon, gamesPlayed),
+                minScore,
                 computeFraction(totalScore, gamesPlayed),
                 maxScore,
+                minDuration,
+                Duration.ofSeconds((long) computeFraction(totalDuration, gamesPlayed)),
+                maxDuration,
                 nemesis,
                 victim,
                 rival,

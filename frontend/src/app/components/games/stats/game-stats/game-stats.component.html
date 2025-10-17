@@ -27,14 +27,34 @@
 
                         <div>
                             <div class="meta-entry">
+                                <div class="meta-label">Min Score</div>
+                                <a [routerLink]="['/games', stats.minScore.gameId]">{{ stats.minScore.value }}</a>
+                            </div>
+                            <div class="meta-entry">
                                 <div class="meta-label">Avg Score</div>
                                 <div>{{ stats.avgScore.toFixed(2) }}</div>
                             </div>
                             <div class="meta-entry">
                                 <div class="meta-label">Max Score</div>
-                                <div>{{ stats.maxScore }}</div>
+                                <a [routerLink]="['/games', stats.maxScore.gameId]">{{ stats.maxScore.value }}</a>
                             </div>
                         </div>
+
+                        <div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Min Duration</div>
+                                <a [routerLink]="['/games', stats.minDuration.gameId]">{{ stats.minDuration.value | duration }}</a>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Avg Duration</div>
+                                <div>{{ stats.avgDuration | duration }}</div>
+                            </div>
+                            <div class="meta-entry">
+                                <div class="meta-label">Max Duration</div>
+                                <a [routerLink]="['/games', stats.maxDuration.gameId]">{{ stats.maxDuration.value | duration }}</a>
+                            </div>
+                        </div>
+
 
                         <div>
                             <div class="meta-entry">

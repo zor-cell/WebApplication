@@ -34,7 +34,7 @@ export class GameListComponent implements OnInit {
   protected isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.getGames();
+    this.searchGames();
 
     //adjust date format
     const mql = window.matchMedia('(max-width: 600px)');
@@ -57,16 +57,7 @@ export class GameListComponent implements OnInit {
     this.searchGames(filters);
   }
 
-
-  private getGames() {
-    this.isLoading.set(true);
-    this.gameService.getGames().subscribe(res => {
-      this.isLoading.set(false);
-      this.games.set(res);
-    });
-  }
-
-  private searchGames(filters: GameFilters) {
+  private searchGames(filters: GameFilters | null = null) {
     this.isLoading.set(true);
     this.gameService.searchGames(filters).subscribe({
       next: res => {

@@ -20,8 +20,11 @@ export class GameService {
     return this.httpClient.get<GameMetadata[]>(this.baseUri);
   }
 
-  searchGames(gameFilters: GameFilters): Observable<GameMetadata[]> {
-    const params = this.filtersToParams(gameFilters);
+  searchGames(gameFilters: GameFilters | null): Observable<GameMetadata[]> {
+    let params = new HttpParams();
+    if(gameFilters) {
+      params = this.filtersToParams(gameFilters);
+    }
     return this.httpClient.get<GameMetadata[]>(this.baseUri + '/search', {params});
   }
 

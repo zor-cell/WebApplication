@@ -57,8 +57,15 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<GameMetadata> searchGames(GameFilters gameFilters) {
-        Specification<Game> specs = GameSpecifications.search(gameFilters);
-        return mapList(gameRepository.findAll(specs));
+        List<Game> games;
+        if(gameFilters == null) {
+            games = gameRepository.findAll();
+        } else {
+            Specification<Game> specs = GameSpecifications.search(gameFilters);
+            games = gameRepository.findAll(specs);
+        }
+
+        return mapList(games);
     }
 
     @Override
@@ -155,7 +162,7 @@ public class GameServiceImpl implements GameService {
                 stream()
                 .map(gameMapper::gameToGameMetadata)
                 .sorted(Comparator
-                        .comparing(GameMetadata::playedAt)
+                        .comparing(GameMetadata::playedAt).reversed()
                         .thenComparing(GameMetadata::duration)
                 )
                 .collect(Collectors.toList());
