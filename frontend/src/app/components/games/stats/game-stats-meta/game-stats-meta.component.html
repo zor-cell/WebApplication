@@ -1,0 +1,14 @@
+<div class="meta-entry">
+    <div class="meta-label">
+        {{ label() }} <span *ngIf="subLabel()" class="fw-normal">{{ subLabel() }}</span>
+    </div>
+
+    @let linked = isLinkedGameStats(data());
+    @if (!data()) {
+        <div>{{ defaultValue() }}</div>
+    } @else if (linked) {
+        <a [routerLink]="['/games', linked.gameId]">{{ formatted() ? formatted() : linked.value }}</a>
+    } @else {
+        <div>{{ data() }}</div>
+    }
+</div>

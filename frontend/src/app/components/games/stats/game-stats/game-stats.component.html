@@ -15,65 +15,28 @@
                     <div class="stats-header">Default Stats</div>
                     <div class="meta">
                         <div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Games Played</div>
-                                <div>{{ stats.gamesPlayed }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Win Rate</div>
-                                <div>{{ (stats.winRate * 100).toFixed(2) }}%</div>
-                            </div>
+                            <game-stats-meta label="Games Played" [data]="stats.gamesPlayed.toString()"/>
+                            <game-stats-meta label="Win Rate" [data]="(stats.winRate * 100).toFixed(2) + '%'"/>
                         </div>
 
                         <div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Min Score</div>
-                                <a [routerLink]="['/games', stats.minScore.gameId]">{{ stats.minScore.value }}</a>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Avg Score</div>
-                                <div>{{ stats.avgScore.toFixed(2) }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Max Score</div>
-                                <a [routerLink]="['/games', stats.maxScore.gameId]">{{ stats.maxScore.value }}</a>
-                            </div>
+                            <game-stats-meta label="Min Score" [data]="stats.minScore"/>
+                            <game-stats-meta label="Avg Score" [data]="stats.avgScore.toFixed(2)"/>
+                            <game-stats-meta label="Max Score" [data]="stats.maxScore"/>
                         </div>
 
                         <div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Min Duration</div>
-                                <a [routerLink]="['/games', stats.minDuration.gameId]">{{ stats.minDuration.value | duration }}</a>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Avg Duration</div>
-                                <div>{{ stats.avgDuration | duration }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Max Duration</div>
-                                <a [routerLink]="['/games', stats.maxDuration.gameId]">{{ stats.maxDuration.value | duration }}</a>
-                            </div>
+                            <game-stats-meta label="Min Duration" [data]="stats.minDuration" [formatted]="stats.minDuration.value | duration"/>
+                            <game-stats-meta label="Avg Duration" [data]="stats.avgDuration | duration"/>
+                            <game-stats-meta label="Max Duration" [data]="stats.maxScore" [formatted]="stats.maxDuration.value | duration"/>
                         </div>
 
 
                         <div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Nemesis <span class="fw-normal">(Worst win rate)</span></div>
-                                <div>{{ (stats.nemesis ? stats.nemesis.name : "None") }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Victim <span class="fw-normal">(Best win rate)</span></div>
-                                <div>{{ (stats.victim ? stats.victim.name : "None") }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Rival <span class="fw-normal">(Most played against)</span></div>
-                                <div>{{ (stats.rival ? stats.rival.name : "None") }}</div>
-                            </div>
-                            <div class="meta-entry">
-                                <div class="meta-label">Companion <span class="fw-normal">(Most played with)</span>
-                                </div>
-                                <div>{{ (stats.companion ? stats.companion.name : "None") }}</div>
-                            </div>
+                            <game-stats-meta label="Nemesis" subLabel="(Worst win rate)" [data]="stats.nemesis?.name"/>
+                            <game-stats-meta label="Victim" subLabel="(Worst win rate)" [data]="stats.victim?.name"/>
+                            <game-stats-meta label="Rival" subLabel="(Worst win rate)" [data]="stats.rival?.name"/>
+                            <game-stats-meta label="Companion" subLabel="(Worst win rate)" [data]="stats.companion?.name"/>
                         </div>
                     </div>
                 </div>

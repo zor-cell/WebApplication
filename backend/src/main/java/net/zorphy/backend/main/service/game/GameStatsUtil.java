@@ -96,34 +96,14 @@ public class GameStatsUtil {
                 //player specific stats
                 //min + max + avg score
                 int curScore = playerTeam.score();
-                if(curScore < minScore.value()) {
-                    minScore = new LinkedGameStats<>(
-                            game.getId(),
-                            curScore
-                    );
-                }
-                if(curScore > maxScore.value()) {
-                    maxScore = new LinkedGameStats<>(
-                            game.getId(),
-                            curScore
-                    );
-                }
+                minScore = minScore.updateMin(game.getId(), curScore);
+                maxScore = maxScore.updateMax(game.getId(), curScore);
                 totalScore += curScore;
 
                 //min + max + avg duration
                 Duration curDuration = game.getDuration();
-                if(curDuration.compareTo(minDuration.value()) < 0) {
-                    minDuration = new LinkedGameStats<>(
-                            game.getId(),
-                            curDuration
-                    );
-                }
-                if(curDuration.compareTo(maxDuration.value()) > 0) {
-                    maxDuration = new LinkedGameStats<>(
-                            game.getId(),
-                            curDuration
-                    );
-                }
+                minDuration = minDuration.updateMin(game.getId(), curDuration);
+                maxDuration = maxDuration.updateMax(game.getId(), curDuration);
                 totalDuration += curDuration.getSeconds();
 
                 gamesPlayed++;

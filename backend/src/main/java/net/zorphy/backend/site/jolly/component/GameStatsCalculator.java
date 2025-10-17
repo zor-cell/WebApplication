@@ -95,43 +95,20 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
                     //score data
                     int curScore = result.score();
-                    if(curScore < minScore.value()) {
-                        minScore = new LinkedGameStats<>(
-                                game.getId(),
-                                curScore
-                        );
-                    }
-                    if(curScore > maxScore.value()) {
-                        maxScore = new LinkedGameStats<>(
-                                game.getId(),
-                                curScore
-                        );
-                    }
+                    minScore = minScore.updateMin(game.getId(), curScore);
+                    maxScore = maxScore.updateMax(game.getId(), curScore);
                     totalScores += result.score();
 
                     //duration data
                     Duration curDuration;
                     if(i > 0) {
-                        var prevTime = gameState.rounds().get(i - 1).endTime();
-                        curDuration = Duration.between(prevTime, round.endTime());
+                        curDuration = Duration.between(gameState.rounds().get(i - 1).endTime(), round.endTime());
                     } else {
                         curDuration = Duration.between(gameState.startTime(), round.endTime());
                     }
-
-                    if(curDuration.compareTo(minDuration.value()) < 0) {
-                        minDuration = new LinkedGameStats<>(
-                                game.getId(),
-                                curDuration
-                        );
-                    }
-                    if(curDuration.compareTo(maxDuration.value()) > 0) {
-                        maxDuration = new LinkedGameStats<>(
-                                game.getId(),
-                                curDuration
-                        );
-                    }
+                    minDuration = minDuration.updateMin(game.getId(), curDuration);
+                    maxDuration = maxDuration.updateMax(game.getId(), curDuration);
                     totalDuration += curDuration.getSeconds();
-
 
                     roundsPlayed++;
                     if(curScore == roundMaxScore) {

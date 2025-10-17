@@ -1,51 +1,23 @@
 <div class="meta">
     <div>
-        <div class="meta-entry">
-            <div class="meta-label">Rounds Played</div>
-            <div>{{ stats().roundsPlayed }}</div>
-        </div>
-        <div class="meta-entry">
-            <div class="meta-label">Win Rate</div>
-            <div>{{ (stats().roundWinRate * 100).toFixed(2) }}%</div>
-        </div>
+        <game-stats-meta label="Rounds Played" [data]="stats().roundsPlayed.toString()"/>
+        <game-stats-meta label="Win Rate" [data]="(stats().roundWinRate * 100).toFixed(2) + '%'"/>
     </div>
 
     <div>
-        <div class="meta-entry">
-            <div class="meta-label">Min Round Score</div>
-            <a [routerLink]="['/games', stats().minRoundScore.gameId]">{{ stats().minRoundScore.value }}</a>
-        </div>
-        <div class="meta-entry">
-            <div class="meta-label">Avg Round Score</div>
-            <div>{{ stats().avgRoundScore.toFixed(2) }}</div>
-        </div>
-        <div class="meta-entry">
-            <div class="meta-label">Max Round Score</div>
-            <a [routerLink]="['/games', stats().maxRoundScore.gameId]">{{ stats().maxRoundScore.value }}</a>
-        </div>
+        <game-stats-meta label="Min Round Score" [data]="stats().minRoundScore"/>
+        <game-stats-meta label="Avg Round Score" [data]="stats().avgRoundScore.toFixed(2)"/>
+        <game-stats-meta label="Max Round Score" [data]="stats().maxRoundScore"/>
     </div>
 
     <div>
-        <div class="meta-entry">
-            <div class="meta-label">Min Round Duration</div>
-            <a [routerLink]="['/games', stats().minRoundDuration.gameId]">{{ stats().minRoundDuration.value | duration }}</a>
-        </div>
-        <div class="meta-entry">
-            <div class="meta-label">Avg Round Duration</div>
-            <div>{{ stats().avgRoundDuration | duration }}</div>
-        </div>
-        <div class="meta-entry">
-            <div class="meta-label">Max Round Duration</div>
-            <a [routerLink]="['/games', stats().maxRoundDuration.gameId]">{{ stats().maxRoundDuration.value | duration }}</a>
-        </div>
+        <game-stats-meta label="Min Round Duration" [data]="stats().minRoundDuration" [formatted]="stats().minRoundDuration.value | duration"/>
+        <game-stats-meta label="Avg Round Duration" [data]="stats().avgRoundDuration | duration"/>
+        <game-stats-meta label="Max Round Duration" [data]="stats().maxRoundDuration" [formatted]="stats().maxRoundDuration.value | duration"/>
     </div>
 
-    <div class="meta-entry">
-        <div class="meta-label">Closed rate</div>
-        <div>{{ (stats().closedRate * 100).toFixed(2) }}%</div>
-    </div>
-    <div class="meta-entry">
-        <div class="meta-label">Out In One Rate</div>
-        <div>{{ (stats().outInOneRate * 100).toFixed(2) }}%</div>
+    <div>
+        <game-stats-meta label="Closed rate" [data]="(stats().closedRate * 100).toFixed(2) + '%'"/>
+        <game-stats-meta label="Out In One Rate" [data]="(stats().outInOneRate * 100).toFixed(2) + '%'"/>
     </div>
 </div>
