@@ -1,8 +1,7 @@
-package net.zorphy.backend.site.all.base.impl;
+package net.zorphy.backend.site.all.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import net.zorphy.backend.site.all.base.ResultStateBase;
 
 import java.util.List;
 

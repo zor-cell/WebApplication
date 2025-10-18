@@ -1,7 +1,7 @@
-package net.zorphy.backend.site.all;
+package net.zorphy.backend.site.all.service;
 
-import net.zorphy.backend.site.all.base.GameConfigBase;
-import net.zorphy.backend.site.all.base.GameStateBase;
+import net.zorphy.backend.site.all.dto.GameConfigBase;
+import net.zorphy.backend.site.all.dto.GameStateBase;
 
 /**
  * The base service for game session management

@@ -3,7 +3,7 @@ package net.zorphy.backend.site.qwirkle.service;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.service.game.GameService;
-import net.zorphy.backend.site.all.base.impl.ResultState;
+import net.zorphy.backend.site.all.dto.ResultState;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import net.zorphy.backend.site.qwirkle.dto.Position;
 import net.zorphy.backend.site.qwirkle.dto.PositionInfo;

@@ -12,8 +12,8 @@ import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.service.game.GameStatsUtil;
-import net.zorphy.backend.site.all.base.impl.ResultState;
-import net.zorphy.backend.site.all.base.impl.ResultTeamState;
+import net.zorphy.backend.site.all.dto.ResultState;
+import net.zorphy.backend.site.all.dto.ResultTeamState;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.game.GameState;
 import net.zorphy.backend.site.catan.dto.game.GameStats;
@@ -79,7 +79,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                     diceRolls.add(new DiceRoll(
                             diceRoll.dicePair(),
                             diceRoll.diceEvent(),
-                            currentPlayer.name()
+                            currentPlayer.name(),
+                            diceRoll.rollTime()
                     ));
 
                     if (diceRoll.dicePair().sum() == 7) {

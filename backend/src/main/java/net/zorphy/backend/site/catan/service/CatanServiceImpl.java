@@ -4,7 +4,7 @@ import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.service.game.GameService;
-import net.zorphy.backend.site.all.base.impl.ResultState;
+import net.zorphy.backend.site.all.dto.ResultState;
 import net.zorphy.backend.site.catan.dto.DicePair;
 import net.zorphy.backend.site.catan.dto.DiceRoll;
 import net.zorphy.backend.site.catan.dto.enums.GameMode;
@@ -278,7 +278,7 @@ public class CatanServiceImpl implements CatanService {
             }
         }
 
-        DiceRoll diceRoll = new DiceRoll(dicePair, eventDice, currentTeam.name());
+        DiceRoll diceRoll = new DiceRoll(dicePair, eventDice, currentTeam.name(), Instant.now());
 
         //don't allow 2 same dice rolls after another
         if (oldState.gameConfig().gameMode() == GameMode.ONE_VS_ONE) {

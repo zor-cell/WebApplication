@@ -42,10 +42,11 @@ export class CatanGameComponent implements OnInit {
             dicePair: {
                 dice1: 4,
                 dice2: 3,
-                event: '-'
+                event: '-',
             },
             diceEvent: 'b',
-            teamName: ''
+            teamName: '',
+            rollTime: ''
         };
 
         return this.gameState.diceRolls[this.gameState.diceRolls.length - 1];

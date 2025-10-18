@@ -1,13 +1,14 @@
-package net.zorphy.backend.site.all;
+package net.zorphy.backend.site.all.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.exception.InvalidSessionException;
-import net.zorphy.backend.site.all.base.GameConfigBase;
-import net.zorphy.backend.site.all.base.GameStateBase;
-import net.zorphy.backend.site.all.base.ResultStateBase;
+import net.zorphy.backend.site.all.service.GameSessionSaveService;
+import net.zorphy.backend.site.all.dto.GameConfigBase;
+import net.zorphy.backend.site.all.dto.GameStateBase;
+import net.zorphy.backend.site.all.dto.ResultStateBase;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;

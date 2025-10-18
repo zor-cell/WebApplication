@@ -1,4 +1,4 @@
-package net.zorphy.backend.site.all.base;
+package net.zorphy.backend.site.all.dto;
 
 import java.time.Instant;
 

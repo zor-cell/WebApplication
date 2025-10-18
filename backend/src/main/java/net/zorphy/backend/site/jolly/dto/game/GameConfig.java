@@ -1,7 +1,7 @@
 package net.zorphy.backend.site.jolly.dto.game;
 
 import net.zorphy.backend.main.dto.player.TeamDetails;
-import net.zorphy.backend.site.all.base.GameConfigBase;
+import net.zorphy.backend.site.all.dto.GameConfigBase;
 
 import java.util.List;
 
