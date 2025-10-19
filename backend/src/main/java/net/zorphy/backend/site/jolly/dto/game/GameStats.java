@@ -1,19 +1,15 @@
 package net.zorphy.backend.site.jolly.dto.game;
 
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
-import net.zorphy.backend.main.dto.game.stats.LinkedGameStats;
+import net.zorphy.backend.main.dto.game.stats.GameStatsDurationMetrics;
+import net.zorphy.backend.main.dto.game.stats.GameStatsNumberMetrics;
 
-import java.time.Duration;
 
 public record GameStats(
         int roundsPlayed,
         double roundWinRate,
-        LinkedGameStats<Integer> minRoundScore,
-        LinkedGameStats<Integer> maxRoundScore,
-        double avgRoundScore,
-        LinkedGameStats<Duration> minRoundDuration,
-        LinkedGameStats<Duration> maxRoundDuration,
-        Duration avgRoundDuration,
+        GameStatsNumberMetrics<Integer> roundScoreMetrics,
+        GameStatsDurationMetrics roundDurationMetrics,
         double outInOneRate,
         double closedRate
 ) implements GameSpecificStats {

@@ -42,15 +42,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         int gameCount = 0;
         double totalLuckMetrics = 0;
 
-        long totalDuration = 0;
-        LinkedGameStats<Duration> minDuration = new LinkedGameStats<>(
-                null,
-                Duration.ofSeconds(Long.MAX_VALUE)
-        );
-        LinkedGameStats<Duration> maxDuration = new LinkedGameStats<>(
-                null,
-                Duration.ZERO
-        );
+        GameStatsDurationMetrics rollDurationMetrics = new GameStatsDurationMetrics();
 
         for (Game game : games) {
             try {
@@ -68,7 +60,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                                 .anyMatch(player -> currentPlayer.id().equals(player.id())))
                         .findFirst().orElse(null);
 
-                //compatibility for early games where no player id was saved --> TODO: cleanup data
+                //compatibility for early games where no player id was saved
                 if (playerTeam == null) {
                     playerTeam = gameState.gameConfig().teams().stream()
                             .filter(t -> t.players()
@@ -102,9 +94,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                         var next = gameState.diceRolls().get(i + 1);
                         if(diceRoll.rollTime() != null && next.rollTime() != null) {
                             Duration curDuration = Duration.between(diceRoll.rollTime(), next.rollTime());
-                            minDuration = minDuration.updateMin(game.getId(), curDuration);
-                            maxDuration = maxDuration.updateMax(game.getId(), curDuration);
-                            totalDuration += curDuration.toSeconds();
+                            rollDurationMetrics = rollDurationMetrics.update(game.getId(), curDuration);
                         }
                     }
                 }
@@ -135,9 +125,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         return new GameStats(
                 gameCount,
                 GameStatsUtil.computeFraction(totalLuckMetrics, gameCount),
-                minDuration,
-                maxDuration,
-                Duration.ofSeconds((long) GameStatsUtil.computeFraction(totalDuration, gameCount)),
+                rollDurationMetrics,
                 diceRolls
         );
     }

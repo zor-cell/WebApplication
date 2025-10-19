@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.game.stats.CorrelationResult;
-import net.zorphy.backend.main.dto.game.stats.LinkedGameStats;
+import net.zorphy.backend.main.dto.game.stats.GameStatsDurationMetrics;
+import net.zorphy.backend.main.dto.game.stats.GameStatsNumberMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
@@ -37,29 +38,11 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         int roundsPlayed = 0;
         int roundsWon = 0;
 
-        int totalScores = 0;
-        LinkedGameStats<Integer> minScore = new LinkedGameStats<>(
-                null,
-                Integer.MAX_VALUE
-        );
-        LinkedGameStats<Integer> maxScore = new LinkedGameStats<>(
-                null,
-                Integer.MIN_VALUE
-        );
-
-        long totalDuration = 0;
-        LinkedGameStats<Duration> minDuration = new LinkedGameStats<>(
-                null,
-                Duration.ofSeconds(Long.MAX_VALUE)
-        );
-        LinkedGameStats<Duration> maxDuration = new LinkedGameStats<>(
-                null,
-                Duration.ZERO
-        );
-
-
         int outInOneCount = 0;
         int closedCount = 0;
+
+        GameStatsDurationMetrics roundDurationMetrics = new GameStatsDurationMetrics();
+        GameStatsNumberMetrics<Integer> roundScoreMetrics = new GameStatsNumberMetrics<>();
 
         for(Game game : games) {
             try {
@@ -95,9 +78,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
                     //score data
                     int curScore = result.score();
-                    minScore = minScore.updateMin(game.getId(), curScore);
-                    maxScore = maxScore.updateMax(game.getId(), curScore);
-                    totalScores += result.score();
+                    roundScoreMetrics = roundScoreMetrics.update(game.getId(), curScore);
 
                     //duration data
                     Duration curDuration;
@@ -106,9 +87,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                     } else {
                         curDuration = Duration.between(gameState.startTime(), round.endTime());
                     }
-                    minDuration = minDuration.updateMin(game.getId(), curDuration);
-                    maxDuration = maxDuration.updateMax(game.getId(), curDuration);
-                    totalDuration += curDuration.getSeconds();
+                    roundDurationMetrics = roundDurationMetrics.update(game.getId(), curDuration);
 
                     roundsPlayed++;
                     if(curScore == roundMaxScore) {
@@ -123,12 +102,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         return new GameStats(
                 roundsPlayed,
                 GameStatsUtil.computeFraction(roundsWon, roundsPlayed),
-                minScore,
-                maxScore,
-                GameStatsUtil.computeFraction(totalScores, roundsPlayed),
-                minDuration,
-                maxDuration,
-                Duration.ofSeconds((long) GameStatsUtil.computeFraction(totalDuration, roundsPlayed)),
+                roundScoreMetrics,
+                roundDurationMetrics,
                 GameStatsUtil.computeFraction(outInOneCount, roundsPlayed),
                 GameStatsUtil.computeFraction(closedCount, roundsPlayed)
         );

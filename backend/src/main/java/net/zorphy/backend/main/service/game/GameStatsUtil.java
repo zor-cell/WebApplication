@@ -41,25 +41,8 @@ public class GameStatsUtil {
         int gamesPlayed = 0;
         int gamesWon = 0;
 
-        int totalScore = 0;
-        LinkedGameStats<Integer> minScore = new LinkedGameStats<>(
-                null,
-                Integer.MAX_VALUE
-        );
-        LinkedGameStats<Integer> maxScore = new LinkedGameStats<>(
-                null,
-                Integer.MIN_VALUE
-        );
-
-        long totalDuration = 0;
-        LinkedGameStats<Duration> minDuration = new LinkedGameStats<>(
-                null,
-                Duration.ofSeconds(Long.MAX_VALUE)
-        );
-        LinkedGameStats<Duration> maxDuration = new LinkedGameStats<>(
-                null,
-                Duration.ZERO
-        );
+        GameStatsNumberMetrics<Integer> scoreMetrics = new GameStatsNumberMetrics<>();
+        GameStatsDurationMetrics durationMetrics = new GameStatsDurationMetrics();
 
         for (Game game : games) {
             try {
@@ -96,15 +79,11 @@ public class GameStatsUtil {
                 //player specific stats
                 //min + max + avg score
                 int curScore = playerTeam.score();
-                minScore = minScore.updateMin(game.getId(), curScore);
-                maxScore = maxScore.updateMax(game.getId(), curScore);
-                totalScore += curScore;
+                scoreMetrics = scoreMetrics.update(game.getId(), curScore);
 
                 //min + max + avg duration
                 Duration curDuration = game.getDuration();
-                minDuration = minDuration.updateMin(game.getId(), curDuration);
-                maxDuration = maxDuration.updateMax(game.getId(), curDuration);
-                totalDuration += curDuration.getSeconds();
+                durationMetrics = durationMetrics.update(game.getId(), curDuration);
 
                 gamesPlayed++;
                 if (playerIsWinner) gamesWon++;
@@ -155,12 +134,8 @@ public class GameStatsUtil {
                 currentPlayer,
                 gamesPlayed,
                 computeFraction(gamesWon, gamesPlayed),
-                minScore,
-                maxScore,
-                computeFraction(totalScore, gamesPlayed),
-                minDuration,
-                maxDuration,
-                Duration.ofSeconds((long) computeFraction(totalDuration, gamesPlayed)),
+                scoreMetrics,
+                durationMetrics,
                 nemesis,
                 victim,
                 rival,

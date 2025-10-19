@@ -21,14 +21,18 @@ public record LinkedGameStats<T extends Comparable<T>>(
     }
 
     private LinkedGameStats<T> update(UUID newId, T newValue, boolean isMax) {
-        int comp = newValue.compareTo(value);
+        if(value == null) {
+            return new LinkedGameStats<>(newId, newValue);
+        }
 
-        if(isMax && comp > 0) {
+        int comp = value.compareTo(newValue);
+
+        if(isMax && comp < 0) {
             return new LinkedGameStats<>(
                     newId,
                     newValue
             );
-        } else if(!isMax && comp < 0) {
+        } else if(!isMax && comp > 0) {
             return new LinkedGameStats<>(
                     newId,
                     newValue
