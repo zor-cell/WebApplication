@@ -4,5 +4,11 @@
         <game-stats-meta label="Luck Metric" [data]="stats().luckMetric.toFixed(2)"/>
     </div>
 
+    <div>
+        <game-stats-meta label="Min Roll Duration" [data]="stats().minRollDuration" [formatted]="stats().minRollDuration.value | duration"/>
+        <game-stats-meta label="Max Roll Duration" [data]="stats().maxRollDuration" [formatted]="stats().maxRollDuration.value | duration"/>
+        <game-stats-meta label="Avg Roll Duration" [data]="stats().avgRollDuration | duration"/>
+    </div>
+
     <catan-histogram [diceRolls]="stats().diceRolls"></catan-histogram>
 </div>

@@ -124,11 +124,11 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 roundsPlayed,
                 GameStatsUtil.computeFraction(roundsWon, roundsPlayed),
                 minScore,
-                GameStatsUtil.computeFraction(totalScores, roundsPlayed),
                 maxScore,
+                GameStatsUtil.computeFraction(totalScores, roundsPlayed),
                 minDuration,
-                Duration.ofSeconds((long) GameStatsUtil.computeFraction(totalDuration, roundsPlayed)),
                 maxDuration,
+                Duration.ofSeconds((long) GameStatsUtil.computeFraction(totalDuration, roundsPlayed)),
                 GameStatsUtil.computeFraction(outInOneCount, roundsPlayed),
                 GameStatsUtil.computeFraction(closedCount, roundsPlayed)
         );

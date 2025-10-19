@@ -209,6 +209,11 @@ public class CatanServiceImpl implements CatanService {
                 }
             }
 
+            //ship starts at position 0 when no dice were rolled
+            if(diceRolls.isEmpty()) {
+                shipBack--;
+            }
+
             currentShipTurn = (currentShipTurn - shipBack + oldState.gameConfig().maxShipTurns()) % oldState.gameConfig().maxShipTurns();
         }
 

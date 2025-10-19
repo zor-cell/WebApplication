@@ -9,11 +9,11 @@ public record GameStats(
         int roundsPlayed,
         double roundWinRate,
         LinkedGameStats<Integer> minRoundScore,
-        double avgRoundScore,
         LinkedGameStats<Integer> maxRoundScore,
+        double avgRoundScore,
         LinkedGameStats<Duration> minRoundDuration,
-        Duration avgRoundDuration,
         LinkedGameStats<Duration> maxRoundDuration,
+        Duration avgRoundDuration,
         double outInOneRate,
         double closedRate
 ) implements GameSpecificStats {

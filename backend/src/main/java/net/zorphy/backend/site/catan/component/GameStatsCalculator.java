@@ -3,10 +3,7 @@ package net.zorphy.backend.site.catan.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.dto.game.stats.CorrelationAxisType;
-import net.zorphy.backend.main.dto.game.stats.CorrelationDataPoint;
-import net.zorphy.backend.main.dto.game.stats.CorrelationMetadata;
-import net.zorphy.backend.main.dto.game.stats.CorrelationResult;
+import net.zorphy.backend.main.dto.game.stats.*;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
@@ -20,6 +17,7 @@ import net.zorphy.backend.site.catan.dto.game.GameStats;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +41,16 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         List<DiceRoll> diceRolls = new ArrayList<>();
         int gameCount = 0;
         double totalLuckMetrics = 0;
+
+        long totalDuration = 0;
+        LinkedGameStats<Duration> minDuration = new LinkedGameStats<>(
+                null,
+                Duration.ofSeconds(Long.MAX_VALUE)
+        );
+        LinkedGameStats<Duration> maxDuration = new LinkedGameStats<>(
+                null,
+                Duration.ZERO
+        );
 
         for (Game game : games) {
             try {
@@ -72,7 +80,9 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 assert playerTeam != null;
 
                 int numberOfSevens = 0;
-                for (DiceRoll diceRoll : gameState.diceRolls()) {
+                for (int i = 0;i < gameState.diceRolls().size();i++) {
+                    var diceRoll = gameState.diceRolls().get(i);
+
                     if (!diceRoll.teamName().equals(playerTeam.name())) continue;
 
                     //dice rolls should all be under player name
@@ -85,6 +95,17 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
                     if (diceRoll.dicePair().sum() == 7) {
                         numberOfSevens++;
+                    }
+
+                    //get roll durations
+                    if(i < gameState.diceRolls().size() - 1) {
+                        var next = gameState.diceRolls().get(i + 1);
+                        if(diceRoll.rollTime() != null && next.rollTime() != null) {
+                            Duration curDuration = Duration.between(diceRoll.rollTime(), next.rollTime());
+                            minDuration = minDuration.updateMin(game.getId(), curDuration);
+                            maxDuration = maxDuration.updateMax(game.getId(), curDuration);
+                            totalDuration += curDuration.toSeconds();
+                        }
                     }
                 }
                 double relativeSevens = GameStatsUtil.computeFraction(numberOfSevens, diceRolls.size());
@@ -114,6 +135,9 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         return new GameStats(
                 gameCount,
                 GameStatsUtil.computeFraction(totalLuckMetrics, gameCount),
+                minDuration,
+                maxDuration,
+                Duration.ofSeconds((long) GameStatsUtil.computeFraction(totalDuration, gameCount)),
                 diceRolls
         );
     }
