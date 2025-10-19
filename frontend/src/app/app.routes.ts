@@ -1,17 +1,17 @@
 import {Routes} from '@angular/router';
-import {Connect4Component} from "./components/sites/connect4/connect4.component";
-import {ProjectListComponent} from "./components/projects/project-list/project-list.component";
-import {ProjectInfoComponent} from "./components/projects/project-info/project-info.component";
-import {CatanGameComponent} from "./components/sites/catan/game/game.component";
-import {CatanConfigComponent} from "./components/sites/catan/config/config.component";
-import {QwirkleGameComponent} from "./components/sites/qwirkle/game/game.component";
-import {GameListComponent} from "./components/games/game-list/game-list.component";
-import {GameInfoComponent} from "./components/games/game-info/game-info.component";
-import {QwirkleConfigComponent} from "./components/sites/qwirkle/config/config.component";
-import {JollyGameComponent} from "./components/sites/jolly/game/game.component";
-import {JollyConfigComponent} from "./components/sites/jolly/config/config.component";
-import {RiskSimulationComponent} from "./components/sites/risk/simulation/simulation.component";
-import {GameStatsComponent} from "./components/games/stats/game-stats/game-stats.component";
+import {Connect4Component} from "./sites/connect4/components/connect4.component";
+import {ProjectListComponent} from "./main/components/projects/project-list/project-list.component";
+import {ProjectInfoComponent} from "./main/components/projects/project-info/project-info.component";
+import {CatanGameComponent} from "./sites/catan/components/game/game.component";
+import {CatanConfigComponent} from "./sites/catan/components/config/config.component";
+import {QwirkleGameComponent} from "./sites/qwirkle/components/game/game.component";
+import {GameListComponent} from "./main/components/games/game-list/game-list.component";
+import {GameInfoComponent} from "./main/components/games/game-info/game-info.component";
+import {QwirkleConfigComponent} from "./sites/qwirkle/components/config/config.component";
+import {JollyGameComponent} from "./sites/jolly/components/game/game.component";
+import {JollyConfigComponent} from "./sites/jolly/components/config/config.component";
+import {RiskSimulationComponent} from "./sites/risk/components/simulation/simulation.component";
+import {GameStatsComponent} from "./main/components/games/stats/game-stats/game-stats.component";
 
 export const routes: Routes = [
     //project routing

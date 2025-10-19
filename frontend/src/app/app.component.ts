@@ -1,9 +1,6 @@
-import {Component, HostListener, inject, OnInit, viewChild, ViewChild} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {AuthService} from "./services/all/auth.service";
-import {Globals} from "./classes/globals";
-import {LoginPopupComponent} from "./components/all/popups/login-popup/login-popup.component";
-import {HeaderComponent} from "./components/all/header/header.component";
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {HeaderComponent} from "./main/components/all/header/header.component";
 
 @Component({
     selector: 'app-root',
