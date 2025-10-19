@@ -7,7 +7,7 @@ import java.util.UUID;
 public record GameStatsNumberMetrics<T extends Number & Comparable<T>>(
         LinkedGameStats<T> min,
         LinkedGameStats<T> max,
-        T avg,
+        Double avg,
         @JsonIgnore
         double total,
         @JsonIgnore
@@ -30,7 +30,7 @@ public record GameStatsNumberMetrics<T extends Number & Comparable<T>>(
         return new GameStatsNumberMetrics<>(
                 min.updateMin(gameId, newValue),
                 max.updateMax(gameId, newValue),
-                newCount == 0 ? null : (T) Double.valueOf(newTotal / newCount),
+                newCount == 0 ? null : newTotal / newCount,
                 newTotal,
                 newCount
         );
