@@ -1,12 +1,16 @@
 package net.zorphy.backend.main.dto.game.stats;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.UUID;
 
 public record GameStatsNumberMetrics<T extends Number & Comparable<T>>(
         LinkedGameStats<T> min,
         LinkedGameStats<T> max,
         T avg,
+        @JsonIgnore
         double total,
+        @JsonIgnore
         int count
 ) {
     public GameStatsNumberMetrics() {

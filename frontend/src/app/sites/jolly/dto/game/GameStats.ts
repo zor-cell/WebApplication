@@ -1,14 +1,10 @@
-import {LinkedGameStats} from "../../../../main/dto/games/stats/LinkedGameStats";
+import {GameStatsMetrics} from "../../../../main/dto/games/stats/GameStatsMetrics";
 
 export interface GameStats {
     roundsPlayed: number,
     roundWinRate: number,
-    minRoundScore: LinkedGameStats<number>,
-    avgRoundScore: number,
-    maxRoundScore: LinkedGameStats<number>,
-    minRoundDuration: LinkedGameStats<string>,
-    avgRoundDuration: string,
-    maxRoundDuration: LinkedGameStats<string>,
+    roundScoreMetrics: GameStatsMetrics<number>,
+    roundDurationMetrics: GameStatsMetrics<string>,
     outInOneRate: number,
     closedRate: number
 }

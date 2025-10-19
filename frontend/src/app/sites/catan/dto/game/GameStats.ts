@@ -1,11 +1,9 @@
 import {DiceRoll} from "../DiceRoll";
-import {LinkedGameStats} from "../../../../main/dto/games/stats/LinkedGameStats";
+import {GameStatsMetrics} from "../../../../main/dto/games/stats/GameStatsMetrics";
 
 export interface GameStats {
     gameCount: number;
     luckMetric: number;
-    minRollDuration: LinkedGameStats<string>,
-    maxRollDuration: LinkedGameStats<string>,
-    avgRollDuration: string,
+    rollDurationMetrics: GameStatsMetrics<string>
     diceRolls: DiceRoll[]
 }

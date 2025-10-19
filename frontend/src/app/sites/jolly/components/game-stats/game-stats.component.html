@@ -5,15 +5,15 @@
     </div>
 
     <div>
-        <game-stats-meta label="Min Round Score" [data]="stats().minRoundScore"/>
-        <game-stats-meta label="Max Round Score" [data]="stats().maxRoundScore"/>
-        <game-stats-meta label="Avg Round Score" [data]="stats().avgRoundScore.toFixed(2)"/>
+        <game-stats-meta label="Min Round Score" [data]="stats().roundScoreMetrics.min"/>
+        <game-stats-meta label="Max Round Score" [data]="stats().roundScoreMetrics.max"/>
+        <game-stats-meta label="Avg Round Score" [data]="stats().roundScoreMetrics.avg.toFixed(2)"/>
     </div>
 
     <div>
-        <game-stats-meta label="Min Round Duration" [data]="stats().minRoundDuration" [formatted]="stats().minRoundDuration.value | duration"/>
-        <game-stats-meta label="Max Round Duration" [data]="stats().maxRoundDuration" [formatted]="stats().maxRoundDuration.value | duration"/>
-        <game-stats-meta label="Avg Round Duration" [data]="stats().avgRoundDuration | duration"/>
+        <game-stats-meta label="Min Round Duration" [data]="stats().roundDurationMetrics.min" [formatted]="stats().roundDurationMetrics.min.value | duration"/>
+        <game-stats-meta label="Max Round Duration" [data]="stats().roundDurationMetrics.max" [formatted]="stats().roundDurationMetrics.max.value | duration"/>
+        <game-stats-meta label="Avg Round Duration" [data]="stats().roundDurationMetrics.avg | duration"/>
     </div>
 
     <div>

@@ -20,15 +20,15 @@
                         </div>
 
                         <div>
-                            <game-stats-meta label="Min Score" [data]="stats.minScore"/>
-                            <game-stats-meta label="Max Score" [data]="stats.maxScore"/>
-                            <game-stats-meta label="Avg Score" [data]="stats.avgScore.toFixed(2)"/>
+                            <game-stats-meta label="Min Score" [data]="stats.scoreMetrics.min"/>
+                            <game-stats-meta label="Max Score" [data]="stats.scoreMetrics.max"/>
+                            <game-stats-meta label="Avg Score" [data]="stats.scoreMetrics.avg.toFixed(2)"/>
                         </div>
 
                         <div>
-                            <game-stats-meta label="Min Duration" [data]="stats.minDuration" [formatted]="stats.minDuration.value | duration"/>
-                            <game-stats-meta label="Max Duration" [data]="stats.maxDuration" [formatted]="stats.maxDuration.value | duration"/>
-                            <game-stats-meta label="Avg Duration" [data]="stats.avgDuration | duration"/>
+                            <game-stats-meta label="Min Duration" [data]="stats.durationMetrics.min" [formatted]="stats.durationMetrics.min.value | duration"/>
+                            <game-stats-meta label="Max Duration" [data]="stats.durationMetrics.max" [formatted]="stats.durationMetrics.max.value | duration"/>
+                            <game-stats-meta label="Avg Duration" [data]="stats.durationMetrics.avg | duration"/>
                         </div>
 
                         <div>

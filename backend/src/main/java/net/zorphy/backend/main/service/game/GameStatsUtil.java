@@ -99,6 +99,7 @@ public class GameStatsUtil {
                 ));
             } catch (Exception e) {
                 //continue if object mapping to result failed
+                int i = 0;
             }
         }
 

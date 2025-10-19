@@ -1,5 +1,7 @@
 package net.zorphy.backend.main.dto.game.stats;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Duration;
 import java.util.UUID;
 
@@ -7,7 +9,9 @@ public record GameStatsDurationMetrics(
         LinkedGameStats<Duration> min,
         LinkedGameStats<Duration> max,
         Duration avg,
+        @JsonIgnore
         Duration total,
+        @JsonIgnore
         int count
 ) {
     public GameStatsDurationMetrics() {

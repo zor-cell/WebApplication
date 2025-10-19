@@ -10,7 +10,7 @@ import java.util.List;
 public record GameStats(
         int gameCount,
         double luckMetric,
-        GameStatsDurationMetrics rollDuration,
+        GameStatsDurationMetrics rollDurationMetrics,
         List<DiceRoll> diceRolls
 ) implements GameSpecificStats {
 }
