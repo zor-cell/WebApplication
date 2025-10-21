@@ -1,8 +1,8 @@
 package net.zorphy.backend.site.jolly.dto.game;
 
 import net.zorphy.backend.main.dto.game.stats.GameSpecificStats;
-import net.zorphy.backend.main.dto.game.stats.GameStatsDurationMetrics;
-import net.zorphy.backend.main.dto.game.stats.GameStatsNumberMetrics;
+import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
+import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsNumberMetrics;
 
 
 public record GameStats(

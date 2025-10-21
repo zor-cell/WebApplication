@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.dto.game.stats;
+package net.zorphy.backend.main.dto.game.stats.correlation;
 
 import java.util.List;
 

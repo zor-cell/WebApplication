@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.dto.game.stats;
+package net.zorphy.backend.main.dto.game.stats.metrics;
 
 import java.util.UUID;
 

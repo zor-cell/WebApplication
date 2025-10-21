@@ -1,5 +1,8 @@
 package net.zorphy.backend.main.dto.game.stats;
 
+import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationResult;
+import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
+import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsNumberMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 
 import java.util.List;

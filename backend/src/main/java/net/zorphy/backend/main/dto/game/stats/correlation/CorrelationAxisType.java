@@ -1,4 +1,4 @@
-package net.zorphy.backend.main.dto.game.stats;
+package net.zorphy.backend.main.dto.game.stats.correlation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
