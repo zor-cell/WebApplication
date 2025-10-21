@@ -33,8 +33,6 @@ export class GameListComponent implements OnInit {
   protected isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.searchGames();
-
     //adjust date format
     const mql = window.matchMedia('(max-width: 600px)');
     this.updateDateFormat(mql.matches);

@@ -38,8 +38,8 @@ export class GameSearchComponent implements OnInit {
     dateTo: this.fb.control<Date | null>(null),
     minDuration: this.fb.control<string | null>(null),
     maxDuration: this.fb.control<string | null>(null),
-    gameTypes: this.fb.control<GameType[] | null>(null, Validators.required),
-    players: this.fb.control<string[] | null>(null, Validators.required)
+    gameTypes: this.fb.control<GameType[] | null>(null),
+    players: this.fb.control<string[] | null>(null)
   });
   protected popperOptions = (options: Partial<Options>) => {
     options.placement = 'bottom-end';
@@ -50,33 +50,32 @@ export class GameSearchComponent implements OnInit {
   protected allGameTypes = Object.values(GameType);
 
   ngOnInit() {
-    const params = this.route.snapshot.queryParams;
-
-    const filters: any = {
-      text: params['text'] ?? null,
-      dateFrom: params['dateFrom'] ? new Date(params['dateFrom']) : null,
-      dateTo: params['dateTo'] ? new Date(params['dateTo']) : null,
-      minDuration: params['minDuration'] ?? null,
-      maxDuration: params['maxDuration'] ?? null,
-      gameTypes: [params['gameTypes'] ?? null],
-      players: [params['players'] ?? null]
-    };
-
-    if(filters.gameTypes.every((x: GameType[] | null) => x !== null) && filters.players.every((x: string | null) => x !== null)) {
-      this.searchForm.setValue(filters, {emitEvent: false});
-      this.submit();
+    //add validation on stats search
+    if(!this.showMultiGameTypes()) {
+      this.searchForm.controls.gameTypes.addValidators(Validators.required);
+      this.searchForm.controls.players.addValidators(Validators.required);
     }
 
+    //get query params from route
+    const params = this.route.snapshot.queryParams;
+    const gameTypes = params['gameTypes'];
+    const players = params['players'];
+    const filters: any = {
+      text: params['text'] ?? null,
+      dateFrom: params['dateFrom'] ? params['dateFrom'] : null,
+      dateTo: params['dateTo'] ? params['dateTo'] : null,
+      minDuration: params['minDuration'] ?? null,
+      maxDuration: params['maxDuration'] ?? null,
+      gameTypes: gameTypes ? (Array.isArray(gameTypes) ? gameTypes : [gameTypes]) : null,
+      players: players ? (Array.isArray(players) ? players : [players]) : null,
+    };
+
+    this.searchForm.patchValue(filters, {emitEvent: false});
+    this.submit();
+
+    //reflect form changes in query params
     this.searchForm.valueChanges.subscribe(filters => {
-      const queryParams: any = {
-        text: filters.text,
-        dateFrom: filters.dateFrom,
-        dateTo: filters.dateTo,
-        minDuration: filters.minDuration,
-        maxDuration: filters.maxDuration,
-        gameTypes: filters.gameTypes,
-        players: filters.players,
-      };
+      const queryParams = filters as GameFilters;
 
       this.router.navigate([], {
         relativeTo: this.route,

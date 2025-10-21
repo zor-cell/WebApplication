@@ -8,7 +8,6 @@ import {GameService} from "../../../../services/game.service";
 import {GameComponentRegistryService} from "../../../../services/game-component-registry.service";
 import {CorrelationChartComponent} from "../correlation-chart/correlation-chart.component";
 import {DurationPipe} from "../../../../pipes/DurationPipe";
-import {ActivatedRoute, Router} from "@angular/router";
 import {GameStatsMetaComponent} from "../game-stats-meta/game-stats-meta.component";
 
 @Component({
