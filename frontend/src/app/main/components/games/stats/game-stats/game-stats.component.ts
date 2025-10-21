@@ -30,8 +30,6 @@ import {GameStatsMetaComponent} from "../game-stats-meta/game-stats-meta.compone
 export class GameStatsComponent {
     private gameService = inject(GameService);
     private componentRegistryService = inject(GameComponentRegistryService);
-    private route = inject(ActivatedRoute);
-    private router = inject(Router);
 
     protected gameStats = signal<GameStats[]>([]);
     protected gameFilters = signal<GameFilters | null>(null);
@@ -52,58 +50,12 @@ export class GameStatsComponent {
         return this.componentRegistryService.getStatsComponent(gameType);
     });
 
-    constructor() {
-        this.route.queryParams.subscribe(params => {
-            const filters: GameFilters = {
-                text: params['text'] ?? null,
-                dateFrom: params['dateFrom'] ?? null,
-                dateTo: params['dateTo'] ?? null,
-                minDuration: params['minDuration'] ?? null,
-                maxDuration: params['maxDuration'] ?? null,
-                gameTypes: [params['gameTypes'] ?? null],
-                players: [params['players'] ?? null]
-            };
-
-            console.log("query", filters);
-
-            const current = this.gameFilters();
-            if (current === null || JSON.stringify(current) !== JSON.stringify(filters)) {
-                console.log("set");
-                this.gameFilters.set(filters);
-            }
-        });
-
-        effect(() => {
-            const filters = this.gameFilters();
-            if (!filters) return;
-
-            console.log("effect", filters);
-            const queryParams: any = {
-                text: filters.text,
-                dateFrom: filters.dateFrom,
-                dateTo: filters.dateTo,
-                minDuration: filters.minDuration,
-                maxDuration: filters.maxDuration,
-                gameTypes: filters.gameTypes,
-                players: filters.players,
-            };
-
-            this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams,
-                queryParamsHandling: "merge",
-                replaceUrl: true
-            });
-
-            this.getStats(filters);
-        });
-    }
-
     protected searchFiltersChanged(filters: GameFilters) {
+        this.getStats(filters);
         this.gameFilters.set(filters);
     }
 
-    private getStats(filters: GameFilters | null) {
+    private getStats(filters: GameFilters) {
         this.gameService.getStats(filters).subscribe(res => {
             this.gameStats.set(res);
         })
