@@ -8,6 +8,7 @@ import net.zorphy.backend.main.entity.Game;
 import net.zorphy.backend.main.entity.Player;
 import net.zorphy.backend.main.exception.NotFoundException;
 import net.zorphy.backend.main.mapper.GameMapper;
+import net.zorphy.backend.main.mapper.PlayerMapper;
 import net.zorphy.backend.main.repository.GameRepository;
 import net.zorphy.backend.main.repository.PlayerRepository;
 import net.zorphy.backend.main.service.FileStorageService;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
+    private final PlayerMapper playerMapper;
     private final GameMapper gameMapper;
     private final FileStorageService fileStorageService;
     private final GameStatsUtil gameStatsUtil;
@@ -35,12 +37,14 @@ public class GameServiceImpl implements GameService {
 
     public GameServiceImpl(GameRepository gameRepository,
                            PlayerRepository playerRepository,
+                           PlayerMapper playerMapper,
                            GameMapper gameMapper,
                            FileStorageService fileStorageService,
                            GameStatsUtil gameStatsUtil,
                            List<GameSpecificDelete> gameDeleteList) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
+        this.playerMapper = playerMapper;
         this.gameMapper = gameMapper;
         this.fileStorageService = fileStorageService;
         this.gameStatsUtil = gameStatsUtil;
@@ -80,6 +84,12 @@ public class GameServiceImpl implements GameService {
         }
 
         for (UUID playerId : gameFilters.players()) {
+            var player = playerRepository.findById(playerId).orElse(null);
+            if(player == null) {
+                continue;
+            }
+            var playerDetails = playerMapper.playerToPlayerDetails(player);
+
             GameFilters playerFilters = new GameFilters(
                     gameFilters.text(),
                     gameFilters.dateFrom(),
@@ -92,7 +102,7 @@ public class GameServiceImpl implements GameService {
             Specification<Game> specs = GameSpecifications.search(playerFilters);
             List<Game> games = gameRepository.findAll(specs);
 
-            GameStats stats = gameStatsUtil.computeStats(playerId, playerFilters.gameTypes().getFirst(), games);
+            GameStats stats = gameStatsUtil.computeStats(playerDetails, playerFilters.gameTypes().getFirst(), games);
             gameStats.add(stats);
         }
 

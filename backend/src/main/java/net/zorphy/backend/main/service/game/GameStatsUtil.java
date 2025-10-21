@@ -33,9 +33,9 @@ public class GameStatsUtil {
     }
 
     /**
-     * Computes the game stats for a given {@code playerId} and given {@code games}.
+     * Computes the game stats for a given {@code currentPlayer} and given {@code games}.
      */
-    public GameStats computeStats(UUID playerId, GameType gameType, List<Game> games) {
+    public GameStats computeStats(PlayerDetails currentPlayer, GameType gameType, List<Game> games) {
         Map<PlayerDetails, PlayerInfo> opponentMap = new HashMap<>();
         Map<PlayerDetails, PlayerInfo> teammateMap = new HashMap<>();
 
@@ -43,7 +43,6 @@ public class GameStatsUtil {
         List<CorrelationResult> correlations = new ArrayList<>();
         List<CorrelationDataPoint> startingPositionToScore = new ArrayList<>();
 
-        PlayerDetails currentPlayer = null;
         int gamesPlayed = 0;
         int gamesWon = 0;
 
@@ -55,20 +54,19 @@ public class GameStatsUtil {
                 ResultState result = objectMapper.convertValue(game.getResult(), ResultState.class);
 
                 //get player team data
-                ResultTeamState playerTeam = getResultTeam(result, playerId);
-                currentPlayer = playerTeam.team().players().stream()
+                ResultTeamState playerTeam = getResultTeam(result, currentPlayer.id());
+                /*currentPlayer = playerTeam.team().players().stream()
                         .filter(p -> playerId.equals(p.id()))
-                        .findFirst().orElse(currentPlayer);
-                assert currentPlayer != null;
+                        .findFirst().orElse(currentPlayer);*/
 
                 //get winner team data
                 ResultTeamState winnerTeam = getWinnerTeam(result);
                 boolean playerIsWinner = winnerTeam.team().players().stream()
-                        .anyMatch(p -> playerId.equals(p.id()));
+                        .anyMatch(p -> currentPlayer.id().equals(p.id()));
 
                 //update teammates
                 for (PlayerDetails teammate : playerTeam.team().players()) {
-                    if (!teammate.id().equals(playerId)) {
+                    if (!currentPlayer.id().equals(teammate.id())) {
                         updatePlayerMap(teammateMap, teammate, playerIsWinner);
                     }
                 }
