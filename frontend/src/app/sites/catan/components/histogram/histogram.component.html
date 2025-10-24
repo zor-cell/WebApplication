@@ -1,7 +1,15 @@
 <section [hidden]="!isVisible()" class="histogram-container">
     <canvas baseChart
             [type]="'bar'"
-            [data]="chartData"
-            [options]="chartOptions">
+            [data]="ClassicDiceChartData"
+            [options]="ClassicDiceChartOptions">
+    </canvas>
+    <canvas *ngIf="showEventDice()"
+            baseChart
+            [type]="'bar'"
+            [data]="EventDiceChartData"
+            [options]="EventDiceChartOptions"
+            [plugins]="EventDiceChartPlugins"
+    >
     </canvas>
 </section>

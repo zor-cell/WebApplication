@@ -3,16 +3,20 @@ import {
     Component,
     effect,
     input,
-    viewChild,
+    viewChildren,
 } from '@angular/core';
-import {ChartData, ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 import {DiceRoll} from "../../dto/DiceRoll";
+import {GameConfig} from "../../dto/game/GameConfig";
+import {ClassicDiceChartData, ClassicDiceChartOptions} from "../../dto/charts/ClassicDiceChart";
+import {EventDiceChartData, EventDiceChartOptions, EventDiceChartPlugins} from "../../dto/charts/EventDiceChart";
+import {NgIf} from "@angular/common";
 
 @Component({
     selector: 'catan-histogram',
     imports: [
-        BaseChartDirective
+        BaseChartDirective,
+        NgIf
     ],
     templateUrl: './histogram.component.html',
     standalone: true,
@@ -21,89 +25,9 @@ import {DiceRoll} from "../../dto/DiceRoll";
 export class CatanHistogramComponent implements AfterViewInit {
     public diceRolls = input.required<DiceRoll[]>();
     public isVisible = input<boolean>(true);
+    public showEventDice = input<boolean>(false);
     public showExactProbability = input<boolean>(false);
-    private chart = viewChild.required(BaseChartDirective);
-
-    protected chartData: ChartData<any, number[], number> = {
-        labels: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        datasets: [
-            {
-                type: 'line',
-                label: 'Bell Curve',
-                data: [], // compute below
-                tension: 0.4,
-                pointRadius: 0,
-                backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                borderColor: 'rgba(255, 0, 0, 0.6)',
-                borderWidth: 2,
-                order: 1,
-                yAxisID: 'yLine'
-            },
-            {
-                type: 'line',
-                label: 'Exact Probabilities',
-                data: [], // compute below
-                tension: 0,
-                pointRadius: 0,
-                borderColor: 'rgba(200, 200, 200, 0.8)',
-                borderWidth: 2,
-                order: 1,
-                yAxisID: 'yLine'
-            }
-        ]
-    };
-    protected chartOptions: ChartOptions = {
-        maintainAspectRatio: false,
-        animations: {
-            // Define animations for dataset elements during updates
-            x: {
-                duration: 500,
-                easing: 'easeOutQuart'
-            },
-            y: {
-                duration: 500,
-                easing: 'easeOutQuart'
-            },
-        },
-        plugins: {
-            title: {
-                display: true,
-                text: 'Histogram of Dice Rolls',
-                font: {
-                    size: 18,
-                    weight: 'bold',
-                },
-            },
-            legend: {
-                labels: {
-                    filter: item => item.text !== 'Bell Curve' && item.text !== 'Exact Probabilities'
-                }
-            }
-        },
-        scales: {
-            x: {
-                stacked: true
-            },
-            y: {
-                stacked: true,
-                beginAtZero: true,
-                ticks: {
-                    callback: function (value) {
-                        if (Number.isInteger(value)) {
-                            return value.toString();
-                        }
-                        return '';
-                    },
-                    stepSize: 1
-                },
-            },
-            yLine: {
-                stacked: false,
-                beginAtZero: true,
-                display: false
-            }
-        },
-    };
+    private charts = viewChildren(BaseChartDirective);
 
     constructor() {
         effect(() => {
@@ -118,21 +42,28 @@ export class CatanHistogramComponent implements AfterViewInit {
     }
 
     private refillChartData() {
-        const chart = this.chart();
         const diceRolls = this.diceRolls();
 
-        if (!chart || !this.isVisible()) return;
+        this.computeEventDiceData(diceRolls);
+        this.computeClassicDiceData(diceRolls);
 
-        //update text
-        if (chart.chart && chart.chart.options && chart.chart.options.plugins && chart.chart.options.plugins.title) {
-            chart.chart.options.plugins.title.text = `Histogram of ${diceRolls.length} Rolls`;
-        }
+        this.charts().forEach((chart, i) => {
+            if (!chart || !this.isVisible()) return;
 
+            //update text
+            if (chart.chart && chart.chart.options && chart.chart.options.plugins && chart.chart.options.plugins.title) {
+                chart.chart.options.plugins.title.text = `Histogram of ${diceRolls.length} Rolls`;
+            }
 
+            chart.update();
+        });
+    }
+
+    private computeClassicDiceData(diceRolls: DiceRoll[]) {
         //bell curve
-        this.chartData.datasets[0].data = this.generateBellCurveData(diceRolls.length);
+        ClassicDiceChartData.datasets[0].data = this.generateBellCurveData(diceRolls.length);
         if(this.showExactProbability()) {
-            this.chartData.datasets[1].data = this.generateExactProbabilities(diceRolls.length);
+            ClassicDiceChartData.datasets[1].data = this.generateExactProbabilities(diceRolls.length);
         }
 
         //team datasets
@@ -156,12 +87,37 @@ export class CatanHistogramComponent implements AfterViewInit {
             order: 2
         }));
 
-        this.chartData.datasets = [
-            this.chartData.datasets[0],
-            this.chartData.datasets[1],
+        ClassicDiceChartData.datasets = [
+            ClassicDiceChartData.datasets[0],
+            ClassicDiceChartData.datasets[1],
             ...datasets];
+    }
 
-        chart.update();
+    private computeEventDiceData(diceRolls: DiceRoll[]) {
+        //team datasets
+        const teams = [...new Set(diceRolls.map(d => d.teamName))];
+        const teamData: any = {};
+
+        teams.forEach(team => {
+            teamData[team] = Array(4).fill(0);
+        });
+        diceRolls.forEach(diceRoll => {
+            const pos = EventDiceChartData.labels?.indexOf(diceRoll.diceEvent);
+            if(pos !== undefined) {
+                teamData[diceRoll.teamName][pos]++;
+            }
+        });
+
+        const colors = ['rgba(31, 119, 180, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(148, 103, 189, 0.8)', 'rgb(255, 187, 120, 0.8)'];
+        const datasets = teams.map((team, index) => ({
+            type: 'bar',
+            label: team,
+            data: teamData[team],
+            backgroundColor: colors[index % teams.length],
+            order: 2
+        }));
+
+        EventDiceChartData.datasets = [...datasets];
     }
 
     private generateBellCurveData(totalRolls: number): number[] {
@@ -200,4 +156,10 @@ export class CatanHistogramComponent implements AfterViewInit {
 
         return labels.map(sum => probabilities[sum] * totalRolls);
     }
+
+    protected readonly ClassicDiceChartOptions = ClassicDiceChartOptions;
+    protected readonly EventDiceChartOptions = EventDiceChartOptions;
+    protected readonly ClassicDiceChartData = ClassicDiceChartData;
+    protected readonly EventDiceChartData = EventDiceChartData;
+    protected readonly EventDiceChartPlugins = EventDiceChartPlugins;
 }
