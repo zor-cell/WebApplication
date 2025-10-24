@@ -15,7 +15,7 @@ export const BaseChartOptions: ChartOptions = {
     plugins: {
         title: {
             display: true,
-            text: 'Histogram of Dice Rolls',
+            text: 'Chart',
             font: {
                 size: 18,
                 weight: 'bold',

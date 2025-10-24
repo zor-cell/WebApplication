@@ -33,6 +33,7 @@ export class DurationPipe implements PipeTransform {
         return `${hh}:${mm}:${ss}`;
     }
 
+    //format hh:mm to iso format
     public static toIsoFormat(duration: string | null) {
         if(!duration) return null;
 

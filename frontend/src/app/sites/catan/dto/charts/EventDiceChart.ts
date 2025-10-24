@@ -1,44 +1,85 @@
 import {ChartData, ChartOptions, Plugin} from "chart.js";
 import {BaseChartOptions} from "./BaseChartOptions";
+import {BaseChart} from "./BaseChart";
+import {DiceRoll} from "../DiceRoll";
 
-const labelImages: Record<string, HTMLImageElement> = {
-    g: Object.assign(new Image(), { src: 'assets/catan/g.svg' }),
-    b: Object.assign(new Image(), { src: 'assets/catan/b.svg' }),
-    y: Object.assign(new Image(), { src: 'assets/catan/y.svg' }),
-    e: Object.assign(new Image(), { src: 'assets/catan/e.svg' })
-};
+export class EventDiceChart extends BaseChart {
+    private static labelImages: Record<string, HTMLImageElement> = {
+        g: Object.assign(new Image(), { src: 'assets/catan/g.svg' }),
+        b: Object.assign(new Image(), { src: 'assets/catan/b.svg' }),
+        y: Object.assign(new Image(), { src: 'assets/catan/y.svg' }),
+        e: Object.assign(new Image(), { src: 'assets/catan/e.svg' })
+    }
 
-const labelImagePlugin: Plugin<any> = {
-    id: 'labelImagePlugin',
-    afterDraw(chart: any) {
-        const { ctx, chartArea, scales } = chart;
-        const xAxis = scales.x;
+    private static labelImagePlugin: Plugin<any> = {
+        id: 'labelImagePlugin',
+        afterDraw(chart: any) {
+            const { ctx, chartArea, scales } = chart;
+            const xAxis = scales.x;
 
-        if (!xAxis) return;
+            if (!xAxis) return;
 
-        chart.data.labels.forEach((label: string, index: number) => {
-            const image = labelImages[label];
-            if (!image?.complete) return; // skip if not loaded yet
+            chart.data.labels.forEach((label: string, index: number) => {
+                const image = EventDiceChart.labelImages[label];
+                if (!image?.complete) return; // skip if not loaded yet
 
-            const x = xAxis.getPixelForTick(index);
-            const y = chartArea.bottom + 5; // space below axis
+                const x = xAxis.getPixelForTick(index);
+                const y = chartArea.bottom + 5; // space below axis
 
-            const size = 20; // image size (px)
-            ctx.drawImage(image, x - size / 2, y, size, size);
+                const size = 20; // image size (px)
+                ctx.drawImage(image, x - size / 2, y, size, size);
+            });
+        }
+    };
+
+    static override data: ChartData<any, number[], string> = {
+        labels: ['g', 'b', 'y', 'e'],
+        datasets: []
+    }
+
+    static override options: ChartOptions = {
+        ...BaseChartOptions,
+        plugins: {
+            ...BaseChartOptions.plugins
+        }
+    }
+
+    static override plugins: Plugin[] = [EventDiceChart.labelImagePlugin];
+
+    static refresh(diceRolls: DiceRoll[]) {
+        //team datasets
+        const teams = [...new Set(diceRolls.map(d => d.teamName))];
+        const teamData: any = {};
+
+        teams.forEach(team => {
+            teamData[team] = Array(4).fill(0);
         });
+        diceRolls.forEach(diceRoll => {
+            const pos = EventDiceChart.data.labels?.indexOf(diceRoll.diceEvent);
+            if(pos !== undefined) {
+                teamData[diceRoll.teamName][pos]++;
+            }
+        });
+
+        const datasets = teams.map((team, index) => ({
+            type: 'bar',
+            label: team,
+            data: teamData[team],
+            backgroundColor: BaseChart.colors[index % teams.length],
+            order: 2
+        }));
+
+        EventDiceChart.data.datasets = [...datasets];
+
+        EventDiceChart.options = {
+            ...EventDiceChart.options,
+            plugins: {
+                ...EventDiceChart.options.plugins,
+                title: {
+                    ...EventDiceChart.options.plugins?.title,
+                    text: `Event Dice Histogram of ${diceRolls.length} Rolls`,
+                }
+            },
+        }
     }
-};
-
-export const EventDiceChartData: ChartData<any, number[], string> = {
-    labels: ['g', 'b', 'y', 'e'],
-    datasets: []
 }
-
-export const EventDiceChartOptions: ChartOptions = {
-    ...BaseChartOptions,
-    plugins: {
-        ...BaseChartOptions.plugins
-    }
-}
-
-export const EventDiceChartPlugins: Plugin<any>[] = [labelImagePlugin]
