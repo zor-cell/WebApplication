@@ -13,7 +13,15 @@ export class MoveTimeChart extends BaseChart {
         ...BaseChartOptions,
         scales: {
             x: {
-                stacked: false
+                stacked: false,
+                title: {
+                    display: true,
+                    text: 'Round',
+                    font: {
+                        size: 14,
+                        weight: 'bold',
+                    }
+                }
             },
             y: {
                 stacked: false,
@@ -27,6 +35,14 @@ export class MoveTimeChart extends BaseChart {
                     },
                     stepSize: 1
                 },
+                title: {
+                    display: true,
+                    text: 'Time (s)',
+                    font: {
+                        size: 14,
+                        weight: 'bold',
+                    }
+                }
             }
         },
         elements: {
@@ -57,6 +73,7 @@ export class MoveTimeChart extends BaseChart {
 
                 const duration = (next.getTime() - cur.getTime()) / 1000;
 
+                //TODO: look at 1v1 mode
                 const round: number = Math.floor(i / teams.length);
                 teamData[diceRoll.teamName][round] = duration;
             }

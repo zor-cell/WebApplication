@@ -5,8 +5,8 @@
 }
 
 .sub-chart-container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
 
     justify-content: center;
@@ -24,6 +24,10 @@
     height: 500px;
 }
 
+.small-container {
+    height: 300px;
+}
+
 @media (max-width: 400px) {
     .histogram-container {
         height: 400px;
@@ -32,6 +36,11 @@
 
 @media (max-width: 900px) {
     .sub-chart-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .small-container {
+        height: 200px;
     }
 }

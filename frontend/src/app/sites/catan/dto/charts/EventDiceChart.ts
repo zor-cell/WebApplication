@@ -34,19 +34,39 @@ export class EventDiceChart extends BaseChart {
 
     static override data: ChartData<any, number[], string> = {
         labels: ['g', 'b', 'y', 'e'],
-        datasets: []
+        datasets: [
+            {
+                type: 'line',
+                label: 'Bell Curve',
+                data: [],
+                tension: 0.1,
+                pointRadius: 0,
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 0.6)',
+                borderWidth: 2,
+                order: 1,
+                yAxisID: 'yLine'
+            },
+        ]
     }
 
     static override options: ChartOptions = {
         ...BaseChartOptions,
         plugins: {
-            ...BaseChartOptions.plugins
+            ...BaseChartOptions.plugins,
+            legend: {
+                labels: {
+                    filter: item => item.text !== 'Bell Curve'
+                }
+            }
         }
     }
 
     static override plugins: Plugin[] = [EventDiceChart.labelImagePlugin];
 
     static refresh(diceRolls: DiceRoll[]) {
+        EventDiceChart.data.datasets[0].data = this.generatePMF(diceRolls.length);
+
         //team datasets
         const teams = [...new Set(diceRolls.map(d => d.teamName))];
         const teamData: any = {};
@@ -69,7 +89,10 @@ export class EventDiceChart extends BaseChart {
             order: 2
         }));
 
-        EventDiceChart.data.datasets = [...datasets];
+        EventDiceChart.data.datasets = [
+            EventDiceChart.data.datasets[0],
+            ...datasets
+        ];
 
         EventDiceChart.options = {
             ...EventDiceChart.options,
@@ -81,5 +104,16 @@ export class EventDiceChart extends BaseChart {
                 }
             },
         }
+    }
+
+    private static generatePMF(totalRolls: number) {
+        const probabilities: { [key: string]: number } = {
+            'g': 1 / 6,
+            'b': 1 / 6,
+            'y': 1 / 6,
+            'e': 3 / 6,
+        };
+
+        return EventDiceChart.data.labels?.map(l => probabilities[l] * totalRolls);
     }
 }

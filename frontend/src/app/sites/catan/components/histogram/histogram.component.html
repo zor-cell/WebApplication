@@ -1,25 +1,22 @@
 <section class="chart-container" [hidden]="!isVisible()">
     <div class="histogram-container">
         <canvas baseChart
-                [type]="'bar'"
                 [data]="ClassicDiceChart.data"
                 [options]="ClassicDiceChart.options">
         </canvas>
     </div>
 
     <div class="sub-chart-container">
-        <div class="histogram-container">
-            <canvas *ngIf="showEventDice()" baseChart
-                    [type]="'bar'"
+        <div *ngIf="showEventDice()" class="histogram-container small-container">
+            <canvas baseChart
                     [data]="EventDiceChart.data"
                     [options]="EventDiceChart.options"
                     [plugins]="EventDiceChart.plugins">
             </canvas>
         </div>
 
-        <div class="histogram-container">
+        <div class="histogram-container small-container">
             <canvas baseChart
-                    [type]="'line'"
                     [data]="MoveTimeChart.data"
                     [options]="MoveTimeChart.options">
             </canvas>
