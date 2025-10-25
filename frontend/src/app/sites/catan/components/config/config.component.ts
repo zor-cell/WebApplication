@@ -43,7 +43,8 @@ export class CatanConfigComponent {
             shuffleThreshold: this.fb.control(2),
             useEvents: this.fb.control(false)
         }),
-        maxShipTurns: this.fb.control(7)
+        maxShipTurns: this.fb.control(7),
+        initialShipTurns: this.fb.control(7)
     });
     protected readonly projectName = "catan";
 

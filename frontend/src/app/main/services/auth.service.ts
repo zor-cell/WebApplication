@@ -21,6 +21,10 @@ export class AuthService {
         return this.httpClient.post<void>(this.baseUri + '/login', credentials);
     }
 
+    logout() {
+        return this.httpClient.post<void>(this.baseUri + '/logout', null);
+    }
+
     loadUser(): Observable<UserDetails> {
         return this.httpClient.get<UserDetails>(this.globals.backendUri + '/users/me', {
             context: this.globals.silentErrorContext

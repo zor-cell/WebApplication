@@ -8,5 +8,6 @@ export interface GameConfig extends GameConfigBase {
     gameMode: GameMode,
     classicDice: DiceConfig,
     eventDice: DiceConfig,
-    maxShipTurns: number
+    maxShipTurns: number,
+    initialShipTurns: number
 }

@@ -11,6 +11,11 @@
     gap: 1rem;
 }
 
+.select-container-top {
+    display: flex;
+    flex-direction: column;
+}
+
 .select-container {
     display: flex;
     justify-content: center;

@@ -72,11 +72,19 @@ public class GameStatsUtil {
                 }
 
                 //update opponents
-                for (ResultTeamState teamResult : result.teams()) {
-                    if (teamResult.equals(playerTeam)) continue;
+                if(playerIsWinner) {
+                    //all players are counted since current player won
+                    for (ResultTeamState teamResult : result.teams()) {
+                        if (teamResult.equals(playerTeam)) continue;
 
-                    for (PlayerDetails player : teamResult.team().players()) {
-                        updatePlayerMap(opponentMap, player, playerIsWinner);
+                        for (PlayerDetails player : teamResult.team().players()) {
+                            updatePlayerMap(opponentMap, player, true);
+                        }
+                    }
+                } else {
+                    //all players from winning team are counted
+                    for(var opponent : winnerTeam.team().players()) {
+                        updatePlayerMap(opponentMap, opponent, false);
                     }
                 }
 

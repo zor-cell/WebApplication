@@ -29,7 +29,11 @@ public record GameConfig(
 
         @NotNull
         @Min(value = 1)
-        Integer maxShipTurns
+        Integer maxShipTurns,
+
+        @NotNull
+        @Min(value = 1)
+        Integer initialShipTurns
 ) implements GameConfigBase {
 
 }

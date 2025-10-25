@@ -1,7 +1,11 @@
 <div class="settings-container">
     <div class="select-container">
-        <i *ngIf="authService.isAdmin()" class="bi bi-person-plus-fill default-color" (click)="openPlayerPopup()"></i>
-        <select [disabled]="!currentPlayer()" [value]="currentPlayer() ? currentPlayer()!.id : 'EMPTY'" (change)="updateCurrentPlayer($event)">
+        <i *ngIf="authService.isAdmin()" class="bi bi-person-plus-fill default-color"
+           (click)="openPlayerPopup()"></i>
+        <i class="bi bi-arrow-repeat default-color" (click)="reorderPlayers()"></i>
+
+        <select [disabled]="!currentPlayer()" [value]="currentPlayer() ? currentPlayer()!.id : 'EMPTY'"
+                (change)="updateCurrentPlayer($event)">
             @if (currentPlayer()) {
                 <option *ngFor="let player of availablePlayers()" [value]="player.id">
                     {{ player.name }}
@@ -10,9 +14,11 @@
                 <option>EMPTY</option>
             }
         </select>
-        <button [disabled]="!currentPlayer() || selectedTeams().length >= maxTeams()" class="small-btn" (click)="addPlayer()">
+        <button [disabled]="!currentPlayer() || selectedTeams().length >= maxTeams()" class="small-btn"
+                (click)="addPlayer()">
             Add
         </button>
+
     </div>
 
 

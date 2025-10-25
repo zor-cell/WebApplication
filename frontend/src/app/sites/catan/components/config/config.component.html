@@ -65,7 +65,6 @@
                             <div class="dice-settings-options" [formGroup]="configForm.controls.classicDice">
                                 <input type="number" min="0" max="35" class="number-input"
                                        formControlName="shuffleThreshold">
-                                <button class="small-btn">Reshuffle</button>
                             </div>
                         </div>
                     } @else {
@@ -79,7 +78,6 @@
                                 <div class="dice-settings-options" [formGroup]="configForm.controls.eventDice">
                                     <input type="number" min="0" max="5" class="number-input"
                                            formControlName="shuffleThreshold">
-                                    <button class="small-btn">Reshuffle</button>
                                 </div>
                             </div>
                         } @else {
@@ -90,6 +88,15 @@
                     <div class="dice-settings-description">{{ !configForm.controls.classicDice.controls.useEvents.value ? 'No ' : '' }}
                         Card Events
                     </div>
+
+                    @if (configForm.controls.gameMode.value === GameMode.CITIES_AND_KNIGHTS) {
+                        <div class="dice-settings-balance">
+                            <div class="dice-settings-description">Initial Ship Turns:</div>
+                            <div class="dice-settings-options">
+                                <input type="number" min="0" class="number-input" formControlName="initialShipTurns">
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </section>

@@ -43,8 +43,8 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
     public maxTeams = input<number>(4);
     public allowTeams = input<boolean>(true);
 
-    public allPlayers = signal<PlayerDetails[]>([]);
     public selectedTeams = signal<Team[]>([]);
+    public allPlayers = signal<PlayerDetails[]>([]);
     public availablePlayers = computed(() => {
         const all = this.allPlayers();
         const taken = this.selectedTeams().flatMap(t => t.players.map(p => p.id));
@@ -85,6 +85,19 @@ export class PlayerSelectComponent implements ControlValueAccessor, OnInit {
 
     ngOnInit() {
         this.getPlayers();
+    }
+
+    protected reorderPlayers() {
+        const players = this.selectedTeams();
+        const n = players.length;
+
+        if (n <= 1) return;
+
+        const offset = Math.floor(Math.random() * n);
+
+        // rotate array by offset
+        const rotated = players.slice(offset).concat(players.slice(0, offset));
+        this.selectedTeams.set(rotated);
     }
 
     protected mergeTeam(teamIndex: number) {

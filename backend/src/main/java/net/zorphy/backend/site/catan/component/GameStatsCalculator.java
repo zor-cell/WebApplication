@@ -110,7 +110,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                 ));
 
                 gameCount++;
-                totalLuckMetrics += computeLuckMetric(gameState, currentPlayer, playerTeam);
+                totalLuckMetrics += computeLuckMetric(gameState, playerTeam);
             } catch (Exception e) {
                 //continue if object mapping to game state failed
                 int i = 0;
@@ -134,7 +134,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         );
     }
 
-    private double computeLuckMetric(GameState gameState, PlayerDetails currentPlayer, TeamDetails playerTeam) {
+    private double computeLuckMetric(GameState gameState, TeamDetails playerTeam) {
         List<DiceRoll> diceRolls = gameState.diceRolls();
 
         if (gameState.diceRolls().isEmpty()) return 0;
@@ -162,6 +162,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
             totalStats.addValue(sum);
         }
 
+        if(playerStats.getValues().length == 0 || totalStats.getValues().length == 0) return 0;
+
         double R = (double) playerSevenCount / totalSevenCount; //TODO amount of players also important
 
         double playerVariance = playerStats.getVariance();
@@ -170,8 +172,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         double totalVariance = totalStats.getVariance();
         double totalStdDev = totalStats.getStandardDeviation();
 
-        double V_player = Math.min(1.0, playerVariance / (playerVariance + playerStdDev * 2));
-        double V_total = Math.min(1.0, totalVariance / (totalVariance + totalStdDev * 2));
+        double V_player = playerVariance > 0 ? Math.min(1.0, playerVariance / (playerVariance + playerStdDev * 2)) : 0;
+        double V_total = totalVariance > 0 ? Math.min(1.0, totalVariance / (totalVariance + totalStdDev * 2)) : 0;
 
 
         //weights
