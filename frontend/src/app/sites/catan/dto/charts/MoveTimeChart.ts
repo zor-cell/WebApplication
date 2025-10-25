@@ -60,6 +60,8 @@ export class MoveTimeChart extends BaseChart {
         });
         diceRolls.forEach((diceRoll, i) => {
             if(i < diceRolls.length - 1) {
+                if(!diceRolls[i].rollTime || !diceRolls[i + 1].rollTime) return;
+
                 const cur = new Date(diceRolls[i].rollTime);
                 const next = new Date(diceRolls[i + 1].rollTime);
 

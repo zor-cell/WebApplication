@@ -7,7 +7,7 @@
     </div>
 
     <div class="sub-chart-container">
-        <div *ngIf="gameMode() === GameMode.CITIES_AND_KNIGHTS" class="histogram-container small-container">
+        <div *ngIf="gameMode() === GameMode.CITIES_AND_KNIGHTS || gameMode() === null" class="histogram-container small-container">
             <canvas baseChart
                     [data]="EventDiceChart.data"
                     [options]="EventDiceChart.options"
@@ -15,7 +15,7 @@
             </canvas>
         </div>
 
-        <div class="histogram-container small-container">
+        <div *ngIf="gameMode() !== null" class="histogram-container small-container">
             <canvas baseChart
                     [data]="MoveTimeChart.data"
                     [options]="MoveTimeChart.options">
