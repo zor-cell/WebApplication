@@ -43,6 +43,6 @@
     </div>
 
     <div>
-        <catan-histogram [diceRolls]="gameState().diceRolls" [showEventDice]="gameState().gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS"></catan-histogram>
+        <catan-histogram [diceRolls]="gameState().diceRolls" [gameMode]="gameState().gameConfig.gameMode"/>
     </div>
 </div>

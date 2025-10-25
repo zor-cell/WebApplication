@@ -1,7 +1,7 @@
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChart} from "./BaseChart";
-import {BaseChartOptions} from "./BaseChartOptions";
 import {DiceRoll} from "../DiceRoll";
+import {GameMode} from "../enums/GameMode";
 
 export class MoveTimeChart extends BaseChart {
     static override data: ChartData<any, number[], number> = {
@@ -10,44 +10,36 @@ export class MoveTimeChart extends BaseChart {
     }
 
     static override options: ChartOptions = {
-        ...BaseChartOptions,
+        ...BaseChart.options,
         scales: {
             x: {
                 stacked: false,
                 title: {
                     display: true,
                     text: 'Round',
-                    font: {
-                        size: 14,
-                        weight: 'bold',
-                    }
+                    font: BaseChart.axisFont
                 }
             },
             y: {
                 stacked: false,
-                beginAtZero: true,
-                ticks: {
-                    callback: function (value) {
-                        if (Number.isInteger(value)) {
-                            return value.toString();
-                        }
-                        return '';
-                    },
-                    stepSize: 1
-                },
                 title: {
                     display: true,
-                    text: 'Time (s)',
-                    font: {
-                        size: 14,
-                        weight: 'bold',
-                    }
+                    text: 'Move Time (s)',
+                    font: BaseChart.axisFont
                 }
+            }
+        },
+        plugins: {
+            ...BaseChart.options.plugins,
+            title: {
+                display: true,
+                text: 'Round Move Times',
+                font: BaseChart.titleFont
             }
         },
         elements: {
             line: {
-                tension: 0.2, // smooth lines
+                tension: 0.2,
                 borderWidth: 2,
                 fill: false,
             },
@@ -57,7 +49,7 @@ export class MoveTimeChart extends BaseChart {
         },
     }
 
-    static refresh(diceRolls: DiceRoll[]) {
+    static refresh(diceRolls: DiceRoll[], gameMode: GameMode | null) {
         //team datasets
         const teams = [...new Set(diceRolls.map(d => d.teamName))];
         const teamData: any = {};
@@ -73,8 +65,15 @@ export class MoveTimeChart extends BaseChart {
 
                 const duration = (next.getTime() - cur.getTime()) / 1000;
 
-                //TODO: look at 1v1 mode
-                const round: number = Math.floor(i / teams.length);
+                let round: number = Math.floor(i / teams.length);
+
+                if(gameMode === GameMode.ONE_VS_ONE) {
+                    //two consecutive rolls from the same team -> 4 rows are 2 rounds
+                    round = Math.floor(i / 4);
+                    const offset = i % 2;
+                    round += offset;
+                }
+
                 teamData[diceRoll.teamName][round] = duration;
             }
         });
@@ -94,16 +93,5 @@ export class MoveTimeChart extends BaseChart {
             (_, i) => i + 1
         );
         MoveTimeChart.data.datasets = [...datasets];
-
-        MoveTimeChart.options = {
-            ...MoveTimeChart.options,
-            plugins: {
-                ...MoveTimeChart.options.plugins,
-                title: {
-                    ...MoveTimeChart.options.plugins?.title,
-                    text: `Move Time of ${diceRolls.length} Rolls`,
-                }
-            },
-        }
     }
 }

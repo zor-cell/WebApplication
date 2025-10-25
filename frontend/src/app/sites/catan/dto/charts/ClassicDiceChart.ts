@@ -1,4 +1,3 @@
-import {BaseChartOptions} from "./BaseChartOptions";
 import {ChartData, ChartOptions} from "chart.js";
 import {BaseChart} from "./BaseChart";
 import {DiceRoll} from "../DiceRoll";
@@ -34,13 +33,46 @@ export class ClassicDiceChart extends BaseChart {
     };
 
     static override options: ChartOptions = {
-        ...BaseChartOptions,
+        ...BaseChart.options,
         plugins: {
-            ...BaseChartOptions.plugins,
+            ...BaseChart.options.plugins,
             legend: {
                 labels: {
                     filter: item => item.text !== 'Bell Curve' && item.text !== 'Exact Probabilities'
                 }
+            }
+        },
+        scales: {
+            x: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Dice Rolls',
+                    font: BaseChart.axisFont
+                }
+            },
+            y: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Occurrences',
+                    font: BaseChart.axisFont
+                },
+                beginAtZero: true,
+                ticks: {
+                    /*callback: function (value) {
+                        if (Number.isInteger(value)) {
+                            return value.toString();
+                        }
+                        return '';
+                    }, not needed?*/
+                    stepSize: 1
+                },
+            },
+            yLine: {
+                stacked: false,
+                beginAtZero: true,
+                display: false
             }
         }
     }

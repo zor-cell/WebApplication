@@ -1,5 +1,4 @@
 import {ChartData, ChartOptions, Plugin} from "chart.js";
-import {BaseChartOptions} from "./BaseChartOptions";
 import {BaseChart} from "./BaseChart";
 import {DiceRoll} from "../DiceRoll";
 
@@ -51,13 +50,45 @@ export class EventDiceChart extends BaseChart {
     }
 
     static override options: ChartOptions = {
-        ...BaseChartOptions,
+        ...BaseChart.options,
         plugins: {
-            ...BaseChartOptions.plugins,
+            ...BaseChart.options.plugins,
+            title: {
+                display: true,
+                text: 'Event Dice Histogram',
+                font: BaseChart.titleFont
+            },
             legend: {
                 labels: {
                     filter: item => item.text !== 'Bell Curve'
                 }
+            }
+        },
+        scales: {
+            x: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Event Dice Rolls',
+                    font: BaseChart.axisFont
+                }
+            },
+            y: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Occurrences',
+                    font: BaseChart.axisFont
+                },
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                },
+            },
+            yLine: {
+                stacked: false,
+                beginAtZero: true,
+                display: false
             }
         }
     }
@@ -93,17 +124,6 @@ export class EventDiceChart extends BaseChart {
             EventDiceChart.data.datasets[0],
             ...datasets
         ];
-
-        EventDiceChart.options = {
-            ...EventDiceChart.options,
-            plugins: {
-                ...EventDiceChart.options.plugins,
-                title: {
-                    ...EventDiceChart.options.plugins?.title,
-                    text: `Event Dice Histogram of ${diceRolls.length} Rolls`,
-                }
-            },
-        }
     }
 
     private static generatePMF(totalRolls: number) {

@@ -13,6 +13,7 @@ import {
 } from "../../dto/charts/EventDiceChart";
 import {NgIf} from "@angular/common";
 import {MoveTimeChart} from "../../dto/charts/MoveTimeChart";
+import {GameMode} from "../../dto/enums/GameMode";
 
 @Component({
     selector: 'catan-histogram',
@@ -27,7 +28,7 @@ import {MoveTimeChart} from "../../dto/charts/MoveTimeChart";
 export class CatanHistogramComponent implements AfterViewInit {
     public diceRolls = input.required<DiceRoll[]>();
     public isVisible = input<boolean>(true);
-    public showEventDice = input<boolean>(false);
+    public gameMode = input<GameMode | null>(null);
     public showExactProbability = input<boolean>(false);
     private charts = viewChildren(BaseChartDirective);
 
@@ -50,7 +51,7 @@ export class CatanHistogramComponent implements AfterViewInit {
 
         ClassicDiceChart.refresh(diceRolls, this.showExactProbability());
         EventDiceChart.refresh(diceRolls);
-        MoveTimeChart.refresh(diceRolls);
+        MoveTimeChart.refresh(diceRolls, this.gameMode());
 
         //update chart changes
         this.charts().forEach(chart => {
@@ -61,4 +62,5 @@ export class CatanHistogramComponent implements AfterViewInit {
     protected readonly ClassicDiceChart = ClassicDiceChart;
     protected readonly EventDiceChart = EventDiceChart;
     protected readonly MoveTimeChart = MoveTimeChart;
+    protected readonly GameMode = GameMode;
 }

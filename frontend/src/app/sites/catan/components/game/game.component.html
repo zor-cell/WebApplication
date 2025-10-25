@@ -66,7 +66,7 @@
     </div>
 
     <div style="margin: 15rem auto 0 auto">
-        <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls" [showEventDice]="gameState.gameConfig.gameMode === GameMode.CITIES_AND_KNIGHTS"/>
+        <catan-histogram [isVisible]="showChart" [diceRolls]="gameState.diceRolls" [gameMode]="gameState.gameConfig.gameMode"/>
     </div>
 </div>
 </game-session-game>

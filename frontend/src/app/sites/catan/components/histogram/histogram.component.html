@@ -7,7 +7,7 @@
     </div>
 
     <div class="sub-chart-container">
-        <div *ngIf="showEventDice()" class="histogram-container small-container">
+        <div *ngIf="gameMode() === GameMode.CITIES_AND_KNIGHTS" class="histogram-container small-container">
             <canvas baseChart
                     [data]="EventDiceChart.data"
                     [options]="EventDiceChart.options"
