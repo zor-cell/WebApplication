@@ -33,6 +33,8 @@ export class Globals {
         } else if (error.error && typeof error.error === 'string') {
             // text error response
             message = error.error;
+        } else if(error.error && Array.isArray(error.error)) {
+            message = error.error;
         } else if (error.error && error.error.message) {
             // JSON error
             message = error.error.message;
