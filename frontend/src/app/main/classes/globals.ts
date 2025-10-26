@@ -38,6 +38,8 @@ export class Globals {
         } else if (error.error && error.error.message) {
             // JSON error
             message = error.error.message;
+        } else if(error.error && error.error.detail) {
+            message = error.error.detail;
         } else if (error.message) {
             message = error.message;
         }

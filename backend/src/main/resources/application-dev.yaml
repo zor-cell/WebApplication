@@ -1,3 +1,7 @@
+logging:
+  level:
+    root: INFO
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:8022/${POSTGRES_DB}
