@@ -2,6 +2,8 @@ package net.zorphy.backend.main.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import net.zorphy.backend.site.all.dto.GameStateBase;
+import net.zorphy.backend.site.all.dto.ResultStateBase;
 import org.hibernate.annotations.Type;
 
 import java.time.Duration;
@@ -27,11 +29,11 @@ public class Game {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    private Object gameState;
+    private GameStateBase gameState;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    private Object result;
+    private ResultStateBase result;
 
     @ManyToMany
     @JoinTable(
@@ -44,7 +46,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(Instant playedAt, Duration duration, String gameType, String imageUrl, Object gameState, Object result, Set<Player> players) {
+    public Game(Instant playedAt, Duration duration, String gameType, String imageUrl, GameStateBase gameState, ResultStateBase result, Set<Player> players) {
         this.playedAt = playedAt;
         this.duration = duration;
         this.gameType = gameType;
@@ -94,19 +96,19 @@ public class Game {
         this.imageUrl = imageUrl;
     }
 
-    public Object getGameState() {
+    public GameStateBase getGameState() {
         return gameState;
     }
 
-    public void setGameState(Object gameState) {
+    public void setGameState(GameStateBase gameState) {
         this.gameState = gameState;
     }
 
-    public Object getResult() {
+    public ResultStateBase getResult() {
         return result;
     }
 
-    public void setResult(Object result) {
+    public void setResult(ResultStateBase result) {
         this.result = result;
     }
 

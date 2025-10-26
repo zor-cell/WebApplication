@@ -7,13 +7,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomObjectMapperComponent {
-    public ObjectMapper getMapper() {
-        ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+
+    public CustomObjectMapperComponent(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
 
         JavaTimeModule module = new JavaTimeModule();
-        mapper.registerModule(module);
+        this.objectMapper.registerModule(module);
 
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return mapper;
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
+
+    public ObjectMapper getMapper() {
+        return objectMapper;
     }
 }

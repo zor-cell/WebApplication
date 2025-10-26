@@ -1,5 +1,6 @@
 package net.zorphy.backend.main.mapper;
 
+import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.component.FileUrlComponent;
 import net.zorphy.backend.main.dto.game.GameDetails;
 import net.zorphy.backend.main.dto.game.GameMetadata;
@@ -18,6 +19,10 @@ public abstract class GameMapper {
     @Autowired
     private List<GameSpecificMapper> gameMapperList;
 
+    @Autowired
+    private CustomObjectMapperComponent mapper;
+
+
     @Named("mapGameState")
     protected Object mapGameState(Game game) {
         GameSpecificMapper gameMapper = gameMapperList.stream()
@@ -28,7 +33,9 @@ public abstract class GameMapper {
             return gameMapper.mapGameState(game.getGameState());
         }
 
-        return game.getGameState();
+        Object gameState = game.getGameState();
+        var a = gameState.getClass();
+        return mapper.getMapper().convertValue(gameState, gameState.getClass());
     }
 
     @Mapping(source = "imageUrl", target = "imageUrl", qualifiedByName = "resolveFileUrl")
