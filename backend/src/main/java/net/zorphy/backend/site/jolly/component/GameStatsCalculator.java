@@ -9,7 +9,7 @@ import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsNumberMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
-import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
+import net.zorphy.backend.site.all.service.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.service.game.GameStatsUtil;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
 import net.zorphy.backend.site.jolly.dto.RoundResult;

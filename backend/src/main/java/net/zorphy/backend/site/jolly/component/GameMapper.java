@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.component.FileUrlComponent;
 import net.zorphy.backend.main.dto.game.GameType;
-import net.zorphy.backend.main.service.game.GameSpecificMapper;
+import net.zorphy.backend.site.all.service.GameSpecificMapper;
+import net.zorphy.backend.site.all.dto.GameStateBase;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
 import net.zorphy.backend.site.jolly.dto.game.GameState;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class GameMapper implements GameSpecificMapper {
     }
 
     @Override
-    public Object mapGameState(Object gameState) {
+    public GameStateBase mapGameState(GameStateBase gameState) {
         try {
             GameState oldState = objectMapper.convertValue(gameState, GameState.class);
 

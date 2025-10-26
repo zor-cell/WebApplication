@@ -15,6 +15,7 @@ import net.zorphy.backend.main.service.FileStorageService;
 import net.zorphy.backend.main.specs.GameSpecifications;
 import net.zorphy.backend.site.all.dto.GameStateBase;
 import net.zorphy.backend.site.all.dto.ResultStateBase;
+import net.zorphy.backend.site.all.service.GameSpecificDelete;
 import net.zorphy.backend.site.connect4.exception.InvalidOperationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;

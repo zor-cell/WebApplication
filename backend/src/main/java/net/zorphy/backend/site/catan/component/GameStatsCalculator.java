@@ -11,7 +11,7 @@ import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
-import net.zorphy.backend.main.service.game.GameSpecificStatsCalculator;
+import net.zorphy.backend.site.all.service.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.service.game.GameStatsUtil;
 import net.zorphy.backend.site.all.dto.ResultState;
 import net.zorphy.backend.site.all.dto.ResultTeamState;
