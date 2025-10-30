@@ -1,9 +1,6 @@
 package net.zorphy.backend.main.specs;
 
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Path;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import net.zorphy.backend.main.dto.game.GameFilters;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.entity.Game;
@@ -19,7 +16,11 @@ import java.util.List;
 public class GameSpecifications {
     public static Specification<Game> search(GameFilters gameFilters) {
         return (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> wherePredicates = new ArrayList<>();
+            List<Predicate> havingPredicates = new ArrayList<>();
+
+            //joins
+            Join<Game, Player> playerJoin = root.join(Game_.players, JoinType.LEFT);
 
             //playedAt
             Path<Instant> playedAt = root.get(Game_.playedAt);
@@ -35,7 +36,7 @@ public class GameSpecifications {
                 playedAtPredicate = cb.lessThanOrEqualTo(playedAt, gameFilters.dateTo());
             }
             if(playedAtPredicate != null) {
-                predicates.add(playedAtPredicate);
+                wherePredicates.add(playedAtPredicate);
             }
 
             //duration (is stored in seconds in db so compare seconds)
@@ -55,7 +56,7 @@ public class GameSpecifications {
                 durationPredicate = cb.lessThanOrEqualTo(duration, maxSec);
             }
             if(durationPredicate != null) {
-                predicates.add(durationPredicate);
+                wherePredicates.add(durationPredicate);
             }
 
             //game type
@@ -66,14 +67,7 @@ public class GameSpecifications {
                     Predicate cur = cb.like(cb.lower(gameType), "%" + filterGameType.toString().toLowerCase() + "%");
                     all = cb.or(cur, all);
                 }
-                predicates.add(all);
-            }
-
-            //players
-            if(gameFilters.players() != null && !gameFilters.players().isEmpty()) {
-                Join<Game, Player> playerJoin = root.join(Game_.players);
-
-                predicates.add(playerJoin.get(Player_.id).in(gameFilters.players()));
+                wherePredicates.add(all);
             }
 
             //text
@@ -102,14 +96,50 @@ public class GameSpecifications {
                         cb.literal(jsonQuery)
                 ));
 
-                predicates.add(cb.or(
+                wherePredicates.add(cb.or(
                         gameTypePredicate,
                         gameStatePredicate,
                         resultStatePredicate
                 ));
             }
 
-            return cb.and(predicates.toArray(new Predicate[0]));
+            //players
+            if(gameFilters.players() != null && !gameFilters.players().isEmpty()) {
+                //havingPredicates.add(playerJoin.get(Player_.id).in(gameFilters.players()));
+                Expression<Long> matchingPlayers = cb.count(
+                        cb.selectCase()
+                                .when(playerJoin.get(Player_.id).in(gameFilters.players()), 1)
+                                .otherwise((Integer) null)
+                );
+
+                havingPredicates.add(cb.equal(matchingPlayers, gameFilters.players().size()));
+            }
+
+            //player count
+            if(gameFilters.minPlayers() != null || gameFilters.maxPlayers() != null) {
+                query.groupBy(root.get(Game_.id));
+
+                Expression<Long> playerCount = cb.count(playerJoin.get(Player_.id));
+                Predicate playerCountPredicate = null;
+                if(gameFilters.minPlayers() != null && gameFilters.maxPlayers() != null) {
+                    playerCountPredicate = cb.between(playerCount, gameFilters.minPlayers().longValue(), gameFilters.maxPlayers().longValue());
+                } else if(gameFilters.minPlayers() != null) {
+                    playerCountPredicate = cb.greaterThanOrEqualTo(playerCount, gameFilters.minPlayers().longValue());
+                } else if(gameFilters.maxPlayers() != null) {
+                    playerCountPredicate = cb.lessThanOrEqualTo(playerCount, gameFilters.maxPlayers().longValue());
+                }
+                if(playerCountPredicate != null) {
+                    havingPredicates.add(playerCountPredicate);
+                }
+            }
+
+            //set queries having clause
+            if (!havingPredicates.isEmpty()) {
+                Predicate finalHaving = cb.and(havingPredicates.toArray(new Predicate[0]));
+                query.having(finalHaving);
+            }
+
+            return cb.and(wherePredicates.toArray(new Predicate[0]));
         };
     }
 }

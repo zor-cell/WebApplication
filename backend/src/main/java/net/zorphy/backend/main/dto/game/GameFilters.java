@@ -10,6 +10,8 @@ public record GameFilters(
         String text,
         Instant dateFrom,
         Instant dateTo,
+        Integer minPlayers,
+        Integer maxPlayers,
         Duration minDuration,
         Duration maxDuration,
         List<GameType> gameTypes,

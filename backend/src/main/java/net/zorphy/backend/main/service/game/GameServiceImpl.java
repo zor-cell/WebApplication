@@ -95,6 +95,8 @@ public class GameServiceImpl implements GameService {
                     gameFilters.text(),
                     gameFilters.dateFrom(),
                     gameFilters.dateTo(),
+                    gameFilters.minPlayers(),
+                    gameFilters.maxPlayers(),
                     gameFilters.minDuration(),
                     gameFilters.maxDuration(),
                     gameFilters.gameTypes(),
