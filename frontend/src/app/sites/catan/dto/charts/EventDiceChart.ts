@@ -44,7 +44,7 @@ export class EventDiceChart extends BaseChart {
                 borderColor: 'rgba(255, 0, 0, 0.6)',
                 borderWidth: 2,
                 order: 1,
-                yAxisID: 'yLine'
+                yAxisID: 'y'
             },
         ]
     }
@@ -84,11 +84,6 @@ export class EventDiceChart extends BaseChart {
                 ticks: {
                     stepSize: 1
                 },
-            },
-            yLine: {
-                stacked: false,
-                beginAtZero: true,
-                display: false
             }
         }
     }

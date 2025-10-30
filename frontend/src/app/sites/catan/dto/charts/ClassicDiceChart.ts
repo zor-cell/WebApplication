@@ -16,7 +16,7 @@ export class ClassicDiceChart extends BaseChart {
                 borderColor: 'rgba(255, 0, 0, 0.6)',
                 borderWidth: 2,
                 order: 1,
-                yAxisID: 'yLine'
+                yAxisID: 'y',
             },
             {
                 type: 'line',
@@ -27,7 +27,7 @@ export class ClassicDiceChart extends BaseChart {
                 borderColor: 'rgba(200, 200, 200, 0.8)',
                 borderWidth: 2,
                 order: 1,
-                yAxisID: 'yLine'
+                yAxisID: 'yLine', //this is not scaled correctly (is not really used anyway)
             }
         ]
     };
@@ -60,12 +60,6 @@ export class ClassicDiceChart extends BaseChart {
                 },
                 beginAtZero: true,
                 ticks: {
-                    /*callback: function (value) {
-                        if (Number.isInteger(value)) {
-                            return value.toString();
-                        }
-                        return '';
-                    }, not needed?*/
                     stepSize: 1
                 },
             },
