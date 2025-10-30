@@ -27,6 +27,28 @@ export class MoveTimeChart extends BaseChart {
                     text: 'Move Time (s)',
                     font: BaseChart.axisFont
                 }
+            },
+            yMinutes: {
+                stacked: false,
+                position: 'right',           // appear on the right side
+                title: {
+                    display: true,
+                    text: 'Move Time (min)',
+                    font: BaseChart.axisFont
+                },
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 60,
+                    // convert seconds to minutes for display
+                    callback: value => {
+                        console.log(value)
+                        const num = typeof value === 'string' ? parseFloat(value) : value;
+                        return `${(num / 60).toFixed(1)}`;
+                    }
+                },
+                grid: {
+                    drawOnChartArea: false  // avoid grid lines on top of left axis
+                }
             }
         },
         plugins: {
@@ -59,8 +81,8 @@ export class MoveTimeChart extends BaseChart {
             teamData[team] = Array(maxRounds).fill(null);
         });
         diceRolls.forEach((diceRoll, i) => {
-            if(i < diceRolls.length - 1) {
-                if(!diceRolls[i].rollTime || !diceRolls[i + 1].rollTime) return;
+            if (i < diceRolls.length - 1) {
+                if (!diceRolls[i].rollTime || !diceRolls[i + 1].rollTime) return;
 
                 const cur = new Date(diceRolls[i].rollTime);
                 const next = new Date(diceRolls[i + 1].rollTime);
@@ -69,7 +91,7 @@ export class MoveTimeChart extends BaseChart {
 
                 let round: number = Math.floor(i / teams.length);
 
-                if(gameMode === GameMode.ONE_VS_ONE) {
+                if (gameMode === GameMode.ONE_VS_ONE) {
                     //two consecutive rolls from the same team -> 4 rows are 2 rounds
                     round = Math.floor(i / 4);
                     const offset = i % 2;
@@ -91,7 +113,7 @@ export class MoveTimeChart extends BaseChart {
         }));
 
         MoveTimeChart.data.labels = Array.from(
-            { length: maxRounds },
+            {length: maxRounds},
             (_, i) => i + 1
         );
         MoveTimeChart.data.datasets = [...datasets];
