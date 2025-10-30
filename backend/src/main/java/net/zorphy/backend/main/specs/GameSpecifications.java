@@ -103,22 +103,12 @@ public class GameSpecifications {
                 ));
             }
 
-            //players
-            if(gameFilters.players() != null && !gameFilters.players().isEmpty()) {
-                //havingPredicates.add(playerJoin.get(Player_.id).in(gameFilters.players()));
-                Expression<Long> matchingPlayers = cb.count(
-                        cb.selectCase()
-                                .when(playerJoin.get(Player_.id).in(gameFilters.players()), 1)
-                                .otherwise((Integer) null)
-                );
 
-                havingPredicates.add(cb.equal(matchingPlayers, gameFilters.players().size()));
-            }
-
-            //player count
-            if(gameFilters.minPlayers() != null || gameFilters.maxPlayers() != null) {
+            //player related (having clause)
+            if(gameFilters.minPlayers() != null || gameFilters.maxPlayers() != null || (gameFilters.players() != null && !gameFilters.players().isEmpty())) {
                 query.groupBy(root.get(Game_.id));
 
+                //player count
                 Expression<Long> playerCount = cb.count(playerJoin.get(Player_.id));
                 Predicate playerCountPredicate = null;
                 if(gameFilters.minPlayers() != null && gameFilters.maxPlayers() != null) {
@@ -130,6 +120,18 @@ public class GameSpecifications {
                 }
                 if(playerCountPredicate != null) {
                     havingPredicates.add(playerCountPredicate);
+                }
+
+                //players
+                if(gameFilters.players() != null && !gameFilters.players().isEmpty()) {
+                    //havingPredicates.add(playerJoin.get(Player_.id).in(gameFilters.players()));
+                    Expression<Long> matchingPlayers = cb.count(
+                            cb.selectCase()
+                                    .when(playerJoin.get(Player_.id).in(gameFilters.players()), 1)
+                                    .otherwise((Integer) null)
+                    );
+
+                    havingPredicates.add(cb.equal(matchingPlayers, gameFilters.players().size()));
                 }
             }
 

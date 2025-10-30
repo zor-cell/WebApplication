@@ -36,7 +36,7 @@ export class EventDiceChart extends BaseChart {
         datasets: [
             {
                 type: 'line',
-                label: 'Bell Curve',
+                label: 'Expectation',
                 data: [],
                 tension: 0,
                 pointRadius: 0,
@@ -60,7 +60,7 @@ export class EventDiceChart extends BaseChart {
             },
             legend: {
                 labels: {
-                    filter: item => item.text !== 'Bell Curve'
+                    filter: item => item.text !== 'Expectation'
                 }
             }
         },
