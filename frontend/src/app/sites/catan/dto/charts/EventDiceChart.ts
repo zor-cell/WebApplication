@@ -38,7 +38,7 @@ export class EventDiceChart extends BaseChart {
                 type: 'line',
                 label: 'Bell Curve',
                 data: [],
-                tension: 0.1,
+                tension: 0,
                 pointRadius: 0,
                 backgroundColor: 'rgba(255, 0, 0, 0.6)',
                 borderColor: 'rgba(255, 0, 0, 0.6)',
@@ -96,6 +96,8 @@ export class EventDiceChart extends BaseChart {
     static override plugins: Plugin[] = [EventDiceChart.labelImagePlugin];
 
     static refresh(diceRolls: DiceRoll[]) {
+        diceRolls = diceRolls.filter(d => d.diceEvent != null);
+
         EventDiceChart.data.datasets[0].data = this.generatePMF(diceRolls.length);
 
         //team datasets
@@ -124,6 +126,17 @@ export class EventDiceChart extends BaseChart {
             EventDiceChart.data.datasets[0],
             ...datasets
         ];
+
+        EventDiceChart.options = {
+            ...EventDiceChart.options,
+            plugins: {
+                ...EventDiceChart.options.plugins,
+                title: {
+                    ...EventDiceChart.options.plugins?.title,
+                    text: `Event Dice Histogram of ${diceRolls.length} Rolls`,
+                }
+            },
+        }
     }
 
     private static generatePMF(totalRolls: number) {
