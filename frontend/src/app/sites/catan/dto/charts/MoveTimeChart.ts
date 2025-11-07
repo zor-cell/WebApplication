@@ -26,11 +26,12 @@ export class MoveTimeChart extends BaseChart {
                     display: true,
                     text: 'Move Time (s)',
                     font: BaseChart.axisFont
-                }
+                },
+                beginAtZero: true
             },
             yMinutes: {
                 stacked: false,
-                position: 'right',           // appear on the right side
+                position: 'right',
                 title: {
                     display: true,
                     text: 'Move Time (min)',
@@ -38,16 +39,26 @@ export class MoveTimeChart extends BaseChart {
                 },
                 beginAtZero: true,
                 ticks: {
-                    stepSize: 60,
-                    // convert seconds to minutes for display
-                    callback: value => {
-                        console.log(value)
-                        const num = typeof value === 'string' ? parseFloat(value) : value;
-                        return `${(num / 60).toFixed(1)}`;
+                    stepSize: 1,
+                    callback: (value) => {
+                        const seconds = typeof value === 'string' ? parseFloat(value) : value;
+
+                        if(seconds % 60 == 0) {
+                            return (seconds / 60).toFixed(0);
+                        }
+
+                        return null;
+                    }
+                },
+                afterDataLimits: (scale) => {
+                    const secondsScale = scale.chart.scales['y'];
+                    if (secondsScale) {
+                        scale.max = secondsScale.max;
+                        scale.min = secondsScale.min;
                     }
                 },
                 grid: {
-                    drawOnChartArea: false  // avoid grid lines on top of left axis
+                    drawOnChartArea: false
                 }
             }
         },
@@ -109,7 +120,8 @@ export class MoveTimeChart extends BaseChart {
             borderColor: BaseChart.colors[index % BaseChart.colors.length],
             backgroundColor: BaseChart.colors[index % teams.length],
             fill: false,
-            order: 2
+            order: 2,
+            yAxisID: 'y'
         }));
 
         MoveTimeChart.data.labels = Array.from(
