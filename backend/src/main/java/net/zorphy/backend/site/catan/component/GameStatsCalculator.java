@@ -7,10 +7,11 @@ import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationAxisType;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationDataPoint;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationMetadata;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationResult;
-import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
+import net.zorphy.backend.main.service.game.metrics.DurationArithmeticStrategy;
+import net.zorphy.backend.main.service.game.metrics.GameStatsMetricAggregator;
 import net.zorphy.backend.site.all.service.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.service.game.GameStatsUtil;
 import net.zorphy.backend.site.all.dto.ResultState;
@@ -46,7 +47,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         int gameCount = 0;
         double totalLuckMetrics = 0;
 
-        GameStatsDurationMetrics rollDurationMetrics = new GameStatsDurationMetrics();
+        GameStatsMetricAggregator<Duration> rollDurationMetrics = new GameStatsMetricAggregator<>(new DurationArithmeticStrategy());
 
         for (Game game : games) {
             try {
@@ -98,7 +99,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                         var next = gameState.diceRolls().get(i + 1);
                         if(diceRoll.rollTime() != null && next.rollTime() != null) {
                             Duration curDuration = Duration.between(diceRoll.rollTime(), next.rollTime());
-                            rollDurationMetrics = rollDurationMetrics.update(game.getId(), curDuration);
+                            rollDurationMetrics.update(game.getId(), curDuration);
                         }
                     }
                 }
@@ -129,7 +130,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         return new GameStats(
                 gameCount,
                 GameStatsUtil.computeFraction(totalLuckMetrics, gameCount),
-                rollDurationMetrics,
+                rollDurationMetrics.aggregate(),
                 diceRolls
         );
     }

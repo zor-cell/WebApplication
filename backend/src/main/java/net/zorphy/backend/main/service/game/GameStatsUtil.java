@@ -7,10 +7,11 @@ import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationAxisType;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationDataPoint;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationMetadata;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationResult;
-import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
-import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsNumberMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.entity.Game;
+import net.zorphy.backend.main.service.game.metrics.DoubleArithmeticStrategy;
+import net.zorphy.backend.main.service.game.metrics.DurationArithmeticStrategy;
+import net.zorphy.backend.main.service.game.metrics.GameStatsMetricAggregator;
 import net.zorphy.backend.site.all.dto.ResultState;
 import net.zorphy.backend.site.all.dto.ResultTeamState;
 import net.zorphy.backend.site.all.service.GameSpecificStatsCalculator;
@@ -47,8 +48,8 @@ public class GameStatsUtil {
         int gamesPlayed = 0;
         int gamesWon = 0;
 
-        GameStatsNumberMetrics<Integer> scoreMetrics = new GameStatsNumberMetrics<>();
-        GameStatsDurationMetrics durationMetrics = new GameStatsDurationMetrics();
+        GameStatsMetricAggregator<Double> scoreMetrics = new GameStatsMetricAggregator<>(new DoubleArithmeticStrategy());
+        GameStatsMetricAggregator<Duration> durationMetrics = new GameStatsMetricAggregator<>(new DurationArithmeticStrategy());
 
         for (Game game : games) {
             try {
@@ -56,9 +57,6 @@ public class GameStatsUtil {
 
                 //get player team data
                 ResultTeamState playerTeam = getResultTeam(result, currentPlayer.id());
-                /*currentPlayer = playerTeam.team().players().stream()
-                        .filter(p -> playerId.equals(p.id()))
-                        .findFirst().orElse(currentPlayer);*/
 
                 //get winner team data
                 ResultTeamState winnerTeam = getWinnerTeam(result);
@@ -92,11 +90,11 @@ public class GameStatsUtil {
                 //player specific stats
                 //min + max + avg score
                 int curScore = playerTeam.score();
-                scoreMetrics = scoreMetrics.update(game.getId(), curScore);
+                scoreMetrics.update(game.getId(), (double) curScore);
 
                 //min + max + avg duration
                 Duration curDuration = game.getDuration();
-                durationMetrics = durationMetrics.update(game.getId(), curDuration);
+                durationMetrics.update(game.getId(), curDuration);
 
                 gamesPlayed++;
                 if (playerIsWinner) gamesWon++;
@@ -148,8 +146,8 @@ public class GameStatsUtil {
                 currentPlayer,
                 gamesPlayed,
                 computeFraction(gamesWon, gamesPlayed),
-                scoreMetrics,
-                durationMetrics,
+                scoreMetrics.aggregate(),
+                durationMetrics.aggregate(),
                 nemesis,
                 victim,
                 rival,

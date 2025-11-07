@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.zorphy.backend.main.component.CustomObjectMapperComponent;
 import net.zorphy.backend.main.dto.game.GameType;
 import net.zorphy.backend.main.dto.game.stats.correlation.CorrelationResult;
-import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsDurationMetrics;
-import net.zorphy.backend.main.dto.game.stats.metrics.GameStatsNumberMetrics;
 import net.zorphy.backend.main.dto.player.PlayerDetails;
 import net.zorphy.backend.main.dto.player.TeamDetails;
 import net.zorphy.backend.main.entity.Game;
+import net.zorphy.backend.main.service.game.metrics.DoubleArithmeticStrategy;
+import net.zorphy.backend.main.service.game.metrics.DurationArithmeticStrategy;
+import net.zorphy.backend.main.service.game.metrics.GameStatsMetricAggregator;
 import net.zorphy.backend.site.all.service.GameSpecificStatsCalculator;
 import net.zorphy.backend.main.service.game.GameStatsUtil;
 import net.zorphy.backend.site.jolly.dto.RoundInfo;
@@ -41,8 +42,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         int outInOneCount = 0;
         int closedCount = 0;
 
-        GameStatsDurationMetrics roundDurationMetrics = new GameStatsDurationMetrics();
-        GameStatsNumberMetrics<Integer> roundScoreMetrics = new GameStatsNumberMetrics<>();
+        GameStatsMetricAggregator<Duration> roundDurationMetrics = new GameStatsMetricAggregator<>(new DurationArithmeticStrategy());
+        GameStatsMetricAggregator<Double> roundScoreMetrics = new GameStatsMetricAggregator<>(new DoubleArithmeticStrategy());
 
         for(Game game : games) {
             try {
@@ -78,7 +79,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
                     //score data
                     int curScore = result.score();
-                    roundScoreMetrics = roundScoreMetrics.update(game.getId(), curScore);
+                    roundScoreMetrics.update(game.getId(), (double) curScore);
 
                     //duration data
                     Duration curDuration;
@@ -87,7 +88,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
                     } else {
                         curDuration = Duration.between(gameState.startTime(), round.endTime());
                     }
-                    roundDurationMetrics = roundDurationMetrics.update(game.getId(), curDuration);
+                    roundDurationMetrics.update(game.getId(), curDuration);
 
                     roundsPlayed++;
                     if(curScore == roundMaxScore) {
@@ -102,8 +103,8 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
         return new GameStats(
                 roundsPlayed,
                 GameStatsUtil.computeFraction(roundsWon, roundsPlayed),
-                roundScoreMetrics,
-                roundDurationMetrics,
+                roundScoreMetrics.aggregate(),
+                roundDurationMetrics.aggregate(),
                 GameStatsUtil.computeFraction(outInOneCount, roundsPlayed),
                 GameStatsUtil.computeFraction(closedCount, roundsPlayed)
         );
