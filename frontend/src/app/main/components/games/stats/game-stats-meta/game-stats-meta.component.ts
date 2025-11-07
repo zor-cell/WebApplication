@@ -17,13 +17,11 @@ import {DurationPipe} from "../../../../pipes/DurationPipe";
 export class GameStatsMetaComponent {
   private injector = inject(Injector);
 
-  public label = input.required<string>();
-  public subLabel = input<string>('');
-
   public data = input.required<undefined | string | LinkedGameStats<any>>();
-  public pipe = input<Type<PipeTransform>>();
-  public formatted = input<any>(null);
+  public label = input.required<string>();
 
+  public subLabel = input<string>('');
+  public pipe = input<Type<PipeTransform>>();
   public defaultValue = input<string>('None');
 
   protected isLinkedGameStats(value: undefined | string | LinkedGameStats<any>) {
