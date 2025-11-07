@@ -5,6 +5,7 @@
         <th scope="col" *ngFor="let team of gameState().gameConfig.teams">{{ team.name }}</th>
         <th scope="col">Duration</th>
         <th scope="col" *ngIf="showImages()">Image</th>
+        <th scope="col" *ngIf="isEditable()">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -20,6 +21,11 @@
                 <img [ngSrc]="roundInfo.imageUrl" width="20" height="20" alt="" loading="lazy">
             </div>
         </td>
+        <td *ngIf="isEditable()" style="width: 20px">
+            <button class="btn btn-sm btn-primary" (click)="openRoundPopup(i)">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+        </td>
     </tr>
     </tbody>
     <tfoot>
@@ -30,6 +36,13 @@
         </td>
         <td>{{ getTotalDuration() }}</td>
         <td *ngIf="showImages()">-</td>
+        <td *ngIf="isEditable()">-</td>
     </tr>
     </tfoot>
 </table>
+
+<jolly-round-popup #updateRoundPopup
+                   [teams]="gameState().gameConfig.teams"
+                   [rounds]="gameState().rounds"
+                   (updateRoundEvent)="updateRound($event)"
+/>

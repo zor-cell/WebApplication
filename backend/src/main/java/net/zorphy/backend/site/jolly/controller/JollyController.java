@@ -51,6 +51,16 @@ public class JollyController extends GameSessionSaveController<GameConfig, GameS
         return gameState;
     }
 
+    @PutMapping(value = "round", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public GameState updateRound(HttpSession session,
+                                 @RequestPart("roundIndex") Integer roundIndex,
+                                 @RequestPart("results") @Valid List<RoundResult> results) {
+        GameState gameState = jollyService.updateRound(getSessionState(session), results, roundIndex);
+        setSessionState(session, gameState);
+
+        return gameState;
+    }
+
     @Override
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "session/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -82,6 +82,28 @@ public class JollyServiceImpl implements JollyService {
     }
 
     @Override
+    public GameState updateRound(GameState oldState, List<RoundResult> results, int roundIndex) {
+        List<RoundInfo> rounds = new ArrayList<>(oldState.rounds());
+
+        if(roundIndex < 0 || roundIndex >= rounds.size()) {
+            throw new InvalidOperationException("Invalid round index");
+        }
+
+        RoundInfo oldRound = rounds.get(roundIndex);
+        rounds.set(roundIndex, new RoundInfo(
+                oldRound.endTime(),
+                oldRound.imageUrl(),
+                results
+        ));
+
+        return new GameState(
+                oldState.startTime(),
+                oldState.gameConfig(),
+                rounds
+        );
+    }
+
+    @Override
     public GameState saveRoundImages(GameState oldState, Map<String, FileStorageFile> images) {
         List<RoundInfo> rounds = new ArrayList<>();
 

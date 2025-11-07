@@ -14,10 +14,16 @@ import java.util.UUID;
 public interface JollyService extends GameSessionSaveService<GameConfig, GameState, ResultState> {
     /**
      * Adds a jolly round to the {@code oldState} and returns the modified state.
-     * In the round a temporary {@code imageIdentifier} is save as the image url, so the bytes is
+     * In the round a temporary {@code imageIdentifier} is saved as the image url, so the bytes are
      * only saved on game save
      */
     GameState saveRound(GameState oldState, List<RoundResult> results, UUID imageIdentifier);
+
+    /**
+     * Updates the round at {@code roundIndex} in the {@code oldState} and returns the modified state.
+     * The round image cannot be updated.
+     */
+    GameState updateRound(GameState oldState, List<RoundResult> results, int roundIndex);
 
     /**
      * Resolves the temporary image identifiers from round saving with their corresponding

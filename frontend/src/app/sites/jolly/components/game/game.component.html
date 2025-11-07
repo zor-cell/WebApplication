@@ -11,7 +11,7 @@
                 </button>
 
                 <div class="w-100">
-                    <jolly-round-table [gameState]="state"/>
+                    <jolly-round-table [gameState]="state" [isEditable]="true" (updateRounds)="updatedRounds($event)"/>
                 </div>
             </section>
         </div>

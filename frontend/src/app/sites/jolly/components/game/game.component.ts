@@ -79,6 +79,10 @@ export class JollyGameComponent implements OnInit {
     });
   }
 
+  protected updatedRounds(res: GameState) {
+    this.gameState.set(res);
+  }
+
   protected roundLimitReached() {
     if(this.gameState()!.gameConfig.noRoundLimit) {
       return false;

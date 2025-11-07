@@ -1,10 +1,14 @@
-import {Component, effect, inject, input, OnInit} from '@angular/core';
+import {Component, effect, inject, input, model, OnInit, output, viewChild} from '@angular/core';
 import {DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {GameState} from "../../dto/game/GameState";
 import {Team} from "../../../../main/dto/all/Team";
 import {LightboxDirective} from "ng-gallery/lightbox";
 import {Gallery, ImageItem} from "ng-gallery";
 import {DurationPipe} from "../../../../main/pipes/DurationPipe";
+import {RoundPopupComponent} from "../popups/round-popup/round-popup.component";
+import {WithFile} from "../../../../main/dto/all/WithFile";
+import {RoundResult} from "../../dto/RoundResult";
+import {JollyService} from "../../services/jolly.service";
 
 @Component({
   selector: 'jolly-round-table',
@@ -13,16 +17,22 @@ import {DurationPipe} from "../../../../main/pipes/DurationPipe";
     NgIf,
     LightboxDirective,
     NgOptimizedImage,
+    RoundPopupComponent
   ],
   templateUrl: './round-table.component.html',
   styleUrl: './round-table.component.css'
 })
 export class JollyRoundTableComponent implements OnInit {
+  private jollyService = inject(JollyService);
   private gallery = inject(Gallery);
   protected readonly galleryName = "roundTableGallery";
 
   public gameState = input.required<GameState>();
   public showImages = input<boolean>(false);
+  public isEditable = input<boolean>(false);
+  public updateRounds = output<GameState>();
+
+  private updateRoundPopup = viewChild.required<RoundPopupComponent>("updateRoundPopup");
 
   ngOnInit() {
     const roundImages = this.gameState().rounds.map(round => new ImageItem({
@@ -52,6 +62,10 @@ export class JollyRoundTableComponent implements OnInit {
     return Math.floor(durationMs / 1000);
   }
 
+  protected openRoundPopup(roundIndex: number) {
+    this.updateRoundPopup().openPopup(roundIndex);
+  }
+
   protected getDuration(index: number) {
     const seconds = this.getDurationInSeconds(index)
     return DurationPipe.fromSeconds(seconds);
@@ -69,5 +83,11 @@ export class JollyRoundTableComponent implements OnInit {
     return this.gameState().rounds
         .map(r => r.results.find(res => res.team.name === team.name)?.score ?? 0)
         .reduce((a, b) => a + b, 0);
+  }
+
+  protected updateRound(event: { data: WithFile<RoundResult[]>, roundIndex: number }) {
+    this.jollyService.updateRound(event.roundIndex, event.data.data, event.data.file).subscribe(res => {
+      this.updateRounds.emit(res);
+    });
   }
 }

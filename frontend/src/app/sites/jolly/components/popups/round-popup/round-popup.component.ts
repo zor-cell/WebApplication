@@ -16,6 +16,7 @@ import {RoundResult} from "../../../dto/RoundResult";
 import {FileUpload} from "../../../../../main/dto/all/FileUpload";
 import {FileUploadComponent} from "../../../../../main/components/all/file-upload/file-upload.component";
 import {WithFile} from "../../../../../main/dto/all/WithFile";
+import {RoundInfo} from "../../../dto/RoundInfo";
 
 interface RoundForm {
   score: FormControl<number | null>;
@@ -40,12 +41,17 @@ export class RoundPopupComponent implements OnInit {
   private popupService = inject(PopupService);
   private fb = inject(FormBuilder);
 
-  private saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
   public teams = input.required<Team[]>();
+  public rounds = input<RoundInfo[] | null>(null);
   public addRoundEvent = output<WithFile<RoundResult[]>>();
+  public updateRoundEvent = output<{data: WithFile<RoundResult[]>, roundIndex: number}>();
 
   protected saveForm!: FormGroup<Record<string, FormGroup<RoundForm>>>;
   protected fileUpload = signal<FileUpload>(new FileUpload());
+
+  private saveTemplate = viewChild.required<TemplateRef<any>>('roundPopup');
+  private roundIndex = signal<number>(0);
+
 
   ngOnInit() {
     const group: Record<string, FormGroup<RoundForm>> = {};
@@ -85,26 +91,43 @@ export class RoundPopupComponent implements OnInit {
     }
   }
 
-  public openPopup() {
+  public openPopup(roundIndex: number | null = null) {
+    //init values if in edit mode
+    const rounds = this.rounds();
+    if(rounds && roundIndex != null && roundIndex >= 0 && roundIndex < rounds.length) {
+      const round = rounds[roundIndex];
+
+      for(let result of round.results) {
+        const formControl = this.saveForm.controls[result.team.name];
+        formControl.patchValue({
+          score: result.score,
+          hasClosed: result.hasClosed,
+          outInOne: result.outInOne
+        });
+      }
+
+      this.roundIndex.set(roundIndex);
+    }
+
     this.popupService.createPopup(
-        'Add Round',
+        this.rounds() ? 'Edit Round' : 'Add Round',
         this.saveTemplate(),
         this.callback.bind(this),
         () => this.saveForm.valid,
-        'Add'
+        this.rounds() ? 'Edit' : 'Add'
     );
   }
 
   private callback(result: PopupResultType) {
     if (result === PopupResultType.SUBMIT) {
-      this.saveRound();
+        this.saveOrUpdateRound();
     } else if (result === PopupResultType.CANCEL) {
       this.saveForm.reset();
     }
     this.saveForm.reset();
   }
 
-  private saveRound() {
+  private saveOrUpdateRound() {
     const formValue = this.saveForm.getRawValue();
 
     const roundResults: RoundResult[] = this.teams().map(team => ({
@@ -114,10 +137,20 @@ export class RoundPopupComponent implements OnInit {
       outInOne: formValue[team.name].outInOne
     }));
 
-    this.addRoundEvent.emit({
-      data: roundResults,
-      file: this.fileUpload().getAndRevokeFile()
-    });
+    if(this.rounds()) {
+      this.updateRoundEvent.emit({
+        data: {
+          data: roundResults,
+          file: this.fileUpload().getAndRevokeFile(),
+        },
+        roundIndex: this.roundIndex()
+      })
+    } else {
+      this.addRoundEvent.emit({
+        data: roundResults,
+        file: this.fileUpload().getAndRevokeFile()
+      });
+    }
   }
 
 

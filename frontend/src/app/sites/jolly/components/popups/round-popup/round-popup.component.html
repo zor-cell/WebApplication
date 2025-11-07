@@ -19,7 +19,7 @@
             </tbody>
         </table>
 
-        <app-file-upload (fileChangedEvent)="fileUpload.set($event)"/>
+        <app-file-upload *ngIf="!rounds()" (fileChangedEvent)="fileUpload.set($event)"/>
     </form>
     <div *ngIf="fileUpload().getFileUrl() as url" class="image-container">
         <img [src]="url" alt="" width="300" height="300" class="image">

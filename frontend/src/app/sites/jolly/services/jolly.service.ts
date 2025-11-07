@@ -19,15 +19,33 @@ export class JollyService extends GameSessionService<GameConfig, GameState> {
   }
 
   saveRound(results: RoundResult[], imageFile: File | null = null) {
+    const formData = this.createFormData(results, imageFile);
+
+    return this.httpClient.post<GameState>(this.baseUri + '/round', formData).pipe(
+        tap(() => {
+          this.globals.handleSuccess('Saved round results');
+        }));
+  }
+
+  updateRound(roundIndex: number, results: RoundResult[], imageFile: File | null = null) {
+    const formData = this.createFormData(results, imageFile, roundIndex);
+
+    return this.httpClient.put<GameState>(this.baseUri + '/round', formData).pipe(
+        tap(() => {
+          this.globals.handleSuccess('Updated round results');
+        }));
+  }
+
+  private createFormData(results: RoundResult[], imageFile: File | null = null, roundIndex: number | null = null) {
     const formData = new FormData();
     formData.append('results', new Blob([JSON.stringify(results)], { type: 'application/json' }));
     if (imageFile) {
       formData.append('image', imageFile, imageFile.name);
     }
+    if(roundIndex != null) {
+      formData.append('roundIndex', new Blob([JSON.stringify(roundIndex)], { type: 'application/json' }));
+    }
 
-    return this.httpClient.post<GameState>(this.baseUri + '/round', formData).pipe(
-        tap(() => {
-          this.globals.handleSuccess('Saved round results');
-        }));;
+    return formData;
   }
 }
