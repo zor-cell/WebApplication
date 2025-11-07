@@ -165,7 +165,7 @@ public class GameStatsCalculator implements GameSpecificStatsCalculator {
 
         if(playerStats.getValues().length == 0 || totalStats.getValues().length == 0) return 0;
 
-        double R = (double) playerSevenCount / totalSevenCount; //TODO amount of players also important
+        double R = totalSevenCount == 0 ? 0 : (double) playerSevenCount / totalSevenCount; //TODO amount of players also important
 
         double playerVariance = playerStats.getVariance();
         double playerStdDev = playerStats.getStandardDeviation();
