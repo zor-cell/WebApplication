@@ -9,6 +9,7 @@ import {GameComponentRegistryService} from "../../../../services/game-component-
 import {CorrelationChartComponent} from "../correlation-chart/correlation-chart.component";
 import {DurationPipe} from "../../../../pipes/DurationPipe";
 import {GameStatsMetaComponent} from "../game-stats-meta/game-stats-meta.component";
+import {GameStatsMetricsComponent} from "../game-stats-metrics/game-stats-metrics.component";
 
 @Component({
     selector: 'game-stats',
@@ -21,9 +22,11 @@ import {GameStatsMetaComponent} from "../game-stats-meta/game-stats-meta.compone
         CorrelationChartComponent,
         CorrelationChartComponent,
         GameStatsMetaComponent,
-        DurationPipe
+        DurationPipe,
+        GameStatsMetricsComponent
     ],
     templateUrl: './game-stats.component.html',
+    standalone: true,
     styleUrl: './game-stats.component.css'
 })
 export class GameStatsComponent {
@@ -59,4 +62,6 @@ export class GameStatsComponent {
             this.gameStats.set(res);
         })
     }
+
+    protected readonly DurationPipe = DurationPipe;
 }

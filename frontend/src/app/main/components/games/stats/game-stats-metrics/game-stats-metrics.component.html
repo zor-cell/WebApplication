@@ -1,0 +1,6 @@
+<div>
+    <game-stats-meta [label]="'Min ' + label()" [data]="metric().min" [pipe]="pipe()"/>
+    <game-stats-meta [label]="'Max ' + label()" [data]="metric().max" [pipe]="pipe()"/>
+    <game-stats-meta [label]="'Avg ' + label()" [data]="metric().avg" [pipe]="pipe()"/>
+    <game-stats-meta [label]="'Median ' + label()" [data]="metric().median" [pipe]="pipe()"/>
+</div>

@@ -7,8 +7,8 @@
     @if (!data()) {
         <div>{{ defaultValue() }}</div>
     } @else if (linked) {
-        <a [routerLink]="['/games', linked.gameId]">{{ formatted() ? formatted() : linked.value }}</a>
+        <a [routerLink]="['/games', linked.gameId]">{{ transformValue(linked.value) }}</a>
     } @else {
-        <div>{{ data() }}</div>
+        <div>{{ transformValue(data()) }}</div>
     }
 </div>

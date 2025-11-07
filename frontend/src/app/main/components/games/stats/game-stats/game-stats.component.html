@@ -21,28 +21,15 @@
                                 <game-stats-meta label="Win Rate" [data]="(stats.winRate * 100).toFixed(2) + '%'"/>
                             </div>
 
-                            <div>
-                                <game-stats-meta label="Min Score" [data]="stats.scoreMetrics.min"/>
-                                <game-stats-meta label="Max Score" [data]="stats.scoreMetrics.max"/>
-                                <game-stats-meta label="Avg Score" [data]="stats.scoreMetrics.avg?.toFixed(2)"/>
-                            </div>
+                            <game-stats-metrics [metric]="stats.scoreMetrics" label="Score"/>
+
+                            <game-stats-metrics [metric]="stats.durationMetrics" label="Duration" [pipe]="DurationPipe" />
 
                             <div>
-                                <game-stats-meta label="Min Duration" [data]="stats.durationMetrics.min"
-                                                 [formatted]="stats.durationMetrics.min.value | duration"/>
-                                <game-stats-meta label="Max Duration" [data]="stats.durationMetrics.max"
-                                                 [formatted]="stats.durationMetrics.max.value | duration"/>
-                                <game-stats-meta label="Avg Duration" [data]="stats.durationMetrics.avg | duration"/>
-                            </div>
-
-                            <div>
-                                <game-stats-meta label="Nemesis" subLabel="(Worst win rate)"
-                                                 [data]="stats.nemesis?.name"/>
+                                <game-stats-meta label="Nemesis" subLabel="(Worst win rate)" [data]="stats.nemesis?.name"/>
                                 <game-stats-meta label="Victim" subLabel="(Best win rate)" [data]="stats.victim?.name"/>
-                                <game-stats-meta label="Rival" subLabel="(Most played against)"
-                                                 [data]="stats.rival?.name"/>
-                                <game-stats-meta label="Companion" subLabel="(Most played with)"
-                                                 [data]="stats.companion?.name"/>
+                                <game-stats-meta label="Rival" subLabel="(Most played against)" [data]="stats.rival?.name"/>
+                                <game-stats-meta label="Companion" subLabel="(Most played with)" [data]="stats.companion?.name"/>
                             </div>
                         </div>
                     </div>
